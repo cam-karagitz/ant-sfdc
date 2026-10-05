@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How much have we paid out on claims with a date of loss this year?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Paid_Amount__c) paid, COUNT(Id) cnt, SUM(Outstanding_Reserve__c) outres FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Date_of_Loss__c = THIS_YEAR\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"outres\":745350.0,\"cnt\":46,\"paid\":422530.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "We've paid out **$422,530** on the 46 claims with a date of loss in 2026. Another **$745,350** is still held as outstanding reserve on those claims."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Paid out\",\n      \"value\": \"$422,530\",\n      \"note\": \"2026 date of loss\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"still to be paid\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"label\": \"Claims\",\n      \"value\": \"46\",\n      \"note\": \"loss date in 2026\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Break down 2026 paid by loss type\",\n    \"Which 2026 claims paid the most?\",\n    \"Paid by month of loss this year\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Paid out\",\n        \"value\": \"$422,530\",\n        \"note\": \"2026 date of loss\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$745,350\",\n        \"note\": \"still to be paid\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"label\": \"Claims\",\n        \"value\": \"46\",\n        \"note\": \"loss date in 2026\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Break down 2026 paid by loss type\",\n      \"Which 2026 claims paid the most?\",\n      \"Paid by month of loss this year\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims do we have right now?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT(Id) c, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":745350.0,\"c\":26}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"You have **26 open claims** right now, with **$745,350** in outstanding reserve between them.\\n\\n?> Break open claims down by status\\n?> Which open claims are high severity?\\n?> Show the oldest open claims\",\n  \"tiles\": [\n    {\n      \"label\": \"Open claims\",\n      \"value\": \"26\",\n      \"note\": \"not closed or denied\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"across 26 open claims\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "user",
+    "content": "Thanks, that helps."
+  },
+  {
+    "role": "assistant",
+    "content": "You're welcome. If you want to dig into any of those 26 claims, just ask."
+  }
+]

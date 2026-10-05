@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete the Reyes Household account."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete records from here, so I can't remove the Reyes Household account. To delete it, open the account in Salesforce and use Delete, if your permissions allow that. Your admin can also do it for you."
+  }
+]

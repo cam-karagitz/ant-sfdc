@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Incurred_Losses__c</fullName>
+    <description>Reserves or payments on this policy's claims, whichever is higher for each claim. Kept up to date by AntsuranceCaseAutomation whenever a claim changes.</description>
+    <label>Incurred Losses</label>
+    <precision>14</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Currency</type>
+</CustomField>

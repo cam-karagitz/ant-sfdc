@@ -1,0 +1,65 @@
+/* Shown in the utility panel on the Ask Claude tab, where the chat is already on the page. It fills
+   the panel as the chat would, so the panel is never a short note above a blank sheet. */
+.c-here {
+    --slds-c-icon-color-foreground-default: #ae5f46;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: var(--ants-panel-body, min(36.5rem, calc(100vh - 13rem)));
+    padding: 1.5rem;
+    background: #faf9f5;
+    text-align: center;
+}
+
+.c-here__icon {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.875rem;
+    background: #faefeb;
+}
+
+.c-here__lead {
+    margin: 0.25rem 0 0;
+    color: #141413;
+    font-family: Poppins, ui-sans-serif, system-ui, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.c-here__text {
+    max-width: 22rem;
+    margin: 0;
+    color: #66645e;
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
+.c-here__button {
+    flex: none;
+    margin-top: 0.5rem;
+    padding: 0.4375rem 1rem;
+    border: 1px solid #d8d5c8;
+    border-radius: 999px;
+    background: #fff;
+    color: #8a4a35;
+    font-family: Poppins, ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-here__button:hover {
+    border-color: #d97757;
+    background: #faefeb;
+}
+
+.c-here__button:focus-visible {
+    outline: 2px solid #8a4a35;
+    outline-offset: 2px;
+}

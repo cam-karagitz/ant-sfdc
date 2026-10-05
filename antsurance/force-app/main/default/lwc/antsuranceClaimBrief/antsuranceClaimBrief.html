@@ -1,0 +1,125 @@
+<template>
+    <article class="c-brief" aria-busy={isBusy}>
+        <header class="c-brief__head">
+            <span class="c-brief__mark" aria-hidden="true">
+                <img src={sparkUrl} alt="" />
+            </span>
+            <div class="c-brief__titles">
+                <h2 class="c-brief__title">Claim brief</h2>
+                <p class="c-brief__meta">{metaLine}</p>
+            </div>
+            <template lwc:if={showRewrite}>
+                <lightning-button
+                    class="c-brief__rewrite"
+                    label="Rewrite"
+                    icon-name="utility:refresh"
+                    disabled={isWriting}
+                    onclick={handleWrite}
+                ></lightning-button>
+            </template>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-brief__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-brief__body">
+                <div class="c-skeleton" aria-hidden="true">
+                    <span class="c-skeleton__line c-skeleton__line_wide"></span>
+                    <span class="c-skeleton__line"></span>
+                    <span class="c-skeleton__line c-skeleton__line_short"></span>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:elseif={isWriting}>
+            <div class="c-brief__body" role="status">
+                <p class="c-writing">
+                    <span class="c-writing__pulse" aria-hidden="true"></span>
+                    {writingCaption}
+                </p>
+                <div class="c-skeleton" aria-hidden="true">
+                    <span class="c-skeleton__line c-skeleton__line_wide"></span>
+                    <span class="c-skeleton__line"></span>
+                    <span class="c-skeleton__line c-skeleton__line_short"></span>
+                    <span class="c-skeleton__line"></span>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:elseif={isEmpty}>
+            <div class="c-brief__body c-empty">
+                <div class="c-empty__main">
+                    <p class="c-empty__title">No brief on this claim yet</p>
+                    <p class="c-empty__text">Claude reads the claim, its policy, notes, tasks and documents, then writes where it stands and what to do next.</p>
+                </div>
+                <lightning-button class="c-empty__action" variant="brand" label="Write the brief" onclick={handleWrite}></lightning-button>
+            </div>
+        </template>
+
+        <template lwc:elseif={hasBrief}>
+            <div class="c-brief__body">
+                <template lwc:if={brief.stale}>
+                    <div class="c-stale" role="status">
+                        <lightning-icon class="c-stale__icon" icon-name="utility:clock" size="x-small" alternative-text="Out of date"></lightning-icon>
+                        <p class="c-stale__text">
+                            <span class="c-stale__lead">The claim has moved on.</span>
+                            {changeSummary}
+                        </p>
+                    </div>
+                </template>
+
+                <p class="c-brief__headline">
+                    <template for:each={headlineParts} for:item="part">
+                        <span key={part.key} class="c-clause">{part.text}</span>
+                    </template>
+                </p>
+
+                <template lwc:if={hasTabs}>
+                    <c-antsurance-tabs class="c-brief__tabs" label="Parts of the claim brief" tabs={tabs} value={currentTab} onselect={handleTab}></c-antsurance-tabs>
+                </template>
+
+                <div class="c-panel" role="tabpanel" aria-label={panelLabel}>
+                    <template lwc:if={point}>
+                        <p class="c-point__text">{point.text}</p>
+                    </template>
+
+                    <template lwc:if={showWatch}>
+                        <ul class="c-watchlist">
+                            <template for:each={watch} for:item="item">
+                                <li key={item.key} class={item.rowClass}>
+                                    <span class="c-watch__label">{item.label}</span>
+                                    <span class="c-watch__text">{item.text}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+
+                    <template lwc:if={showNext}>
+                        <ol class="c-steps">
+                            <template for:each={nextActions} for:item="step">
+                                <li key={step.key} class="c-step">
+                                    <span class="c-step__number" aria-hidden="true">{step.number}</span>
+                                    <div class="c-step__main">
+                                        <p class="c-step__action">{step.action}</p>
+                                        <p class="c-step__reason">{step.reason}</p>
+                                    </div>
+                                    <template lwc:if={step.hasTask}>
+                                        <span class="c-step__done">
+                                            <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                                            On the task list
+                                        </span>
+                                    </template>
+                                    <template lwc:else>
+                                        <button type="button" class="c-step__add" data-index={step.index} disabled={step.isAdding} onclick={handleAddTask}>Add task</button>
+                                    </template>
+                                </li>
+                            </template>
+                        </ol>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </article>
+</template>

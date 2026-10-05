@@ -1,0 +1,51 @@
+<template>
+    <article class="c-person" aria-label="Contact">
+        <template lwc:if={errorMessage}>
+            <p class="c-person__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={person}>
+            <header class="c-person__head">
+                <span class="c-person__avatar" aria-hidden="true">{person.initials}</span>
+                <div class="c-person__titles">
+                    <h2 class="c-person__name" title={person.name}>{person.name}</h2>
+                    <p class="c-person__role">
+                        <span class="c-person__role-text">{person.role}</span>
+                        <template lwc:if={person.accountId}>
+                            <span class="c-person__at"> at <a href={accountUrl} onclick={handleOpenAccount}>{person.accountName}</a></span>
+                        </template>
+                    </p>
+                </div>
+            </header>
+
+            <template lwc:if={hasTags}>
+                <ul class="c-person__tags">
+                    <template for:each={tags} for:item="tag">
+                        <li key={tag} class="c-person__tag">{tag}</li>
+                    </template>
+                </ul>
+            </template>
+
+            <ul class="c-reach">
+                <template for:each={ways} for:item="way">
+                    <li key={way.key} class={way.className}>
+                        <lightning-icon icon-name={way.icon} size="x-small"></lightning-icon>
+                        <a class="c-reach__value" href={way.href} title={way.value}>{way.value}</a>
+                        <template lwc:if={way.isPreferred}>
+                            <span class="c-reach__preferred">Prefers this</span>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+
+            <template lwc:if={hasPolicies}>
+                <!-- The policies themselves are a table in the page's main column; the card gives the count. -->
+                <p class="c-person__count">{policiesLine}</p>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-person__loading">
+                <lightning-spinner alternative-text="Loading contact" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

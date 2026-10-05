@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Who are the licensed drivers in the Reyes household?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Household_Role__c, Licensed_Driver__c, Primary_Member__c, Account.Id, Account.Name FROM Contact WHERE Account.Name LIKE '%Reyes%' AND Account.RecordType.DeveloperName = 'Household' ORDER BY Primary_Member__c DESC LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"AccountId\":\"001aj000041E8MXAA0\",\"Primary_Member__c\":true,\"Licensed_Driver__c\":true,\"Household_Role__c\":\"Head of Household\",\"Name\":\"Maria Reyes\",\"Id\":\"003aj00002TKgJ8AAL\"},{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"AccountId\":\"001aj000041E8MXAA0\",\"Primary_Member__c\":false,\"Licensed_Driver__c\":true,\"Household_Role__c\":\"Spouse or Partner\",\"Name\":\"Daniel Reyes\",\"Id\":\"003aj00002TKgJ9AAL\"},{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"AccountId\":\"001aj000041E8MXAA0\",\"Primary_Member__c\":false,\"Licensed_Driver__c\":true,\"Household_Role__c\":\"Dependent\",\"Name\":\"Sofia Reyes\",\"Id\":\"003aj00002TKgJAAA1\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Are all three listed as drivers on the auto policy?\",\n    \"Show the Reyes household's policies\",\n    \"Any open claims for the Reyes household?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Are all three listed as drivers on the auto policy?\",\n      \"Show the Reyes household's policies\",\n      \"Any open claims for the Reyes household?\"\n    ]\n  }\n]"
+  }
+]

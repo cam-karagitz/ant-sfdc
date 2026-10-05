@@ -1,0 +1,42 @@
+<template>
+    <template lwc:if={compact}>
+        <section class="c-mini" aria-label="Figures">
+            <header class="c-mini__head">
+                <div class="c-mini__titles">
+                    <p class="c-mini__eyebrow">Figures</p>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label="Expand the figures" onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </header>
+            <ul class={miniClass}>
+                <template for:each={tiles} for:item="tile">
+                    <li key={tile.key} class={tile.miniClassName}>
+                        <span class="c-figure__words">
+                            <span class="c-figure__label">{tile.label}</span>
+                            <template lwc:if={tile.note}>
+                                <span class="c-figure__note">{tile.note}</span>
+                            </template>
+                        </span>
+                        <span class="c-figure__value">{tile.value}</span>
+                    </li>
+                </template>
+            </ul>
+        </section>
+    </template>
+    <template lwc:else>
+        <div class="c-frame">
+            <ul class={gridClass}>
+                <template for:each={tiles} for:item="tile">
+                    <li key={tile.key} class={tile.className}>
+                        <span class="c-tile__label">{tile.label}</span>
+                        <span class="c-tile__value">{tile.value}</span>
+                        <template lwc:if={tile.note}>
+                            <span class="c-tile__note">{tile.note}</span>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
+</template>

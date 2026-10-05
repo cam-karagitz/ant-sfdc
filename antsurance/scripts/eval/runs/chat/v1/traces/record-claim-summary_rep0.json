@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "The basement flood claim [00002118](/lightning/r/500aj00003jKuVeAAK/view) for the [Okafor Household](/lightning/r/001aj000040sVmRAAU/view) is **Under Investigation**. It's high severity and has been open 10 days. The pipe burst on 21 Sep and was reported 22 Sep. Marcus Lindahl is handling it.\n\n- **Cause:** A braided supply line failed at the fitting. Flooring, drywall up to four feet, the furnace and stored belongings were damaged.\n- **Coverage:** Policy [ANT-HO-204585](/lightning/r/a00aj00003jKVNfAAO/view) was in force on the date of loss. A sudden discharge like this is covered, less the $2,500 deductible.\n- **Money:** Estimated loss is **$48,500**. The reserve is **$45,000**: $9,500 mitigation, $24,000 rebuild, $5,500 furnace and $6,000 contents. A **$5,000** advance has been paid, leaving **$40,000** outstanding.\n- **Latest (30 Sep):** Drying is finished and moisture readings are normal. The mitigation invoice and the rebuild estimate are still to come.\n- **Your tasks:** Review the mitigation invoice (due 4 Oct) and approve the rebuild estimate (due 5 Oct). Both are high priority.\n\nThere's no SIU referral and no subrogation potential."
+  }
+]

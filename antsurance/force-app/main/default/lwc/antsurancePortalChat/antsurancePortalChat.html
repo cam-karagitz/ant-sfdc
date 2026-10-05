@@ -1,0 +1,101 @@
+<template>
+    <div class="c-chat">
+        <div class="c-chat__list" role="log" aria-live="polite" aria-label="Conversation with Claude">
+            <template lwc:if={isEmpty}>
+                <div class="c-chat__empty">
+                    <img class="c-chat__spark" src={spark} alt="" />
+                    <p class="c-chat__greeting">{greeting}</p>
+                    <p class="c-chat__about">I can explain your policies and bills, tell you where a claim stands, and get a change or a claim ready for you to send.</p>
+                    <div class="c-chat__starters">
+                        <template for:each={starters} for:item="starter">
+                            <button key={starter} type="button" class="c-chat__chip" data-text={starter} onclick={handleSuggestion}>{starter}</button>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <template for:each={turns} for:item="turn">
+                <div key={turn.id} class="c-chat__turn">
+                    <template lwc:if={turn.isCustomer}>
+                        <div class="c-chat__mine">{turn.text}</div>
+                    </template>
+                    <template lwc:if={turn.isSite}>
+                        <div class="c-receipt">
+                            <template for:each={turn.receipt} for:item="line">
+                                <div key={line.key} class="c-receipt__item">
+                                    <div class="c-receipt__row">
+                                        <img class="c-receipt__spark" src={spark} alt="" />
+                                        <span class="c-receipt__text">{line.text}</span>
+                                        <template lwc:if={line.hasFields}>
+                                            <button type="button" class="c-link c-receipt__toggle" data-key={line.key} aria-expanded={line.isOpen} onclick={handleToggleReceipt}>{line.toggleLabel}</button>
+                                        </template>
+                                    </div>
+                                    <template lwc:if={line.isOpen}>
+                                        <div class="c-receipt__detail">
+                                            <template lwc:if={line.where}><p class="c-receipt__where">{line.where}</p></template>
+                                            <ul class="c-receipt__chips">
+                                                <template for:each={line.chips} for:item="chip">
+                                                    <li key={chip.key} class="c-receipt__chip">{chip.label}</li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={line.hasNeeded}>
+                                        <div class="c-receipt__needed">
+                                            <span class="c-receipt__label">Still needed</span>
+                                            <template for:each={line.needs} for:item="need">
+                                                <button key={need.key} type="button" class="c-receipt__need" data-page={line.page} data-name={need.name} onclick={handleNeeded}>{need.label}</button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:if={turn.isClaude}>
+                        <div class="c-chat__claude">
+                            <p class="c-chat__who"><img class="c-chat__avatar" src={spark} alt="" />Claude</p>
+                            <div class="c-chat__body">
+                                <template for:each={turn.paragraphs} for:item="paragraph">
+                                    <p key={paragraph.key} class="c-chat__text" data-key={paragraph.key}>{paragraph.text}</p>
+                                </template>
+                                <template for:each={turn.blocks} for:item="entry">
+                                    <c-antsurance-portal-block key={entry.key} block={entry.block} spent={entry.spent} onsay={handleSay}></c-antsurance-portal-block>
+                                </template>
+                                <template lwc:if={turn.followUps.length}>
+                                    <div class="c-chat__followups">
+                                        <template for:each={turn.followUps} for:item="followUp">
+                                            <button key={followUp.key} type="button" class="c-chat__chip" data-text={followUp.text} onclick={handleSuggestion}>{followUp.text}</button>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:if={isBusy}>
+                <div class="c-chat__busy" role="status">
+                    <img class="c-chat__avatar c-chat__avatar_busy" src={spark} alt="" />
+                    <p class="c-chat__text c-chat__thinking">Claude is looking at your account</p>
+                </div>
+            </template>
+            <template lwc:if={failure}>
+                <div class="c-chat__failure" role="status">
+                    <p>{failure}</p>
+                    <div class="c-chat__ways">
+                        <button type="button" class="c-button c-button_primary c-chat__way" onclick={handleRetry}>Try again</button>
+                        <button type="button" class="c-button c-chat__way" onclick={handleSendToTeam}>Send to our team</button>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <div class="c-chat__compose">
+            <label class="slds-assistive-text c-chat__label" for="chat-input">Message Claude</label>
+            <textarea id="chat-input" class="c-chat__input" rows="1" placeholder="Ask about your policy, a bill or a claim" oninput={handleDraft} onkeydown={handleKey}></textarea>
+            <button type="button" class="c-chat__send" disabled={sendDisabled} onclick={handleSend} aria-label="Send">
+                <lightning-icon icon-name="utility:arrowup" size="x-small" alternative-text=""></lightning-icon>
+            </button>
+        </div>
+        <p class="c-chat__foot">Powered by Claude. A person reviews what you send.</p>
+    </div>
+</template>

@@ -1,0 +1,390 @@
+<template>
+    <section class="c-desk" aria-label="Claude's desk">
+        <header class="c-desk__head">
+            <div class="c-desk__lead">
+                <p class="c-desk__summary">{summary}</p>
+                <p class="c-desk__last">{lastShiftLabel}</p>
+            </div>
+            <div class="c-desk__start">
+                <button type="button" class="c-link c-desk__may" onclick={handleAutonomy}>What Claude may do</button>
+                <lightning-button label={runLabel} variant="brand" icon-name="utility:sparkles" disabled={isRunning} onclick={handleRun}></lightning-button>
+            </div>
+        </header>
+
+        <template lwc:if={shift}>
+            <div class="c-shift" role="status">
+                <div class="c-shift__top">
+                    <p class="c-shift__headline">{shiftHeadline}</p>
+                    <template lwc:if={shiftFinished}>
+                        <button type="button" class="c-link" onclick={handleCloseShift}>Close</button>
+                    </template>
+                </div>
+                <div class="c-shift__bar" aria-hidden="true"><span class="c-shift__fill" style={shiftBarStyle}></span></div>
+                <ul class="c-shift__steps">
+                    <template for:each={shiftSteps} for:item="step">
+                        <li key={step.key} class={step.className}>
+                            <template lwc:if={step.isDone}>
+                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="Finished" class="c-step__mark"></lightning-icon>
+                            </template>
+                            <template lwc:elseif={step.isActive}>
+                                <span class="c-step__ring" aria-hidden="true"></span>
+                            </template>
+                            <template lwc:else>
+                                <span class="c-step__dot" aria-hidden="true"></span>
+                            </template>
+                            <span class="c-step__label">{step.label}</span>
+                            <span class="c-step__progress">{step.progress}</span>
+                        </li>
+                    </template>
+                </ul>
+                <p class="c-shift__detail">{shiftDetail}</p>
+            </div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-desk__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isReady}>
+            <div class="c-switch" role="group" aria-label="What to show">
+                <template for:each={views} for:item="item">
+                    <button key={item.key} type="button" class={item.className} aria-pressed={item.pressed} data-key={item.key} onclick={handleView}>
+                        <span>{item.label}</span>
+                        <span class="c-switch__count">{item.count}</span>
+                    </button>
+                </template>
+            </div>
+
+            <!-- ============================== waiting for a person ============================== -->
+            <template lwc:if={showWaiting}>
+                <template lwc:if={hasFailed}>
+                    <section class="c-failed" aria-label="Pieces that could not be prepared">
+                        <p class="c-failed__lead">{failedHeading}</p>
+                        <p class="c-failed__sub">Claude did not answer in time, or could not be reached. The rest of the shift went ahead. Each of these is one request to try again.</p>
+                        <ul class="c-failed__list">
+                            <template for:each={failed} for:item="piece">
+                                <li key={piece.key} class="c-failure">
+                                    <span class="c-tile c-tile_failed"><lightning-icon icon-name={piece.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                    <span class="c-piece__main">
+                                        <span class="c-piece__title">{piece.title}</span>
+                                        <span class="c-piece__why">{piece.reason}</span>
+                                    </span>
+                                    <span class="c-piece__actions">
+                                        <lightning-button label={piece.retryLabel} icon-name="utility:refresh" data-work-id={piece.workId} disabled={isBusy} onclick={handleTryAgain}></lightning-button>
+                                        <lightning-button label="Remove" variant="base" data-work-id={piece.workId} disabled={isBusy} onclick={handleDiscard} class="c-piece__dismiss"></lightning-button>
+                                    </span>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+                <template lwc:if={hasWaiting}>
+                    <ul class="c-pieces">
+                        <template for:each={shownWaiting} for:item="piece">
+                            <li key={piece.key} class={piece.className}>
+                                <button type="button" class="c-piece__toggle" aria-expanded={piece.expanded} data-key={piece.key} onclick={handleToggle}>
+                                    <span class={piece.tileClass}><lightning-icon icon-name={piece.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                    <span class="c-piece__main">
+                                        <span class="c-piece__title">{piece.title}</span>
+                                        <span class="c-piece__why"><span class="c-piece__kind">{piece.kind}</span>{piece.reason}</span>
+                                    </span>
+                                    <span class="c-piece__meta">
+                                        <template lwc:if={piece.showChanged}>
+                                            <span class="c-chip c-chip_watch">Changed since</span>
+                                        </template>
+                                        <span class="c-piece__when">{piece.whenLabel}</span>
+                                    </span>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-piece__chevron"></lightning-icon>
+                                </button>
+                                <template lwc:if={piece.isOpen}>
+                                    <div class="c-piece__detail">
+                                        <template lwc:if={piece.showChanged}>
+                                            <div class="c-changed">
+                                                <p class="c-changed__text">{piece.changedText}</p>
+                                                <lightning-button label="Prepare again" icon-name="utility:refresh" data-work-id={piece.workId} disabled={isBusy} onclick={handleAgain}></lightning-button>
+                                            </div>
+                                        </template>
+
+                                        <!-- the work -->
+                                        <template lwc:if={piece.isEdit}>
+                                            <div class="c-edit">
+                                                <template lwc:if={piece.isOutreach}>
+                                                    <lightning-input label="Subject" value={draft.subject} data-field="subject" onchange={handleDraft}></lightning-input>
+                                                    <lightning-textarea label="Email" value={draft.body} data-field="body" onchange={handleDraft} class="c-edit__long"></lightning-textarea>
+                                                </template>
+                                                <template lwc:if={piece.isReserve}>
+                                                    <lightning-input type="number" formatter="currency" step="1" label="New reserve" value={draft.newReserve} data-field="newReserve" onchange={handleDraft} class="c-edit__amount"></lightning-input>
+                                                </template>
+                                                <template lwc:if={piece.isFollowUp}>
+                                                    <lightning-input label="Task" value={draft.taskSubject} data-field="taskSubject" onchange={handleDraft}></lightning-input>
+                                                    <lightning-textarea label="Note for the task" value={draft.note} data-field="note" onchange={handleDraft}></lightning-textarea>
+                                                </template>
+                                                <div class="c-piece__actions">
+                                                    <lightning-button label="Keep these changes" variant="brand" data-work-id={piece.workId} onclick={handleKeepEdits}></lightning-button>
+                                                    <lightning-button label="Cancel" onclick={handleBack}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template lwc:else>
+                                            <template lwc:if={piece.isBrief}>
+                                                <div class="c-work c-work_brief">
+                                                    <p class="c-work__headline">{piece.headline}</p>
+                                                    <div class="c-work__columns">
+                                                        <div>
+                                                            <p class="c-eyebrow">Where it stands</p>
+                                                            <p class="c-work__text">{piece.standing}</p>
+                                                        </div>
+                                                        <template lwc:if={piece.hasNextActions}>
+                                                            <div>
+                                                                <p class="c-eyebrow">Next steps</p>
+                                                                <ol class="c-work__steps">
+                                                                    <template for:each={piece.nextActions} for:item="action">
+                                                                        <li key={action.key}>{action.text}</li>
+                                                                    </template>
+                                                                </ol>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template lwc:if={piece.isMemo}>
+                                                <div class="c-work c-work_memo">
+                                                    <p class="c-eyebrow">Claude recommends</p>
+                                                    <p class="c-work__verdict">{piece.recommendation}</p>
+                                                    <p class="c-work__text">{piece.headline}</p>
+                                                    <div class="c-work__columns">
+                                                        <ul class="c-points">
+                                                            <template for:each={piece.points} for:item="point">
+                                                                <li key={point.key} class="c-point">
+                                                                    <p class="c-point__label">{point.label}</p>
+                                                                    <p class="c-point__detail">{point.detail}</p>
+                                                                </li>
+                                                            </template>
+                                                        </ul>
+                                                        <template lwc:if={piece.hasConditions}>
+                                                            <div>
+                                                                <p class="c-eyebrow">Conditions</p>
+                                                                <ul class="c-work__steps">
+                                                                    <template for:each={piece.conditions} for:item="condition">
+                                                                        <li key={condition.key}>{condition.text}</li>
+                                                                    </template>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template lwc:if={piece.isOutreach}>
+                                                <div class="c-work c-work_outreach">
+                                                    <div class="c-outreach__read">
+                                                        <span class={piece.riskClass}>{piece.riskLabel}</span>
+                                                        <p class="c-work__text">{piece.riskReason}</p>
+                                                        <p class="c-eyebrow">The renewal</p>
+                                                        <p class="c-work__text">{piece.termsLine}</p>
+                                                        <p class="c-eyebrow">If you call instead</p>
+                                                        <p class="c-work__text">{piece.callOpening}</p>
+                                                    </div>
+                                                    <article class="c-letter" aria-label="Draft email">
+                                                        <p class="c-letter__to"><span class="c-letter__field">To</span>{piece.toLine}</p>
+                                                        <p class="c-letter__subject"><span class="c-letter__field">Subject</span>{piece.subject}</p>
+                                                        <div class="c-letter__body">
+                                                            <template for:each={piece.paragraphs} for:item="paragraph">
+                                                                <p key={paragraph.key}>{paragraph.text}</p>
+                                                            </template>
+                                                        </div>
+                                                    </article>
+                                                </div>
+                                            </template>
+                                            <template lwc:if={piece.isReserve}>
+                                                <div class="c-work c-work_reserve">
+                                                    <div class="c-move">
+                                                        <div class="c-move__figure">
+                                                            <p class="c-eyebrow">Reserve now</p>
+                                                            <p class="c-move__amount c-move__amount_old">{piece.oldReserveLabel}</p>
+                                                        </div>
+                                                        <lightning-icon icon-name="utility:forward" size="small" alternative-text="changes to" class="c-move__arrow"></lightning-icon>
+                                                        <div class="c-move__figure">
+                                                            <p class="c-eyebrow">Proposed</p>
+                                                            <p class="c-move__amount">{piece.newReserveLabel}</p>
+                                                        </div>
+                                                        <span class="c-chip c-chip_alert">{piece.changeLabel}</span>
+                                                    </div>
+                                                    <dl class="c-facts">
+                                                        <div class="c-fact">
+                                                            <dt class="c-eyebrow">Estimate</dt>
+                                                            <dd class="c-fact__value">{piece.estimateLabel}</dd>
+                                                        </div>
+                                                        <template lwc:if={piece.deductibleLabel}>
+                                                            <div class="c-fact">
+                                                                <dt class="c-eyebrow">Deductible</dt>
+                                                                <dd class="c-fact__value">{piece.deductibleLabel}</dd>
+                                                            </div>
+                                                        </template>
+                                                        <div class="c-fact">
+                                                            <dt class="c-eyebrow">Paid</dt>
+                                                            <dd class="c-fact__value">{piece.paidLabel}</dd>
+                                                        </div>
+                                                        <template lwc:if={piece.daysOpenLabel}>
+                                                            <div class="c-fact">
+                                                                <dt class="c-eyebrow">Open</dt>
+                                                                <dd class="c-fact__value">{piece.daysOpenLabel}</dd>
+                                                            </div>
+                                                        </template>
+                                                    </dl>
+                                                    <template lwc:if={piece.hasFactors}>
+                                                        <div class="c-reserve__why">
+                                                            <p class="c-eyebrow">Why this figure</p>
+                                                            <ul class="c-points">
+                                                                <template for:each={piece.factors} for:item="factor">
+                                                                    <li key={factor.key} class="c-point">
+                                                                        <p class="c-point__label">{factor.label}</p>
+                                                                        <p class="c-point__detail">{factor.detail}</p>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template lwc:if={piece.isFollowUp}>
+                                                <div class="c-work c-work_outreach">
+                                                    <div class="c-outreach__read">
+                                                        <p class="c-eyebrow">The task</p>
+                                                        <p class="c-work__task">{piece.taskSubject}</p>
+                                                        <p class="c-work__text">Due {piece.dueLabel}</p>
+                                                        <p class="c-eyebrow">Where it stands</p>
+                                                        <p class="c-work__text">{piece.note}</p>
+                                                        <p class="c-eyebrow">Options out</p>
+                                                        <p class="c-work__text">{piece.optionsLine}</p>
+                                                    </div>
+                                                    <article class="c-letter" aria-label="Draft email, kept in the task">
+                                                        <p class="c-letter__to"><span class="c-letter__field">To</span>{piece.toLine}</p>
+                                                        <p class="c-letter__subject"><span class="c-letter__field">Subject</span>{piece.emailSubject}</p>
+                                                        <div class="c-letter__body">
+                                                            <template for:each={piece.emailParagraphs} for:item="paragraph">
+                                                                <p key={paragraph.key}>{paragraph.text}</p>
+                                                            </template>
+                                                        </div>
+                                                    </article>
+                                                </div>
+                                            </template>
+                                        </template>
+
+                                        <!-- the decision -->
+                                        <template lwc:if={piece.isView}>
+                                            <div class="c-piece__foot">
+                                                <p class="c-piece__about">
+                                                    <a class="c-link" href={piece.recordUrl} data-record-id={piece.recordId} data-object={piece.recordObject} onclick={handleOpen}>{piece.recordName}</a>
+                                                </p>
+                                                <div class="c-piece__actions">
+                                                    <lightning-button label={piece.approveLabel} variant="brand" data-work-id={piece.workId} disabled={isBusy} onclick={handleAskApprove}></lightning-button>
+                                                    <template lwc:if={piece.canEdit}>
+                                                        <lightning-button label="Edit" data-work-id={piece.workId} disabled={isBusy} onclick={handleEdit}></lightning-button>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <lightning-button label={piece.openLabel} data-record-id={piece.recordId} data-object={piece.recordObject} onclick={handleOpen}></lightning-button>
+                                                    </template>
+                                                    <lightning-button label="Dismiss" variant="base" data-work-id={piece.workId} disabled={isBusy} onclick={handleAskDismiss} class="c-piece__dismiss"></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template lwc:if={piece.isConfirm}>
+                                            <div class="c-confirm">
+                                                <div class="c-confirm__words">
+                                                    <p class="c-confirm__lead">What approving does</p>
+                                                    <p class="c-confirm__text">{piece.confirmText}</p>
+                                                </div>
+                                                <div class="c-piece__actions">
+                                                    <lightning-button label={piece.approveLabel} variant="brand" data-work-id={piece.workId} disabled={isBusy} onclick={handleApprove}></lightning-button>
+                                                    <lightning-button label="Cancel" disabled={isBusy} onclick={handleBack}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template lwc:if={piece.isDismiss}>
+                                            <div class="c-confirm">
+                                                <lightning-input label="Why are you dismissing it? The log keeps your reason." value={dismissReason} max-length="255" onchange={handleReason} class="c-confirm__reason"></lightning-input>
+                                                <div class="c-piece__actions">
+                                                    <lightning-button label="Dismiss" variant="brand" data-work-id={piece.workId} disabled={isBusy} onclick={handleDismiss}></lightning-button>
+                                                    <lightning-button label="Cancel" disabled={isBusy} onclick={handleBack}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                    <c-antsurance-step-pager total={waiting.length} page-size={waitingShown} page={pages.waiting} label="pieces waiting for you" data-list="waiting" onpagechange={handlePage}></c-antsurance-step-pager>
+                </template>
+                <template lwc:else>
+                    <p class="c-desk__empty">{waitingEmpty}</p>
+                </template>
+            </template>
+
+            <!-- ============================== the log ============================== -->
+            <template lwc:if={showLog}>
+                <template lwc:if={hasLog}>
+                    <ul class="c-pieces">
+                        <template for:each={shownLog} for:item="piece">
+                            <li key={piece.key} class={piece.className}>
+                                <button type="button" class="c-piece__toggle" aria-expanded={piece.expanded} data-key={piece.key} onclick={handleToggle}>
+                                    <span class={piece.tileClass}><lightning-icon icon-name={piece.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                    <span class="c-piece__main">
+                                        <span class="c-piece__title">{piece.title}</span>
+                                        <span class="c-piece__why"><span class="c-piece__kind">{piece.kind}</span>{piece.reason}</span>
+                                    </span>
+                                    <span class="c-piece__meta">
+                                        <span class={piece.statusClass}>{piece.statusLabel}</span>
+                                        <span class="c-piece__when">{piece.whenLabel}</span>
+                                    </span>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-piece__chevron"></lightning-icon>
+                                </button>
+                                <template lwc:if={piece.isOpen}>
+                                    <div class="c-piece__detail">
+                                        <div class="c-record">
+                                            <div class="c-record__words">
+                                                <p class="c-eyebrow">What happened</p>
+                                                <template lwc:if={piece.isWaiting}>
+                                                    <p class="c-work__text">Prepared {piece.preparedLabel} and waiting for a decision. Open it under Waiting for you.</p>
+                                                </template>
+                                                <template lwc:else>
+                                                    <p class="c-work__text">{piece.outcome}</p>
+                                                </template>
+                                            </div>
+                                            <lightning-button label={piece.openLabel} data-record-id={piece.recordId} data-object={piece.recordObject} onclick={handleOpen}></lightning-button>
+                                        </div>
+                                        <template lwc:if={piece.isBrief}>
+                                            <p class="c-work__headline c-work__headline_quiet">{piece.headline}</p>
+                                        </template>
+                                        <template lwc:if={piece.isMemo}>
+                                            <p class="c-work__headline c-work__headline_quiet">{piece.recommendation}: {piece.headline}</p>
+                                        </template>
+                                        <template lwc:if={piece.isOutreach}>
+                                            <p class="c-work__headline c-work__headline_quiet">Email to {piece.toLine}: {piece.subject}</p>
+                                        </template>
+                                        <template lwc:if={piece.isReserve}>
+                                            <p class="c-work__headline c-work__headline_quiet">Reserve from {piece.oldReserveLabel} to {piece.newReserveLabel}, against an estimate of {piece.estimateLabel}</p>
+                                        </template>
+                                        <template lwc:if={piece.isFollowUp}>
+                                            <p class="c-work__headline c-work__headline_quiet">Task: {piece.taskSubject}</p>
+                                        </template>
+                                    </div>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                    <c-antsurance-step-pager total={log.length} page-size={logShown} page={pages.log} label="finished pieces" data-list="log" onpagechange={handlePage}></c-antsurance-step-pager>
+                    <p class="c-desk__kept">
+                        The log keeps the newest 25 pieces.
+                        <template lwc:if={hasReplaced}>
+                            <button type="button" class="c-desk__replaced" aria-pressed={showsReplaced} onclick={handleReplaced}>{replacedLabel}</button>
+                        </template>
+                    </p>
+                </template>
+                <template lwc:else>
+                    <p class="c-desk__empty">Nothing yet. After a shift, every piece Claude prepared is listed here with what was decided and by whom.</p>
+                </template>
+            </template>
+        </template>
+    </section>
+</template>

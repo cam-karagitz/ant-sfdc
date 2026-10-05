@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Contact record \"Maria Reyes\" open (object Contact, Id 003aj00002TKgJ8AAL). \"This\", \"here\" and \"this contact\" refer to that record.]\n\nWhich policies is this person on?"
+  },
+  {
+    "role": "assistant",
+    "content": "Maria Reyes is on **3 active policies**, and she's the Named Insured on all three:\n\n- [ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view): Personal Auto, where she's also listed as a Driver\n- [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view): Homeowners\n- [ANT-UM-204551](/lightning/r/a00aj00003jfwRDAAY/view): Umbrella\n\nThere's also a new service request open, [00002608](/lightning/r/500aj00003jfwUWAAY/view), to add Sofia Reyes as a driver."
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What's the total premium on her policies?\",\n    \"Show the coverages on her auto policy\",\n    \"What's the status of the add driver request?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What's the total premium on her policies?\",\n      \"Show the coverages on her auto policy\",\n      \"What's the status of the add driver request?\"\n    ]\n  }\n]"
+  }
+]

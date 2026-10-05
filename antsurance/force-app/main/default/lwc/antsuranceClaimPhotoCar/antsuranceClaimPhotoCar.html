@@ -1,0 +1,13 @@
+<template>
+    <figure class="c-car">
+        <svg class="c-car__drawing" viewBox="0 0 120 244" role="img" aria-label={description}>
+            <template for:each={shapes} for:item="shape">
+                <rect key={shape.key} class={shape.className} x={shape.x} y={shape.y} width={shape.width} height={shape.height} rx={shape.radius}></rect>
+            </template>
+        </svg>
+        <figcaption class="c-car__caption">
+            <span class="c-car__end">Front at the top</span>
+            <span class="c-car__side">Driver's side on the left</span>
+        </figcaption>
+    </figure>
+</template>

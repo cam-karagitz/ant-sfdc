@@ -1,0 +1,50 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has the largest outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Account.Name, Account.Id, Policy__r.Name, Handled_By__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jfwRdAAI\"},\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000041E8MiAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Policy__c\":\"a00aj00003jfwRdAAI\",\"AccountId\":\"001aj000041E8MiAAK\",\"Outstanding_Reserve__c\":266500,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002569\",\"Id\":\"500aj00003jfwTtAAI\"},{\"Policy__r\":{\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jfwRhAAI\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000041E8MkAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Policy__c\":\"a00aj00003jfwRhAAI\",\"AccountId\":\"001aj000041E8MkAAK\",\"Outstanding_Reserve__c\":180000,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002571\",\"Id\":\"500aj00003jfwTvAAI\"},{\"Policy__r\":{\"Name\":\"ANT-CA-205197\",\"Id\":\"a00aj00003jfwRpAAI\"},\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000041E8MnAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Dana Whitaker\",\"Policy__c\":\"a00aj00003jfwRpAAI\",\"AccountId\":\"001aj000041E8MnAAK\",\"Outstanding_Reserve__c\":81000,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002573\",\"Id\":\"500aj00003jfwTxAAI\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_record",
+    "content": "{\n  \"record_id\": \"500aj00003jfwTtAAI\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What's happened on claim 00002569 so far?\",\n    \"Show outstanding reserve by adjuster\",\n    \"List all catastrophic open claims\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown: the summary card for Installer fell from second-story roof."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "user",
+    "content": "Add a task for me to review it tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": null,\n  \"related_record_id\": \"500aj00003jfwTtAAI\",\n  \"due_date\": \"2026-10-05\",\n  \"subject\": \"Review claim 00002569, installer roof fall\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review claim 00002569, installer roof fall\",\n    \"dueDate\": \"2026-10-05\",\n    \"relatedId\": \"500aj00003jfwTtAAI\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

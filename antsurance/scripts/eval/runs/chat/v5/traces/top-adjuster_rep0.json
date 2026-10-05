@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "Which adjuster has the most open claims, and what is their total outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Handled_By__c, COUNT(Id) c, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Handled_By__c ORDER BY COUNT(Id) DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":229250.0,\"c\":13,\"Handled_By__c\":\"Dana Whitaker\"},{\"r\":69600.0,\"c\":11,\"Handled_By__c\":\"Marcus Lindahl\"},{\"r\":446500.0,\"c\":2,\"Handled_By__c\":\"Anjali Venkataraman\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"title\": \"Open claims by adjuster\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"Dana Whitaker\",\n      \"value\": 13\n    },\n    {\n      \"label\": \"Marcus Lindahl\",\n      \"value\": 11\n    },\n    {\n      \"label\": \"Anjali Venkataraman\",\n      \"value\": 2\n    }\n  ],\n  \"highlight_label\": \"Dana Whitaker\",\n  \"caption\": \"Open claims each adjuster is handling\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Show Dana Whitaker's open claims\",\n    \"What are Anjali's two large claims?\",\n    \"Which open claims are oldest?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Open claims by adjuster\",\n    \"caption\": \"Open claims each adjuster is handling\",\n    \"chartType\": \"bar\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"Dana Whitaker\",\n        \"value\": 13\n      },\n      {\n        \"label\": \"Marcus Lindahl\",\n        \"value\": 11\n      },\n      {\n        \"label\": \"Anjali Venkataraman\",\n        \"value\": 2\n      }\n    ],\n    \"highlight\": \"Dana Whitaker\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show Dana Whitaker's open claims\",\n      \"What are Anjali's two large claims?\",\n      \"Which open claims are oldest?\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expiration_After_Effective</fullName>
+    <active>true</active>
+    <description>A policy term cannot end on or before the day it starts.</description>
+    <errorConditionFormula><![CDATA[AND(NOT(ISBLANK(Effective_Date__c)), NOT(ISBLANK(Expiration_Date__c)), Expiration_Date__c <= Effective_Date__c)]]></errorConditionFormula>
+    <errorDisplayField>Expiration_Date__c</errorDisplayField>
+    <errorMessage>The expiration date must be after the effective date.</errorMessage>
+</ValidationRule>

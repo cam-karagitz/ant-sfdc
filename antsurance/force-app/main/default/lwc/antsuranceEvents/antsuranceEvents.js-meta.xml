@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The Event response page: a weather event's area on a map, the insured locations and value inside it, the coverages that respond and the claims so far, with a response plan and first calls drafted by Claude for a person to act on.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Event Response</masterLabel>
+    <targets>
+        <target>lightning__Tab</target>
+    </targets>
+</LightningComponentBundle>

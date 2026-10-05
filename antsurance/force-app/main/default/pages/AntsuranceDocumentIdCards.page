@@ -1,0 +1,234 @@
+<apex:page controller="AntsuranceDocumentIdCardsController" renderAs="{!IF($CurrentPage.parameters.preview == '1', null, 'pdf')}" applyHtmlTag="false" applyBodyTag="false" showHeader="false"
+    sidebar="false" standardStylesheets="false" docType="html-5.0" readOnly="true">
+<!--
+    Antsurance insurance ID cards for an auto policy, printed as a US Letter PDF:
+    /apex/AntsuranceDocumentIdCards?id=<Policy__c Id> (add &download=1 to save it instead of viewing it).
+
+    Two cards print for each vehicle, 3.375in by 2.125in (243pt by 153pt, the size of a payment card),
+    inside dashed cut lines. The shared print styles are in the antsuranceDocumentStyles static resource.
+    Tables nested in a card set their own width, because the shared styles make a table page-wide.
+-->
+<html class="{!IF($CurrentPage.parameters.preview == '1', 'preview', 'print')}">
+<head>
+<apex:stylesheet value="{!$Resource.antsuranceDocumentStyles}"/>
+<style type="text/css">
+    .how { margin-top: 12pt; font-size: 8pt; color: #66645e; white-space: nowrap; }
+
+    /* A row of two cards. The dashed outline is the cut line. */
+    .cards { margin-top: 14pt; page-break-inside: avoid; }
+    td.card { width: 243pt; height: 153pt; border: 0.75pt dashed #b0aea5; }
+    .card table { width: 243pt; }
+    .card-head td { padding: 10pt 10pt 7pt 10pt; vertical-align: middle; border-bottom: 0.75pt solid #e8e6dc; }
+    .card-kind { font-size: 6.5pt; font-weight: bold; letter-spacing: 0.9pt; white-space: nowrap; }
+    .card-company { font-size: 5.5pt; color: #66645e; white-space: nowrap; }
+    .card-body td { padding: 5pt 0 0 10pt; }
+    .card-label { font-size: 5.5pt; font-weight: bold; letter-spacing: 0.6pt; text-transform: uppercase; color: #66645e; white-space: nowrap; }
+    .card-value { font-size: 8.5pt; font-weight: bold; white-space: nowrap; }
+    .card-foot { margin-top: 7pt; }
+    .card-foot td { padding: 5pt 10pt 0 10pt; border-top: 0.75pt solid #e8e6dc; font-size: 6.5pt; white-space: nowrap; }
+    .card-foot .strong { color: #ae5f46; }
+
+    /* What to do after an accident. */
+    .steps td { padding: 8pt 12pt 0 0; }
+    .step-number { font-size: 13pt; font-weight: bold; color: #d97757; }
+    .step-lead { font-size: 9pt; font-weight: bold; white-space: nowrap; }
+    .step-line { font-size: 8pt; color: #66645e; white-space: nowrap; }
+</style>
+</head>
+<body>
+    <div class="footer">
+        <table>
+            <tr>
+                <td style="width: 255pt;">Antsurance Insurance Company, a fictional insurer used for demonstrations</td>
+                <td style="width: 150pt; text-align: center;"><apex:outputText value="{!documentLabel}"/></td>
+                <td style="width: 120pt; text-align: right;">Page <span class="page-number"></span> of <span class="page-count"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="band">
+        <tr>
+            <td style="width: 180pt;"><apex:image url="{!$Resource.antsuranceLockupOnWhite}" width="162" height="24" alt="Antsurance"/></td>
+            <td style="width: 281pt; text-align: right;">
+                <div class="band-title">INSURANCE ID CARDS</div>
+                <div class="band-line"><apex:outputText value="{!lineOfBusiness}"/></div>
+            </td>
+        </tr>
+    </table>
+    <table><tr><td class="rule">&#160;</td></tr></table>
+
+    <apex:outputPanel layout="none" rendered="{!NOT(found)}">
+        <div class="missing"><apex:outputText value="{!notice}"/></div>
+        <div class="muted">Open the ID cards from an auto policy record, and check that you have access to the policy.</div>
+    </apex:outputPanel>
+
+    <apex:outputPanel layout="none" rendered="{!found}">
+        <table class="facts">
+            <tr>
+                <td style="width: 120pt;">
+                    <div class="label">Policy number</div>
+                    <div class="value"><apex:outputText value="{!policyNumber}"/></div>
+                </td>
+                <td class="divide" style="width: 170pt;">
+                    <div class="label">Policy period</div>
+                    <div class="value"><apex:outputText value="{!policyPeriod}"/></div>
+                </td>
+                <td class="divide" style="width: 162pt;">
+                    <div class="label">Insured</div>
+                    <div class="value"><apex:outputText value="{!insured}"/></div>
+                </td>
+            </tr>
+        </table>
+        <div class="how">Cut along the dashed lines. Keep one card in the vehicle and one in your wallet, and show it when asked for proof of insurance.</div>
+
+        <apex:repeat value="{!cards}" var="card">
+            <table class="{!card.rowClass}">
+                <tr>
+                    <apex:repeat value="{!card.copies}" var="copy">
+                        <td style="width: {!copy.gapWidth};">&#160;</td>
+                        <td class="card">
+                            <table class="card-head">
+                                <tr>
+                                    <td style="width: 95pt;"><apex:image url="{!$Resource.antsuranceLockupOnWhite}" width="88" height="13" alt="Antsurance"/></td>
+                                    <td style="width: 108pt; text-align: right;">
+                                        <div class="card-kind">INSURANCE ID CARD</div>
+                                        <div class="card-company">Antsurance Insurance Company</div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="card-body">
+                                <tr>
+                                    <td style="width: 85pt;"><div class="card-label">Policy number</div><div class="card-value"><apex:outputText value="{!policyNumber}"/></div></td>
+                                    <td style="width: 64pt;"><div class="card-label">Effective</div><div class="card-value"><apex:outputText value="{!effective}"/></div></td>
+                                    <td style="width: 64pt;"><div class="card-label">Expires</div><div class="card-value"><apex:outputText value="{!expires}"/></div></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><div class="card-label">Insured</div><div class="card-value"><apex:outputText value="{!insured}"/></div></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><div class="card-label">Vehicle</div><div class="card-value"><apex:outputText value="{!card.vehicle}"/></div></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><div class="card-label">Vehicle identification number</div><div class="card-value"><apex:outputText value="{!card.vin}"/></div></td>
+                                    <td><div class="card-label">State</div><div class="card-value"><apex:outputText value="{!state}"/></div></td>
+                                </tr>
+                            </table>
+                            <table class="card-foot">
+                                <tr>
+                                    <td style="width: 105pt;"><span class="strong">Claims</span> 1-800-555-0199</td>
+                                    <td style="width: 98pt; text-align: right;"><span class="strong">Agent</span>&#160;<apex:outputText value="{!agentPhone}"/></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </apex:repeat>
+                    <td style="width: 9pt;">&#160;</td>
+                </tr>
+            </table>
+        </apex:repeat>
+
+        <apex:outputPanel layout="none" rendered="{!showSteps}">
+            <div class="section">
+                <div class="section-title">If you are in an accident</div>
+                <table class="steps">
+                    <tr>
+                        <td style="width: 20pt;"><div class="step-number">1</div></td>
+                        <td style="width: 218.5pt;">
+                            <div class="step-lead">Check that everyone is safe</div>
+                            <div class="step-line">Call 911 if anyone is hurt or the road is blocked.</div>
+                        </td>
+                        <td style="width: 20pt;"><div class="step-number">2</div></td>
+                        <td style="width: 218.5pt;">
+                            <div class="step-lead">Swap details with the other driver</div>
+                            <div class="step-line">Name, phone, plate number and insurer.</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="step-number">3</div></td>
+                        <td>
+                            <div class="step-lead">Take photos</div>
+                            <div class="step-line">The scene, the damage and the other vehicle's plate.</div>
+                        </td>
+                        <td><div class="step-number">4</div></td>
+                        <td>
+                            <div class="step-lead">Call us on 1-800-555-0199</div>
+                            <div class="step-line">Any time, day or night. Have this card to hand.</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="none" rendered="{!showCoverages}">
+            <div class="section">
+                <div class="section-title">Coverage on this policy</div>
+                <table class="grid">
+                    <tr>
+                        <th style="width: 235pt;">Coverage</th>
+                        <th class="right" style="width: 152pt;">Limit</th>
+                        <th class="right" style="width: 90pt;">Deductible</th>
+                    </tr>
+                    <apex:repeat value="{!coverages}" var="coverage">
+                        <tr>
+                            <td class="strong"><apex:outputText value="{!coverage.name}"/></td>
+                            <td class="right"><apex:outputText value="{!coverage.limitText}"/></td>
+                            <td class="right"><apex:outputText value="{!coverage.deductible}"/></td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </div>
+        </apex:outputPanel>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!$CurrentPage.parameters.preview == '1'}">
+    <!-- On-screen preview only: tells the Documents tab how tall the sheet is, so it can show all of it, and
+         where the sheet can be cut for a first look without slicing a row: the bottom of each table row
+         that no line of text crosses. Written without less-than signs and ampersands, which this page's markup would take for its own. -->
+    <script type="text/javascript">
+        (function () {
+            function folds() {
+                var all = document.body.getElementsByTagName('*');
+                var rows = document.body.getElementsByTagName('tr');
+                var lines = [];
+                var cuts = [];
+                var index, other, box, cut, crossed;
+                for (index = 0; all.length > index; index++) {
+                    if (all[index].children.length === 0) {
+                        if (all[index].textContent.replace(/\s/g, '') !== '') {
+                            box = all[index].getBoundingClientRect();
+                            if (box.height > 0) {
+                                lines.push([box.top + window.pageYOffset, box.bottom + window.pageYOffset]);
+                            }
+                        }
+                    }
+                }
+                for (index = 0; rows.length > index; index++) {
+                    cut = Math.ceil(rows[index].getBoundingClientRect().bottom + window.pageYOffset);
+                    crossed = false;
+                    for (other = 0; lines.length > other; other++) {
+                        if (cut - 1 > lines[other][0]) {
+                            if (lines[other][1] > cut + 1) {
+                                crossed = true;
+                            }
+                        }
+                    }
+                    if (crossed === false) {
+                        if (cuts.indexOf(cut) === -1) {
+                            if (60 > cuts.length) {
+                                cuts.push(cut);
+                            }
+                        }
+                    }
+                }
+                return cuts;
+            }
+            function report() {
+                window.parent.postMessage({ source: 'antsurance-document', token: '{!JSENCODE($CurrentPage.parameters.previewToken)}', height: document.body.offsetHeight, folds: folds() }, '*');
+            }
+            window.addEventListener('load', report);
+            window.setTimeout(report, 400);
+            window.setTimeout(report, 1500);
+        })();
+    </script>
+    </apex:outputPanel>
+</body>
+</html>
+</apex:page>

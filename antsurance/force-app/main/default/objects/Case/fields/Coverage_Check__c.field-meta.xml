@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coverage_Check__c</fullName>
+    <description>Whether the policy covered the date of loss. Set automatically from the policy term and status when a claim is saved.</description>
+    <label>Policy in Force</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>In force on date of loss</fullName>
+                <default>false</default>
+                <label>In force on date of loss</label>
+            </value>
+            <value>
+                <fullName>Outside policy term</fullName>
+                <default>false</default>
+                <label>Outside policy term</label>
+            </value>
+            <value>
+                <fullName>Policy not in force</fullName>
+                <default>false</default>
+                <label>Policy not in force</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

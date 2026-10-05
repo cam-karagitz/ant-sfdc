@@ -1,0 +1,28 @@
+{
+  "sale": "Lakeshore Dental Group - Workers Comp",
+  "samples": ["antsuranceSubmissionCoverNote", "antsuranceSubmissionApplication", "antsuranceSubmissionLossRun"],
+  "names": ["Broker's email", "Application", "Loss run"],
+  "answers": {
+    "description": {"status": ["read", "worked_out"], "contains": "dent"},
+    "state": {"status": ["read", "worked_out"], "value": "IL"},
+    "classGroup": {"status": ["read", "worked_out"], "value": "healthcare"},
+    "employees": {"status": ["read", "worked_out"], "value": "24"},
+    "payroll": {"status": ["read", "worked_out"], "value": "1530000"},
+    "ownersIncluded": {"status": ["read", "worked_out"], "value": "true"},
+    "experienceMod": {"status": ["read", "worked_out"], "value": "average"},
+    "priorClaims": {"status": ["conflict"], "sides": ["1to3", "4plus"]},
+    "safetyProgram": {"status": ["read", "worked_out"], "value": "true"},
+    "returnToWork": {"status": ["read", "worked_out"], "value": "false"},
+    "drugFree": {"status": ["not_found"]},
+    "employersLiability": {"status": ["read", "worked_out"], "value": "1000000"},
+    "plan": {"status": ["read", "worked_out"], "value": "guaranteed"}
+  },
+  "conditional": {"document": "Loss run", "reason": "Four or more claims in three years"},
+  "issues": {
+    "claim count, application against loss run": ["claim"],
+    "drug-free workplace not answered": ["drug"],
+    "employees, 24 against the 22 we hold": ["22"],
+    "application not signed": ["sign"],
+    "fourth office, payroll not included": ["lincoln park", "fourth office"]
+  }
+}

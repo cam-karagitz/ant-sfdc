@@ -1,0 +1,40 @@
+<template>
+    <div
+        class={frameClass}
+        lwc:ref="frame"
+        onpointerdown={handlePointerDown}
+        onpointermove={handlePointerMove}
+        onpointerup={handlePointerUp}
+        onpointercancel={handlePointerCancel}
+        onclick={handleClick}
+    >
+        <img class="c-marker__img" lwc:ref="image" src={src} alt={alt} draggable="false" onload={handleImageLoad} />
+        <template for:each={shapes} for:item="shape">
+            <div
+                key={shape.id}
+                class={shape.className}
+                style={shape.style}
+                data-id={shape.id}
+                role={shape.role}
+                tabindex={shape.tabindex}
+                aria-label={shape.label}
+                aria-pressed={shape.pressed}
+                onfocus={handleFocus}
+                onkeydown={handleKeyDown}
+                onpointerenter={handleEnter}
+                onpointerleave={handleLeave}
+            >
+                <span class={shape.tagClass} style={shape.tagStyle} aria-hidden="true">{shape.tag}</span>
+                <template lwc:if={shape.handles}>
+                    <template for:each={shape.handles} for:item="grip">
+                        <span key={grip.handle} class={grip.className} data-handle={grip.handle} aria-hidden="true"></span>
+                    </template>
+                </template>
+            </div>
+        </template>
+        <template lwc:if={draft}>
+            <div class={draftClass} style={draftStyle} aria-hidden="true"></div>
+        </template>
+    </div>
+    <p class="c-marker__live" aria-live="polite">{announcement}</p>
+</template>

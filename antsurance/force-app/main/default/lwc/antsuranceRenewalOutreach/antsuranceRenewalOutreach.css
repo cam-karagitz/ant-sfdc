@@ -1,0 +1,240 @@
+/* Renewal outreach: a note to the customer, shown as a letter on cream paper. Brand values are fixed
+   on purpose so the card keeps its look under any org theme. Headings and figures in Poppins; body
+   text in the Salesforce system font. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-gold-tint: #f6ecd6;
+    --ants-gold-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-outreach {
+    /* The card lays itself out by its own width: a rail column or the page's main column. */
+    container-type: inline-size;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.c-outreach__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem 0.75rem;
+}
+
+.c-outreach__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-outreach__facts {
+    margin: 0.125rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__risk {
+    flex: none;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-outreach__risk_low {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-outreach__risk_medium {
+    background: var(--ants-gold-tint);
+    color: var(--ants-gold-ink);
+}
+
+.c-outreach__risk_high {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-outreach__body {
+    padding: 0 1.25rem 1rem;
+}
+
+/* Narrow: one column, in reading order. */
+.c-outreach__draft {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+}
+
+/* Wide: what to know and the call opening on the left, the email on the right. */
+@container (min-width: 46rem) {
+    .c-outreach__draft {
+        grid-template-columns: minmax(18rem, 5fr) minmax(0, 7fr);
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            'know mail'
+            'phone mail';
+        gap: 1rem 1.5rem;
+    }
+
+    .c-outreach__know {
+        grid-area: know;
+    }
+
+    .c-outreach__mail {
+        grid-area: mail;
+    }
+
+    .c-outreach__phone {
+        grid-area: phone;
+    }
+}
+
+.c-outreach__reason {
+    margin: 0;
+    font-weight: 600;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__points {
+    margin: 0.625rem 0 0;
+}
+
+/* The label sits on its own line above the detail, so a long label never wraps beside it. */
+.c-outreach__point {
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-outreach__point-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.c-outreach__point-detail {
+    margin: 0;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__eyebrow {
+    margin: 0 0 0.375rem;
+    color: var(--ants-clay-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-outreach__letter {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-outreach__subject {
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ants-line);
+    font-weight: 700;
+}
+
+.c-outreach__paragraph {
+    margin: 0 0 0.625rem;
+    white-space: pre-line;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.c-outreach__call {
+    margin: 0;
+    padding-left: 0.75rem;
+    border-left: 0.1875rem solid var(--ants-line);
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__muted {
+    margin: 0;
+    color: var(--ants-muted);
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-outreach__error {
+    margin: 0.75rem 0 0;
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-outreach__skeleton {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.c-outreach__bar {
+    display: block;
+    width: 80%;
+    height: 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    animation: c-outreach-pulse 1.2s ease-in-out infinite;
+}
+
+.c-outreach__bar_wide {
+    width: 95%;
+}
+
+.c-outreach__bar_short {
+    width: 55%;
+}
+
+@keyframes c-outreach-pulse {
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-outreach__bar {
+        animation: none;
+    }
+}
+
+.c-outreach__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+    border-radius: 0 0 1.25rem 1.25rem;
+    background: var(--ants-ivory);
+}

@@ -1,0 +1,8 @@
+{
+  "packageDirectories": [
+    {"path": "model", "default": true},
+    {"path": "ask-claude-model"}
+  ],
+  "namespace": "",
+  "sourceApiVersion": "67.0"
+}

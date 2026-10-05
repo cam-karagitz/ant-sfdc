@@ -1,0 +1,115 @@
+<template>
+    <section class="c-cov" aria-label="Coverages">
+        <header class="c-cov__head">
+            <h2 class="c-cov__title">{title}</h2>
+            <template lwc:if={countLabel}>
+                <span class="c-cov__count">{countLabel}</span>
+            </template>
+            <template lwc:if={summary}>
+                <span class="c-cov__summary">{summary}<span class="c-cov__summary-what">in premium</span></span>
+                <span class="c-cov__key">
+                    <span class="c-cov__key-bar" aria-hidden="true"></span>
+                    share of premium
+                </span>
+            </template>
+            <span class="c-cov__spacer"></span>
+            <template lwc:if={hasRows}>
+                <a class="c-cov__all" href={viewAllUrl} onclick={handleViewAll}>View all</a>
+            </template>
+            <template lwc:if={onPolicyPage}>
+                <lightning-button label="New" onclick={handleNew}></lightning-button>
+            </template>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-cov__note" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-cov__skeleton" aria-hidden="true">
+                <template for:each={skeletonRows} for:item="bone">
+                    <div key={bone.key} class="c-cov__bone-row">
+                        <span class="c-ui-bone c-ui-bone_tile"></span>
+                        <span class="c-cov__bone-text">
+                            <span class="c-ui-bone c-ui-bone_line c-cov__bone-name"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-cov__bone-covers"></span>
+                        </span>
+                        <span class="c-ui-bone c-ui-bone_line c-cov__bone-figure"></span>
+                        <span class="c-ui-bone c-ui-bone_line c-cov__bone-figure"></span>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={isEmpty}>
+            <p class="c-cov__note">
+                No coverages on this policy yet. A policy bound from a quote gets its coverages from the quote's answers.
+                <button type="button" class="c-cov__add c-ui-focus" onclick={handleNew}>Add one</button>
+            </p>
+        </template>
+
+        <template lwc:if={hasRows}>
+            <div class="c-cov__columns" aria-hidden="true">
+                <span>Coverage</span>
+                <span class="c-cov__col_limit">Limit</span>
+                <span class="c-cov__col_deductible">Deductible</span>
+                <span class="c-cov__col_premium">Premium</span>
+                <span></span>
+            </div>
+            <div class="c-ui-arrive">
+                <template for:each={groups} for:item="group">
+                    <section key={group.key} class="c-cov__group" aria-label={group.label}>
+                        <h3 class="c-cov__group-label">{group.label}</h3>
+                        <ul class="c-cov__rows">
+                            <template for:each={group.rows} for:item="row">
+                                <li key={row.id} class={row.className} data-record-id={row.id} onclick={handleRowClick}>
+                                    <span class={row.tileClass}>
+                                        <lightning-icon icon-name={row.iconName} size="x-small" alternative-text={group.label}></lightning-icon>
+                                    </span>
+                                    <div class="c-cov__what">
+                                        <a class="c-cov__name" href={row.url} data-record-id={row.id} onclick={handleOpen}>{row.name}</a>
+                                        <template lwc:if={row.isCurrent}>
+                                            <span class="c-cov__here">This coverage</span>
+                                        </template>
+                                        <template lwc:if={row.showStatus}>
+                                            <span class="c-cov__status">{row.status}</span>
+                                        </template>
+                                        <p class="c-cov__covers">{row.covers}</p>
+                                    </div>
+                                    <div class="c-cov__cell c-cov__col_limit">
+                                        <span class="c-cov__label">Limit</span>
+                                        <span class="c-cov__figure">{row.limit}</span>
+                                        <template lwc:if={row.basis}>
+                                            <span class="c-cov__basis">{row.basis}</span>
+                                        </template>
+                                        <span class="c-cov__fold">{row.deductibleFold}</span>
+                                    </div>
+                                    <div class="c-cov__cell c-cov__col_deductible">
+                                        <span class="c-cov__label">Deductible</span>
+                                        <span class={row.deductibleClass}>{row.deductible}</span>
+                                    </div>
+                                    <div class="c-cov__cell c-cov__col_premium">
+                                        <span class="c-cov__label">Premium</span>
+                                        <span class="c-cov__figure">{row.premium}</span>
+                                        <span class="c-cov__share" role="img" aria-label={row.shareLabel} title={row.shareLabel}>
+                                            <span class="c-cov__share-value" style={row.shareStyle}></span>
+                                        </span>
+                                    </div>
+                                    <template lwc:if={row.isCurrent}>
+                                        <span></span>
+                                    </template>
+                                    <template lwc:else>
+                                        <lightning-icon icon-name="utility:chevronright" size="xx-small" class="c-ui-chevron"></lightning-icon>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+            </div>
+            <template lwc:if={isPaged}>
+                <c-antsurance-step-pager total={rowCount} page-size={pageSize} page={page} label="coverages" onpagechange={handlePage}></c-antsurance-step-pager>
+            </template>
+        </template>
+    </section>
+</template>

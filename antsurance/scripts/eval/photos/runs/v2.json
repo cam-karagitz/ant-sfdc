@@ -1,0 +1,767 @@
+{
+ "label": "v2",
+ "passed": 8,
+ "total": 9,
+ "cases": [
+  {
+   "id": "rear-quarter-scrape",
+   "passed": false,
+   "failed": [
+    "error: Claude's answer was cut short. Try again."
+   ],
+   "result": {
+    "error": "Claude's answer was cut short. Try again."
+   }
+  },
+  {
+   "id": "hail-broken-glass",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Set reserve to $3,200",
+      "reason": "The rough range from the photograph alone supports a reserve near the reported $3,200 instead of $0.",
+      "kind": "set_reserve",
+      "amount": 3200
+     },
+     {
+      "title": "Assign field appraiser to inspect hail damage",
+      "reason": "Hail denting on other panels needs an in person inspection.",
+      "kind": "add_task",
+      "amount": null
+     },
+     {
+      "title": "Ask insured to cover rear window and book glass",
+      "reason": "The open rear window risks further water damage to the interior.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [
+     "broken glass",
+     "rear window open to the weather"
+    ],
+    "repairLow": 2000,
+    "repairHigh": 4500,
+    "repairBasis": "Assumes rear glass replacement with interior glass cleanup and paintless dent repair across the trunk, roof and right rear quarter, with no hidden interior damage.",
+    "photosNeeded": [
+     "the whole roof in angled light",
+     "the hood and front panels",
+     "the VIN plate",
+     "the interior rear seat and headliner"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageHailGlass",
+      "shows": "Rear window of a silver sedan shattered, glass on the rear shelf and seat, hail on the ground and car, dents on the trunk lid and right rear quarter.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "severe",
+        "panel": "rear_window",
+        "detail": "glass shattered, opening exposed to weather",
+        "box": {
+         "y": 0.21,
+         "x": 0.0,
+         "width": 0.95,
+         "height": 0.55
+        },
+        "area": "rear window"
+       },
+       {
+        "severity": "moderate",
+        "panel": "rear_right_quarter",
+        "detail": "several hail dents",
+        "box": {
+         "y": 0.38,
+         "x": 0.55,
+         "width": 0.45,
+         "height": 0.6
+        },
+        "area": "right rear quarter panel"
+       },
+       {
+        "severity": "moderate",
+        "panel": "trunk",
+        "detail": "small hail dents",
+        "box": {
+         "y": 0.6,
+         "x": 0.0,
+         "width": 0.6,
+         "height": 0.4
+        },
+        "area": "trunk lid"
+       },
+       {
+        "severity": "minor",
+        "panel": "roof",
+        "detail": "possible light hail dents",
+        "box": {
+         "y": 0.16,
+         "x": 0.3,
+         "width": 0.7,
+         "height": 0.18
+        },
+        "area": "roof"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One usable photo of the rear of a silver sedan with hail on the ground.\n\n**Damage:** Rear window shattered, glass inside the cabin, open to weather. Hail dents on trunk lid and right rear quarter, possible light roof dents. Fits reported hail loss.\n\n**Next:** Assign field appraiser to map all dents; rough range $2,000 to $4,500 from photo alone.",
+    "nextStepReason": "The full extent of hail denting on the roof, hood and other panels cannot be seen in one photo and needs an inspection under proper light.",
+    "nextStep": "field_appraiser",
+    "lossSeen": "Hail damage",
+    "likelyTotalLoss": false,
+    "damageSummary": "The rear window is shattered with glass across the rear shelf and seat, leaving the cabin open to the weather. Hail dents are visible on the trunk lid and right rear quarter panel, with possible light dents on the roof.",
+    "consistencyNote": "Shattered rear glass and hail dents on the trunk and rear body, with hail on the ground, fit the reported hail storm.",
+    "consistency": "consistent",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:25.017Z"
+   }
+  },
+  {
+   "id": "hail-on-a-collision-claim",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Call insured to confirm loss details and rear damage photos",
+      "reason": "The photo shows hail damage and no rear impact, which does not fit the reported collision.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [
+     "broken glass"
+    ],
+    "repairLow": null,
+    "repairHigh": null,
+    "repairBasis": "Nothing visible supports a range for the reported rear end damage, so no figure is given.",
+    "photosNeeded": [
+     "close view of rear bumper and tail lamps",
+     "full rear view straight on",
+     "VIN plate",
+     "roof and hood after debris is cleared"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageHailSedan",
+      "shows": "Rear left three quarter view of a white sedan in a car park, covered in shredded leaves and hailstones, rear window smashed.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "severe",
+        "panel": "rear_window",
+        "detail": "glass shattered, fragments and hail on parcel shelf and trunk",
+        "box": {
+         "y": 0.2,
+         "x": 0.29,
+         "width": 0.45,
+         "height": 0.3
+        },
+        "area": "rear window"
+       },
+       {
+        "severity": "minor",
+        "panel": "trunk",
+        "detail": "covered in hail and leaf debris, possible dents not clearly visible",
+        "box": {
+         "y": 0.4,
+         "x": 0.42,
+         "width": 0.55,
+         "height": 0.2
+        },
+        "area": "trunk lid"
+       },
+       {
+        "severity": "minor",
+        "panel": "roof",
+        "detail": "leaf and hail debris, surface damage cannot be judged",
+        "box": {
+         "y": 0.13,
+         "x": 0.02,
+         "width": 0.55,
+         "height": 0.12
+        },
+        "area": "roof"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One photo of a white sedan in a car park, rear window shattered, hail and leaf debris over roof and trunk.\n\n**Damage:** Rear window broken. Rear bumper, trunk lid and tail lamp show no visible impact damage, which does not fit the reported rear end collision.\n\n**Next:** Call insured to confirm how the loss happened and request rear bumper and tail lamp photos.",
+    "nextStepReason": "The photograph points to hail and storm damage, not the reported rear end collision, so the loss details need confirming with the insured first.",
+    "nextStep": "call_insured",
+    "lossSeen": "Hail storm damage",
+    "likelyTotalLoss": false,
+    "damageSummary": "The rear window is shattered with glass, hailstones and shredded leaves across the parcel shelf, trunk lid and roof. The rear bumper, trunk lid and tail lamp show no visible impact damage, and any hail dents on the panels cannot be seen under the debris.",
+    "consistencyNote": "The photograph shows storm and hail damage with an intact rear bumper and tail lamp rather than a rear impact, so please confirm with the insured how the loss happened and that this photo belongs to this claim.",
+    "consistency": "check",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:31.981Z"
+   }
+  },
+  {
+   "id": "pickup-side-scrape",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Request close up photos of door and bed side from insured",
+      "reason": "Close ups of each damaged panel are needed to write the photo estimate.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [],
+    "repairLow": 1200,
+    "repairHigh": 2800,
+    "repairBasis": "Assumes the driver's door and left bed side are repaired and repainted in place, with no parts replaced.",
+    "photosNeeded": [
+     "close up of the bed side dent",
+     "close up of the driver's door",
+     "front left corner and mirror",
+     "the VIN plate"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageSideScrape",
+      "shows": "Driver's side of a blue pickup loaded with banana boxes, showing the cab door and the front of the bed side.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "moderate",
+        "panel": "rear_left_quarter",
+        "detail": "dented and creased with paint scraped off",
+        "box": {
+         "y": 0.37,
+         "x": 0.34,
+         "width": 0.24,
+         "height": 0.35
+        },
+        "area": "left bed side behind the cab"
+       },
+       {
+        "severity": "moderate",
+        "panel": "front_left_door",
+        "detail": "wavy dents and scuffs",
+        "box": {
+         "y": 0.4,
+         "x": 0.0,
+         "width": 0.32,
+         "height": 0.42
+        },
+        "area": "driver's door lower half"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One usable photo of the driver's side of the pickup.\n\n**Damage:** Left bed side behind cab dented, creased and scraped to metal; driver's door lower half dented and scuffed. Fits the reported sideswipe. Rough range $1,200 to $2,800.\n\n**Next:** Request close ups and VIN plate, then write photo estimate.",
+    "nextStepReason": "The damage is limited to two outer panels with nothing structural visible, so an estimate can be written once close ups arrive.",
+    "nextStep": "photo_estimate",
+    "lossSeen": "side scrape, driver's side",
+    "likelyTotalLoss": false,
+    "damageSummary": "The front of the left bed side behind the cab is dented, creased and scraped through the paint. The lower half of the driver's door shows wavy dents and scuffs along the same line.",
+    "consistencyNote": "A scrape and dent running along the driver's side door and bed side fits a passing vehicle sideswiping the parked pickup.",
+    "consistency": "consistent",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:37.575Z"
+   }
+  },
+  {
+   "id": "flooded-family-room",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Assign a field appraiser to inspect the flooded basement",
+      "reason": "Hidden drywall, insulation and mould damage need measuring on site.",
+      "kind": "add_task",
+      "amount": null
+     },
+     {
+      "title": "Request photos of the failed sump pump and wall water line",
+      "reason": "The cause of loss rests on the sump pump, which is not shown.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [
+     "standing water residue and silt",
+     "contents likely total loss"
+    ],
+    "repairLow": 20000,
+    "repairHigh": 40000,
+    "repairBasis": "Assumes removal of wet flooring and lower drywall, drying and cleaning, and replacement of the visible upholstered furniture, before any water backup endorsement limit is applied.",
+    "photosNeeded": [
+     "the failed sump pump and pit",
+     "the walls showing the full water line height",
+     "the flooring with furniture moved",
+     "the electrical panel and any equipment in the basement"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageFloodedRoom",
+      "shows": "A finished basement family room with water stained, silt coated leather sofas and chairs, debris on a muddy floor and a tide line on the wall.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "severe",
+        "panel": "none",
+        "detail": "coated in silt and spotted with residue from standing water",
+        "box": {
+         "y": 0.2,
+         "x": 0.48,
+         "width": 0.52,
+         "height": 0.8
+        },
+        "area": "red leather sofa"
+       },
+       {
+        "severity": "severe",
+        "panel": "none",
+        "detail": "soaked and silt coated, likely beyond saving",
+        "box": {
+         "y": 0.12,
+         "x": 0.16,
+         "width": 0.47,
+         "height": 0.52
+        },
+        "area": "recliner chairs at the back"
+       },
+       {
+        "severity": "severe",
+        "panel": "none",
+        "detail": "silt film and water staining over upholstery",
+        "box": {
+         "y": 0.38,
+         "x": 0.0,
+         "width": 0.24,
+         "height": 0.55
+        },
+        "area": "orange and white chair at left"
+       },
+       {
+        "severity": "moderate",
+        "panel": "none",
+        "detail": "covered in mud, silt and debris",
+        "box": {
+         "y": 0.6,
+         "x": 0.0,
+         "width": 0.75,
+         "height": 0.4
+        },
+        "area": "floor"
+       },
+       {
+        "severity": "moderate",
+        "panel": "none",
+        "detail": "water line and staining on the wall finish",
+        "box": {
+         "y": 0.1,
+         "x": 0.9,
+         "width": 0.1,
+         "height": 0.25
+        },
+        "area": "wall at right"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One photo of the finished basement family room after the water receded.\n\n**Damage:** Leather sofas and chairs soaked and silt coated, mud and debris on the floor, water line on the wall. Fits a sump pump backup. Rough range $20,000 to $40,000 from photo alone.\n\n**Next:** Assign field appraiser for drywall, flooring and mould; request sump pump and wall photos.",
+    "nextStepReason": "Several days of standing water in a finished basement raises hidden drywall, insulation and mould damage that needs measuring on site.",
+    "nextStep": "field_appraiser",
+    "lossSeen": "Basement water backup",
+    "likelyTotalLoss": false,
+    "damageSummary": "The basement family room shows furniture soaked and coated in silt, with mud and debris across the floor, consistent with water that stood for some time. A water line is visible on the wall at right, but drywall height, flooring type and the sump pit cannot be judged from this single photograph.",
+    "consistencyNote": "Silt coated furniture, a muddy floor and a wall water line fit ground water backing up and standing in a finished basement.",
+    "consistency": "consistent",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:42.515Z"
+   }
+  },
+  {
+   "id": "ceiling-stain",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Assign field appraiser to inspect west roof slope and attic",
+      "reason": "The roof damage is not shown and must be inspected to confirm extent and cause.",
+      "kind": "add_task",
+      "amount": null
+     },
+     {
+      "title": "Request roof, tarp and attic photos from insured",
+      "reason": "Roof and tarp photos would help confirm the reported shingle damage before inspection.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [],
+    "repairLow": 3000,
+    "repairHigh": 8000,
+    "repairBasis": "Assumes repair of a section of west slope shingles and underlayment plus stain sealing, texture patching and repainting one bedroom ceiling; roof portion is unseen.",
+    "photosNeeded": [
+     "the west roof slope showing missing shingles",
+     "the tarp in place",
+     "a wider shot of the bedroom ceiling",
+     "the attic above the stain"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageCeilingStain",
+      "shows": "Close view of a textured bedroom ceiling where it meets the wall, with brown water staining and a small patch of peeling texture.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "brown water stains along the joint",
+        "box": {
+         "y": 0.25,
+         "x": 0.15,
+         "width": 0.65,
+         "height": 0.22
+        },
+        "area": "ceiling by the wall"
+       },
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "texture and paint flaking off",
+        "box": {
+         "y": 0.43,
+         "x": 0.5,
+         "width": 0.11,
+         "height": 0.09
+        },
+        "area": "ceiling texture at the wall joint"
+       },
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "faint streak staining",
+        "box": {
+         "y": 0.5,
+         "x": 0.45,
+         "width": 0.12,
+         "height": 0.06
+        },
+        "area": "wall below the ceiling"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One close photo of a bedroom ceiling at the wall joint. No roof, shingle or tarp photos received.\n\n**Damage:** Brown water staining along the ceiling joint, small area of flaking texture, faint wall staining. Fits reported water entry; roof damage not visible.\n\n**Next:** Assign field appraiser for roof and attic; request roof and tarp photos. Rough range $3,000 to $8,000 on limited evidence.",
+    "nextStepReason": "The roof damage that drives the cost is not pictured and hidden decking or attic wetting needs inspection, so a field appraiser should see the roof.",
+    "nextStep": "field_appraiser",
+    "lossSeen": "Interior ceiling water stain",
+    "likelyTotalLoss": false,
+    "damageSummary": "The one photograph shows brown water staining on a textured ceiling along the wall joint, with a small patch of flaking texture and faint staining on the wall below. No roof, shingle or tarp damage is shown, so the cause and the extent of roof damage cannot be judged from the photo.",
+    "consistencyNote": "A water stained bedroom ceiling at an outside wall fits the reported water entry after shingles lifted, though the roof itself is not pictured.",
+    "consistency": "consistent",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:48.912Z"
+   }
+  },
+  {
+   "id": "lifted-shingles",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Assign field appraiser to inspect roof and bedroom ceiling",
+      "reason": "An on site inspection is needed to separate wind damage from wear and check the interior.",
+      "kind": "add_task",
+      "amount": null
+     },
+     {
+      "title": "Raise reserve to $7,000",
+      "reason": "Based on photographs alone, the rough range sits above the current $5,000 reserve.",
+      "kind": "set_reserve",
+      "amount": 7000
+     },
+     {
+      "title": "Request photos of ceiling stain and tarped roof area",
+      "reason": "The ceiling stain and tarped area are not shown in the file.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [],
+    "repairLow": 4500,
+    "repairHigh": 9000,
+    "repairBasis": "Assumes replacing shingles on the west slope with underlayment and patching and painting one bedroom ceiling.",
+    "photosNeeded": [
+     "Wider shot of the whole west slope",
+     "Bedroom ceiling water stain",
+     "Tarped area of the roof",
+     "Roof edge showing shingle layers"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageShingles",
+      "shows": "Close view of an asphalt shingle roof slope with curled, cracked and torn shingle tabs under tree shade.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "moderate",
+        "panel": "none",
+        "detail": "tabs torn, cracked and missing pieces",
+        "box": {
+         "y": 0.3,
+         "x": 0.38,
+         "width": 0.3,
+         "height": 0.33
+        },
+        "area": "roof shingles, centre of slope"
+       },
+       {
+        "severity": "moderate",
+        "panel": "none",
+        "detail": "tabs curled and lifted at edges",
+        "box": {
+         "y": 0.28,
+         "x": 0.62,
+         "width": 0.38,
+         "height": 0.32
+        },
+        "area": "roof shingles, right of centre"
+       },
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "tab torn with notched broken edge",
+        "box": {
+         "y": 0.55,
+         "x": 0.2,
+         "width": 0.15,
+         "height": 0.2
+        },
+        "area": "roof shingles, lower left"
+       },
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "tab edges cracked and lifting",
+        "box": {
+         "y": 0.25,
+         "x": 0.05,
+         "width": 0.33,
+         "height": 0.25
+        },
+        "area": "roof shingles, left of centre"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One close photo of an asphalt shingle slope; no interior or tarp views.\n\n**Damage:** Many tabs curled, cracked and torn with small missing pieces; shingles also appear aged and brittle. No open decking seen.\n\n**Next:** Assign field appraiser to separate wind damage from wear and inspect bedroom ceiling. Rough range $4,500 to $9,000 from photo alone.",
+    "nextStepReason": "Roof damage mixed with apparent age wear and an unseen interior stain needs an on site inspection to separate wind damage from wear.",
+    "nextStep": "field_appraiser",
+    "lossSeen": "Wind damaged shingles",
+    "likelyTotalLoss": false,
+    "damageSummary": "The photo shows many asphalt shingle tabs that are curled, cracked, torn and missing small pieces across the middle of one slope. The shingles also look worn and brittle overall, and no open roof decking, tarp or interior ceiling stain is shown.",
+    "consistencyNote": "Torn and lifted tabs fit the reported wind loss, though widespread curling and brittleness also suggest age wear that should be confirmed with the insured and on inspection.",
+    "consistency": "consistent",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:53.747Z"
+   }
+  },
+  {
+   "id": "roof-torn-open",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Raise reserve to $100,000",
+      "reason": "Based on photographs alone, visible structural roof damage sits far above the current $5,000 reserve.",
+      "kind": "set_reserve",
+      "amount": 100000
+     },
+     {
+      "title": "Assign field appraiser for urgent structural roof inspection",
+      "reason": "Structural damage and open roof require an urgent in person inspection.",
+      "kind": "add_task",
+      "amount": null
+     },
+     {
+      "title": "Call insured about tarping, mitigation and loss extent",
+      "reason": "The open roof needs temporary protection and the extent should be confirmed with the insured.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [
+     "roof open to the weather",
+     "frame or structural damage"
+    ],
+    "repairLow": 60000,
+    "repairHigh": 150000,
+    "repairBasis": "Assumes reframing and redecking much of the roof, full reroof, and allowance for interior water damage, before any hidden damage is found.",
+    "photosNeeded": [
+     "interior ceilings and rooms below the opening",
+     "attic framing from inside",
+     "rear and side roof slopes",
+     "exterior walls and windows close up"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": true,
+      "unusableReason": null,
+      "title": "antsuranceDamageRoofStorm",
+      "shows": "Front of a single story brick ranch home with the central roof section torn open, rafters and decking broken and displaced.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": [
+       {
+        "severity": "severe",
+        "panel": "none",
+        "detail": "rafters snapped and lifted, decking torn away, roof open",
+        "box": {
+         "y": 0.22,
+         "x": 0.31,
+         "width": 0.47,
+         "height": 0.33
+        },
+        "area": "central roof structure over the front entry"
+       },
+       {
+        "severity": "severe",
+        "panel": "none",
+        "detail": "decking and shingles stripped, bare rafters exposed",
+        "box": {
+         "y": 0.22,
+         "x": 0.0,
+         "width": 0.36,
+         "height": 0.1
+        },
+        "area": "left roof slope"
+       },
+       {
+        "severity": "moderate",
+        "panel": "none",
+        "detail": "shingles and decking torn, debris hanging over eave",
+        "box": {
+         "y": 0.3,
+         "x": 0.7,
+         "width": 0.15,
+         "height": 0.13
+        },
+        "area": "right roof slope by the eave"
+       },
+       {
+        "severity": "minor",
+        "panel": "none",
+        "detail": "scattered roof debris",
+        "box": {
+         "y": 0.47,
+         "x": 0.0,
+         "width": 1.0,
+         "height": 0.25
+        },
+        "area": "front lawn"
+       }
+      ]
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One front view of brick ranch home, usable.\n\n**Damage:** Central roof framing snapped and displaced, decking torn off, left slope stripped to rafters, right eave damaged. Roof open to weather. Far exceeds reported lifted shingles on west slope.\n\n**Next:** Assign field appraiser urgently, confirm extent and mitigation with insured, rough range $60,000 to $150,000 from photo alone.",
+    "nextStepReason": "Structural roof failure with the interior open to weather needs an on site inspection for hidden and interior damage.",
+    "nextStep": "field_appraiser",
+    "lossSeen": "severe wind roof failure",
+    "likelyTotalLoss": false,
+    "damageSummary": "The roof framing over the middle of the house is torn apart with rafters snapped and decking gone, leaving the attic and interior open to the weather. The left slope is stripped to bare rafters and the right eave is damaged, far beyond lifted shingles.",
+    "consistencyNote": "Wind is a plausible cause, but the visible structural roof failure is far more extensive than the reported lifted shingles on one slope, so the extent should be confirmed with the insured.",
+    "consistency": "check",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:31:58.832Z"
+   }
+  },
+  {
+   "id": "too-dark-to-judge",
+   "passed": true,
+   "failed": [],
+   "result": {
+    "suggestions": [
+     {
+      "title": "Request clear daylight photos of passenger side rear damage",
+      "reason": "Clear daylight photographs of the damaged area are needed before damage can be assessed.",
+      "kind": "add_task",
+      "amount": null
+     }
+    ],
+    "signals": [],
+    "repairLow": null,
+    "repairHigh": null,
+    "repairBasis": "No range is given because the photograph shows no assessable damage.",
+    "photosNeeded": [
+     "Clear daylight shot of the right rear quarter panel",
+     "Close up of the rear bumper, passenger side",
+     "Wider shot of the whole passenger side",
+     "The VIN plate"
+    ],
+    "photosLeftOut": 0,
+    "photos": [
+     {
+      "usable": false,
+      "unusableReason": "Too dark and blurred to judge damage.",
+      "title": "antsuranceDamageUnusable",
+      "shows": "A very dark, blurred side view of a light coloured car near a front or rear wheel.",
+      "photoNumber": 1,
+      "documentId": null,
+      "damage": []
+     }
+    ],
+    "noteType": "Investigation",
+    "note": "**Photos:** One photograph received; too dark and blurred to judge damage.\n\n**Damage:** Reported passenger side rear quarter panel and bumper damage cannot be confirmed from the photograph.\n\n**Next:** Contact insured for clear daylight photographs of the right rear quarter, rear bumper, a wider passenger side view and the VIN plate.",
+    "nextStepReason": "The only photograph is unusable, so the insured needs to send clear, well lit photographs before any estimate.",
+    "nextStep": "call_insured",
+    "lossSeen": "Cannot be determined",
+    "likelyTotalLoss": false,
+    "damageSummary": "No damage can be judged because the only photograph is too dark and blurred. The reported passenger side rear quarter panel and bumper damage cannot be confirmed or measured from it.",
+    "consistencyNote": "The photograph is unusable, so it cannot be compared with the reported bollard strike on the passenger side rear.",
+    "consistency": "unclear",
+    "complete": true,
+    "assessedAt": "2026-10-04T22:32:01.751Z"
+   }
+  }
+ ]
+}

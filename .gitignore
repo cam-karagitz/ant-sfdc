@@ -1,0 +1,11 @@
+# Machine-local Claude Code state
+.claude/settings.local.json
+.claude/.cc-writes/
+
+# Salesforce CLI
+.sf/
+.sfdx/
+
+node_modules/
+.DS_Store
+dist/

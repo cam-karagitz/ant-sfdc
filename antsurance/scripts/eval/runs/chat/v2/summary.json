@@ -1,0 +1,4 @@
+{
+  "description": "Tasks about a person carry that person as the contact (propose_task contact_id description)",
+  "target": "tools"
+}

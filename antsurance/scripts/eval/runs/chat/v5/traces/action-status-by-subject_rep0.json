@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Move service request 00002608 to In Progress."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, RecordType.DeveloperName, Subject FROM Case WHERE CaseNumber = '00002608' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"RecordType\":{\"DeveloperName\":\"Policy_Service\",\"Id\":\"012aj00000Ee8usAAB\"},\"Subject\":\"Add Sofia Reyes as a driver\",\"RecordTypeId\":\"012aj00000Ee8usAAB\",\"Status\":\"New\",\"CaseNumber\":\"00002608\",\"Id\":\"500aj00003jfwUWAAY\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_case_status",
+    "content": "{\n  \"new_status\": \"In Progress\",\n  \"case_id\": \"500aj00003jfwUWAAY\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"case_status\",\n    \"caseId\": \"500aj00003jfwUWAAY\",\n    \"status\": \"In Progress\",\n    \"fromStatus\": \"New\"\n  }\n]"
+  }
+]

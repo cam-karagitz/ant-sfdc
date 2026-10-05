@@ -1,0 +1,25 @@
+<template>
+    <div class="c-car" role="group" aria-roledescription="carousel" aria-label={label}>
+        <div class="c-car__track c-ui-focus" lwc:ref="track" tabindex="0" onkeydown={handleKey} onscroll={handleScroll}>
+            <slot onslotchange={handleSlotChange}></slot>
+        </div>
+        <template lwc:if={isNeeded}>
+            <div class="c-car__bar">
+                <template lwc:if={hasDots}>
+                    <div class="c-car__dots">
+                        <template for:each={dots} for:item="dot">
+                            <button key={dot.key} type="button" class={dot.className} data-index={dot.index} aria-label={dot.label} aria-current={dot.current} onclick={handleDot}></button>
+                        </template>
+                    </div>
+                </template>
+                <span class="c-car__count" aria-live="polite">{countLabel}</span>
+                <button type="button" class="c-car__step c-ui-focus" title="Previous" aria-label={previousLabel} disabled={isFirst} onclick={handlePrevious}>
+                    <lightning-icon icon-name="utility:chevronleft" size="xx-small" alternative-text=""></lightning-icon>
+                </button>
+                <button type="button" class="c-car__step c-ui-focus" title="Next" aria-label={nextLabel} disabled={isLast} onclick={handleNext}>
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text=""></lightning-icon>
+                </button>
+            </div>
+        </template>
+    </div>
+</template>

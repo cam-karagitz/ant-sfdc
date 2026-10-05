@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "Compare the quotes on the Dubois Household - Personal Auto sale: premium and deductible for each."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status, Annual_Premium__c, Deductible__c, Coverage_Limit__c, ExpirationDate, Opportunity.Name, OpportunityId FROM Quote WHERE Opportunity.Name LIKE '%Dubois%' ORDER BY Annual_Premium__c LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Opportunity\":{\"Name\":\"Dubois Household - Personal Auto\",\"Id\":\"006aj00000epHJEAA2\"},\"OpportunityId\":\"006aj00000epHJEAA2\",\"ExpirationDate\":\"2026-10-18\",\"Coverage_Limit__c\":100000,\"Deductible__c\":2000,\"Annual_Premium__c\":1435,\"Status\":\"Presented\",\"Name\":\"Higher deductible, lower premium\",\"Id\":\"0Q0aj000003bR9KCAU\"},{\"Opportunity\":{\"Name\":\"Dubois Household - Personal Auto\",\"Id\":\"006aj00000epHJEAA2\"},\"OpportunityId\":\"006aj00000epHJEAA2\",\"ExpirationDate\":\"2026-10-18\",\"Coverage_Limit__c\":100000,\"Deductible__c\":1000,\"Annual_Premium__c\":1560,\"Status\":\"Presented\",\"Name\":\"Standard deductible\",\"Id\":\"0Q0aj000003bR9JCAU\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_comparison",
+    "content": "{\n  \"title\": \"Quote options for the Dubois personal auto sale\",\n  \"columns\": [\n    {\n      \"name\": \"Standard deductible\",\n      \"record_id\": \"0Q0aj000003bR9JCAU\",\n      \"recommended\": false\n    },\n    {\n      \"name\": \"Higher deductible\",\n      \"record_id\": \"0Q0aj000003bR9KCAU\",\n      \"recommended\": false\n    }\n  ],\n  \"rows\": [\n    {\n      \"label\": \"Annual premium\",\n      \"values\": [\n        \"$1,560\",\n        \"$1,435\"\n      ]\n    },\n    {\n      \"label\": \"Deductible\",\n      \"values\": [\n        \"$1,000\",\n        \"$2,000\"\n      ]\n    },\n    {\n      \"label\": \"Coverage limit\",\n      \"values\": [\n        \"$100,000\",\n        \"$100,000\"\n      ]\n    },\n    {\n      \"label\": \"Status\",\n      \"values\": [\n        \"Presented\",\n        \"Presented\"\n      ]\n    },\n    {\n      \"label\": \"Valid until\",\n      \"values\": [\n        \"Oct 18, 2026\",\n        \"Oct 18, 2026\"\n      ]\n    }\n  ],\n  \"reason\": \"\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Draft an email to the Duboises about both options\",\n    \"Remind me to follow up before Oct 18\",\n    \"Who are the drivers on this sale?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"comparison\",\n    \"title\": \"Quote options for the Dubois personal auto sale\",\n    \"columns\": [\n      {\n        \"name\": \"Standard deductible\",\n        \"recordId\": \"0Q0aj000003bR9JCAU\",\n        \"recommended\": false\n      },\n      {\n        \"name\": \"Higher deductible\",\n        \"recordId\": \"0Q0aj000003bR9KCAU\",\n        \"recommended\": false\n      }\n    ],\n    \"rows\": [\n      {\n        \"label\": \"Annual premium\",\n        \"values\": [\n          \"$1,560\",\n          \"$1,435\"\n        ]\n      },\n      {\n        \"label\": \"Deductible\",\n        \"values\": [\n          \"$1,000\",\n          \"$2,000\"\n        ]\n      },\n      {\n        \"label\": \"Coverage limit\",\n        \"values\": [\n          \"$100,000\",\n          \"$100,000\"\n        ]\n      },\n      {\n        \"label\": \"Status\",\n        \"values\": [\n          \"Presented\",\n          \"Presented\"\n        ]\n      },\n      {\n        \"label\": \"Valid until\",\n        \"values\": [\n          \"Oct 18, 2026\",\n          \"Oct 18, 2026\"\n        ]\n      }\n    ],\n    \"reason\": null\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Draft an email to the Duboises about both options\",\n      \"Remind me to follow up before Oct 18\",\n      \"Who are the drivers on this sale?\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,225 @@
+<template>
+    <!-- Photos, files and letters are three sections of one tab, one in view at a time. Each stays
+         loaded while another is in view, so a reading or a draft in progress is not lost. -->
+    <div class="c-sections">
+        <c-antsurance-tabs label="What is on this claim" variant="pill" tabs={sections} value={section} onselect={handleSection}></c-antsurance-tabs>
+    </div>
+    <div class={photosClass} role="tabpanel" aria-label="Photos">
+        <c-antsurance-claim-photos record-id={recordId} onphotoschange={handlePhotosChange}></c-antsurance-claim-photos>
+    </div>
+    <div class={filesClass} role="tabpanel" aria-label="Files">
+    <article class="c-docs" aria-busy={isBusy}>
+        <header class="c-docs__head">
+            <div class="c-docs__titles">
+                <h2 class="c-docs__title">Documents</h2>
+                <p class="c-docs__meta">{metaLine}</p>
+            </div>
+            <lightning-file-upload
+                class="c-docs__upload"
+                label="Add a document"
+                name="claimDocuments"
+                record-id={recordId}
+                accept={acceptedFormats}
+                multiple
+                onuploadfinished={handleUploadFinished}
+            ></lightning-file-upload>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-docs__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-skeleton" aria-hidden="true">
+                <span class="c-skeleton__row"></span>
+                <span class="c-skeleton__row"></span>
+            </div>
+        </template>
+
+        <template lwc:elseif={isEmpty}>
+            <div class="c-empty">
+                <p class="c-empty__title">No documents on this claim yet</p>
+                <p class="c-empty__text">
+                    Add an estimate, an invoice or a report. Claude reads it against the claim and tells you what it says, how it compares with the
+                    reserve and what to do next.
+                </p>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <ul class="c-list">
+                <template for:each={rows} for:item="row">
+                    <li key={row.documentId} class={row.itemClass}>
+                        <div class="c-doc">
+                            <lightning-icon class="c-doc__icon" icon-name={row.icon} size="medium" alternative-text={row.kind}></lightning-icon>
+                            <div class="c-doc__main">
+                                <button type="button" class="c-doc__title" data-id={row.documentId} title="Open the file" onclick={handlePreview}>
+                                    {row.title}
+                                </button>
+                                <p class="c-doc__meta">{row.meta}</p>
+                                <template lwc:if={row.skipLine}>
+                                    <p class="c-doc__skip">{row.skipLine}</p>
+                                </template>
+                            </div>
+                            <template lwc:if={row.readable}>
+                                <lightning-button
+                                    class="c-doc__read"
+                                    label={row.readLabel}
+                                    data-id={row.documentId}
+                                    disabled={row.isReading}
+                                    onclick={handleRead}
+                                ></lightning-button>
+                            </template>
+                        </div>
+
+                        <template lwc:if={row.isReading}>
+                            <div class="c-reading c-reading_pending" role="status">
+                                <p class="c-reading__status">
+                                    <span class="c-reading__pulse" aria-hidden="true"></span>
+                                    {readingCaption}
+                                </p>
+                            </div>
+                        </template>
+
+                        <template lwc:if={row.error}>
+                            <div class="c-reading">
+                                <p class="c-reading__error" role="alert">{row.error}</p>
+                            </div>
+                        </template>
+
+                        <template lwc:if={row.reading}>
+                            <div class="c-reading c-reading_arrived" data-reading={row.documentId}>
+                                <div class="c-reading__top">
+                                    <div class="c-reading__what">
+                                        <p class="c-reading__type">{row.reading.documentType}</p>
+                                        <p class="c-reading__from">{row.reading.fromLine}</p>
+                                    </div>
+                                    <template lwc:if={row.reading.totalLabel}>
+                                        <div class="c-reading__total">
+                                            <span class="c-reading__total-label">Total</span>
+                                            <span class="c-reading__total-value">{row.reading.totalLabel}</span>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <p class={row.reading.matchClass}>
+                                    <lightning-icon icon-name={row.reading.matchIcon} size="xx-small" alternative-text=""></lightning-icon>
+                                    <span>{row.reading.matchNote}</span>
+                                </p>
+
+                                <p class="c-reading__summary">{row.reading.summary}</p>
+
+                                <template lwc:if={row.reading.hasFacts}>
+                                    <dl class="c-facts">
+                                        <template for:each={row.reading.facts} for:item="fact">
+                                            <div key={fact.key} class="c-fact">
+                                                <dt class="c-fact__label">{fact.label}</dt>
+                                                <dd class="c-fact__value">{fact.value}</dd>
+                                            </div>
+                                        </template>
+                                    </dl>
+                                </template>
+
+                                <section class="c-block">
+                                    <h3 class="c-block__title">Against the claim</h3>
+                                    <p class="c-block__text">{row.reading.comparison}</p>
+                                </section>
+
+                                <template lwc:if={row.reading.hasConcerns}>
+                                    <section class="c-block">
+                                        <h3 class="c-block__title">Looks off</h3>
+                                        <ul class="c-concerns">
+                                            <template for:each={row.reading.concernRows} for:item="concern">
+                                                <li key={concern.key} class="c-concern">{concern.text}</li>
+                                            </template>
+                                        </ul>
+                                    </section>
+                                </template>
+
+                                <template lwc:if={row.reading.hasSuggestions}>
+                                    <section class="c-block">
+                                        <h3 class="c-block__title">Suggested</h3>
+                                        <ul class="c-suggestions">
+                                            <template for:each={row.reading.suggestionRows} for:item="suggestion">
+                                                <li key={suggestion.key} class="c-suggestion">
+                                                    <div class="c-suggestion__main">
+                                                        <p class="c-suggestion__title">{suggestion.title}</p>
+                                                        <p class="c-suggestion__reason">{suggestion.reason}</p>
+                                                        <template lwc:if={suggestion.isConfirming}>
+                                                            <p class="c-suggestion__effect">{suggestion.effect}</p>
+                                                        </template>
+                                                    </div>
+                                                    <div class="c-suggestion__actions">
+                                                        <template lwc:if={suggestion.isDone}>
+                                                            <span class="c-done">
+                                                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                                                                Done
+                                                            </span>
+                                                        </template>
+                                                        <template lwc:elseif={suggestion.isConfirming}>
+                                                            <lightning-button
+                                                                label="Cancel"
+                                                                data-id={row.documentId}
+                                                                data-index={suggestion.index}
+                                                                disabled={suggestion.isApplying}
+                                                                onclick={handleCancelApply}
+                                                            ></lightning-button>
+                                                            <lightning-button
+                                                                variant="brand"
+                                                                label="Confirm"
+                                                                data-id={row.documentId}
+                                                                data-index={suggestion.index}
+                                                                disabled={suggestion.isApplying}
+                                                                onclick={handleConfirmApply}
+                                                            ></lightning-button>
+                                                        </template>
+                                                        <template lwc:else>
+                                                            <lightning-button
+                                                                label={suggestion.applyLabel}
+                                                                data-id={row.documentId}
+                                                                data-index={suggestion.index}
+                                                                onclick={handleApply}
+                                                            ></lightning-button>
+                                                        </template>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </section>
+                                </template>
+
+                                <section class="c-block c-note">
+                                    <div class="c-note__head">
+                                        <h3 class="c-block__title">File note</h3>
+                                        <template lwc:if={row.reading.noteAdded}>
+                                            <span class="c-done">
+                                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                                                Added to the file
+                                            </span>
+                                        </template>
+                                        <template lwc:else>
+                                            <lightning-button
+                                                label="Add to file notes"
+                                                icon-name="utility:add"
+                                                data-id={row.documentId}
+                                                disabled={row.reading.isAddingNote}
+                                                onclick={handleAddNote}
+                                            ></lightning-button>
+                                        </template>
+                                    </div>
+                                    <div class="c-note__body">
+                                        <c-antsurance-markdown value={row.reading.note}></c-antsurance-markdown>
+                                    </div>
+                                </section>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </article>
+    </div>
+    <div class={lettersClass} role="tabpanel" aria-label="Letters">
+        <c-antsurance-claim-letters record-id={recordId} onletterschange={handleLettersChange} onlettersaved={handleLetterSaved}></c-antsurance-claim-letters>
+    </div>
+</template>

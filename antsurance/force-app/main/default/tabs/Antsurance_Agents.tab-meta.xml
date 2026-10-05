@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Claude at work, one job per row: how each really runs, what it reads and prepares, what it may do alone, what it did, and how it scored when tested.</description>
+    <label>Claude at Work</label>
+    <lwcComponent>antsuranceAgents</lwcComponent>
+    <motif>Custom67: Gears</motif>
+</CustomTab>

@@ -1,0 +1,69 @@
+<template>
+    <template lwc:if={form}>
+        <section class="c-form">
+            <template lwc:if={receipt}>
+                <div class="c-form__receipt" role="status">
+                    <span class="c-form__tick"><lightning-icon icon-name="utility:check" size="small" alternative-text=""></lightning-icon></span>
+                    <h2 class="c-h2">{receiptTitle}</h2>
+                    <p class="c-form__next">{receipt.message}</p>
+                    <template lwc:if={receiptNote}><p class="c-form__next">{receiptNote}</p></template>
+                    <template lwc:if={photoNote}><p class="c-form__next">{photoNote}</p></template>
+                    <div class="c-form__actions">
+                        <button type="button" class="c-button c-button_primary" onclick={handleDone}>See where it stands</button>
+                        <button type="button" class="c-button" onclick={handleAnother}>Send another</button>
+                    </div>
+                </div>
+            </template>
+            <template lwc:else>
+                <header class="c-form__head">
+                    <h1 class="c-h1">{form.title}</h1>
+                    <p class="c-form__intro">{form.intro}</p>
+                </header>
+                <form class="c-form__grid" onsubmit={handleSend} novalidate>
+                    <template for:each={fields} for:item="field">
+                        <div key={field.name} class={field.className} data-wrap={field.name}>
+                            <label class="c-field__label" for={field.id}>
+                                {field.label}
+                                <template lwc:if={field.required}><span class="c-field__needed"> (needed)</span></template>
+                            </label>
+                            <template lwc:if={field.isText}>
+                                <input id={field.id} class="c-field__input" type="text" data-name={field.name} value={field.value} maxlength={field.maxLength} aria-describedby={field.helpId} oninput={handleInput} />
+                            </template>
+                            <template lwc:if={field.isDate}>
+                                <input id={field.id} class="c-field__input" type="date" data-name={field.name} value={field.value} aria-describedby={field.helpId} oninput={handleInput} />
+                            </template>
+                            <template lwc:if={field.isArea}>
+                                <textarea id={field.id} class="c-field__input c-field__input_area" rows="4" data-name={field.name} aria-describedby={field.helpId} oninput={handleInput}></textarea>
+                            </template>
+                            <template lwc:if={field.isSelect}>
+                                <select id={field.id} class="c-field__input" data-name={field.name} aria-describedby={field.helpId} onchange={handleInput}>
+                                    <option value="">Choose one</option>
+                                    <template for:each={field.options} for:item="option">
+                                        <option key={option.value} value={option.value} selected={option.selected}>{option.label}</option>
+                                    </template>
+                                </select>
+                            </template>
+                            <p id={field.helpId} class="c-field__notes">
+                                <template lwc:if={field.error}><span class="c-field__error">{field.error}</span></template>
+                                <template lwc:if={field.byClaude}>
+                                    <span class="c-field__claude">Filled in by Claude. Change it if it is not right.</span>
+                                </template>
+                                <template lwc:if={field.help}><span class="c-field__help">{field.help}</span></template>
+                            </p>
+                        </div>
+                    </template>
+                    <template lwc:if={takesPhotos}>
+                        <div class="c-form__photos">
+                            <c-antsurance-portal-photos loss-type={values.lossType} what-happened={values.whatHappened} onphotoschange={handlePhotosChange}></c-antsurance-portal-photos>
+                        </div>
+                    </template>
+                    <div class="c-form__foot">
+                        <template lwc:if={failure}><p class="c-form__failure" role="alert">{failure}</p></template>
+                        <button type="submit" class="c-button c-button_primary" disabled={isSending}>{sendLabel}</button>
+                        <p class="c-form__promise">Nothing is sent until you press this button.</p>
+                    </div>
+                </form>
+            </template>
+        </section>
+    </template>
+</template>

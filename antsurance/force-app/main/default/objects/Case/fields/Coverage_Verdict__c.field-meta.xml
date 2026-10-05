@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coverage_Verdict__c</fullName>
+    <description>The coverage read's verdict: Covered, Not covered or Needs review. Advice from Claude until an adjuster confirms it.</description>
+    <label>Coverage Verdict</label>
+    <length>20</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

@@ -1,0 +1,96 @@
+<template>
+    <template lwc:if={compact}>
+        <section class="c-mini" aria-label={spec.title}>
+            <header class="c-mini__head">
+                <div class="c-mini__titles">
+                    <h3 class="c-mini__title">{spec.title}</h3>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </header>
+            <template lwc:if={hasSwitch}>
+                <div class="c-switch" role="group" aria-label={switchLabel}>
+                    <span class="c-switch__label">Beside</span>
+                    <template for:each={choices} for:item="choice">
+                        <button key={choice.key} type="button" class={choice.className} aria-pressed={choice.pressed} data-index={choice.index} onclick={handleChoice}>
+                            {choice.name}
+                        </button>
+                    </template>
+                </div>
+            </template>
+            <table class="c-pair">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <template for:each={pair} for:item="option">
+                            <th key={option.key} scope="col" class={option.headClass}>
+                                <template lwc:if={option.url}>
+                                    <a class="c-pair__name c-option__name_link" href={option.url} data-record-id={option.recordId} onclick={handleOpen}>{option.name}</a>
+                                </template>
+                                <template lwc:else>
+                                    <span class="c-pair__name">{option.name}</span>
+                                </template>
+                                <template lwc:if={option.recommended}>
+                                    <span class="c-chip c-chip_alert">Recommended</span>
+                                </template>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={pairRows} for:item="row">
+                        <tr key={row.key} class={row.className}>
+                            <th scope="row">{row.label}</th>
+                            <td>{row.lead}</td>
+                            <td>{row.other}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <template lwc:if={trimsRows}>
+                <button type="button" class="c-more" aria-expanded={showSame} onclick={handleToggle}>{sameLabel}</button>
+            </template>
+            <template lwc:if={hasReason}>
+                <p class="c-compare__reason c-compare__reason_mini">
+                    <strong class="c-compare__lead">{reasonLead}</strong>
+                    {spec.reason}
+                </p>
+            </template>
+        </section>
+    </template>
+    <template lwc:else>
+        <section class="c-compare" aria-label={spec.title}>
+            <h3 class="c-title">{spec.title}</h3>
+            <ul class="c-options" style={gridStyle}>
+                <template for:each={options} for:item="option">
+                    <li key={option.key} class={option.className}>
+                        <div class="c-option__head">
+                            <template lwc:if={option.url}>
+                                <a class="c-option__name c-option__name_link" href={option.url} data-record-id={option.recordId} onclick={handleOpen}>{option.name}</a>
+                            </template>
+                            <template lwc:else>
+                                <span class="c-option__name">{option.name}</span>
+                            </template>
+                            <template lwc:if={option.recommended}>
+                                <span class="c-chip c-chip_alert">Recommended</span>
+                            </template>
+                        </div>
+                        <template for:each={option.cells} for:item="cell">
+                            <div key={cell.key} class="c-option__cell">
+                                <span class="c-option__label">{cell.label}</span>
+                                <span class="c-option__value">{cell.value}</span>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+            <template lwc:if={hasReason}>
+                <p class="c-compare__reason">
+                    <strong class="c-compare__lead">{reasonLead}</strong>
+                    {spec.reason}
+                </p>
+            </template>
+        </section>
+    </template>
+</template>

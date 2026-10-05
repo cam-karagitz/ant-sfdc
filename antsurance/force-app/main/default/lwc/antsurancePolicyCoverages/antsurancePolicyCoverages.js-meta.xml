@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>A policy's coverages as designed rows, grouped by what they protect: an icon, the coverage, what it pays for in a plain line, the limit and how it applies, the deductible, and its share of the premium.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Policy Coverages</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="parentField" type="String" label="Lookup to the policy" description="Leave empty on a policy page. On a coverage or insured asset page, the record&apos;s lookup to its policy (Policy__c): the card then shows that policy&apos;s coverages." />
+            <property name="rows" type="Integer" label="Coverages shown at a time" description="Leave empty to show every coverage, as on a policy page. In a narrow column, a number such as 8: the rest are stepped to, so the card stays under a screen." />
+            <objects>
+                <object>Policy__c</object>
+                <object>Policy_Coverage__c</object>
+                <object>Policy_Asset__c</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

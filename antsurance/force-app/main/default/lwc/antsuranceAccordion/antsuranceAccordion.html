@@ -1,0 +1,18 @@
+<template>
+    <section class={sectionClass}>
+        <div class="c-acc__heading" role="heading" aria-level={level}>
+            <button type="button" class="c-acc__head c-ui-focus" aria-expanded={expanded} aria-controls="detail" onclick={handleToggle}>
+                <lightning-icon icon-name="utility:chevronright" size="xx-small" class="c-acc__chevron" alternative-text=""></lightning-icon>
+                <template lwc:if={icon}>
+                    <lightning-icon icon-name={icon} size="xx-small" class="c-acc__icon" alternative-text=""></lightning-icon>
+                </template>
+                <span class="c-acc__label">{label}</span>
+                <template lwc:if={hasCount}><span class="c-acc__count">{count}</span></template>
+                <template lwc:if={showSummary}><span class="c-acc__summary">{summary}</span></template>
+            </button>
+        </div>
+        <div id="detail" class="c-acc__body" role="region" aria-label={label}>
+            <slot></slot>
+        </div>
+    </section>
+</template>

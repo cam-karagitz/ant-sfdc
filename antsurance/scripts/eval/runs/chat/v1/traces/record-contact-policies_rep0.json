@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Contact record \"Maria Reyes\" open (object Contact, Id 003aj00002T8RBzAAN). \"This\", \"here\" and \"this contact\" refer to that record.]\n\nWhich policies is this person on?"
+  },
+  {
+    "role": "assistant",
+    "content": "Maria Reyes is on **3 active policies**. She's the Named Insured on all three, and she's also listed as a Driver on the auto policy.\n\n- [ANT-PA-204517](/lightning/r/a00aj00003jKVNbAAO/view): Personal Auto. Named Insured and Driver.\n- [ANT-HO-204534](/lightning/r/a00aj00003jKVNcAAO/view): Homeowners. Named Insured.\n- [ANT-UM-204551](/lightning/r/a00aj00003jKVNdAAO/view): Umbrella. Named Insured.\n\nThere's also a new service request, [00002163](/lightning/r/500aj00003jKuWNAA0/view), to add Sofia Reyes as a driver."
+  }
+]

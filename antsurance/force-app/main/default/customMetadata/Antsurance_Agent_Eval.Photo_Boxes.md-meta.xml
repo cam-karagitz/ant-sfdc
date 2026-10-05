@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Where the boxes land</label>
+    <protected>false</protected>
+    <values>
+        <field>Agent__c</field>
+        <value xsi:type="xsd:string">photos</value>
+    </values>
+    <values>
+        <field>Caveat__c</field>
+        <value xsi:type="xsd:string">The true areas were drawn by eye by the builder. Spread-out damage, such as shingles or a stain, scores low.</value>
+    </values>
+    <values>
+        <field>Measured__c</field>
+        <value xsi:type="xsd:string">Twelve photos, 16 areas of true damage. Overlap of each box with the true area, from 0 to 1. 81 percent overlap by half or more, and none was missed.</value>
+    </values>
+    <values>
+        <field>Order__c</field>
+        <value xsi:type="xsd:double">2</value>
+    </values>
+    <values>
+        <field>Result__c</field>
+        <value xsi:type="xsd:string">0.69 overlap</value>
+    </values>
+    <values>
+        <field>Run_On__c</field>
+        <value xsi:type="xsd:date">2026-10-04</value>
+    </values>
+    <values>
+        <field>Source__c</field>
+        <value xsi:type="xsd:string">scripts/eval/boxes</value>
+    </values>
+</CustomMetadata>

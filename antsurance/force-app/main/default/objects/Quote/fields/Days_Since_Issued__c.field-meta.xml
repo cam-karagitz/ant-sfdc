@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Days_Since_Issued__c</fullName>
+    <description>How long the quote has been out. Blank until it is issued.</description>
+    <label>Days Since Issued</label>
+    <formula><![CDATA[IF(ISBLANK(Issued_Date__c), NULL, TODAY() - Issued_Date__c)]]></formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <unique>false</unique>
+    <type>Number</type>
+</CustomField>

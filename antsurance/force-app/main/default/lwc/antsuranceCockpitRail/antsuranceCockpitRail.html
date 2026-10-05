@@ -1,0 +1,43 @@
+<template>
+    <aside class="c-rail" aria-label="What to watch, and quick actions">
+        <template lwc:if={hasWatch}>
+            <section class="c-watching" aria-labelledby="watch-title">
+                <h2 id="watch-title" class="c-rail__title">Keep an eye on</h2>
+                <p class="c-rail__sub">From Claude's briefing. No action needed yet.</p>
+                <ul class="c-watchlist">
+                    <template for:each={watch} for:item="item">
+                        <li key={item.key} class="c-watch">
+                            <p class="c-watch__label">{item.label}</p>
+                            <p class="c-watch__detail">{item.detail}</p>
+                            <template lwc:if={item.recordId}>
+                                <p class="c-watch__ref">
+                                    <a class="c-link" href={item.url} title={item.fullName} data-record-id={item.recordId} data-object={item.objectApiName} onclick={handleOpen}>{item.recordName}</a>
+                                </p>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+        </template>
+        <section class="c-starts" aria-labelledby="actions-title">
+            <h2 id="actions-title" class="c-eyebrow">Quick actions</h2>
+            <ul class="c-actions">
+                <template for:each={actions} for:item="action">
+                    <li key={action.key}>
+                        <button type="button" class="c-action" data-key={action.key} onclick={handleAction}>
+                            <lightning-icon icon-name={action.icon} size="x-small" alternative-text="" class="c-action__icon"></lightning-icon>
+                            <span>{action.label}</span>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+            <button type="button" class="c-may" onclick={handleAutonomy}>
+                <lightning-icon icon-name="utility:shield" size="x-small" alternative-text="" class="c-may__icon"></lightning-icon>
+                <span class="c-may__words">
+                    <span class="c-may__lead">What Claude may do</span>
+                    <span class="c-may__sub">How far it goes on its own</span>
+                </span>
+            </button>
+        </section>
+    </aside>
+</template>

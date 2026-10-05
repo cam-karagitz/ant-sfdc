@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Personal Auto</fullName>
+        <default>false</default>
+        <label>Personal Auto</label>
+    </customValue>
+    <customValue>
+        <fullName>Homeowners</fullName>
+        <default>false</default>
+        <label>Homeowners</label>
+    </customValue>
+    <customValue>
+        <fullName>Renters</fullName>
+        <default>false</default>
+        <label>Renters</label>
+    </customValue>
+    <customValue>
+        <fullName>Umbrella</fullName>
+        <default>false</default>
+        <label>Umbrella</label>
+    </customValue>
+    <customValue>
+        <fullName>Commercial Property</fullName>
+        <default>false</default>
+        <label>Commercial Property</label>
+    </customValue>
+    <customValue>
+        <fullName>General Liability</fullName>
+        <default>false</default>
+        <label>General Liability</label>
+    </customValue>
+    <customValue>
+        <fullName>Workers Compensation</fullName>
+        <default>false</default>
+        <label>Workers Compensation</label>
+    </customValue>
+    <customValue>
+        <fullName>Commercial Auto</fullName>
+        <default>false</default>
+        <label>Commercial Auto</label>
+    </customValue>
+    <description>Insurance lines Antsurance writes. Shared by policies, opportunities and leads.</description>
+    <masterLabel>Line of Business</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Okafor Household\" open (object Account, Id 001aj000040t3cpAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhat is open here?"
+  },
+  {
+    "role": "assistant",
+    "content": "The Okafor Household has **2 open items**: a claim on the home and a service request on the auto policy.\n\n| Case | Type | Status | Handled by | Detail |\n|---|---|---|---|---|\n| [00002216](/lightning/r/500aj00003jLAOcAAO/view): Burst pipe flooded finished basement | Claim, **High** severity | Under Investigation | Marcus Lindahl | Outstanding reserve **$43,450** |\n| [00002263](/lightning/r/500aj00003jLAPNAA4/view): Lower collision deductible to $250 | Service request | New | Bridget Castillo | Change would add **$86** a year |\n\n**Where things stand:**\n- **Claim:** The basement is dry. The reserve went up from $45,000 to **$48,450** after the Northshore Renovation rebuild estimate came in. A $5,000 advance has already been paid.\n- **Service request:** Bridget emailed Amara the price comparison on 1 Oct. Even so, the request still shows as New."
+  }
+]

@@ -1,0 +1,4 @@
+<aura:component implements="lightning:homeTemplate" description="A Home page of one full-width region, for the Antsurance cockpit. The stock Home template keeps a third of the width for a sidebar.">
+    <aura:attribute name="main" type="Aura.Component[]" description="The page's one region." />
+    <div>{!v.main}</div>
+</aura:component>

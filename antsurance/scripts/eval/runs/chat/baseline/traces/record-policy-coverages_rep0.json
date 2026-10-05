@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-PA-204517\" open (object Policy__c, Id a00aj00003jKc7JAAS). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat coverages does this policy have?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Account__r.Name, Account__r.Id, (SELECT Id, Name, Category__c, Limit_Amount__c, Limit_Type__c, Deductible_Amount__c, Premium_Amount__c FROM Coverages__r ORDER BY Category__c) FROM Policy__c WHERE Id = 'a00aj00003jKc7JAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Coverages__r\":[{\"Premium_Amount__c\":833.00,\"Limit_Type__c\":\"Per Person\",\"Limit_Amount__c\":300000.00,\"Category__c\":\"Liability\",\"Name\":\"Bodily Injury Liability\",\"Id\":\"a01aj000040t1ogAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"},{\"Premium_Amount__c\":357.00,\"Limit_Type__c\":\"Per Occurrence\",\"Limit_Amount__c\":100000.00,\"Category__c\":\"Liability\",\"Name\":\"Property Damage Liability\",\"Id\":\"a01aj000040t1ohAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"},{\"Premium_Amount__c\":666.40,\"Deductible_Amount__c\":500.00,\"Limit_Type__c\":\"Actual Cash Value\",\"Category__c\":\"Collision\",\"Name\":\"Collision\",\"Id\":\"a01aj000040t1oiAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"},{\"Premium_Amount__c\":285.60,\"Deductible_Amount__c\":500.00,\"Limit_Type__c\":\"Actual Cash Value\",\"Category__c\":\"Comprehensive\",\"Name\":\"Comprehensive\",\"Id\":\"a01aj000040t1ojAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"},{\"Premium_Amount__c\":95.20,\"Limit_Type__c\":\"Per Person\",\"Limit_Amount__c\":5000.00,\"Category__c\":\"Medical Payments\",\"Name\":\"Medical Payments\",\"Id\":\"a01aj000040t1olAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"},{\"Premium_Amount__c\":142.80,\"Limit_Type__c\":\"Per Person\",\"Limit_Amount__c\":300000.00,\"Category__c\":\"Uninsured Motorist\",\"Name\":\"Uninsured Motorist\",\"Id\":\"a01aj000040t1okAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\"}],\"Account__c\":\"001aj000040t1nsAAA\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKc7JAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Policy ANT-PA-204517 is an active Personal Auto policy for [Reyes Household](/lightning/r/001aj000040t1nsAAA/view). It has **6 coverages**, and together they cost **$2,380** a year.\n\n| Coverage | Limit | Deductible | Premium |\n|---|---|---|---|\n| [Bodily Injury Liability](/lightning/r/a01aj000040t1ogAAA/view) | $300,000 per person | — | $833 |\n| [Property Damage Liability](/lightning/r/a01aj000040t1ohAAA/view) | $100,000 per occurrence | — | $357 |\n| [Collision](/lightning/r/a01aj000040t1oiAAA/view) | Actual cash value | $500 | $666.40 |\n| [Comprehensive](/lightning/r/a01aj000040t1ojAAA/view) | Actual cash value | $500 | $285.60 |\n| [Uninsured Motorist](/lightning/r/a01aj000040t1okAAA/view) | $300,000 per person | — | $142.80 |\n| [Medical Payments](/lightning/r/a01aj000040t1olAAA/view) | $5,000 per person | — | $95.20 |"
+  }
+]

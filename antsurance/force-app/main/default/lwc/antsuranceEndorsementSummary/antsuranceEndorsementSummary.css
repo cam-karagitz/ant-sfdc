@@ -1,0 +1,188 @@
+@import 'c/antsuranceUiStyles';
+
+/* One form on a policy, drawn like the stub of a paper form: the form number torn off along a
+   dashed line above what the form does. Brand values are fixed on purpose so the card keeps its
+   look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-dark: #8a4a35;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-form {
+    container-type: inline-size;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    overflow: hidden;
+}
+
+.c-form__stub {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem 0.875rem;
+    background: var(--ants-ivory);
+    border-bottom: 2px dashed var(--ants-line);
+}
+
+.c-form__eyebrow,
+.c-form__label,
+.c-form__facts dt {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-form__number {
+    margin: 0.125rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-form__tags {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-form__type {
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.c-form__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.125rem 1.25rem;
+}
+
+.c-form__figure {
+    margin: 0.25rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.c-form__figure_saves {
+    color: var(--ants-olive-ink);
+}
+
+.c-form__figure_none {
+    color: var(--ants-muted);
+}
+
+.c-form__note {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-form__facts {
+    display: grid;
+    align-content: start;
+    gap: 0.875rem;
+    margin: 0;
+}
+
+.c-form__facts dd {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
+.c-form__policy {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-form__policy:hover,
+.c-form__policy:focus {
+    background: var(--ants-line);
+    text-decoration: none;
+}
+
+.c-form__policy-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-form__policy-number {
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-form__policy-line {
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.c-form__policy-open {
+    margin-left: auto;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-form__error {
+    margin: 0;
+    padding: 1.25rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-form__loading {
+    position: relative;
+    min-height: 8rem;
+}
+
+/* In a narrow column the two halves stack and the tags drop under the form number. */
+@container (max-width: 26rem) {
+    .c-form__stub {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .c-form__body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+}

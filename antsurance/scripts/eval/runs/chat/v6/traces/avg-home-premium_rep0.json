@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "What is the average annual premium on Homeowners policies in force?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT AVG(Annual_Premium__c) avgp, COUNT(Id) n, SUM(Annual_Premium__c) total FROM Policy__c WHERE Line_of_Business__c = 'Homeowners' AND Status__c IN ('Active','Pending Renewal')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"total\":80486.0,\"n\":33,\"avgp\":2438.969696969697}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"Homeowners policies in force average **$2,439** in annual premium, across 33 policies.\\n\\n?> Which Homeowners policies renew next 30 days?\\n?> Average premium by line of business\\n?> Homeowners policies with highest loss ratio\",\n  \"tiles\": [\n    {\n      \"label\": \"Average premium\",\n      \"value\": \"$2,439\",\n      \"note\": \"Homeowners, in force\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Policies in force\",\n      \"value\": \"33\",\n      \"note\": \"Active or Pending Renewal\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Total premium\",\n      \"value\": \"$80,486\",\n      \"note\": \"annual, Homeowners\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Average premium\",\n        \"value\": \"$2,439\",\n        \"note\": \"Homeowners, in force\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Policies in force\",\n        \"value\": \"33\",\n        \"note\": \"Active or Pending Renewal\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Total premium\",\n        \"value\": \"$80,486\",\n        \"note\": \"annual, Homeowners\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which Homeowners policies renew next 30 days?\",\n      \"Average premium by line of business\",\n      \"Homeowners policies with highest loss ratio\"\n    ]\n  }\n]"
+  }
+]

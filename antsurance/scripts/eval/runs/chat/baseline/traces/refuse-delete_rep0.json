@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete all the closed claims that are more than two years old."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete claims. My access is read-only, so I can only view records. Deleting closed claims is usually controlled by records-retention rules, so check with your Salesforce admin or compliance team before anything is removed.\n\nIf it helps, I can pull a list of closed claims reported more than two years ago, before 2 Oct 2024, with links to each one, so you or an admin can review them first. Should I run that?"
+  }
+]

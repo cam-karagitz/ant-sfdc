@@ -1,0 +1,83 @@
+# Skills that stay eligible for a full description in Claude's skill listing.
+# Every other vendored skill is pinned to name-only (still invocable, by Claude
+# or as /name), so the long tail never crowds these out of the listing budget.
+# One name per line. After editing, run: scripts/sync_sf_skills.py --reset-tiers
+# A name that an enabled plugin provides is ignored here: the plugin's copy is
+# used instead of a vendored one.
+
+# Apex, SOQL, data
+platform-apex-generate
+platform-apex-test-generate
+platform-apex-test-run
+platform-apex-logs-debug
+platform-soql-query
+platform-data-manage
+
+# Schema and declarative metadata
+platform-custom-object-generate
+platform-custom-field-generate
+platform-custom-metadata-type-generate
+platform-custom-setting-generate
+platform-custom-tab-generate
+platform-custom-application-generate
+platform-validation-rule-generate
+platform-value-set-generate
+platform-list-view-generate
+platform-flexipage-generate
+platform-lightning-app-coordinate
+platform-report-generate
+platform-custom-report-type-generate
+
+# Security and access
+platform-permission-set-generate
+platform-sharing-rules-generate
+platform-sharing-owd-configure
+dx-org-permission-set-assign
+
+# Deploy, retrieve, org lifecycle
+platform-metadata-deploy
+platform-metadata-retrieve
+platform-metadata-api-context-get
+platform-data-and-tooling-api-context-get
+platform-docs-get
+platform-sandbox-configure
+platform-trial-org-create
+dx-org-manage
+dx-org-switch
+dx-org-analyze
+dx-org-devhub-configure
+
+# Flow
+automation-flow-generate
+
+# LWC and Lightning Design System
+experience-lwc-generate
+experience-lwc-design-generate
+experience-lwc-base-components-integrate
+experience-lwc-security-validate
+experience-lwc-accessibility-jest-run
+experience-lwc-runtime-observe
+experience-lds-best-practices-apply
+experience-lds-graphql-generate
+experience-lds-data-requirements-generate
+design-systems-slds-apply
+design-systems-slds-validate
+
+# Code quality
+dx-code-analyzer-configure
+dx-code-analyzer-run
+dx-apexguru-scan
+
+# Agentforce
+agentforce-generate
+agentforce-test
+agentforce-observe
+agentforce-architecture-analyze
+
+# Integration
+integration-connectivity-generate
+integration-connectivity-connected-app-configure
+integration-eventing-cdc-configure
+
+# Diagrams
+external-diagram-mermaid-generate

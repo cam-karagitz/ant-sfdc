@@ -1,0 +1,36 @@
+[
+  {
+    "role": "user",
+    "content": "For the customer with the largest outstanding reserve on a single open claim, which policies do they hold?"
+  },
+  {
+    "role": "assistant",
+    "content": "I'll find the customer with the largest outstanding reserve on a single open claim, then list their policies."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Case.Id, Case.Outstanding_Reserve__c, Case.Policy__r.Account__c, Case.Policy__r.Account__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Account__r\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040t3d1AAA\"},\"Account__c\":\"001aj000040t3d1AAA\",\"Id\":\"a00aj00003jKdyPAAS\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyPAAS\",\"Outstanding_Reserve__c\":490000.00,\"Id\":\"500aj00003jLAOhAAO\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Now I'll get all policies for this customer:"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Name, Line_of_Business__c, Status__c, Effective_Date__c, Expiration_Date__c, Annual_Premium__c FROM Policy__c WHERE Account__c = '001aj000040t3d1AAA' ORDER BY Name\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Id\":\"a00aj00003jKdyPAAS\",\"Annual_Premium__c\":118000.00,\"Expiration_Date__c\":\"2027-01-07\",\"Effective_Date__c\":\"2026-01-07\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Commercial Property\",\"Name\":\"ANT-CP-205061\"},{\"Id\":\"a00aj00003jKdyQAAS\",\"Annual_Premium__c\":31200.00,\"Expiration_Date__c\":\"2027-01-07\",\"Effective_Date__c\":\"2026-01-07\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"General Liability\",\"Name\":\"ANT-GL-205078\"},{\"Id\":\"a00aj00003jKdyRAAS\",\"Annual_Premium__c\":12400.00,\"Expiration_Date__c\":\"2027-01-07\",\"Effective_Date__c\":\"2026-01-07\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-205095\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Copperfield Property Management** has the largest outstanding reserve on a single claim at **$490,000**. They hold **3 policies**:\n\n| Policy | Line of Business | Premium | Status |\n|--------|------------------|---------|--------|\n| [ANT-CP-205061](/lightning/r/a00aj00003jKdyPAAS/view) | Commercial Property | $118,000 | Active |\n| [ANT-GL-205078](/lightning/r/a00aj00003jKdyQAAS/view) | General Liability | $31,200 | Active |\n| [ANT-UM-205095](/lightning/r/a00aj00003jKdyRAAS/view) | Umbrella | $12,400 | Active |"
+  }
+]

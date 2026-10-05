@@ -1,0 +1,84 @@
+/* Brand values for the Home cockpit, fixed on purpose so it keeps its look under any org theme,
+   and the few small pieces every cockpit component shares. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: var(--ants-ink);
+}
+
+/* A small capital label above a value or a group. */
+.c-eyebrow {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+/* A chip always carries its word; the tint only helps find it. */
+.c-chip {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 1.375rem;
+    padding: 0 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-chip_alert {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-chip_watch {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_good {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 74, 53, 0.35);
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+.c-link:hover,
+.c-link:focus-visible {
+    text-decoration-color: currentColor;
+}
+
+.c-link:focus-visible,
+.c-plain:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}

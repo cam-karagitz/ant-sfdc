@@ -1,0 +1,181 @@
+@import 'c/antsurancePortalStyles';
+
+:host {
+    display: block;
+    /* The card measures itself, so its heading tightens where the card is narrow, whatever makes it so. */
+    container: card / inline-size;
+}
+
+/* Three cards beside the open conversation are each about 17rem wide: a smaller icon and a closer gap keep
+   "Personal Auto" on one line beside its status. */
+@container card (max-width: 18.5rem) {
+    .c-policy .c-policy__top {
+        gap: 0.5rem;
+    }
+
+    .c-policy .c-policy__icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.625rem;
+    }
+
+    .c-policy .c-policy__line {
+        font-size: 1rem;
+    }
+}
+
+.c-policy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-policy {
+    transition: border-color var(--p-fast), box-shadow var(--p-fast), transform var(--p-fast);
+}
+
+.c-policy:hover {
+    border-color: var(--p-clay);
+    box-shadow: 0 6px 18px rgba(217, 119, 87, 0.16);
+    transform: translateY(-1px);
+}
+
+.c-policy:active {
+    transform: none;
+    box-shadow: none;
+    background: var(--p-clay-tint);
+}
+
+.c-policy:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-policy__top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.c-policy__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: var(--p-clay-tint);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+}
+
+.c-policy__name {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-policy__line {
+    font-family: var(--p-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+}
+
+.c-policy__number {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-policy__insured {
+    color: var(--p-muted);
+    font-size: 0.9375rem;
+}
+
+.c-policy__facts {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-policy__fact {
+    display: flex;
+    flex-direction: column;
+}
+
+.c-policy__fact_end {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.c-policy__figure {
+    font-family: var(--p-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.1;
+}
+
+.c-policy__when {
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.c-policy__caption {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+/* Inside the conversation: tighter, same facts. */
+.c-policy_compact {
+    gap: 0.5rem;
+    padding: 0.875rem;
+    border-radius: 0.75rem;
+}
+
+.c-policy_compact .c-policy__figure {
+    font-size: 1.25rem;
+}
+
+.c-policy_compact .c-policy__facts {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    padding-top: 0.5rem;
+}
+
+/* In a narrow rail the icon and the insured items are left out, so "Personal Auto" and "Renews May 15, 2027" each
+   sit on one line. */
+.c-policy_compact .c-policy__icon,
+.c-policy_compact .c-policy__insured {
+    display: none;
+}
+
+.c-policy_compact .c-policy__line,
+.c-policy_compact .c-policy__number,
+.c-policy_compact .c-policy__when,
+.c-policy_compact .c-policy__caption {
+    white-space: nowrap;
+}
+
+.c-policy_compact .c-policy__fact {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.375rem;
+}
+
+.c-policy_compact .c-policy__fact_end {
+    text-align: left;
+}

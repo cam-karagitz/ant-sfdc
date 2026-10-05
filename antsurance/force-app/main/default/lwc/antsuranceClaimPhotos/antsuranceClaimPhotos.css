@@ -1,0 +1,563 @@
+/* The claim's photographs beside Claude's read of them. Evidence on the left, judgement on the
+   right, in one card that sits at the top of the Documents tab.
+   Brand values are fixed on purpose so the card keeps its look under any org theme. */
+:host {
+    display: block;
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-reply-size: 0.875rem;
+}
+
+.c-photos {
+    margin-bottom: 1.25rem;
+    padding: 0.25rem 0.25rem 1.25rem;
+    border-bottom: 1px solid var(--ants-line);
+    color: var(--ants-ink);
+}
+
+.c-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding: 0 0 0.875rem;
+}
+
+.c-head__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-head__meta {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-head__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* The real file input stays in the page for keyboards and screen readers; its label is the button. */
+.c-file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.c-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2rem;
+    padding: 0 1rem;
+    border: 1px solid var(--ants-ink);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-add:hover {
+    background: var(--ants-ivory);
+}
+
+.c-file:focus-visible + .c-add {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-add_busy {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.c-add__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-error {
+    margin: 0 0 1rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-stale {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.625rem;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    font-size: 0.8125rem;
+}
+
+.c-stale__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+.c-skeleton {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.c-skeleton__tile {
+    width: 9rem;
+    height: 6.5rem;
+    border-radius: 0.75rem;
+    background: var(--ants-oat);
+}
+
+.c-empty,
+.c-invite {
+    padding: 1rem 1.125rem;
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+    border: 1px dashed var(--ants-line);
+}
+
+.c-empty__title,
+.c-invite__title {
+    margin: 0 0 0.25rem;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-empty__text,
+.c-invite__text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-invite .c-limits {
+    margin-top: 0.75rem;
+}
+
+/* The folding sections beside the photos: one open at a time, each a line until it is opened. */
+.c-folds {
+    margin-top: -0.5rem;
+}
+
+.c-note__action {
+    margin-top: 0.5rem;
+}
+
+/* While Claude looks */
+.c-working {
+    padding: 1.125rem;
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+}
+
+.c-working__dot {
+    display: block;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-bottom: 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-clay);
+}
+
+.c-working__caption {
+    margin: 0 0 0.25rem;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-working__progress {
+    margin: 0 0 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+}
+
+/* A step that did not come back: said where it happened, with its own way to try again. */
+.c-failures {
+    margin: 0 0 0.75rem;
+    padding: 0;
+    list-style: none;
+}
+
+.c-failure {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: 0.875rem;
+    background: var(--ants-amber-tint);
+}
+
+.c-failure + .c-failure {
+    margin-top: 0.5rem;
+}
+
+.c-failure__text {
+    flex: 1 1 14rem;
+    min-width: 0;
+}
+
+.c-failure__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ants-amber-ink);
+}
+
+.c-failure__message {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-invite__action {
+    display: block;
+    margin-top: 0.75rem;
+}
+
+.c-working__note {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .c-working__dot {
+        animation: c-pulse 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes c-pulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(0.85);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* The read */
+.c-read {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.c-label {
+    margin: 0 0 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+/* Whether the photos fit the reported loss: the first thing a handler wants. */
+.c-verdict {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: 0.875rem;
+    background: var(--ants-oat);
+    --slds-c-icon-color-foreground-default: var(--ants-muted);
+}
+
+.c-verdict_fits {
+    background: var(--ants-olive-tint);
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-verdict_check {
+    background: var(--ants-amber-tint);
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+.c-verdict__icon {
+    flex: none;
+    margin-top: 0.125rem;
+}
+
+.c-verdict__label {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.c-verdict_fits .c-verdict__label {
+    color: var(--ants-olive-ink);
+}
+
+.c-verdict_check .c-verdict__label {
+    color: var(--ants-amber-ink);
+}
+
+.c-verdict__note {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-seen {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.c-seen::first-letter {
+    text-transform: uppercase;
+}
+
+.c-summary {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+.c-signals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-signal {
+    padding: 0.1875rem 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.c-signal::first-letter {
+    text-transform: uppercase;
+}
+
+.c-range {
+    padding: 0.875rem 1rem;
+    border-radius: 0.875rem;
+    background: var(--ants-ivory);
+    border-left: 3px solid var(--ants-clay);
+}
+
+.c-range__figure {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.c-range__kind {
+    margin: 0.125rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ants-muted);
+}
+
+.c-range__basis {
+    margin: 0.375rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-step__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-step__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-step__reason {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-needed {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-needed__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.1875rem 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+}
+
+.c-needed__box {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.1875rem;
+    border: 1.5px solid var(--ants-muted);
+    border-radius: 0.1875rem;
+}
+
+.c-needed__text::first-letter {
+    text-transform: uppercase;
+}
+
+.c-suggestions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-suggestion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-suggestion:last-child {
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-suggestion__main {
+    flex: 1 1 14rem;
+    min-width: 0;
+}
+
+.c-suggestion__title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    /* A short title in a narrow column: even lines, so no word is left alone on the last one. */
+    text-wrap: balance;
+}
+
+.c-suggestion__reason {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-suggestion__apply {
+    flex: none;
+}
+
+.c-confirm {
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-confirm__effect {
+    flex: 1 1 14rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-confirm__buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.c-done {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-olive-ink);
+    white-space: nowrap;
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-limits {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-foot {
+    margin: -0.625rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}

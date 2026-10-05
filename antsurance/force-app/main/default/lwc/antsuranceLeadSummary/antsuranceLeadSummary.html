@@ -1,0 +1,70 @@
+<template>
+    <article class="c-lead" aria-label="Lead at a glance">
+        <template lwc:if={errorMessage}>
+            <p class="c-lead__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={lead}>
+            <div class="c-lead__top">
+                <p class="c-lead__eyebrow">Asking about</p>
+                <template lwc:if={ratingLabel}>
+                    <span class={ratingClass}>{ratingLabel}</span>
+                </template>
+            </div>
+            <div class="c-lead__want">
+                <span class={lead.tileClass}>
+                    <lightning-icon icon-name={lead.iconName} size="small" alternative-text={interestLabel}></lightning-icon>
+                </span>
+                <div class="c-lead__want-text">
+                    <p class="c-lead__interest">{interestLabel}</p>
+                    <p class="c-lead__who">
+                        {lead.name}
+                        <template lwc:if={companyLine}>, {companyLine}</template>
+                    </p>
+                </div>
+            </div>
+
+            <ul class="c-lead__reach">
+                <template lwc:if={lead.phone}>
+                    <li>
+                        <a class="c-lead__way c-ui-open" href={phoneUrl}>
+                            <span class="c-ui-tile c-ui-tile_small c-ui-tile_olive">
+                                <lightning-icon icon-name="utility:call" size="xx-small" alternative-text="Phone"></lightning-icon>
+                            </span>
+                            <span class="c-lead__way-value">{lead.phone}</span>
+                            <span class="c-lead__way-do">Call</span>
+                        </a>
+                    </li>
+                </template>
+                <template lwc:if={lead.email}>
+                    <li>
+                        <a class="c-lead__way c-ui-open" href={emailUrl}>
+                            <span class="c-ui-tile c-ui-tile_small c-ui-tile_amber">
+                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon>
+                            </span>
+                            <span class="c-lead__way-value">{lead.email}</span>
+                            <span class="c-lead__way-do">Email</span>
+                        </a>
+                    </li>
+                </template>
+                <template lwc:if={hasNoWay}>
+                    <li class="c-lead__none">No phone or email yet. Add one with Edit so someone can reach them.</li>
+                </template>
+            </ul>
+
+            <template lwc:if={waitingLine}>
+                <p class="c-lead__foot">{waitingLine}</p>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-lead__loading" role="status" aria-label="Loading lead">
+                <span class="c-ui-bone c-ui-bone_line c-lead__bone_eyebrow"></span>
+                <span class="c-lead__bone-row">
+                    <span class="c-ui-bone c-ui-bone_tile c-lead__bone_tile"></span>
+                    <span class="c-ui-bone c-ui-bone_title c-lead__bone_title"></span>
+                </span>
+                <span class="c-ui-bone c-ui-bone_line"></span>
+                <span class="c-ui-bone c-ui-bone_line"></span>
+            </div>
+        </template>
+    </article>
+</template>

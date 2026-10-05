@@ -1,0 +1,16 @@
+<template>
+    <template lwc:if={isHead}>
+        <header class="c-login">
+            <img class="c-login__lockup" src={lockup} alt="Antsurance" />
+            <h1 class="c-login__title">Sign in to your account</h1>
+            <p class="c-login__intro">{intro}</p>
+        </header>
+    </template>
+    <template lwc:else>
+        <footer class="c-login c-login_foot">
+            <p class="c-login__help">{help}</p>
+            <p class="c-login__powered"><img class="c-login__spark" src={spark} alt="" />Assistant powered by Claude, from Anthropic</p>
+            <p class="c-login__small">Antsurance is a fictional insurer, for demonstrations.</p>
+        </footer>
+    </template>
+</template>

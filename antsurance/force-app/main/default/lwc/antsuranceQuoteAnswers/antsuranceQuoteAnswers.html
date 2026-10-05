@@ -1,0 +1,20 @@
+<template>
+    <div class="c-answers">
+        <template for:each={sections} for:item="section">
+            <details key={section.key} class="c-answers__section" open>
+                <summary class="c-answers__summary">
+                    <span class="c-answers__title">{section.title}</span>
+                    <span class="c-answers__count">{section.count}</span>
+                </summary>
+                <dl class="c-answers__grid">
+                    <template for:each={section.answers} for:item="answer">
+                        <div key={answer.key} class={answer.className}>
+                            <dt>{answer.label}</dt>
+                            <dd>{answer.value}</dd>
+                        </div>
+                    </template>
+                </dl>
+            </details>
+        </template>
+    </div>
+</template>

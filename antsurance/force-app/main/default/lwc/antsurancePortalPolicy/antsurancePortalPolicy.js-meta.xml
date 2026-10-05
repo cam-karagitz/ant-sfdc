@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Customer portal: a policy's own page. What it is at a glance, what it covers as cards in plain words, who and what is on it, extras, and what is worth knowing.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

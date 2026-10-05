@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "When does the Reyes Household's Personal Auto policy expire?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status__c, Effective_Date__c, Expiration_Date__c, Days_to_Renewal__c, Account__r.Name, Account__r.Id FROM Policy__c WHERE Account__r.Name LIKE '%Reyes%' AND Line_of_Business__c LIKE '%Auto%' ORDER BY Expiration_Date__c DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":223,\"Expiration_Date__c\":\"2027-05-15\",\"Effective_Date__c\":\"2026-05-15\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jfwRBAAY\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "The [Reyes Household](/lightning/r/001aj000041E8MXAA0/view)'s Personal Auto policy [ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view) expires on **May 15, 2027**, which is 223 days from today. It's active and started on May 15, 2026."
+  }
+]

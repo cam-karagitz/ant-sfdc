@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nAdd a note to this file."
+  },
+  {
+    "role": "assistant",
+    "content": "I can add it to claim 00002566. What should the note say? If you tell me what kind it is too (a contact with the Okafors, an investigation finding, a reserve or payment update, or a coverage point), I'll file it under that type."
+  }
+]

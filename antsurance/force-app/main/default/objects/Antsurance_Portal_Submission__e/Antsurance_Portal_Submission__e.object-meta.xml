@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>A claim or service request a customer sent from the portal, on its way to being filed by AntsurancePortalSubmissionTrigger. Who sent it is the event's creator, never a field.</description>
+    <eventType>HighVolume</eventType>
+    <label>Antsurance Portal Submission</label>
+    <pluralLabel>Antsurance Portal Submissions</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>

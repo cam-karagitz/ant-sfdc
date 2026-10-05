@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "[Claim 00002216](/lightning/r/500aj00003jLAOcAAO/view) is a **High** severity water damage claim for the [Okafor Household](/lightning/r/001aj000040t3cpAAA/view). A basement supply line burst on 21 Sep at 2620 Central Park Ave, Evanston. The claim is **Under Investigation** with Marcus Lindahl and has been open 10 days.\n\n- **Coverage:** Covered as a sudden and accidental discharge under [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view). The policy was in force on the date of loss, and the $2,500 deductible applies.\n- **Money:** Reserve is **$48,450**, $5,000 has been paid as an advance, and **$43,450** is still outstanding. The reserve rose from $45,000 after the Northshore Renovation rebuild estimate came in at $27,450.\n- **Status:** Drying is done and moisture readings are normal. The mitigation invoice is still awaited.\n- **Flags:** No referral for possible fraud (SIU) and no subrogation flagged.\n- **Next steps:** 4 open tasks due 4 to 6 Oct:\n  - review the drying vendor's invoice\n  - confirm the failed supply line is kept and assess subrogation\n  - approve the rebuild estimate\n  - call [Chinedu Okafor](/lightning/r/003aj00002T9O6GAAV/view)"
+  }
+]

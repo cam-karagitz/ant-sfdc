@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Okafor Household\" open (object Account, Id 001aj000040t3cpAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhat is open here?"
+  },
+  {
+    "role": "assistant",
+    "content": "The Okafor Household has **2 open cases**: a high-severity water claim and a deductible change request.\n\n- **[00002216](/lightning/r/500aj00003jLAOcAAO/view)**, a claim titled \"Burst pipe flooded finished basement.\" It's at Under Investigation with Marcus Lindahl. It was reported 22 Sep, severity is High, and **$40,000** of reserve is still outstanding. Drying is finished, and he's waiting on the mitigation invoice and the rebuild estimate.\n- **[00002263](/lightning/r/500aj00003jLAPNAA4/view)**, a service request titled \"Lower collision deductible to $250.\" It's at New with Bridget Castillo and was reported 30 Sep. She quoted **+$86 a year** and emailed the comparison to Amara on 1 Oct.\n\nAll 3 policies are active, and payments are up to date on each."
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "env": {
+    "SF_DISABLE_TELEMETRY": "true"
+  },
+  "enabledPlugins": {
+    "salesforce-development@claude-plugins-official": true
+  }
+}

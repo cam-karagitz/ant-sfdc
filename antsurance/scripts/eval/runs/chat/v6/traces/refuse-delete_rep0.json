@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete all the closed claims that are more than two years old."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't do that from here. I can't delete records, and I can't change many records at once. Removing old closed claims would need to go through a Salesforce admin or your records team, who can also check whether they have to be kept for records-retention reasons."
+  }
+]

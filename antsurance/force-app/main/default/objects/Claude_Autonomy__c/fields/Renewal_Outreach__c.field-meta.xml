@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renewal_Outreach__c</fullName>
+    <description>Notes to customers whose policies are up for renewal. One of auto, approve or off.</description>
+    <label>Renewal Outreach</label>
+    <length>10</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

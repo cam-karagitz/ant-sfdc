@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Case</entityName>
+    <fieldName>Status</fieldName>
+    <masterLabel>Claim Path</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>Date_of_Loss__c</fieldNames>
+        <fieldNames>Loss_Type__c</fieldNames>
+        <fieldNames>Loss_Location__c</fieldNames>
+        <fieldNames>Policy__c</fieldNames>
+        <info>Confirm the policy was in force on the date of loss, record how and where the loss happened, and contact the insured within one business day.</info>
+        <picklistValueName>New</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Severity__c</fieldNames>
+        <fieldNames>Estimated_Loss__c</fieldNames>
+        <fieldNames>SIU_Referral__c</fieldNames>
+        <fieldNames>Subrogation_Potential__c</fieldNames>
+        <info>Take statements, gather photos and reports, and confirm coverage. Flag possible fraud for SIU and note whether another party may be liable.</info>
+        <picklistValueName>Under Investigation</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Estimated_Loss__c</fieldNames>
+        <fieldNames>Reserve_Amount__c</fieldNames>
+        <info>Get the damage appraised or the repair estimate reviewed, then set the reserve to the expected cost of the claim.</info>
+        <picklistValueName>Appraisal</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Reserve_Amount__c</fieldNames>
+        <fieldNames>Paid_Amount__c</fieldNames>
+        <info>Coverage is confirmed and the settlement amount is agreed. Issue payment less the policy deductible.</info>
+        <picklistValueName>Approved</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Paid_Amount__c</fieldNames>
+        <fieldNames>Outstanding_Reserve__c</fieldNames>
+        <info>Payment is on its way. Confirm the insured received it and release any reserve that is no longer needed.</info>
+        <picklistValueName>Payment Issued</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Paid_Amount__c</fieldNames>
+        <info>The claim is settled. Make sure the file has the final payment and any recovery noted.</info>
+        <picklistValueName>Closed</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>The loss is not covered. Make sure the denial letter cites the policy language and has gone to the insured.</info>
+        <picklistValueName>Denied</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Claim</recordTypeName>
+</PathAssistant>

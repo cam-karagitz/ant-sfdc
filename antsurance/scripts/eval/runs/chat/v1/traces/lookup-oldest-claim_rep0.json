@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has been open the longest, and for how many days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Days_Open__c, Handled_By__c, Account.Id, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Days_Open__c DESC LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Tamarack Outfitters\",\"Id\":\"001aj000040sVmeAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmeAAE\",\"Handled_By__c\":\"Marcus Lindahl\",\"Days_Open__c\":40,\"Status\":\"Payment Issued\",\"Subject\":\"Storefront window smashed, merchandise taken\",\"CaseNumber\":\"00002127\",\"Id\":\"500aj00003jKuVnAAK\"},{\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040sVmgAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmgAAE\",\"Handled_By__c\":\"Dana Whitaker\",\"Days_Open__c\":33,\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002125\",\"Id\":\"500aj00003jKuVlAAK\"},{\"Account\":{\"Name\":\"Kaplan Household\",\"Id\":\"001aj000040sVmsAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmsAAE\",\"Handled_By__c\":\"Marcus Lindahl\",\"Days_Open__c\":31,\"Status\":\"Payment Issued\",\"Subject\":\"Upstairs neighbor overflow soaked furniture\",\"CaseNumber\":\"00002133\",\"Id\":\"500aj00003jKuVtAAK\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The longest-open claim is [00002127](/lightning/r/500aj00003jKuVnAAK/view), at **40 days**. It's for [Tamarack Outfitters](/lightning/r/001aj000040sVmeAAE/view): a storefront window was smashed and merchandise taken. Marcus Lindahl is handling it, and the status is Payment Issued.\n\nThe next two longest-open claims:\n- [00002125](/lightning/r/500aj00003jKuVlAAK/view): [Sagebrush Freight Lines](/lightning/r/001aj000040sVmgAAE/view), 33 days, Approved\n- [00002133](/lightning/r/500aj00003jKuVtAAK/view): [Kaplan Household](/lightning/r/001aj000040sVmsAAE/view), 31 days, Payment Issued"
+  }
+]

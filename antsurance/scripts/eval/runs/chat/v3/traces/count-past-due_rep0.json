@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies have a past-due payment status?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status__c, COUNT(Id) n, SUM(Annual_Premium__c) p FROM Policy__c WHERE Payment_Status__c = 'Past Due' GROUP BY Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":4207.0,\"n\":2,\"Status__c\":\"Lapsed\"},{\"p\":8394.0,\"n\":4,\"Status__c\":\"Active\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "assistant",
+    "content": "**6 policies** have a Past Due payment status. Their annual premium adds up to **$12,601**.\n\n- **Active:** 4 policies, $8,394 annual premium\n- **Lapsed:** 2 policies, $4,207 annual premium\n\nI can list the 4 active ones with their policyholders if you'd like to follow up on them."
+  }
+]

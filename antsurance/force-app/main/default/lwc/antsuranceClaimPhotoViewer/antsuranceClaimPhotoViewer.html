@@ -1,0 +1,304 @@
+<template>
+    <template lwc:if={errorMessage}>
+        <p class="c-error" role="alert">{errorMessage}</p>
+    </template>
+
+    <template lwc:if={hasItems}>
+        <template lwc:if={isCompact}>
+            <ul class="c-strip c-strip_compact">
+                <template for:each={items} for:item="item">
+                    <li key={item.documentId} class="c-strip__item">
+                        <button type="button" class="c-thumb c-thumb_compact" data-id={item.documentId} aria-label={item.thumbLabel} onclick={handleSelect}>
+                            <template lwc:if={item.isVideo}>
+                                <span class="c-thumb__video"><lightning-icon icon-name="utility:play" size="x-small" alternative-text="Video"></lightning-icon></span>
+                            </template>
+                            <template lwc:else>
+                                <img class="c-thumb__img" src={item.url} alt="" loading="lazy" />
+                            </template>
+                        </button>
+                        <template lwc:if={item.chip}>
+                            <span class={item.chip.className}>{item.chip.label}</span>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template lwc:else>
+            <div class="c-viewer" aria-busy={isBusy}>
+                <div class={layoutClass}>
+                    <template lwc:if={showTabs}>
+                        <div class="c-layout__tabs">
+                            <c-antsurance-tabs label="About these photos" tabs={tabs} value={currentTab} onselect={handleTab}></c-antsurance-tabs>
+                        </div>
+                    </template>
+
+                    <div class="c-photo">
+                        <c-antsurance-carousel lwc:ref="carousel" label="Photos on this claim" per-view="1" onslidechange={handleSlide}>
+                            <template for:each={items} for:item="item">
+                                <div key={item.documentId} class="c-stage">
+                                    <template lwc:if={item.isVideo}>
+                                        <template lwc:if={item.cannotPlay}>
+                                            <!-- A file the browser cannot play in the page (an older format): say so, and offer the file. -->
+                                            <div class="c-stage__video">
+                                                <lightning-icon icon-name="utility:video" size="small" alternative-text="" class="c-stage__videoicon"></lightning-icon>
+                                                <p class="c-stage__videotitle">{item.title}</p>
+                                                <p class="c-stage__videonote">This video does not play in the page.</p>
+                                                <a class="c-link" href={item.fileUrl} data-id={item.documentId} onclick={handleOpenFile}>Open the file</a>
+                                            </div>
+                                        </template>
+                                        <template lwc:elseif={item.isPlaying}>
+                                            <video class="c-stage__player" controls autoplay playsinline src={item.url} aria-label={item.videoLabel} data-id={item.documentId} onerror={handleVideoError}></video>
+                                        </template>
+                                        <template lwc:else>
+                                            <!-- At rest: what the video is and a button that plays it here. The player is drawn only once asked for, so the slide is never a dark box waiting on a file. -->
+                                            <div class="c-stage__video">
+                                                <button type="button" class="c-stage__play" data-id={item.documentId} aria-label={item.playLabel} onclick={handlePlay}>
+                                                    <lightning-icon icon-name="utility:play" size="small" alternative-text=""></lightning-icon>
+                                                </button>
+                                                <p class="c-stage__videotitle">{item.title}</p>
+                                                <p class="c-stage__videonote">{item.videoLine}</p>
+                                            </div>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <c-antsurance-image-marker
+                                            data-id={item.documentId}
+                                            src={item.url}
+                                            alt={item.alt}
+                                            boxes={item.markerBoxes}
+                                            editing={item.isMarking}
+                                            drawing={item.isMarking}
+                                            selected-id={item.chosenBox}
+                                            highlight-id={item.hoverBox}
+                                            selectable
+                                            onboxhover={handleBoxHover}
+                                            onimageload={handleImageLoad}
+                                            onboxadd={handleBoxAdd}
+                                            onboxchange={handleBoxChange}
+                                            onboxremove={handleBoxRemove}
+                                            onboxselect={handleBoxSelect}
+                                            onboxopen={handleBoxOpen}
+                                        ></c-antsurance-image-marker>
+                                    </template>
+                                </div>
+                            </template>
+                        </c-antsurance-carousel>
+
+                        <div class="c-bar">
+                            <p class="c-bar__title">{selected.name}</p>
+                            <div class="c-bar__tools">
+                                <template lwc:if={canToggleBoxes}>
+                                    <button type="button" class="c-link" aria-pressed={boxTogglePressed} onclick={handleToggleBoxes}>{boxToggleLabel}</button>
+                                </template>
+                                <template lwc:if={marking}>
+                                    <button type="button" class="c-mark" title="Adds a box in the middle of the photo. Move it with the arrow keys." onclick={handleAddBox}>
+                                        <lightning-icon icon-name="utility:add" size="xx-small" alternative-text="" class="c-mark__icon"></lightning-icon>
+                                        Add a box
+                                    </button>
+                                </template>
+                                <template lwc:if={canMark}>
+                                    <button type="button" class={markClass} aria-pressed={markPressed} onclick={handleToggleMarking}>
+                                        <lightning-icon icon-name="utility:edit" size="xx-small" alternative-text="" class="c-mark__icon"></lightning-icon>
+                                        {markLabel}
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <template lwc:if={marking}>
+                            <p class="c-hint">Drag on the photo to mark an area.</p>
+                        </template>
+                        <template lwc:elseif={showsLine}>
+                            <p class="c-shows">{showsLine}</p>
+                        </template>
+                        <template lwc:if={selected.tooLargeLine}>
+                            <p class="c-unusable">{selected.tooLargeLine}</p>
+                        </template>
+
+                        <template lwc:if={hasSeveral}>
+                            <ul class="c-strip">
+                                <template for:each={items} for:item="item">
+                                    <li key={item.documentId} class="c-strip__item">
+                                        <button
+                                            type="button"
+                                            class={item.thumbClass}
+                                            data-id={item.documentId}
+                                            aria-label={item.thumbLabel}
+                                            aria-pressed={item.pressed}
+                                            onclick={handleSelect}
+                                        >
+                                            <template lwc:if={item.isVideo}>
+                                                <span class="c-thumb__video"
+                                                    ><lightning-icon icon-name="utility:play" size="x-small" alternative-text="Video"></lightning-icon
+                                                ></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <img class="c-thumb__img" src={item.url} alt="" loading="lazy" />
+                                            </template>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+
+                    <div class="c-panel" role="tabpanel" aria-label={tabLabel}>
+                        <template lwc:if={showsVideoNote}>
+                            <div class="c-videonote">
+                                <p class="c-videonote__lead">Not part of the photo assessment</p>
+                                <p class="c-videonote__text">Claude assesses the photographs on this card. It reads a video on the Analysis tab, where Analyze the evidence samples frames from&nbsp;it.</p>
+                            </div>
+                        </template>
+                        <template lwc:if={isLeadTab}>
+                            <slot name="lead"></slot>
+                        </template>
+
+                        <template lwc:if={isFindsTab}>
+                            <template lwc:if={findsEmptyLine}>
+                                <p class="c-quiet">{findsEmptyLine}</p>
+                            </template>
+                            <template lwc:if={selected.sharedFit}>
+                                <p class="c-sharedfit">{selected.sharedFit}</p>
+                            </template>
+                            <template lwc:if={hasFinds}>
+                                <ol class="c-finds">
+                                    <template for:each={findRows} for:item="row">
+                                        <li key={row.key} class={row.rowClass} data-box={row.id} onmouseenter={handleRowEnter} onmouseleave={handleRowLeave}>
+                                            <button
+                                                type="button"
+                                                class="c-find__head"
+                                                aria-expanded={row.expanded}
+                                                data-box={row.id}
+                                                onclick={handleRowChoose}
+                                                onfocus={handleRowEnter}
+                                                onblur={handleRowLeave}
+                                            >
+                                                <span class={row.tagClass} aria-hidden="true">{row.tag}</span>
+                                                <span class="c-find__main">
+                                                    <span class="c-find__top">
+                                                        <span class="c-find__title">{row.title}</span>
+                                                        <template lwc:if={row.chip}>
+                                                            <span class={row.chip.className}>{row.chip.label}</span>
+                                                        </template>
+                                                        <template lwc:elseif={row.isAsking}>
+                                                            <span class="c-area__pulse" aria-hidden="true"></span>
+                                                        </template>
+                                                    </span>
+                                                    <template lwc:if={row.by}>
+                                                        <span class="c-find__by">{row.by}</span>
+                                                    </template>
+                                                    <span class="c-find__why">{row.why}</span>
+                                                    <template lwc:if={row.fitLine}>
+                                                        <span class="c-find__fit">{row.fitLine}</span>
+                                                    </template>
+                                                    <template lwc:if={row.noBoxLine}>
+                                                        <span class="c-find__fit">{row.noBoxLine}</span>
+                                                    </template>
+                                                </span>
+                                            </button>
+                                            <template lwc:if={row.isOpen}>
+                                                <div class="c-find__more">
+                                                    <template lwc:if={row.zoomStyle}>
+                                                        <div class="c-zoom" style={row.zoomStyle} role="img" aria-label={row.zoomLabel}></div>
+                                                    </template>
+                                                    <template lwc:if={row.isPerson}>
+                                                        <template lwc:if={marking}>
+                                                            <input
+                                                                type="text"
+                                                                class="c-note"
+                                                                maxlength="160"
+                                                                placeholder="What should Claude look for here?"
+                                                                aria-label={row.noteLabel}
+                                                                data-id={row.areaId}
+                                                                value={row.noteValue}
+                                                                oninput={handleNote}
+                                                            />
+                                                        </template>
+                                                        <template lwc:elseif={row.noteQuoted}>
+                                                            <p class="c-area__label">Asked</p>
+                                                            <p class="c-area__fact">{row.noteQuoted}</p>
+                                                        </template>
+                                                        <template lwc:if={row.action}>
+                                                            <p class="c-area__label">What to do</p>
+                                                            <p class="c-area__fact">{row.action}</p>
+                                                        </template>
+                                                        <template lwc:if={row.isStale}>
+                                                            <p class="c-area__stale">The box or the note changed after Claude answered. Ask again for a fresh answer.</p>
+                                                        </template>
+                                                    </template>
+                                                    <p class="c-find__meta">{row.metaLine}</p>
+                                                    <div class="c-find__actions">
+                                                        <template lwc:if={row.canZoom}>
+                                                            <button type="button" class="c-link c-link_quiet" aria-pressed={row.zoomPressed} onclick={handleZoom}>{row.zoomAction}</button>
+                                                        </template>
+                                                        <template lwc:if={row.correctionId}>
+                                                            <button type="button" class="c-link c-link_quiet" aria-label={row.undoLabel} data-id={row.correctionId} onclick={handleUndo}>
+                                                                Put Claude's box back
+                                                            </button>
+                                                        </template>
+                                                        <template lwc:if={row.canDismiss}>
+                                                            <button type="button" class="c-link c-link_quiet" aria-label={row.dismissLabel} data-index={row.index} onclick={handleDismiss}>
+                                                                Dismiss
+                                                            </button>
+                                                        </template>
+                                                        <template lwc:if={row.canRemove}>
+                                                            <button type="button" class="c-link c-link_quiet" aria-label={row.removeLabel} data-id={row.areaId} onclick={handleRemoveArea}>
+                                                                Remove
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ol>
+                                <c-antsurance-step-pager total={finds.length} page-size={pageSize} page={findsPage} label="findings" onpagechange={handlePage}></c-antsurance-step-pager>
+                            </template>
+                            <template lwc:if={showDismissed}>
+                                <ul class="c-dismissed">
+                                    <template for:each={selected.dismissed} for:item="gone">
+                                        <li key={gone.key} class="c-dismissed__row">
+                                            <span class="c-dismissed__text">{gone.line}</span>
+                                            <button type="button" class="c-link c-link_quiet" aria-label={gone.undoLabel} data-id={gone.id} onclick={handleUndo}>Put it back</button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:if={markError}>
+                                <p class="c-error c-error_inline" role="alert">{markError}</p>
+                            </template>
+                            <template lwc:if={askError}>
+                                <div class="c-failed" role="alert">
+                                    <p class="c-failed__title">Claude did not answer</p>
+                                    <p class="c-failed__text">{askError} Your boxes are saved.</p>
+                                </div>
+                            </template>
+                            <template lwc:if={canAsk}>
+                                <div class="c-ask">
+                                    <lightning-button label={askLabel} variant="brand" icon-name="utility:sparkles" disabled={cannotAsk} onclick={handleAsk}></lightning-button>
+                                    <template lwc:if={askNote}>
+                                        <p class="c-ask__note">{askNote}</p>
+                                    </template>
+                                </div>
+                            </template>
+                            <template lwc:if={findsFoot}>
+                                <p class="c-foot">
+                                    <template lwc:if={showLegend}>
+                                        <span class="c-legend__item"><span class="c-legend__line" aria-hidden="true"></span>Found by Claude</span>
+                                        <span class="c-legend__item"><span class="c-legend__line c-legend__line_person" aria-hidden="true"></span>Marked by a person</span>
+                                    </template>
+                                    <span>{findsFoot}</span>
+                                </p>
+                            </template>
+                        </template>
+
+                        <template lwc:if={isTailTab}>
+                            <slot name="tail"></slot>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+</template>

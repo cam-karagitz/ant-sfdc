@@ -1,0 +1,7 @@
+#!/bin/bash
+# Stand-in for the Salesforce CLI while the scratch script is checked: logs the call, prints the file named in
+# $SF_SAYS (what the real CLI would have written), and fails when the command line matches $FAIL_ON.
+echo "sf $*" >> "$CALLS"
+if [ -n "${SF_SAYS:-}" ]; then cat "$SF_SAYS"; fi
+if echo "$*" | grep -Eq -- "${FAIL_ON:-@@none@@}"; then echo "stand-in: sf $1 $2 $3 failed" >&2; exit 1; fi
+exit 0

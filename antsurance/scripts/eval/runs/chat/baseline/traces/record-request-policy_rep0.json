@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002081: Add Sofia Reyes as a driver\" open (object Case, Id 500aj00003jKcA9AAK). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nWhich policy and customer is this request for?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Request_Type__c, Policy__r.Id, Policy__r.Name, Policy__r.Line_of_Business__c, Policy__r.Status__c, Policy__r.Expiration_Date__c, Account.Id, Account.Name, Contact.Id, Contact.Name FROM Case WHERE Id = '500aj00003jKcA9AAK'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Contact\":{\"Name\":\"Maria Reyes\",\"Id\":\"003aj00002T8yQHAAZ\"},\"Account\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2027-05-13\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKc7JAAS\"},\"ContactId\":\"003aj00002T8yQHAAZ\",\"AccountId\":\"001aj000040t1nsAAA\",\"Policy__c\":\"a00aj00003jKc7JAAS\",\"Request_Type__c\":\"Add Driver\",\"Status\":\"New\",\"CaseNumber\":\"00002081\",\"Id\":\"500aj00003jKcA9AAK\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "This Add Driver request is for the **[Reyes Household](/lightning/r/001aj000040t1nsAAA/view)**, on their personal auto policy **[ANT-PA-204517](/lightning/r/a00aj00003jKc7JAAS/view)**.\n\n- **Policy:** Active, expires 13 May 2027\n- **Contact on the request:** [Maria Reyes](/lightning/r/003aj00002T8yQHAAZ/view)\n- **Request status:** New"
+  }
+]

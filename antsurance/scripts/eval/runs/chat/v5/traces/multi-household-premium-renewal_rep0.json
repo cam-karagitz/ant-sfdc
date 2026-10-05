@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "What is the Reyes Household paying in total annual premium across its in-force policies, and which policy renews first?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c, Days_to_Renewal__c, Account__r.Id, Account__r.Name FROM Policy__c WHERE Account__r.Name LIKE '%Reyes%' AND Status__c IN ('Active','Pending Renewal') ORDER BY Expiration_Date__c LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-17\",\"Annual_Premium__c\":1890,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jfwRCAAY\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-17\",\"Annual_Premium__c\":410,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jfwRDAAY\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":223,\"Expiration_Date__c\":\"2027-05-15\",\"Annual_Premium__c\":2380,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jfwRBAAY\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_work_list",
+    "content": "{\n  \"title\": \"Reyes Household policies in force, by renewal date\",\n  \"items\": [\n    {\n      \"title\": \"ANT-HO-204534\",\n      \"subtitle\": \"Homeowners\",\n      \"record_id\": \"a00aj00003jfwRCAAY\",\n      \"amount\": \"$1,890\",\n      \"chips\": [\n        {\n          \"label\": \"Renews Mar 17, 2027\",\n          \"tone\": \"neutral\"\n        },\n        {\n          \"label\": \"164 days left\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    },\n    {\n      \"title\": \"ANT-UM-204551\",\n      \"subtitle\": \"Umbrella\",\n      \"record_id\": \"a00aj00003jfwRDAAY\",\n      \"amount\": \"$410\",\n      \"chips\": [\n        {\n          \"label\": \"Renews Mar 17, 2027\",\n          \"tone\": \"neutral\"\n        },\n        {\n          \"label\": \"164 days left\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    },\n    {\n      \"title\": \"ANT-PA-204517\",\n      \"subtitle\": \"Personal Auto\",\n      \"record_id\": \"a00aj00003jfwRBAAY\",\n      \"amount\": \"$2,380\",\n      \"chips\": [\n        {\n          \"label\": \"Renews May 15, 2027\",\n          \"tone\": \"neutral\"\n        },\n        {\n          \"label\": \"223 days left\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Does the Reyes Household have any open claims?\",\n    \"Are any Reyes policies past due on payment?\",\n    \"Show the Reyes homeowners coverages\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"work_list\",\n    \"title\": \"Reyes Household policies in force, by renewal date\",\n    \"items\": [\n      {\n        \"title\": \"ANT-HO-204534\",\n        \"subtitle\": \"Homeowners\",\n        \"recordId\": \"a00aj00003jfwRCAAY\",\n        \"amount\": \"$1,890\",\n        \"chips\": [\n          {\n            \"label\": \"Renews Mar 17, 2027\",\n            \"tone\": \"neutral\"\n          },\n          {\n            \"label\": \"164 days left\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      },\n      {\n        \"title\": \"ANT-UM-204551\",\n        \"subtitle\": \"Umbrella\",\n        \"recordId\": \"a00aj00003jfwRDAAY\",\n        \"amount\": \"$410\",\n        \"chips\": [\n          {\n            \"label\": \"Renews Mar 17, 2027\",\n            \"tone\": \"neutral\"\n          },\n          {\n            \"label\": \"164 days left\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      },\n      {\n        \"title\": \"ANT-PA-204517\",\n        \"subtitle\": \"Personal Auto\",\n        \"recordId\": \"a00aj00003jfwRBAAY\",\n        \"amount\": \"$2,380\",\n        \"chips\": [\n          {\n            \"label\": \"Renews May 15, 2027\",\n            \"tone\": \"neutral\"\n          },\n          {\n            \"label\": \"223 days left\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Does the Reyes Household have any open claims?\",\n      \"Are any Reyes policies past due on payment?\",\n      \"Show the Reyes homeowners coverages\"\n    ]\n  }\n]"
+  }
+]

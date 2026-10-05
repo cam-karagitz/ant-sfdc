@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningExperienceTheme xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultBrandingSet>LEXTHEMINGAnthropic</defaultBrandingSet>
+    <description>Anthropic brand: clay orange accents with the Claude spark.</description>
+    <designSystemVersion>SLDS_v2</designSystemVersion>
+    <isDarkModeEnabled>false</isDarkModeEnabled>
+    <masterLabel>Anthropic</masterLabel>
+    <shouldOverrideLoadingImage>true</shouldOverrideLoadingImage>
+</LightningExperienceTheme>

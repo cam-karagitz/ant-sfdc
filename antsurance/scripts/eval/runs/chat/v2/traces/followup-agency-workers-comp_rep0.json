@@ -1,0 +1,36 @@
+[
+  {
+    "role": "user",
+    "content": "Which agency produced the most in-force policies?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Producer__c, Producer__r.Name, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') GROUP BY Producer__c, Producer__r.Name ORDER BY COUNT(Id) DESC LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":1138520.0,\"cnt\":52,\"Name\":\"Lakefront Brokerage Partners\",\"Producer__c\":\"001aj000040t3cmAAA\"},{\"prem\":186634.0,\"cnt\":46,\"Name\":null,\"Producer__c\":null},{\"prem\":302786.0,\"cnt\":30,\"Name\":\"Prairie State Insurance Agency\",\"Producer__c\":\"001aj000040t3clAAA\"},{\"prem\":187838.0,\"cnt\":27,\"Name\":\"Driftless Insurance Group\",\"Producer__c\":\"001aj000040t3cnAAA\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "assistant",
+    "content": "[Lakefront Brokerage Partners](/lightning/r/001aj000040t3cmAAA/view) produced the most in-force policies: **52**, with **$1,138,520** in annual premium. That's about 63% of all in-force premium.\n\n| Agency | In-force policies | Annual premium |\n|---|---|---|\n| [Lakefront Brokerage Partners](/lightning/r/001aj000040t3cmAAA/view) | 52 | $1,138,520 |\n| [Prairie State Insurance Agency](/lightning/r/001aj000040t3clAAA/view) | 30 | $302,786 |\n| [Driftless Insurance Group](/lightning/r/001aj000040t3cnAAA/view) | 27 | $187,838 |\n| No agency listed | 46 | $186,634 |\n\nAnother 46 in-force policies have no producing agency on the record."
+  },
+  {
+    "role": "user",
+    "content": "How many of those are Workers Compensation?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Producer__r.Name, Line_of_Business__c, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') AND Line_of_Business__c LIKE 'Workers%' GROUP BY Producer__r.Name, Line_of_Business__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":142000.0,\"cnt\":1,\"Line_of_Business__c\":\"Workers Compensation\",\"Name\":\"Prairie State Insurance Agency\"},{\"prem\":76810.0,\"cnt\":2,\"Line_of_Business__c\":\"Workers Compensation\",\"Name\":\"Driftless Insurance Group\"},{\"prem\":436540.0,\"cnt\":7,\"Line_of_Business__c\":\"Workers Compensation\",\"Name\":\"Lakefront Brokerage Partners\"},{\"prem\":45880.0,\"cnt\":3,\"Line_of_Business__c\":\"Workers Compensation\",\"Name\":null}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "assistant",
+    "content": "**7** of Lakefront's 52 in-force policies are Workers Compensation, with **$436,540** in annual premium. Across all agencies there are 13 in-force Workers Compensation policies:\n\n| Agency | WC policies | Annual premium |\n|---|---|---|\n| [Lakefront Brokerage Partners](/lightning/r/001aj000040t3cmAAA/view) | 7 | $436,540 |\n| No agency listed | 3 | $45,880 |\n| [Driftless Insurance Group](/lightning/r/001aj000040t3cnAAA/view) | 2 | $76,810 |\n| [Prairie State Insurance Agency](/lightning/r/001aj000040t3clAAA/view) | 1 | $142,000 |"
+  }
+]

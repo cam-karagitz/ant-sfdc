@@ -1,0 +1,628 @@
+{
+ "rows": [
+  {
+   "case": "billing-sample",
+   "split": "tune",
+   "rep": 0,
+   "ms": 3246,
+   "checks": {
+    "is_claim": true,
+    "reason_given": true
+   },
+   "out": {
+    "reporter": "Maria Reyes",
+    "message": "Subject: Question about my bill\n\nHi,\n\nMy payment went up by $14 this month and I do not know why. Nothing has changed on our side. Can you tell me what happened, and also send me a new copy of the ID cards?\n\nThanks,\nMaria Reyes",
+    "draft": {
+     "watch": [],
+     "subject": null,
+     "severity": "Low",
+     "policyReason": null,
+     "policyId": null,
+     "origin": "Email",
+     "notClaimReason": "This is a billing question about a $14 payment increase plus a request for new ID cards, not a loss report. The handler should pass it to billing or customer service to explain the premium change and send Maria Reyes new auto ID cards.",
+     "missing": [],
+     "lossType": "Other",
+     "lossLocation": null,
+     "isClaim": false,
+     "estimatedLoss": null,
+     "description": null,
+     "dateOfLoss": null,
+     "contactId": "003aj00002T8RBzAAN"
+    },
+    "ms": 3246
+   }
+  },
+  {
+   "case": "home-web-sample",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4465,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": false,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "asks_whats_missing": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Maria Reyes",
+    "status": "Active",
+    "line": "Homeowners",
+    "message": "Online claim form\n\nName: Maria Reyes\nAddress of loss: 524 W Spring Ave, Naperville, IL\nWhat happened: We got home from a weekend away last night and found water all over the kitchen floor. The supply line to the dishwasher had split. Water ran under the cabinets and into the dining room, and the hardwood is already cupping. The basement ceiling underneath is stained and dripping.\nWhen: found it last night around 9pm, not sure when it started\nAnything else: We shut off the water and a plumber replaced the line this morning for $380. A restoration company is coming tomorrow to dry it out. We have no idea what the total will be.",
+    "draft": {
+     "watch": [
+      "The leak may have run for the whole weekend, so the start date is unknown.",
+      "The $380 figure covers only the plumber, and the total loss is likely to be much higher once drying and flooring repairs are included.",
+      "Damage spans three areas, including hardwood flooring and the basement ceiling, so mould risk should be considered."
+     ],
+     "subject": "Split dishwasher supply line flooded kitchen",
+     "severity": "Medium",
+     "policyReason": "Water damage to the insured home at 524 W Spring Ave falls under the active homeowners policy.",
+     "policyId": "a00aj00003jKVNcAAO",
+     "origin": "Web",
+     "notClaimReason": null,
+     "missing": [
+      "When did you leave for the weekend, so we can estimate when the leak may have started?",
+      "Can you send photos of the kitchen, dining room, cabinets and basement ceiling?",
+      "What is the name of the restoration company, and can you send their estimate once you have it?",
+      "Can you send the plumber's invoice for the $380 repair and keep the split supply line?",
+      "Is the home still livable, and was any personal property damaged?"
+     ],
+     "lossType": "Water Damage",
+     "lossLocation": "524 W Spring Ave, Naperville, IL",
+     "isClaim": true,
+     "estimatedLoss": 380.0,
+     "description": "On the evening of 1 October 2026, around 9pm, the insured returned from a weekend away and found water across the kitchen floor at 524 W Spring Ave, Naperville, IL. The dishwasher supply line had split, and water ran under the cabinets and into the dining room. The hardwood flooring was already cupping, and the basement ceiling below was stained and dripping. The insured shut off the water, and a plumber replaced the supply line on the morning of 2 October 2026 for $380. A restoration company was scheduled to begin drying the home on 3 October 2026, and the total cost is not yet known.",
+     "dateOfLoss": "2026-10-01",
+     "contactId": "003aj00002T8RBzAAN"
+    },
+    "ms": 4465
+   }
+  },
+  {
+   "case": "auto-email-sample",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4156,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Maria Reyes",
+    "status": "Active",
+    "line": "Personal Auto",
+    "message": "Subject: Car accident on Saturday\n\nHi, this is Maria. I was rear-ended at a red light on Saturday afternoon around 4:30, at Ogden Ave and Washington St in Naperville. I was driving the 2022 Toyota RAV4. The other driver said it was her fault and I have her insurance details (State Farm) and her plate, K47 2291. The police came and gave me report number NPD-26-118204. Nobody was hurt, but the bumper and trunk lid are pushed in and the trunk will not close. The body shop thinks it will be around $4,200.\n\nWhat do I need to do next? I need the car for work.\n\nThanks,\nMaria Reyes",
+    "draft": {
+     "watch": [
+      "The other driver admitted fault and is insured with State Farm, so subrogation or a direct claim against State Farm is likely.",
+      "The customer needs the car for work and may need a rental."
+     ],
+     "subject": "Rear-ended at red light, bumper and trunk damaged",
+     "severity": "Low",
+     "policyReason": "The damaged vehicle is the 2022 Toyota RAV4, which is listed on the active personal auto policy.",
+     "policyId": "a00aj00003jKVNbAAO",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "What is the other driver's name and State Farm policy or claim number?",
+      "Can you send photos of the damage and the body shop's written estimate?",
+      "Is the car safe to drive while the trunk will not close?",
+      "Do you need a rental car while the RAV4 is being repaired?"
+     ],
+     "lossType": "Collision",
+     "lossLocation": "Ogden Ave and Washington St, Naperville, IL",
+     "isClaim": true,
+     "estimatedLoss": 4200.0,
+     "description": "On Saturday 26 September 2026 at about 4:30 pm, Maria Reyes was rear-ended while stopped at a red light at Ogden Ave and Washington St in Naperville while driving the insured 2022 Toyota RAV4. The other driver admitted fault and provided her insurer details (State Farm) and her plate number, K47 2291. Police attended and issued report number NPD-26-118204. Nobody was hurt. The bumper and trunk lid were pushed in and the trunk will not close, and a body shop estimated the repair at around $4,200.",
+     "dateOfLoss": "2026-09-26",
+     "contactId": "003aj00002T8RBzAAN"
+    },
+    "ms": 4156
+   }
+  },
+  {
+   "case": "auto-call-sample",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4292,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Maria Reyes",
+    "status": "Active",
+    "line": "Personal Auto",
+    "message": "Inbound call 9:12am, insd Maria Reyes. Rock came off a gravel truck on I-88 nr Aurora yesterday morning and cracked the windshield on the 2022 Toyota RAV4. Crack is spreading across the driver side. No other damage, nobody hurt, did not get the truck plate. Wants to know if glass is covered and if the deductible applies. No estimate yet. Call back on cell after 3pm.",
+    "draft": {
+     "watch": [
+      "Customer asked whether glass is covered and whether the $500 deductible applies; please confirm when calling back.",
+      "Crack is spreading across the driver side, so prompt replacement may be needed for safety.",
+      "Truck plate was not obtained, so recovery from the at-fault party is unlikely.",
+      "Customer asked for a call back on her cell after 3pm."
+     ],
+     "subject": "Rock from gravel truck cracked windshield on I-88",
+     "severity": "Low",
+     "policyReason": "The damaged vehicle is the 2022 Toyota RAV4, which is listed on the active personal auto policy with Comprehensive coverage.",
+     "policyId": "a00aj00003jKVNbAAO",
+     "origin": "Phone",
+     "notClaimReason": null,
+     "missing": [
+      "Can you get a windshield repair or replacement estimate?",
+      "Can you send photos of the crack and the windshield?",
+      "Do you remember the trucking company name or any markings on the gravel truck?",
+      "Is the vehicle currently safe to drive given the spreading crack?"
+     ],
+     "lossType": "Glass",
+     "lossLocation": "I-88 near Aurora, IL",
+     "isClaim": true,
+     "estimatedLoss": null,
+     "description": "On the morning of 1 October 2026, a rock came off a gravel truck on I-88 near Aurora and cracked the windshield of the insured's 2022 Toyota RAV4. The crack is spreading across the driver side. There was no other damage to the vehicle and nobody was hurt. The insured did not get the truck's plate. Maria Reyes reported the loss by phone and asked whether glass is covered and whether the deductible applies. No repair estimate has been obtained yet.",
+     "dateOfLoss": "2026-10-01",
+     "contactId": "003aj00002T8RBzAAN"
+    },
+    "ms": 4292
+   }
+  },
+  {
+   "case": "lapsed-auto",
+   "split": "tune",
+   "rep": 0,
+   "ms": 3996,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": false,
+    "subject_form": true,
+    "details_kept": true,
+    "flags_it": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Lucia Castellano",
+    "status": "Lapsed",
+    "line": "Personal Auto",
+    "message": "Subject: backed into a pole\n\nHi, I backed into a concrete pole in my apartment garage on Tuesday night. The rear bumper on my Escape is cracked and the left tail light is smashed. Nobody else was involved. Wauwatosa Collision gave me an estimate of $1,850. Can I get this fixed under my policy?\n\nLucia Castellano",
+    "draft": {
+     "watch": [
+      "The auto policy is shown as lapsed, so confirm whether it was active on 29 September 2026.",
+      "The $1,850 estimate is only slightly above the $1,000 deductible.",
+      "Check whether the garage pole was damaged, which could create a property damage liability exposure."
+     ],
+     "subject": "Backed into concrete pole in apartment garage",
+     "severity": "Low",
+     "policyReason": "The damage is to the 2016 Ford Escape, which is insured under the personal auto policy, although that policy is shown as lapsed.",
+     "policyId": "a00aj00003jKVNkAAO",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "What is the address of the apartment garage where this happened?",
+      "Was the concrete pole or any other building property damaged?",
+      "Can you send photos of the damage and a copy of the Wauwatosa Collision estimate?",
+      "Was anyone in the vehicle hurt?"
+     ],
+     "lossType": "Collision",
+     "lossLocation": null,
+     "isClaim": true,
+     "estimatedLoss": 1850.0,
+     "description": "On the night of Tuesday 29 September 2026, the insured backed her 2016 Ford Escape into a concrete pole in her apartment garage. The rear bumper was cracked and the left tail light was smashed. No other party was involved and no injuries were reported. Wauwatosa Collision provided a repair estimate of $1,850.",
+     "dateOfLoss": "2026-09-29",
+     "contactId": "003aj00002T8RC7AAN"
+    },
+    "ms": 3996
+   }
+  },
+  {
+   "case": "renters-bike",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4231,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Erik Lindqvist",
+    "status": "Active",
+    "line": "Renters",
+    "message": "Online claim form\n\nName: Erik Lindqvist\nWhat happened: My bike was stolen from the locked storage room in the basement of my building. I found the lock cut when I went down this morning. It is a Trek Domane, I paid $2,200 for it in April and have the receipt. Madison police took a report over the phone, case number 2026-271904.\nWhere: 123 W Washington Ave, Madison",
+    "draft": {
+     "watch": [
+      "The date of loss is the discovery date; the theft may have happened earlier.",
+      "The theft was from a shared storage area, so check any off premises or storage limits on personal property coverage."
+     ],
+     "subject": "Bicycle stolen from locked basement storage room",
+     "severity": "Low",
+     "policyReason": "A bicycle stolen from the building's storage room is personal property covered under the renters policy for 123 W Washington Ave.",
+     "policyId": "a00aj00003jKVNgAAO",
+     "origin": "Web",
+     "notClaimReason": null,
+     "missing": [
+      "When did you last see the bicycle in the storage room?",
+      "Was the storage room shared with other tenants, and was anything else taken?",
+      "Can you send a copy of the receipt and any photos of the bicycle and the cut lock?",
+      "Does the building manager have security camera footage or know of other thefts?"
+     ],
+     "lossType": "Theft",
+     "lossLocation": "Basement storage room, 123 W Washington Ave, Madison, WI",
+     "isClaim": true,
+     "estimatedLoss": 2200.0,
+     "description": "Erik Lindqvist reported that his Trek Domane bicycle was stolen from the locked storage room in the basement of his building at 123 W Washington Ave, Madison. He discovered the theft on the morning of 2 October 2026, when he found the lock had been cut. He paid $2,200 for the bicycle in April and has the receipt. Madison police took a report over the phone under case number 2026-271904.",
+     "dateOfLoss": "2026-10-02",
+     "contactId": "003aj00002T8RC4AAN"
+    },
+    "ms": 4231
+   }
+  },
+  {
+   "case": "limb-on-car",
+   "split": "tune",
+   "rep": 0,
+   "ms": 3953,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": false,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Amara Okafor",
+    "status": "Active",
+    "line": "Personal Auto",
+    "message": "Subject: Storm damage to our car\n\nHello,\n\nA big limb came down off the maple in last night's storm and landed on the Subaru in our driveway. The windshield is smashed and the hood and roof are dented. The house and fence are fine. Evanston Auto Body looked at it today and said $3,900.\n\nThanks,\nAmara Okafor",
+    "draft": {
+     "watch": [
+      "Falling object damage to a parked vehicle is normally handled under comprehensive, not collision, with the $500 deductible.",
+      "The windshield damage may affect whether the car can be driven safely."
+     ],
+     "subject": "Tree limb fell on parked car during storm",
+     "severity": "Low",
+     "policyReason": "The damaged vehicle is the 2021 Subaru Outback, which is listed on the personal auto policy with comprehensive coverage.",
+     "policyId": "a00aj00003jKVNeAAO",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "Is the driveway at the insured home, 2620 Central Park Ave, Evanston?",
+      "Is the car safe to drive with the smashed windshield?",
+      "Can you send photos of the damage and the Evanston Auto Body estimate?",
+      "Was the maple tree on your property or a neighbor's?"
+     ],
+     "lossType": "Collision",
+     "lossLocation": "Driveway at 2620 Central Park Ave, Evanston, IL",
+     "isClaim": true,
+     "estimatedLoss": 3900.0,
+     "description": "During a storm on the night of 1 October 2026, a large limb fell from a maple tree and landed on the insured 2021 Subaru Outback parked in the driveway. The windshield was smashed and the hood and roof were dented. The house and fence were not damaged. Evanston Auto Body inspected the vehicle and estimated the repair at $3,900. Nobody was reported hurt.",
+     "dateOfLoss": "2026-10-01",
+     "contactId": "003aj00002T8RC3AAN"
+    },
+    "ms": 3953
+   }
+  },
+  {
+   "case": "apartment-fire-agent",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4303,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "status": "Active",
+    "line": "Commercial Property",
+    "message": "Subject: New loss, Copperfield Property Management\n\nHi team,\n\nI am the broker for Copperfield Property Management and am reporting this for them. Early on Sunday morning a fire started in a second-floor unit at their building at 2218 W Armitage Ave, Chicago, and spread to the unit above. The fire department put it out but six units cannot be lived in. Two tenants were treated for smoke inhalation at the hospital and released. Their restoration contractor's first rough number is $380,000. Fire department incident number is 26-1184-C.\n\nPlease assign an adjuster today.\n\nHal Brennan\nPrairie Shield Insurance Agency",
+    "draft": {
+     "watch": [
+      "Two tenants were hospitalized for smoke inhalation, so a liability claim under ANT-GL-205078 may follow.",
+      "Six units are uninhabitable, so business income loss is likely.",
+      "Estimate of $380,000 is well above the $50,000 deductible; broker requests adjuster assignment today.",
+      "Cause of fire is unknown and may involve a tenant at fault, so subrogation potential should be checked."
+     ],
+     "subject": "Fire spread between units, six units uninhabitable",
+     "severity": "Catastrophic",
+     "policyReason": "Fire damage to one of the insured apartment buildings falls under the commercial property policy covering the portfolio of 11 apartment buildings.",
+     "policyId": "a00aj00003jKVO7AAO",
+     "origin": "Agent",
+     "notClaimReason": null,
+     "missing": [
+      "What caused the fire and in which unit number did it start?",
+      "How many tenants have been displaced, and is the insured covering their relocation or losing rent?",
+      "Can you send photos and the restoration contractor's written estimate?",
+      "Have any tenants or their insurers made claims against Copperfield for injuries or property damage?",
+      "What is the best contact at Copperfield for the adjuster to meet on site?"
+     ],
+     "lossType": "Fire",
+     "lossLocation": "2218 W Armitage Ave, Chicago",
+     "isClaim": true,
+     "estimatedLoss": 380000.0,
+     "description": "Early on Sunday 27 September 2026, a fire started in a second-floor unit at the insured's apartment building at 2218 W Armitage Ave, Chicago, and spread to the unit above. The fire department extinguished the fire under incident number 26-1184-C. Six units cannot be lived in. Two tenants were treated at the hospital for smoke inhalation and released. The insured's restoration contractor gave a first rough estimate of $380,000. The loss was reported by broker Hal Brennan of Prairie Shield Insurance Agency, who asked for an adjuster to be assigned today.",
+     "dateOfLoss": "2026-09-27",
+     "contactId": null
+    },
+    "ms": 4303
+   }
+  },
+  {
+   "case": "saw-injury",
+   "split": "tune",
+   "rep": 0,
+   "ms": 3921,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Miguel Ortega",
+    "status": "Active",
+    "line": "Workers Compensation",
+    "message": "Subject: Employee injury this morning\n\nHi,\n\nReporting an injury. One of our crew, Tomas Vega, cut his left hand on a circular saw at about 7:50 this morning on a job site in Wheaton. His supervisor drove him to the ER at Central DuPage. He needed nine stitches and was sent home. The doctor has him off work for two weeks. The saw guard was in place and we have photos and the supervisor's statement.\n\nWhat forms do you need from us?\n\nMiguel Ortega\nSafety Director, Ridgeline Roofing & Solar",
+    "draft": {
+     "watch": [
+      "Employee injury with two weeks of lost time, so indemnity benefits are likely.",
+      "The insured asked which forms are needed, so send the first report of injury and any state forms.",
+      "Possible tool or equipment issue even though the guard was reportedly in place."
+     ],
+     "subject": "Crew member cut hand on circular saw at job site",
+     "severity": "Medium",
+     "policyReason": "An employee was hurt while working on a job site, which falls under the workers compensation policy.",
+     "policyId": "a00aj00003jKVO3AAO",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "What is the full street address of the Wheaton job site?",
+      "What is Tomas Vega's job title, date of hire and average weekly wage?",
+      "What is the name of the treating doctor, and can you send the ER discharge papers and work restriction note?",
+      "Can you send the photos and the supervisor's written statement?",
+      "Were there any witnesses besides the supervisor?"
+     ],
+     "lossType": "Bodily Injury",
+     "lossLocation": "Job site in Wheaton",
+     "isClaim": true,
+     "estimatedLoss": null,
+     "description": "At about 7:50 in the morning on 2 October 2026, crew member Tomas Vega cut his left hand on a circular saw at a job site in Wheaton. His supervisor drove him to the emergency room at Central DuPage, where he received nine stitches and was sent home. The doctor has kept him off work for two weeks. The saw guard was in place at the time. The insured has photos and a written statement from the supervisor, and Safety Director Miguel Ortega reported the injury the same day.",
+     "dateOfLoss": "2026-10-02",
+     "contactId": "003aj00002T8RCJAA3"
+    },
+    "ms": 3921
+   }
+  },
+  {
+   "case": "taproom-slip-call",
+   "split": "tune",
+   "rep": 0,
+   "ms": 5451,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": false,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": false,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Joe Mancini",
+    "status": "Active",
+    "line": "General Liability",
+    "message": "Call from Joe Mancini at Bluestem, 2:40pm. A guest, Margaret Doyle, slipped on a wet floor near the taproom bar on Friday evening about 7:15 and went down hard on her wrist. Staff called an ambulance, she was seen in the ER and sent home the same night with a broken wrist in a cast. Wet floor sign was out per Joe. There is camera footage and two staff saw it. Her daughter phoned today saying they expect the medical bills to be covered. No figure mentioned.",
+    "draft": {
+     "watch": [
+      "Third party injury with ER treatment for a broken wrist.",
+      "Claimant's family is already asking for medical bills to be paid; Medical Expense coverage may apply.",
+      "Camera footage and staff witnesses exist and should be preserved.",
+      "Wet floor sign reportedly in place, which is relevant to liability."
+     ],
+     "subject": "Guest slipped on wet taproom floor and broke wrist",
+     "severity": "High",
+     "policyReason": "A member of the public was hurt in the taproom, which falls under the general liability policy covering the brewery and taproom.",
+     "policyId": "a00aj00003jKVNzAAO",
+     "origin": "Phone",
+     "notClaimReason": null,
+     "missing": [
+      "Can you confirm the incident happened on Friday 25 September and at the 2100 W Fulton St location?",
+      "What are the contact details for Margaret Doyle and her daughter?",
+      "Can you preserve and send the camera footage and the names and statements of the two staff witnesses?",
+      "What caused the floor to be wet and how long had it been wet before the fall?",
+      "Was an incident report completed, and do you have any medical bills or ambulance details?"
+     ],
+     "lossType": "Bodily Injury",
+     "lossLocation": "Taproom bar, Bluestem Brewing Company",
+     "isClaim": true,
+     "estimatedLoss": null,
+     "description": "On Friday 25 September 2026 at about 7:15pm, a guest, Margaret Doyle, slipped on a wet floor near the taproom bar and fell hard on her wrist. Staff called an ambulance and she was seen in the emergency room, then sent home the same night with a broken wrist in a cast. Joe Mancini reported that a wet floor sign was out at the time. The incident was captured on camera and witnessed by two staff members. Ms Doyle's daughter phoned on 2 October 2026 saying the family expects the medical bills to be covered, without giving a figure.",
+     "dateOfLoss": "2026-09-25",
+     "contactId": "003aj00002T8RCHAA3"
+    },
+    "ms": 5451
+   }
+  },
+  {
+   "case": "truck-canopy",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4165,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "asks_whats_missing": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Lena Fischer",
+    "status": "Active",
+    "line": "Commercial Auto",
+    "message": "Subject: Truck damage at a customer site\n\nHello,\n\nYesterday afternoon one of our drivers backed a trailer into the loading dock canopy at a customer's warehouse, 4100 W 42nd Pl in Chicago. The canopy is bent and one support post is cracked. Their facilities manager says the repair will be about $7,500 and wants our insurance details. Our trailer has a crushed rear corner, no estimate on that yet. The driver was not hurt.\n\nPlease open a claim.\n\nLena Fischer\nSagebrush Freight Lines",
+    "draft": {
+     "watch": [
+      "A third party is holding the insured responsible for the property damage, with a stated repair cost of about $7,500.",
+      "The trailer damage is not yet estimated, so the total loss may rise above the current figure.",
+      "The $5,000 deductible may apply to the trailer collision damage."
+     ],
+     "subject": "Trailer backed into customer's loading dock canopy",
+     "severity": "Medium",
+     "policyReason": "A fleet trailer backed into a third party's property, so the commercial auto policy responds for both the liability to the customer and the collision damage to the trailer.",
+     "policyId": "a00aj00003jKVOFAA4",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "What is the name and contact information of the warehouse customer and its facilities manager?",
+      "What are the driver's name and the tractor and trailer unit numbers or VINs involved?",
+      "Can you provide photos of the canopy, the support post and the trailer damage?",
+      "Can you obtain a written repair estimate for the canopy and an estimate for the trailer?",
+      "Was the incident reported to police or documented in a site incident report?"
+     ],
+     "lossType": "Collision",
+     "lossLocation": "4100 W 42nd Pl, Chicago",
+     "isClaim": true,
+     "estimatedLoss": 7500.0,
+     "description": "On the afternoon of 1 October 2026, a Sagebrush Freight Lines driver backed a trailer into the loading dock canopy at a customer's warehouse at 4100 W 42nd Pl in Chicago. The canopy was bent and one support post was cracked. The customer's facilities manager estimated the repair at about $7,500 and asked for the insured's insurance details. The insured's trailer sustained a crushed rear corner, and no estimate has been obtained for it yet. The driver was not hurt.",
+     "dateOfLoss": "2026-10-01",
+     "contactId": "003aj00002T8RCPAA3"
+    },
+    "ms": 4165
+   }
+  },
+  {
+   "case": "scratched-floors",
+   "split": "tune",
+   "rep": 0,
+   "ms": 4504,
+   "checks": {
+    "is_claim": true,
+    "policy": true,
+    "date": true,
+    "loss_type": true,
+    "severity": true,
+    "estimate": true,
+    "origin": true,
+    "reporter": true,
+    "location": true,
+    "subject_form": true,
+    "details_kept": true,
+    "no_dashes": true
+   },
+   "out": {
+    "reporter": "Rosa Delgado",
+    "status": "Active",
+    "line": "General Liability",
+    "message": "Subject: Client says we damaged their floor\n\nHi,\n\nWe catered a party at a client's home in Winnetka on Saturday. The client, Paul Hendry, emailed today to say our crew gouged the hardwood floor in the dining room when they rolled the warming cabinets in. He sent a flooring quote for $3,400 and wants us to pay for it. My crew lead says they did use the cabinets in that room.\n\nWhat do I do?\n\nRosa Delgado",
+    "draft": {
+     "watch": [
+      "A third party has made a $3,400 demand, and the insured should not admit fault or agree to pay before the handler reviews it.",
+      "The crew lead confirmed the cabinets were used in the dining room, which may bear on liability.",
+      "Check whether the property damage coverage under the general liability policy responds to damage to a client's property while work was being done there."
+     ],
+     "subject": "Catering crew allegedly gouged client's hardwood floor",
+     "severity": "Low",
+     "policyReason": "A third party holds the business responsible for damage to their property during off-site catering, which falls under the general liability policy.",
+     "policyId": "a00aj00003jKVOIAA4",
+     "origin": "Email",
+     "notClaimReason": null,
+     "missing": [
+      "What is the full street address of the client's home in Winnetka?",
+      "Can you send Mr. Hendry's email, the flooring quote and any photos of the damage?",
+      "What are Mr. Hendry's phone number and email address?",
+      "What are the names of the crew members who moved the warming cabinets?",
+      "Was the floor already damaged before the event, and did anyone note its condition on arrival?"
+     ],
+     "lossType": "Liability",
+     "lossLocation": "Client's home, Winnetka, IL",
+     "isClaim": true,
+     "estimatedLoss": 3400.0,
+     "description": "On Saturday 26 September 2026, Marigold Cafe & Catering catered a party at the home of a client, Paul Hendry, in Winnetka. Mr. Hendry emailed on 2 October 2026 to say the catering crew gouged the hardwood floor in his dining room while rolling warming cabinets into the room. He sent a flooring quote for $3,400 and asked the business to pay for it. The crew lead confirmed that the warming cabinets were used in that room. Nobody was reported hurt.",
+     "dateOfLoss": "2026-09-26",
+     "contactId": "003aj00002T8RCQAA3"
+    },
+    "ms": 4504
+   }
+  }
+ ],
+ "errors": []
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nDraft an email to the customer saying where this stands"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Email FROM Contact WHERE Id = '003aj00002TKgJBAA1'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Id\":\"003aj00002TKgJBAA1\",\"Email\":\"chinedu.okafor@example.com\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_draft",
+    "content": "{\n  \"say\": \"I've drafted an update for Chinedu Okafor on claim 00002566. It's based on the latest file notes and the two documents that came in today.\",\n  \"format\": \"email\",\n  \"to_name\": \"Chinedu Okafor\",\n  \"to_email\": \"chinedu.okafor@example.com\",\n  \"subject\": \"Update on your basement water damage claim 00002566\",\n  \"body\": \"Dear Chinedu,\\n\\nI wanted to give you an update on your claim for the burst supply line in your basement at 2620 Central Park Ave.\\n\\nDrying is now complete and the moisture readings are back to normal. As confirmed earlier, sudden and accidental water discharge is covered under your homeowners policy ANT-HO-204585, and your $2,500 deductible applies. We have already paid you an advance of $5,000 for emergency drying and immediate needs.\\n\\nWe have now received the mitigation invoice from Lakeshore Restoration and the rebuild estimate from Northshore Renovation. We are reviewing both this week, and we expect to approve the rebuild estimate shortly so repairs to your flooring, drywall and furnace can get started. Your stored belongings are also part of the claim.\\n\\nI will be in touch once the review is done. In the meantime, please let me know if you have any questions.\\n\\nKind regards,\\n\\nDemo User\\nAntsurance\",\n  \"related_record_id\": \"500aj00003jfwTqAAI\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"draft\",\n    \"format\": \"email\",\n    \"toName\": \"Chinedu Okafor\",\n    \"toEmail\": \"chinedu.okafor@example.com\",\n    \"subject\": \"Update on your basement water damage claim 00002566\",\n    \"body\": \"Dear Chinedu,\\n\\nI wanted to give you an update on your claim for the burst supply line in your basement at 2620 Central Park Ave.\\n\\nDrying is now complete and the moisture readings are back to normal. As confirmed earlier, sudden and accidental water discharge is covered under your homeowners policy ANT-HO-204585, and your $2,500 deductible applies. We have already paid you an advance of $5,000 for emergency drying and immediate needs.\\n\\nWe have now received the mitigation invoice from Lakeshore Restoration and the rebuild estimate from Northshore Renovation. We are reviewing both this week, and we expect to approve the rebuild estimate shortly so repairs to your flooring, drywall and furnace can get started. Your stored belongings are also part of the claim.\\n\\nI will be in touch once the review is done. In the meantime, please let me know if you have any questions.\\n\\nKind regards,\\n\\nDemo User\\nAntsurance\",\n    \"relatedRecordId\": \"500aj00003jfwTqAAI\"\n  }\n]"
+  }
+]

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Antsurance</application>
+        <default>true</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>devedapp__Developer_Edition</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <custom>false</custom>
+    <layoutAssignments>
+        <layout>Account-Household Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Agency Layout</layout>
+        <recordType>Account.Agency</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Business Layout</layout>
+        <recordType>Account.Business</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Household Layout</layout>
+        <recordType>Account.Household</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Policy Service Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Claim Layout</layout>
+        <recordType>Case.Claim</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Policy Service Layout</layout>
+        <recordType>Case.Policy_Service</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Antsurance Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>File_Note__c-File Note Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-Antsurance Lead Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Policy Sale Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Policy Sale Layout</layout>
+        <recordType>Opportunity.Policy_Sale</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy_Asset__c-Insured Asset Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy_Coverage__c-Policy Coverage Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy_Endorsement__c-Policy Endorsement Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy_Participant__c-Policy Participant Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy__c-Policy Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Quote-Antsurance Quote Layout</layout>
+    </layoutAssignments>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Agency</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Business</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Account.Household</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.Claim</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Case.Policy_Service</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Opportunity.Policy_Sale</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>Antsurance_Claude</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Antsurance_Home</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Antsurance_Tasks</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Antsurance_Agents</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Antsurance_Events</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>File_Note__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Policy_Asset__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Policy_Coverage__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Policy_Endorsement__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Policy_Participant__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Policy__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Quote</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Task</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <userLicense>Salesforce</userLicense>
+</Profile>

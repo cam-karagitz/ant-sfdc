@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Premium_Share__c</fullName>
+    <description>This coverage premium as a share of the policy annual premium.</description>
+    <label>Share of Premium</label>
+    <formula><![CDATA[IF(BLANKVALUE(Policy__r.Annual_Premium__c, 0) = 0, 0, Premium_Amount__c / Policy__r.Annual_Premium__c)]]></formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Percent</type>
+</CustomField>

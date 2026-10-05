@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nShow me this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "This is a **High** severity water damage claim for the Okafor Household. It's Under Investigation, has been open 12 days and is handled by Marcus Lindahl. Of the **$45,000** reserve, $5,000 has been paid and **$40,000** is still outstanding. The policy was in force on the date of loss, and the $2,500 deductible applies. Drying is done. Two invoices came in today, and you have tasks to review the mitigation invoice by Oct 6 and approve the rebuild estimate by Oct 7."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_timeline",
+    "content": "{\n  \"title\": \"Claim 00002566 so far\",\n  \"events\": [\n    {\n      \"date\": \"2026-09-21\",\n      \"title\": \"Supply line burst\",\n      \"detail\": \"Finished basement flooded while the family was away\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"date\": \"2026-09-24\",\n      \"title\": \"First notice, drying authorized\",\n      \"detail\": \"Chinedu called; mitigation vendor started extraction\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"date\": \"2026-09-25\",\n      \"title\": \"Inspection, coverage confirmed\",\n      \"detail\": \"Sudden and accidental discharge covered, $2,500 deductible\",\n      \"tone\": \"good\"\n    },\n    {\n      \"date\": \"2026-09-26\",\n      \"title\": \"Reserve set at $45,000\",\n      \"detail\": \"Mitigation, rebuild, furnace and contents\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"date\": \"2026-09-28\",\n      \"title\": \"$5,000 advance paid\",\n      \"detail\": \"For emergency drying and immediate needs\",\n      \"tone\": \"good\"\n    },\n    {\n      \"date\": \"2026-10-02\",\n      \"title\": \"Drying complete\",\n      \"detail\": \"Moisture readings normal; waiting on invoices\",\n      \"tone\": \"good\"\n    },\n    {\n      \"date\": \"2026-10-04\",\n      \"title\": \"Invoice and estimate received\",\n      \"detail\": \"Lakeshore mitigation invoice, Northshore rebuild estimate\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Does the estimate fit the reserve?\",\n    \"Draft an update to Chinedu\",\n    \"Move this claim to Appraisal\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"timeline\",\n    \"title\": \"Claim 00002566 so far\",\n    \"events\": [\n      {\n        \"date\": \"2026-09-21\",\n        \"title\": \"Supply line burst\",\n        \"detail\": \"Finished basement flooded while the family was away\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"date\": \"2026-09-24\",\n        \"title\": \"First notice, drying authorized\",\n        \"detail\": \"Chinedu called; mitigation vendor started extraction\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"date\": \"2026-09-25\",\n        \"title\": \"Inspection, coverage confirmed\",\n        \"detail\": \"Sudden and accidental discharge covered, $2,500 deductible\",\n        \"tone\": \"good\"\n      },\n      {\n        \"date\": \"2026-09-26\",\n        \"title\": \"Reserve set at $45,000\",\n        \"detail\": \"Mitigation, rebuild, furnace and contents\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"date\": \"2026-09-28\",\n        \"title\": \"$5,000 advance paid\",\n        \"detail\": \"For emergency drying and immediate needs\",\n        \"tone\": \"good\"\n      },\n      {\n        \"date\": \"2026-10-02\",\n        \"title\": \"Drying complete\",\n        \"detail\": \"Moisture readings normal; waiting on invoices\",\n        \"tone\": \"good\"\n      },\n      {\n        \"date\": \"2026-10-04\",\n        \"title\": \"Invoice and estimate received\",\n        \"detail\": \"Lakeshore mitigation invoice, Northshore rebuild estimate\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Does the estimate fit the reserve?\",\n      \"Draft an update to Chinedu\",\n      \"Move this claim to Appraisal\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Policy_Service</fullName>
+    <active>true</active>
+    <businessProcess>PolicyService</businessProcess>
+    <compactLayoutAssignment>Service_Compact</compactLayoutAssignment>
+    <description>A policyholder request to change or ask about a policy, such as adding a driver or getting a certificate of insurance.</description>
+    <label>Policy Service</label>
+    <picklistValues>
+        <picklist>Request_Type__c</picklist>
+        <values>
+            <fullName>Add Driver</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Remove Driver</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Add Vehicle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change Address</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change Coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Billing Question</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificate of Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Document Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancel Policy</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Phone</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mobile App</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

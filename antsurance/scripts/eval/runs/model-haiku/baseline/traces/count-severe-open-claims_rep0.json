@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims are High or Catastrophic severity?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT(Id) FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Severity__c IN ('High', 'Catastrophic')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"expr0\":8}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**8 open claims** are High or Catastrophic severity."
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002038: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKc9SAAS). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nRemind me to call the customer about this claim in three days."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Account.Id, Account.Name, Contact.Id, Contact.Name, Contact.Phone, Contact.Preferred_Contact_Method__c FROM Case WHERE Id = '500aj00003jKc9SAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Contact\":{\"Preferred_Contact_Method__c\":\"Phone\",\"Phone\":\"(847) 555-0164\",\"Name\":\"Chinedu Okafor\",\"Id\":\"003aj00002T8yQKAAZ\"},\"Account\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040t1ntAAA\"},\"ContactId\":\"003aj00002T8yQKAAZ\",\"AccountId\":\"001aj000040t1ntAAA\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't set the reminder for you because I can only read records, not create tasks. Here's what to put in a task on this claim (use **New Task** in the claim's Activity panel):\n\n- **Subject:** Call customer re: claim 00002038, burst pipe\n- **Due date:** **5 Oct 2026** (Monday)\n- **Name:** [Chinedu Okafor](/lightning/r/003aj00002T8yQKAAZ/view), [Okafor Household](/lightning/r/001aj000040t1ntAAA/view)\n- **Phone:** (847) 555-0164. Phone is the way he prefers to be contacted.\n\nThe claim is currently **Under Investigation**."
+  }
+]

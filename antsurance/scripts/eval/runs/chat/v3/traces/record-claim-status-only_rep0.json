@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat's the status of this claim? Don't change anything."
+  },
+  {
+    "role": "assistant",
+    "content": "[00002216: Burst pipe flooded finished basement](/lightning/r/500aj00003jLAOcAAO/view) is **Under Investigation**. It's High severity and has been open 10 days. Marcus Lindahl is handling it under [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view) for the [Okafor Household](/lightning/r/001aj000040t3cpAAA/view).\n\n- **What happened:** A braided supply line failed on 21 Sep and flooded the basement. The water damaged the flooring, drywall, furnace and stored belongings.\n- **Coverage:** The policy was in force on the date of loss and this kind of water damage is covered. The $2,500 deductible applies.\n- **Money:** The reserve is **$48,450**. It was raised from $45,000 after the Northshore rebuild estimate came in. **$5,000** has been paid as an advance, leaving **$43,450** outstanding.\n- **Progress:** Drying is finished and moisture readings are back to normal.\n- **Your open tasks:**\n  - 4 Oct: review the mitigation invoice\n  - 4 Oct: confirm the failed supply line is kept and assess subrogation\n  - 5 Oct: approve the rebuild estimate\n  - 6 Oct: call Chinedu Okafor\n\nI haven't changed anything."
+  }
+]

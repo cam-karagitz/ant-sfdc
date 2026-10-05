@@ -1,0 +1,63 @@
+{
+ "width": 720,
+ "height": 960,
+ "answers": {
+  "fraction": {
+   "ms": 2638,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Rear of a silver sedan with the rear window shattered, glass and hailstones on the rear shelf and seat, hail covering the lawn behind.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"rear window\",\"detail\":\"glass shattered and fallen into the car, open to the weather\",\"severity\":\"severe\",\"panel\":\"rear_window\",\"box\":{\"x\":0.0,\"y\":0.21,\"width\":0.95,\"height\":0.55}},{\"area\":\"rear window trim on the right side\",\"detail\":\"trim strip torn loose and hanging\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":0.47,\"y\":0.37,\"width\":0.21,\"height\":0.3}},{\"area\":\"right rear quarter panel\",\"detail\":\"several hail dents in the sheet metal\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":0.6,\"y\":0.38,\"width\":0.4,\"height\":0.6}},{\"area\":\"trunk lid\",\"detail\":\"small hail dents and chips\",\"severity\":\"minor\",\"panel\":\"trunk\",\"box\":{\"x\":0.0,\"y\":0.6,\"width\":0.62,\"height\":0.4}},{\"area\":\"roof\",\"detail\":\"possible small hail dents with glass on top\",\"severity\":\"minor\",\"panel\":\"roof\",\"box\":{\"x\":0.3,\"y\":0.16,\"width\":0.7,\"height\":0.18}}]}]}"
+  },
+  "pixel": {
+   "ms": 2104,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Rear of a silver sedan with the rear window shattered, glass and hailstones on the rear seat and parcel shelf, hail on the ground.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"rear window\",\"detail\":\"glass shattered, opening exposed to the weather\",\"severity\":\"severe\",\"panel\":\"rear_window\",\"box\":{\"x\":0,\"y\":210,\"width\":715,\"height\":560}},{\"area\":\"rear seat and parcel shelf\",\"detail\":\"covered in broken glass, possible cuts to upholstery\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":320,\"width\":580,\"height\":390}},{\"area\":\"right rear quarter panel\",\"detail\":\"several small hail dents\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":440,\"y\":380,\"width\":280,\"height\":580}},{\"area\":\"trunk lid\",\"detail\":\"small hail dents and chips\",\"severity\":\"minor\",\"panel\":\"trunk\",\"box\":{\"x\":0,\"y\":640,\"width\":460,\"height\":320}},{\"area\":\"roof\",\"detail\":\"glass debris, possible small hail dents\",\"severity\":\"minor\",\"panel\":\"roof\",\"box\":{\"x\":230,\"y\":160,\"width\":490,\"height\":180}}]}]}"
+  },
+  "grid": {
+   "ms": 2181,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Rear of a silver sedan with the rear window shattered, glass and hailstones on the rear shelf and seat, hail on the ground.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"rear window\",\"detail\":\"glass shattered, opening exposed to the weather\",\"severity\":\"severe\",\"panel\":\"rear_window\",\"box\":{\"x\":0.0,\"y\":2.2,\"width\":9.9,\"height\":5.6}},{\"area\":\"rear window seal and trim on the right side\",\"detail\":\"trim strip torn loose and hanging\",\"severity\":\"moderate\",\"panel\":\"rear_window\",\"box\":{\"x\":6.5,\"y\":3.7,\"width\":2.8,\"height\":3.3}},{\"area\":\"left rear quarter panel\",\"detail\":\"possible small hail dents, hard to confirm in the glare\",\"severity\":\"minor\",\"panel\":\"rear_left_quarter\",\"box\":{\"x\":7.0,\"y\":5.0,\"width\":3.0,\"height\":5.0}}]}]}"
+  },
+  "refine": {
+   "ms": 2123,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":0,\"y\":130,\"width\":620,\"height\":510}},{\"number\":2,\"found\":true,\"box\":{\"x\":0,\"y\":110,\"width\":620,\"height\":390}},{\"number\":3,\"found\":true,\"box\":{\"x\":230,\"y\":280,\"width\":141,\"height\":330}},{\"number\":4,\"found\":true,\"box\":{\"x\":0,\"y\":100,\"width\":520,\"height\":434}},{\"number\":5,\"found\":true,\"box\":{\"x\":300,\"y\":230,\"width\":330,\"height\":90}}]}",
+   "crops": [
+    {
+     "left": 0,
+     "top": 70.0,
+     "scale": 0.9142857142857143,
+     "width": 658,
+     "height": 768
+    },
+    {
+     "left": 0,
+     "top": 222.5,
+     "scale": 1.0666666666666667,
+     "width": 768,
+     "height": 625
+    },
+    {
+     "left": 370.0,
+     "top": 235.0,
+     "scale": 1.0593103448275862,
+     "width": 371,
+     "height": 768
+    },
+    {
+     "left": 0,
+     "top": 560.0,
+     "scale": 1.3356521739130436,
+     "width": 768,
+     "height": 534
+    },
+    {
+     "left": 107.5,
+     "top": 115.0,
+     "scale": 1.2549019607843137,
+     "width": 768,
+     "height": 339
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 7599,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Rear of a silver sedan with the rear window shattered, glass and hailstones on the rear seat and parcel shelf, hail covering the ground.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"rear window\",\"detail\":\"glass shattered, opening exposed to the weather\",\"severity\":\"severe\",\"panel\":\"rear_window\",\"box\":{\"x\":0,\"y\":210,\"width\":715,\"height\":560}},{\"area\":\"right rear quarter panel\",\"detail\":\"multiple hail dents\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":440,\"y\":380,\"width\":280,\"height\":580}},{\"area\":\"trunk lid\",\"detail\":\"small hail dents and chipped spots\",\"severity\":\"moderate\",\"panel\":\"trunk\",\"box\":{\"x\":0,\"y\":480,\"width\":460,\"height\":480}},{\"area\":\"roof\",\"detail\":\"possible small hail dents, hard to confirm\",\"severity\":\"minor\",\"panel\":\"roof\",\"box\":{\"x\":260,\"y\":160,\"width\":460,\"height\":180}}]}]}"
+  }
+ }
+}

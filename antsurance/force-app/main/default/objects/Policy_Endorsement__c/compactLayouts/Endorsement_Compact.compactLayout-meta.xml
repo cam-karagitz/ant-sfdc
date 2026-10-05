@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Endorsement_Compact</fullName>
+    <fields>Name</fields>
+    <fields>Form_Number__c</fields>
+    <fields>Type__c</fields>
+    <fields>Status__c</fields>
+    <fields>Premium_Change__c</fields>
+    <fields>Effective_Date__c</fields>
+    <label>Policy Endorsement Compact Layout</label>
+</CompactLayout>

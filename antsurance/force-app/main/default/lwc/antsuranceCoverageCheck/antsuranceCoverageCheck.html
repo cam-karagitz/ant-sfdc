@@ -1,0 +1,190 @@
+<template>
+    <section class={cardClass} aria-label="Coverage check" aria-busy={isBusy}>
+        <header class="c-cov__head">
+            <span class="c-cov__mark" aria-hidden="true">
+                <lightning-icon icon-name="utility:shield" size="x-small" class="c-cov__mark-icon"></lightning-icon>
+            </span>
+            <div class="c-cov__titles">
+                <h2 class="c-cov__title">Coverage check</h2>
+                <p class="c-cov__meta">{metaLine}</p>
+            </div>
+            <template lwc:if={hasCheck}>
+                <span class={chipClass}>{check.verdict}</span>
+            </template>
+            <template lwc:if={showToggle}>
+                <button type="button" class="c-cov__toggle" aria-expanded={expanded} aria-controls="reasoning" onclick={handleToggle}>
+                    <span>{toggleLabel}</span>
+                    <lightning-icon icon-name={toggleIcon} size="xx-small" class="c-cov__toggle-icon"></lightning-icon>
+                </button>
+            </template>
+            <template lwc:if={showStart}>
+                <lightning-button variant="brand" label="Check coverage" icon-name="utility:sparkles" disabled={agentBusy} onclick={handleCheck} class="c-cov__start"></lightning-button>
+            </template>
+        </header>
+
+        <template lwc:if={isChecking}>
+            <p class="c-cov__working" role="status">
+                <span class="c-cov__pulse" aria-hidden="true"></span>
+                <span>{checkingCaption}</span>
+            </p>
+        </template>
+
+        <template lwc:if={isEmpty}>
+            <p class="c-cov__pitch">{emptyText}</p>
+        </template>
+
+        <template lwc:if={hasCheck}>
+            <dl class="c-cov__facts">
+                <div class="c-cov__fact">
+                    <dt class="c-cov__label">Responds</dt>
+                    <dd class="c-cov__value">
+                        <template lwc:if={hasResponding}>
+                            <a href="#" class="c-cov__value-link" data-record-id={check.respondingId} onclick={handleOpenRecord}>{respondsText}</a>
+                        </template>
+                        <template lwc:else>{respondsText}</template>
+                    </dd>
+                    <template lwc:if={respondsNote}>
+                        <dd class="c-cov__note">{respondsNote}</dd>
+                    </template>
+                </div>
+                <div class="c-cov__fact">
+                    <dt class="c-cov__label">Limit and deductible</dt>
+                    <dd class="c-cov__value">{limitText}</dd>
+                    <dd class="c-cov__note">{deductibleNote}</dd>
+                </div>
+                <div class="c-cov__fact c-cov__fact_figure">
+                    <dt class="c-cov__label">{payableLabel}</dt>
+                    <dd class="c-cov__value c-cov__value_figure">{payableText}</dd>
+                    <dd class="c-cov__note">{payableNote}</dd>
+                </div>
+            </dl>
+
+            <template lwc:if={isStale}>
+                <p class="c-cov__stale" role="status">
+                    <lightning-icon icon-name="utility:info" size="xx-small" class="c-cov__stale-icon" alternative-text="Out of date"></lightning-icon>
+                    <span class="c-cov__stale-text">{staleText}</span>
+                    <template lwc:if={canAct}>
+                        <button type="button" class="c-cov__again" onclick={handleCheck}>Check again</button>
+                    </template>
+                </p>
+            </template>
+        </template>
+
+        <template lwc:if={showReasoning}>
+            <div id="reasoning" class="c-cov__reasoning">
+                <p class="c-cov__summary">{summary}</p>
+
+                <c-antsurance-tabs class="c-cov__tabs" label="Parts of the reasoning" tabs={reasonTabs} value={currentView} onselect={handleView}></c-antsurance-tabs>
+
+                <template lwc:if={showsRecord}>
+                    <div role="tabpanel" aria-label="What the record shows">
+                        <ol class="c-cov__findings" style={findingsStyle}>
+                            <template for:each={shownFindings} for:item="finding">
+                                <li key={finding.key} class="c-cov__finding">
+                                    <p class="c-cov__finding-text">{finding.text}</p>
+                                    <template lwc:if={finding.hasSource}>
+                                        <p class="c-cov__source">
+                                            <template lwc:if={finding.sourceKind}>
+                                                <span class="c-cov__source-kind">{finding.sourceKind}</span>
+                                            </template>
+                                            <template lwc:if={finding.isLinked}>
+                                                <a href="#" class="c-cov__source-link" title={finding.sourceTitle} data-record-id={finding.recordId} onclick={handleOpenRecord}>{finding.sourceLabel}</a>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="c-cov__source-name">{finding.sourceLabel}</span>
+                                            </template>
+                                        </p>
+                                    </template>
+                                </li>
+                            </template>
+                        </ol>
+                        <c-antsurance-step-pager total={findings.length} page-size={findingsShown} page={findingsPage} label="findings" data-list="record" onpagechange={handlePage}></c-antsurance-step-pager>
+                    </div>
+                </template>
+
+                <template lwc:if={showsAsk}>
+                    <div role="tabpanel" aria-label="Still to ask the insured" class="c-cov__panel">
+                        <ul class="c-cov__list">
+                            <template for:each={questions} for:item="question">
+                                <li key={question.key}>{question.text}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <template lwc:if={showsChange}>
+                    <div role="tabpanel" aria-label="What would change this" class="c-cov__panel">
+                        <ul class="c-cov__list">
+                            <template for:each={wouldChange} for:item="change">
+                                <li key={change.key}>{change.text}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <template lwc:if={showsAlso}>
+                    <div role="tabpanel" aria-label="Also taken into account" class="c-cov__panel">
+                        <dl class="c-cov__points">
+                            <template for:each={shownExtraPoints} for:item="point">
+                                <div key={point.key} class="c-cov__point">
+                                    <template lwc:if={point.lead}>
+                                        <dt class="c-cov__point-lead">{point.lead}</dt>
+                                    </template>
+                                    <dd class="c-cov__point-text">{point.text}</dd>
+                                </div>
+                            </template>
+                        </dl>
+                        <c-antsurance-step-pager total={extraPoints.length} page-size={pointsShown} page={alsoPage} label="points taken into account" data-list="also" onpagechange={handlePage}></c-antsurance-step-pager>
+                    </div>
+                </template>
+
+                <p class="c-cov__basis">
+                    Read from the coverages and endorsements recorded on this policy, not the wording of the policy forms. The adjuster decides.
+                </p>
+
+                <footer class="c-cov__foot">
+                    <p class="c-cov__written">{writtenLine}</p>
+                    <div class="c-cov__actions">
+                        <template lwc:if={isStale}>
+                            <!-- The banner above carries "Check again"; a check that is out of date cannot be confirmed. -->
+                            <span class="c-cov__why">Check again before you confirm.</span>
+                        </template>
+                        <template lwc:elseif={isConfirmed}>
+                            <lightning-button label="Check again" disabled={agentBusy} onclick={handleCheck}></lightning-button>
+                            <span class="c-cov__confirmed">
+                                <lightning-icon icon-name="utility:check" size="xx-small" class="c-cov__confirmed-icon" alternative-text="Confirmed"></lightning-icon>
+                                <span>{confirmedLine}</span>
+                            </span>
+                        </template>
+                        <template lwc:else>
+                            <lightning-button label="Check again" disabled={agentBusy} onclick={handleCheck}></lightning-button>
+                            <lightning-button variant="brand" label="Confirm" title="Record that you have read this check and agree with it" disabled={cannotConfirm} onclick={handleConfirm}></lightning-button>
+                        </template>
+                    </div>
+                </footer>
+            </div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-cov__error" role="alert">
+                <lightning-icon icon-name="utility:warning" size="xx-small" class="c-cov__error-icon" alternative-text="Problem"></lightning-icon>
+                <span class="c-cov__error-text">{errorMessage}</span>
+                <template lwc:if={canRetry}>
+                    <button type="button" class="c-cov__retry" onclick={handleCheck}>Check again</button>
+                </template>
+            </p>
+        </template>
+
+        <template lwc:if={canAct}>
+            <!-- A second way to the same stored check: an agent that works the file step by step. It hides itself where it is not set up. -->
+            <c-antsurance-coverage-agent
+                record-id={recordId}
+                disabled={isChecking}
+                check-on-record={checkOnRecord}
+                onfinished={handleAgentFinished}
+                onstanding={handleAgentStanding}
+                onworking={handleAgentWorking}
+            ></c-antsurance-coverage-agent>
+        </template>
+    </section>
+</template>

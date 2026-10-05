@@ -1,0 +1,261 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+.c-compare {
+    container-type: inline-size;
+    max-width: 52rem;
+}
+
+.c-compare .c-title {
+    margin-bottom: 0.625rem;
+}
+
+/* Each option is a card; the cards share one set of rows so the same fact sits on the same line. */
+.c-options {
+    display: grid;
+    grid-template-columns: repeat(var(--c-options), minmax(0, 15rem));
+    grid-template-rows: repeat(var(--c-rows), auto);
+    column-gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-option {
+    display: grid;
+    grid-row: 1 / -1;
+    grid-template-rows: subgrid;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-option_recommended {
+    border-color: var(--ants-clay);
+    box-shadow: inset 0 0.1875rem 0 var(--ants-clay);
+}
+
+.c-option__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.375rem;
+    padding: 0.875rem 1rem 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-option_recommended .c-option__head {
+    background: var(--ants-clay-tint);
+}
+
+.c-option_recommended .c-chip {
+    background: #fff;
+}
+
+.c-option__name {
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    text-wrap: balance;
+}
+
+.c-option__name_link:hover {
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-option__name_link:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-option__cell {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-option__label {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-option__value {
+    color: var(--ants-ink);
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
+}
+
+.c-compare__reason {
+    margin: 0.75rem 0 0;
+    padding: 0 0.25rem;
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+}
+
+/* The lead-in takes its own line, with the reason under it. */
+.c-compare__lead {
+    display: block;
+    font-weight: 700;
+}
+
+/* In the narrow panel the options stack, each a short list of label and value. */
+@container (max-width: 30rem) {
+    .c-options {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: none;
+        row-gap: 0.625rem;
+    }
+
+    .c-option {
+        grid-row: auto;
+        grid-template-rows: none;
+    }
+
+    .c-option__head {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.625rem 0.875rem;
+    }
+
+    .c-option__cell {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.375rem 0.875rem;
+    }
+
+    .c-option__value {
+        text-align: right;
+    }
+}
+
+/* ---------- Compact, for the utility panel: two options in one table, side by side ---------- */
+
+.c-switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.375rem;
+    padding: 0 0.75rem 0.5rem;
+}
+
+.c-switch__label {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-switch__choice {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--ants-line-strong);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.45;
+    cursor: pointer;
+}
+
+.c-switch__choice:hover {
+    border-color: var(--ants-clay);
+}
+
+.c-switch__choice:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-switch__choice_on {
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-pair {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.8125rem;
+}
+
+.c-pair thead td {
+    width: 32%;
+}
+
+.c-pair thead th {
+    padding: 0.5rem 0.5rem 0.4375rem;
+    border-top: 1px solid var(--ants-line);
+    border-left: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+    font-weight: 400;
+    text-align: left;
+    vertical-align: top;
+}
+
+.c-pair thead th.c-pair__head_recommended {
+    background: var(--ants-clay-tint);
+    box-shadow: inset 0 0.1875rem 0 var(--ants-clay);
+}
+
+.c-pair thead .c-chip {
+    margin-top: 0.25rem;
+    background: #fff;
+}
+
+.c-pair__name {
+    display: block;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    text-wrap: balance;
+}
+
+.c-pair tbody th,
+.c-pair tbody td {
+    padding: 0.3125rem 0.5rem;
+    border-top: 1px solid var(--ants-line);
+    color: var(--ants-muted);
+    font-weight: 400;
+    text-align: left;
+    vertical-align: top;
+    text-wrap: pretty;
+}
+
+.c-pair tbody th {
+    padding-left: 0.75rem;
+    font-size: 0.75rem;
+}
+
+.c-pair tbody td {
+    border-left: 1px solid var(--ants-line);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+/* Where the two options differ, the values stand out; where they match, they step back. */
+.c-pair tbody .c-pair__row_differs td {
+    color: var(--ants-ink);
+    font-weight: 600;
+}
+
+.c-compare__reason_mini {
+    margin: 0;
+    padding: 0.5rem 0.75rem 0.625rem;
+    border-top: 1px solid var(--ants-line);
+}

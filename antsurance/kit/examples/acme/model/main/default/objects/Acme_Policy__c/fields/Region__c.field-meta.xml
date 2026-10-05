@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Region__c</fullName>
+    <description>The sales region that wrote the policy. Required, and nothing in Antsurance has a field like it.</description>
+    <label>Region</label>
+    <length>40</length>
+    <required>true</required>
+    <type>Text</type>
+</CustomField>

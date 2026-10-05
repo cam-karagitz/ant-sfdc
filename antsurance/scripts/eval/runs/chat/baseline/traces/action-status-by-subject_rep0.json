@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "Move service request 00002081 to In Progress."
+  },
+  {
+    "role": "assistant",
+    "content": "I can only read records, so I can't change the status. I'll look up the request so you can open it."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Request_Type__c, Account.Name, Account.Id FROM Case WHERE CaseNumber = '00002081' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"AccountId\":\"001aj000040t1nsAAA\",\"Request_Type__c\":\"Add Driver\",\"Status\":\"New\",\"Subject\":\"Add Sofia Reyes as a driver\",\"CaseNumber\":\"00002081\",\"Id\":\"500aj00003jKcA9AAK\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't move it to In Progress because I only have read access, so I can't change records. You'll need to change the status yourself.\n\n[00002081 – Add Sofia Reyes as a driver](/lightning/r/500aj00003jKcA9AAK/view) is an **Add Driver** request for the [Reyes Household](/lightning/r/001aj000040t1nsAAA/view). Its status is still **New**. Open the request and change the Status field to **In Progress**."
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000041E8MXAA0). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhich policies does this customer have?"
+  },
+  {
+    "role": "assistant",
+    "content": "The Reyes Household has **3 active policies** with **$4,680** in annual premium between them. All are current or paid in full.\n\n| Policy | Line | Premium | Renews | Loss ratio |\n|---|---|---|---|---|\n| [ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view) | Personal Auto | $2,380 | May 15, 2027 | **77.7%** |\n| [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view) | Homeowners | $1,890 | Mar 17, 2027 | 0% |\n| [ANT-UM-204551](/lightning/r/a00aj00003jfwRDAAY/view) | Umbrella | $410 | Mar 17, 2027 | 0% |\n\nThe auto loss ratio comes from the parking lot scrape claim. There is also an open request to add Sofia as a driver, so expect the auto premium to go up."
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Who are the drivers on the auto policy?\",\n    \"What's the status of adding Sofia?\",\n    \"Show coverages on the homeowners policy\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Who are the drivers on the auto policy?\",\n      \"What's the status of adding Sofia?\",\n      \"Show coverages on the homeowners policy\"\n    ]\n  }\n]"
+  }
+]

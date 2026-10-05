@@ -1,0 +1,302 @@
+<template>
+    <section class="c-agents" aria-label="Claude at work">
+        <header class="c-head">
+            <span class="c-ui-tile c-ui-tile_large c-ui-tile_clay">
+                <lightning-icon icon-name="utility:einstein" size="small" alternative-text="Claude at work"></lightning-icon>
+            </span>
+            <div class="c-head__titles">
+                <h1 class="c-head__title">Claude at work</h1>
+                <p class="c-head__sub">{headline}</p>
+            </div>
+            <template lwc:if={modelLine}>
+                <p class="c-head__model" title="Set in Setup, Custom Metadata Types, Antsurance AI Setting">{modelLine}</p>
+            </template>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-body" aria-hidden="true">
+                <ul class="c-roster c-roster_waiting">
+                    <template for:each={bones} for:item="bone">
+                        <li key={bone} class="c-bone-row">
+                            <span class="c-ui-bone c-ui-bone_tile"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_name"></span>
+                        </li>
+                    </template>
+                </ul>
+                <div class="c-detail">
+                    <span class="c-ui-bone c-ui-bone_title c-bone_title"></span>
+                    <span class="c-ui-bone c-ui-bone_line c-bone_wide"></span>
+                    <span class="c-ui-bone c-ui-bone_line c-bone_wide"></span>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={isReady}>
+            <dl class="c-strip">
+                <template for:each={figures} for:item="figure">
+                    <div key={figure.label} class="c-strip__cell">
+                        <dt class="c-strip__label">{figure.label}</dt>
+                        <dd class="c-strip__value">{figure.value}</dd>
+                        <dd class="c-strip__note">{figure.note}</dd>
+                    </div>
+                </template>
+            </dl>
+
+            <div class="c-body">
+                <div class="c-roster" role="tablist" aria-label="The jobs" aria-orientation="vertical" onkeydown={handleRosterKey}>
+                    <template for:each={roster} for:item="row">
+                        <button
+                            key={row.key}
+                            type="button"
+                            role="tab"
+                            class={row.rowClass}
+                            data-key={row.key}
+                            aria-selected={row.selected}
+                            aria-controls="agent-panel"
+                            tabindex={row.tabIndex}
+                            onclick={handlePick}
+                        >
+                            <span class={row.tileClass}>
+                                <lightning-icon icon-name={row.icon} size="x-small" alternative-text=""></lightning-icon>
+                            </span>
+                            <span class="c-row__main">
+                                <span class="c-row__name">{row.name}</span>
+                                <span class="c-row__note">{row.note}</span>
+                            </span>
+                            <template lwc:if={row.isAgent}>
+                                <span class="c-chip c-chip_agent" title="Runs on an agent harness">Agent</span>
+                            </template>
+                            <template lwc:if={row.waiting}>
+                                <span class="c-chip c-chip_wait" title="Pieces waiting for a person">{row.waiting}<span class="c-chip__word">&nbsp;waiting</span></span>
+                            </template>
+                        </button>
+                    </template>
+                </div>
+
+                <article class="c-detail" id="agent-panel" role="tabpanel" aria-label={agent.name}>
+                    <header class="c-detail__head">
+                        <span class={agent.largeTileClass}>
+                            <lightning-icon icon-name={agent.icon} size="small" alternative-text=""></lightning-icon>
+                        </span>
+                        <div class="c-detail__titles">
+                            <p class="c-detail__line">
+                                <span class="c-detail__name" role="heading" aria-level="2">{agent.name}</span>
+                                <span class={agent.runsClass} title="How this job runs">{agent.runsLabel}</span>
+                            </p>
+                            <p class="c-detail__job">{agent.job}</p>
+                        </div>
+                    </header>
+
+                    <template lwc:if={agent.start}>
+                        <section class="c-start" aria-label="How to start this job">
+                            <span class="c-start__icon" aria-hidden="true">
+                                <lightning-icon icon-name="utility:play" size="x-small" alternative-text=""></lightning-icon>
+                            </span>
+                            <div class="c-start__text">
+                                <p class="c-start__label">How to start it</p>
+                                <p class="c-start__how">{agent.start.how}</p>
+                                <p class="c-start__then">{agent.start.onceThere}</p>
+                            </div>
+                            <template lwc:if={agent.start.url}>
+                                <lightning-button
+                                    class="c-start__go"
+                                    variant="brand"
+                                    label={agent.start.label}
+                                    icon-name="utility:forward"
+                                    icon-position="right"
+                                    data-url={agent.start.url}
+                                    onclick={handleOpen}
+                                ></lightning-button>
+                            </template>
+                        </section>
+                    </template>
+
+                    <c-antsurance-tabs label="About this job" tabs={tabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+
+                    <template lwc:if={showsJob}>
+                        <ol class="c-loop" aria-label="How the job goes, step by step">
+                            <template for:each={agent.stepRows} for:item="step">
+                                <li key={step.label} class={step.stepClass}>
+                                    <span class="c-loop__label">{step.label}</span>
+                                    <span class="c-loop__text">{step.text}</span>
+                                </li>
+                            </template>
+                        </ol>
+                        <dl class="c-facts">
+                            <template for:each={agent.facts} for:item="fact">
+                                <div key={fact.label} class="c-facts__row">
+                                    <dt class="c-facts__label">{fact.label}</dt>
+                                    <dd class="c-facts__items">
+                                        <ul>
+                                            <template for:each={fact.items} for:item="item">
+                                                <li key={item}>{item}</li>
+                                            </template>
+                                        </ul>
+                                    </dd>
+                                </div>
+                            </template>
+                        </dl>
+                    </template>
+
+                    <template lwc:if={showsRules}>
+                        <ul class="c-rules">
+                            <template for:each={agent.ruleRows} for:item="rule">
+                                <li key={rule.what} class="c-rules__row">
+                                    <span class={rule.chipClass}>{rule.chip}</span>
+                                    <div class="c-rules__main">
+                                        <p class="c-rules__what">{rule.what}</p>
+                                        <p class="c-rules__detail">{rule.detail}</p>
+                                    </div>
+                                    <template lwc:if={rule.isSetting}>
+                                        <a class="c-rules__set c-ui-focus" href={deskUrl} data-url={deskUrl} onclick={handleOpen}>Change on the desk</a>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+
+                    <template lwc:if={showsWork}>
+                        <template lwc:if={agent.isCounted}>
+                            <dl class="c-counts">
+                                <template for:each={agent.counts} for:item="count">
+                                    <div key={count.label} class="c-counts__cell">
+                                        <dt class="c-counts__label">{count.label}</dt>
+                                        <dd class={count.valueClass}>{count.value}</dd>
+                                    </div>
+                                </template>
+                            </dl>
+                            <template lwc:if={hasRecent}>
+                                <ul class="c-recent">
+                                    <template for:each={recentPage} for:item="item">
+                                        <li key={item.key} class="c-recent__row">
+                                            <span class="c-recent__main">
+                                                <template lwc:if={item.url}>
+                                                    <a class="c-recent__title c-ui-focus" href={item.url} data-url={item.url} onclick={handleOpen}>{item.title}</a>
+                                                </template>
+                                                <template lwc:else>
+                                                    <span class="c-recent__title">{item.title}</span>
+                                                </template>
+                                                <span class="c-recent__what">{item.what}</span>
+                                            </span>
+                                            <template lwc:if={item.outcome}>
+                                                <span class="c-chip">{item.outcome}</span>
+                                            </template>
+                                            <span class="c-recent__when">{item.when}</span>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-step-pager total={recentTotal} page-size={recentPageSize} page={recentPageNumber} label="pieces of work" onpagechange={handlePage}></c-antsurance-step-pager>
+                            </template>
+                            <template lwc:else>
+                                <p class="c-quiet">Nothing on record in the last seven days.</p>
+                            </template>
+                        </template>
+                    </template>
+
+                    <template lwc:if={showsHarness}>
+                        <template lwc:if={agent.isAgent}>
+                            <dl class="c-facts">
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Harness</dt>
+                                    <dd class="c-facts__plain">{agent.runsLine}</dd>
+                                </div>
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Skill</dt>
+                                    <dd class="c-facts__plain">{agent.skill}</dd>
+                                </div>
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Tools</dt>
+                                    <dd class="c-facts__plain">
+                                        <ul class="c-tools" aria-label="Tools the harness may call">
+                                            <template for:each={agent.harnessTools} for:item="tool">
+                                                <li key={tool} class="c-tools__tool">{tool}</li>
+                                            </template>
+                                        </ul>
+                                        <p class="c-facts__note">No web, no shell.</p>
+                                    </dd>
+                                </div>
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Newest run</dt>
+                                    <dd class="c-facts__plain">
+                                        <template lwc:if={agent.traceOf}>
+                                            <p>
+                                                <a class="c-recent__title c-ui-focus" href={agent.traceOf.url} data-url={agent.traceOf.url} onclick={handleOpen}>{agent.traceOf.title}</a>
+                                                <span class="c-facts__when">{agent.traceWhen}</span>
+                                            </p>
+                                            <template lwc:if={hasTrace}>
+                                                <c-antsurance-accordion label="Steps it took" count={traceTotal} summary="What the agent read and found, in order">
+                                                    <ol class="c-trace" start={traceStart}>
+                                                        <template for:each={tracePage} for:item="step">
+                                                            <li key={step.key}>{step.words}</li>
+                                                        </template>
+                                                    </ol>
+                                                    <c-antsurance-step-pager total={traceTotal} page-size={tracePageSize} page={tracePageNumber} label="steps" onpagechange={handleTracePage}></c-antsurance-step-pager>
+                                                </c-antsurance-accordion>
+                                            </template>
+                                            <template lwc:else>
+                                                <p class="c-facts__note">Its steps were not kept with this run.</p>
+                                            </template>
+                                        </template>
+                                        <template lwc:else>
+                                            <p>No run by the agent is on record yet.</p>
+                                        </template>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </template>
+                        <template lwc:else>
+                            <dl class="c-facts">
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Today</dt>
+                                    <dd class="c-facts__plain">
+                                        <p class="c-facts__strong">Not an agent: {agent.runsLower}.</p>
+                                        <p>{agent.runsLine}</p>
+                                    </dd>
+                                </div>
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">A harness</dt>
+                                    <dd class="c-facts__plain">Would run the tool loop for it, manage the context as work gets long, and&nbsp;load&nbsp;Skills.</dd>
+                                </div>
+                                <div class="c-facts__row">
+                                    <dt class="c-facts__label">Here it would add</dt>
+                                    <dd class="c-facts__plain">
+                                        <p>{agent.harnessLine}</p>
+                                        <p class="c-facts__note">A candidate, not a plan.</p>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </template>
+                    </template>
+
+                    <template lwc:if={showsTests}>
+                        <template lwc:if={hasTests}>
+                            <ul class="c-tests">
+                                <template for:each={agent.testRows} for:item="test">
+                                    <li key={test.title} class="c-tests__row">
+                                        <p class="c-tests__result">{test.result}</p>
+                                        <div class="c-tests__main">
+                                            <p class="c-tests__title">{test.title}</p>
+                                            <p class="c-tests__line">{test.measured}</p>
+                                            <p class="c-tests__caveat"><span class="c-tests__tag">Keep in mind</span>{test.caveat}</p>
+                                            <p class="c-tests__meta">{test.meta}</p>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                        <template lwc:else>
+                            <div class="c-none">
+                                <p class="c-quiet__lead">Not tested yet</p>
+                                <p class="c-quiet">No accuracy test is on file for this job. Its code is covered by unit tests, which check that it runs, not that its judgment is right.</p>
+                            </div>
+                        </template>
+                    </template>
+                </article>
+            </div>
+        </template>
+    </section>
+</template>

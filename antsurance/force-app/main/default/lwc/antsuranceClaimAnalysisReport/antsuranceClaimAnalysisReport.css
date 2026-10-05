@@ -1,0 +1,996 @@
+/* The adjuster's report, set as a document: a masthead, numbered sections with quiet rules
+   between them, and room to read. Brand values are fixed on purpose so it keeps its look
+   under any org theme. */
+:host {
+    display: block;
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-sand: #efe6d2;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --ants-reply-size: 0.875rem;
+}
+
+.c-report {
+    margin-top: 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-top: 4px solid var(--ants-clay);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    overflow: hidden;
+}
+
+.c-eyebrow {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-label {
+    margin: 1.125rem 0 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 74, 53, 0.35);
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+.c-link:hover {
+    text-decoration-color: currentColor;
+}
+
+.c-link:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+.c-chip {
+    display: inline-block;
+    padding: 0.125rem 0.5625rem;
+    border-radius: 999px;
+    font-family: var(--ants-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.c-chip_good {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-chip_watch,
+.c-chip_moderate {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_ended,
+.c-chip_quiet {
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+}
+
+.c-chip_minor {
+    background: var(--ants-sand);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_severe {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+/* ---------------------------------------------------------------- masthead */
+.c-mast {
+    padding: 1.25rem 2rem 1.125rem;
+    background: var(--ants-ivory);
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-mast__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.c-mast__what {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.125rem 0.875rem;
+    min-width: 0;
+}
+
+.c-mast__written {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-mast__headline {
+    margin: 0.5rem 0 0.625rem;
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    /* Runs the width of the masthead, in even lines. */
+    text-wrap: balance;
+}
+
+/* The headline comes in its clauses. In a narrow card they run on as plain text, in even lines. */
+.c-clause:not(:last-child)::after {
+    content: ' ';
+}
+
+/* In a card wide enough to hold a clause on one line, each clause is a block of its own, so a
+   headline that needs two lines breaks after its semicolon and not before an amount. */
+@container (min-width: 54rem) {
+    .c-clause {
+        display: inline-block;
+    }
+
+    .c-clause:not(:last-child) {
+        margin-right: 0.28em;
+    }
+
+    /* A clause too long for one line: the headline runs on as plain text, which fills the width. */
+    .c-mast__headline_runs .c-clause {
+        display: inline;
+        margin-right: 0;
+    }
+}
+
+/* Measures each clause on one line. Never seen, and takes no room. */
+.c-mast__ruler {
+    position: absolute;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    line-height: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.c-mast__ruler .c-clause {
+    display: inline-block;
+}
+
+.c-mast__claim {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ants-ink);
+}
+
+.c-mast__number {
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+.c-mast__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.5rem;
+    margin: 0.875rem 0 0;
+}
+
+.c-mast__fact dt {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-mast__fact dd {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+}
+
+/* On screen the figures show with the Summary tab only. Paper always gets them. */
+.c-figures.c-figures_away {
+    display: none;
+}
+
+.c-figures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-figure {
+    padding: 0.875rem 1.125rem 1rem;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-figure:first-child {
+    border-left: 0;
+}
+
+.c-figure__label {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-figure__value {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    margin: 0.25rem 0 0.125rem;
+}
+
+.c-figure__value_number {
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-figure__value .c-chip {
+    font-size: 0.8125rem;
+    padding: 0.1875rem 0.75rem;
+}
+
+.c-figure__value_number .c-chip {
+    font-size: 0.6875rem;
+    padding: 0.125rem 0.5625rem;
+}
+
+.c-figure__note {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+    /* A note that needs two lines breaks into two even ones, never before its last word or two. */
+    text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------- the bar: the sections as tabs, and the actions */
+.c-bar {
+    padding: 0.375rem 2rem 0;
+}
+
+/* The actions sit at the top of the masthead, so they are in view whichever section is. */
+.c-tools {
+    flex: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.c-tools lightning-button {
+    flex: none;
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+/* One section shows at a time. On paper they all do, each under its numbered heading. */
+.c-report .c-panel_off,
+.c-report .c-screenoff,
+.c-report .c-offpage {
+    display: none;
+}
+
+.c-report_screen .c-section {
+    padding-top: 1.25rem;
+    border-top: 0;
+}
+
+
+
+.c-done {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-olive-ink);
+}
+
+.c-stale {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.625rem 2rem;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.c-stale__icon {
+    margin-top: 0.125rem;
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+/* ---------------------------------------------------------------- sections */
+.c-section {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-mast + .c-section,
+.c-stale + .c-section {
+    border-top: 0;
+}
+
+.c-section__title {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin: 0 0 0.75rem;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-section__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.c-prose {
+    max-width: 60rem;
+}
+
+.c-quiet {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+.c-points {
+    margin: 0;
+    padding-left: 1.125rem;
+    list-style: disc;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.c-points li {
+    margin-bottom: 0.25rem;
+    text-wrap: pretty;
+}
+
+.c-points li::marker {
+    color: var(--ants-clay-deep);
+}
+
+/* Evidence: a key, what the item is, and what it shows. */
+.c-evidence {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-evidence__row {
+    display: grid;
+    /* The name column is wide enough for a document's name to sit on one line. */
+    grid-template-columns: 2.25rem minmax(12rem, 20rem) minmax(0, 1fr);
+    gap: 0.25rem 1rem;
+    align-items: start;
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-evidence__row:first-child,
+.c-report_screen .c-evidence__row_first {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.c-evidence__key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.375rem;
+    border-radius: 0.375rem;
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.c-evidence__title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+p.c-evidence__title {
+    color: var(--ants-ink);
+}
+
+.c-evidence__kind {
+    margin: 0.0625rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-evidence__shows {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+.c-evidence__row_unread .c-evidence__shows {
+    color: var(--ants-muted);
+    font-style: italic;
+}
+
+/* Damage: the photos with Claude's boxes, and the read in the viewer's first tab beside them. */
+.c-damage__read .c-label:first-child {
+    margin-top: 0;
+}
+
+.c-damage__read_paper {
+    margin-top: 1rem;
+}
+
+.c-damage__photos {
+    margin-top: 0.875rem;
+}
+
+/* Where photos are worked on: one line, so the report shows them and the card changes them. */
+.c-damage__where {
+    margin: 0.625rem 0 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* Coverage: what the verdict rests on, folded under the figures. */
+.c-folds {
+    margin-top: 1rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-damage__fit {
+    margin: 0 0 0.375rem;
+}
+
+.c-damage__fitnote {
+    margin: 0 0 0.875rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+.c-damage__range {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.c-damage__basis {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+/* Coverage: the figures in a row, then what the verdict rests on. */
+.c-facts {
+    display: grid;
+    /* As many columns as there are facts, so three facts fill the row as well as four do. */
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.75rem 1.5rem;
+    margin: 1rem 0 0;
+    padding: 0.875rem 1.125rem;
+    border-radius: 0.875rem;
+    background: var(--ants-ivory);
+}
+
+.c-fact dt {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-fact dd {
+    margin: 0.1875rem 0 0;
+}
+
+.c-fact__value {
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-fact__note {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-findings {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-finding {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr) minmax(9rem, 15rem);
+    gap: 0.25rem 0.875rem;
+    align-items: start;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-finding:first-child {
+    border-top: 0;
+}
+
+.c-finding__num {
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+}
+
+.c-finding__text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+.c-finding__source {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.c-finding__kind {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-basis {
+    margin: 1rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+/* Gaps and flags. */
+.c-gaps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2rem;
+}
+
+.c-gaps .c-label {
+    margin-top: 0;
+}
+
+/* Reserve: the arithmetic on the left, as wide as its longest label on one line, the reasoning on the right. */
+.c-reserve {
+    display: grid;
+    grid-template-columns: fit-content(34rem) minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: start;
+}
+
+.c-sum {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.c-sum th,
+.c-sum td {
+    padding: 0.4375rem 0;
+    border-bottom: 1px solid var(--ants-line);
+    font-weight: 400;
+    text-align: left;
+    vertical-align: top;
+}
+
+.c-sum td {
+    padding-left: 1rem;
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.c-sum__total th,
+.c-sum__total td {
+    padding-top: 0.625rem;
+    border-bottom: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-sum__now th,
+.c-sum__now td {
+    padding-top: 0;
+    border-bottom: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-reserve__none {
+    margin-top: 0.5rem;
+}
+
+.c-reserve__set {
+    display: inline-block;
+    margin-top: 0.875rem;
+}
+
+.c-reserve__why .c-done {
+    margin-top: 0.875rem;
+}
+
+/* Where to start. */
+.c-next {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-next__row {
+    display: grid;
+    grid-template-columns: auto 1.5rem minmax(0, 1fr) auto;
+    gap: 0 0.75rem;
+    align-items: start;
+    padding: 0.5625rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-next__row:first-child,
+.c-report_screen .c-next__row_first {
+    border-top: 0;
+}
+
+.c-next__check {
+    width: 1rem;
+    height: 1rem;
+    margin: 0.1875rem 0 0;
+    accent-color: var(--ants-clay-deep);
+}
+
+.c-next__num {
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+}
+
+.c-next__text {
+    cursor: pointer;
+}
+
+.c-next__subject {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.c-next__why {
+    display: block;
+    margin-top: 0.0625rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-next__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.875rem;
+}
+
+/* A confirm step: what the press will do, then Cancel and Confirm. */
+.c-confirm {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem 1rem;
+    margin-top: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.875rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-confirm__line {
+    flex: 1 1 18rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-confirm__actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.c-confirm__error {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-foot {
+    padding: 0.625rem 2rem 0.75rem;
+    border-top: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+}
+
+.c-foot p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+/* In a record page's main column the headline steps down a size, so it keeps to two lines. */
+@container (max-width: 64rem) {
+    .c-mast__headline {
+        font-size: 1.25rem;
+    }
+
+    .c-figure__value_number {
+        font-size: 1.25rem;
+    }
+}
+
+/* Narrow: everything in one column. */
+@container (max-width: 48rem) {
+    .c-mast,
+    .c-section,
+    .c-foot {
+        padding-left: 1.125rem;
+        padding-right: 1.125rem;
+    }
+
+    .c-stale {
+        padding-left: 1.125rem;
+        padding-right: 1.125rem;
+    }
+
+    .c-reserve,
+    .c-gaps {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-bar {
+        padding-left: 1.125rem;
+        padding-right: 1.125rem;
+    }
+
+    /* The three figures stay on one row at laptop width: tighter, not stacked, and each as wide as
+       its words need, so the short one does not keep room the two with a sentence under them lack. */
+    .c-figures {
+        grid-template-columns: repeat(3, minmax(0, auto));
+    }
+
+    .c-figure {
+        padding: 0.75rem 0.75rem 0.875rem;
+    }
+
+    .c-evidence__row {
+        grid-template-columns: 2.25rem minmax(0, 1fr);
+    }
+
+    .c-evidence__shows {
+        grid-column: 2;
+    }
+
+    .c-finding {
+        grid-template-columns: 1.5rem minmax(0, 1fr);
+    }
+
+    .c-finding__source {
+        grid-column: 2;
+    }
+
+    /* A screen is short here, so the masthead gives up the room it does not need: when it was written
+       goes under its label, which lets the buttons stay beside them on one row, and the padding steps in. */
+    .c-mast {
+        padding-top: 0.875rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .c-mast__what {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .c-mast__top {
+        flex-wrap: nowrap;
+    }
+
+    .c-mast__headline {
+        margin: 0.375rem 0 0.25rem;
+    }
+
+    .c-report_screen .c-section {
+        padding-top: 0.875rem;
+    }
+
+    /* The coverage facts keep to one row of four: three and one left a row for a single figure. */
+    .c-facts {
+        grid-template-columns: repeat(4, minmax(0, auto));
+        gap: 0.75rem 1rem;
+    }
+}
+
+/* Only a phone-width card stacks the three figures. */
+@container (max-width: 30rem) {
+    .c-figures {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-mast__top {
+        flex-wrap: wrap;
+    }
+
+    .c-figure {
+        border-left: 0;
+        border-top: 1px solid var(--ants-line);
+    }
+
+    .c-figure:first-child {
+        border-top: 0;
+    }
+}
+
+/* On paper: no buttons, no card edge, and no section split across a page where it can be helped. */
+@media print {
+    .c-noprint {
+        display: none !important;
+    }
+
+    .c-figures.c-figures_away {
+        display: grid;
+    }
+
+    /* Whatever the screen was showing, paper gets every section, heading and row. */
+    .c-report .c-section.c-panel_off,
+    .c-report .c-mast__claim.c-screenoff {
+        display: block;
+    }
+
+    .c-report .c-section__title.c-screenoff,
+    .c-report .c-mast__meta.c-screenoff {
+        display: flex;
+    }
+
+    .c-report .c-evidence__row.c-offpage,
+    .c-report .c-next__row.c-offpage {
+        display: grid;
+    }
+
+    .c-report_screen .c-section {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--ants-line);
+    }
+
+    .c-report {
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        overflow: visible;
+    }
+
+    .c-mast,
+    .c-foot,
+    .c-facts {
+        background: #fff;
+    }
+
+    .c-mast {
+        padding: 0 0 1rem;
+        border-top: 3px solid var(--ants-clay);
+        padding-top: 1rem;
+    }
+
+    .c-section,
+    .c-foot {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .c-section__title,
+    .c-label {
+        break-after: avoid;
+    }
+
+    .c-figures,
+    .c-evidence__row,
+    .c-finding,
+    .c-next__row,
+    .c-sum,
+    .c-damage__photos {
+        break-inside: avoid;
+    }
+
+    .c-link {
+        color: var(--ants-ink);
+        text-decoration: none;
+    }
+
+    .c-next__row {
+        grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    }
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nChange the reserve on this claim to $1."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't change reserves from here. I can only prepare tasks, file notes and status changes. To adjust it, use the claim's reserve process in Salesforce or ask Marcus Lindahl, who's handling the claim.\n\nFor reference, [00002118](/lightning/r/500aj00003jKuVeAAK/view) has a reserve of **$45,000**. **$5,000** has been paid and **$40,000** is still outstanding. The estimated loss is **$48,500**, and the drying invoice and rebuild estimate haven't come in yet. A **$1** reserve would fall below the $5,000 already paid."
+  }
+]

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>On a policy waiting on its renewal: what the renewal costs, and an outreach Claude drafts (retention risk, what to know, an email and a call opening). Shows nothing on any other policy.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Renewal Outreach</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Policy__c</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

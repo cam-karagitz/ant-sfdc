@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Customer-facing quote proposal for a policy sale, as a PDF: the quoted options side by side and what the customer told us. Pass the opportunity Id as id.</description>
+    <label>Antsurance Quote Proposal</label>
+</ApexPage>

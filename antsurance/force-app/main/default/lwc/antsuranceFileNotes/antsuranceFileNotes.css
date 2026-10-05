@@ -1,0 +1,449 @@
+@import 'c/antsuranceUiStyles';
+
+/* A file-note timeline in the Antsurance brand. Brand values are fixed on purpose so the
+   timeline keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-sky: #dbe7f3;
+    --ants-sky-ink: #2f5578;
+    --ants-olive: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    /* Notes are read as body text, in the same face as the page around them. */
+    --ants-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --ants-reply-size: 0.875rem;
+}
+
+.c-notes {
+    padding: 0.25rem 0.25rem 1rem;
+}
+
+.c-notes__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.c-notes__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ants-ink);
+}
+
+.c-notes__count {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* A button keeps its size and its label on one line. In a row of words and a button, the words give way, and
+   when there is no room left the button drops under them. */
+.c-notes__actions {
+    display: flex;
+    flex: none;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.c-notes__actions lightning-button,
+.c-empty lightning-button {
+    flex: none;
+    white-space: nowrap;
+}
+
+.c-notes__error {
+    margin: 0 0 1rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+/* ---------- No notes yet: said once, with the one thing to do next ---------- */
+
+.c-empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--ants-line);
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+}
+
+.c-empty__words {
+    flex: 1 1 14rem;
+    min-width: 0;
+}
+
+.c-empty__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ants-ink);
+}
+
+.c-empty__text {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+/* ---------- Loading: three notes' worth of bones on the same rail ---------- */
+
+.c-bone_marker {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.c-bone_author {
+    width: 9rem;
+}
+
+.c-bone_when {
+    width: 13rem;
+    margin-top: 0.5rem;
+}
+
+.c-bone_text {
+    width: 34rem;
+    max-width: 90%;
+    margin-top: 0.75rem;
+}
+
+.c-bone_text_short {
+    width: 22rem;
+    max-width: 60%;
+    margin-top: 0.5rem;
+}
+
+/* ---------- Composer ---------- */
+
+.c-composer {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+}
+
+.c-composer__top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.c-composer__type {
+    flex: none;
+    width: 12rem;
+}
+
+.c-composer__hint {
+    overflow: hidden;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-composer__input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.c-composer__input:focus {
+    border-color: var(--ants-clay);
+    outline: 2px solid var(--ants-clay-tint);
+}
+
+.c-composer__drafting {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 9.5rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background:
+        linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 80%) 50%, rgb(255 255 255 / 0%) 100%) 0 0 / 200% 100%,
+        var(--ants-oat);
+    color: var(--ants-muted);
+    font-size: 0.875rem;
+    animation: c-sweep 1.6s ease-in-out infinite;
+}
+
+.c-composer__spark {
+    width: 1.25rem;
+    height: 1.25rem;
+    animation: c-turn 2.4s linear infinite;
+}
+
+.c-composer__preview {
+    margin-top: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    border-left: 3px solid var(--ants-clay);
+    background: #fff;
+}
+
+.c-composer__preview-label {
+    margin: 0 0 0.375rem;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-composer__buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+@keyframes c-sweep {
+    from {
+        background-position: 200% 0, 0 0;
+    }
+
+    to {
+        background-position: -200% 0, 0 0;
+    }
+}
+
+@keyframes c-turn {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-composer__drafting,
+    .c-composer__spark {
+        animation: none;
+    }
+}
+
+/* ---------- Timeline ---------- */
+
+.c-timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-note {
+    position: relative;
+    display: flex;
+    gap: 0.875rem;
+    padding-bottom: 1.5rem;
+}
+
+/* The rail that joins one note's marker to the next. */
+.c-note::before {
+    content: '';
+    position: absolute;
+    top: 2.25rem;
+    bottom: 0.25rem;
+    left: 1rem;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--ants-line);
+}
+
+.c-note:last-child {
+    padding-bottom: 0;
+}
+
+.c-note:last-child::before {
+    display: none;
+}
+
+.c-note__marker {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+/* One tint per person, chosen from their name. */
+.c-note__marker_sky {
+    background: var(--ants-sky);
+    color: var(--ants-sky-ink);
+}
+
+.c-note__marker_olive {
+    background: var(--ants-olive);
+    color: var(--ants-olive-ink);
+}
+
+.c-note__marker_clay {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-note__marker_amber {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+/* Claude's own writing carries the spark, not a person's initials. */
+.c-note__marker_claude {
+    background: var(--ants-clay-tint);
+}
+
+.c-note__spark {
+    width: 1rem;
+    height: 1rem;
+}
+
+.c-note__main {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-note__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.c-note__author {
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ants-ink);
+    white-space: nowrap;
+}
+
+.c-note__role {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-note__when {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.25rem 0 0.5rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-note__type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+}
+
+.c-note__type_contact {
+    background: var(--ants-sky);
+    color: var(--ants-sky-ink);
+}
+
+.c-note__type_investigation {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-note__type_coverage,
+.c-note__type_underwriting {
+    background: var(--ants-olive);
+    color: var(--ants-olive-ink);
+}
+
+.c-note__type_money {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+/* The chip's icon takes the chip's own ink. */
+.c-note__type-icon {
+    --slds-c-icon-color-foreground-default: currentColor;
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+/* A long note's opening lines, in the same face and measure as a note read in full. */
+.c-note__excerpt {
+    max-width: 60rem;
+    margin: 0;
+    font-family: var(--ants-body);
+    font-size: var(--ants-reply-size);
+    line-height: 1.5;
+    color: var(--ants-ink);
+    text-wrap: pretty;
+}
+
+.c-note__more {
+    white-space: nowrap;
+    margin-top: 0.375rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+    cursor: pointer;
+}
+
+.c-note__more:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-note__case {
+    min-width: 0;
+    color: var(--ants-clay-dark);
+}

@@ -1,0 +1,33 @@
+<template>
+    <lightning-modal-body>
+        <div class="c-stage">
+            <template lwc:if={isRecord}>
+                <c-antsurance-claude-record spec={spec}></c-antsurance-claude-record>
+            </template>
+            <template lwc:elseif={isMetrics}>
+                <c-antsurance-claude-metrics spec={spec}></c-antsurance-claude-metrics>
+            </template>
+            <template lwc:elseif={isChart}>
+                <c-antsurance-claude-chart spec={spec}></c-antsurance-claude-chart>
+            </template>
+            <template lwc:elseif={isWorkList}>
+                <c-antsurance-claude-work-list spec={spec}></c-antsurance-claude-work-list>
+            </template>
+            <template lwc:elseif={isForm}>
+                <c-antsurance-claude-form spec={spec} block-id={blockId} onformdone={handleFormDone}></c-antsurance-claude-form>
+            </template>
+            <template lwc:elseif={isDraft}>
+                <c-antsurance-claude-draft spec={spec}></c-antsurance-claude-draft>
+            </template>
+            <template lwc:elseif={isComparison}>
+                <c-antsurance-claude-comparison spec={spec}></c-antsurance-claude-comparison>
+            </template>
+            <template lwc:elseif={isTimeline}>
+                <c-antsurance-claude-timeline spec={spec}></c-antsurance-claude-timeline>
+            </template>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Close" onclick={handleClose}></lightning-button>
+    </lightning-modal-footer>
+</template>

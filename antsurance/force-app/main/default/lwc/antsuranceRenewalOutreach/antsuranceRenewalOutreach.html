@@ -1,0 +1,75 @@
+<template>
+    <template lwc:if={isVisible}>
+        <article class="c-outreach" aria-labelledby="c-outreach-title">
+            <header class="c-outreach__head">
+                <div>
+                    <h2 id="c-outreach-title" class="c-outreach__title">Renewal outreach</h2>
+                    <p class="c-outreach__facts">{factsLine}</p>
+                </div>
+                <template lwc:if={outreach}>
+                    <span class={riskClass}>{riskLabel}</span>
+                </template>
+            </header>
+
+            <div class="c-outreach__body" aria-live="polite">
+                <template lwc:if={isDrafting}>
+                    <p class="c-outreach__eyebrow">Claude is reading the file</p>
+                    <p class="c-outreach__muted">The policy, the renewal quotes, claims this term and what else they insure with us.</p>
+                    <div class="c-outreach__skeleton" aria-hidden="true">
+                        <span class="c-outreach__bar c-outreach__bar_wide"></span>
+                        <span class="c-outreach__bar"></span>
+                        <span class="c-outreach__bar c-outreach__bar_short"></span>
+                    </div>
+                </template>
+                <template lwc:elseif={outreach}>
+                    <!-- Stacked in a narrow column. Given room, what to know and the call opening sit on
+                         the left and the email on the right. -->
+                    <div class="c-outreach__draft">
+                        <section class="c-outreach__know">
+                            <p class="c-outreach__reason">{riskReason}</p>
+                            <dl class="c-outreach__points">
+                                <template for:each={points} for:item="point">
+                                    <div key={point.key} class="c-outreach__point">
+                                        <dt class="c-outreach__point-label">{point.label}</dt>
+                                        <dd class="c-outreach__point-detail">{point.detail}</dd>
+                                    </div>
+                                </template>
+                            </dl>
+                        </section>
+                        <section class="c-outreach__mail">
+                            <p class="c-outreach__eyebrow">Email to {firstName}</p>
+                            <div class="c-outreach__letter">
+                                <p class="c-outreach__subject">{subject}</p>
+                                <template for:each={shownParagraphs} for:item="paragraph">
+                                    <p key={paragraph.key} class="c-outreach__paragraph">{paragraph.text}</p>
+                                </template>
+                            </div>
+                        </section>
+                        <section class="c-outreach__phone">
+                            <p class="c-outreach__eyebrow">If you call instead</p>
+                            <p class="c-outreach__call">{callOpening}</p>
+                        </section>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="c-outreach__muted">Claude can read this file and draft what to say.</p>
+                </template>
+
+                <template lwc:if={errorMessage}>
+                    <p class="c-outreach__error" role="alert">{errorMessage}</p>
+                </template>
+            </div>
+
+            <footer class="c-outreach__actions">
+                <template lwc:if={outreach}>
+                    <lightning-button variant="brand" label="Open as email" icon-name="utility:email" disabled={isDrafting} onclick={handleEmail}></lightning-button>
+                    <lightning-button label={copyLabel} icon-name="utility:copy" disabled={isDrafting} onclick={handleCopy}></lightning-button>
+                    <lightning-button label="Redraft" disabled={isDrafting} onclick={handleDraft}></lightning-button>
+                </template>
+                <template lwc:else>
+                    <lightning-button variant="brand" label="Draft outreach with Claude" icon-name="utility:sparkles" disabled={isDrafting} onclick={handleDraft}></lightning-button>
+                </template>
+            </footer>
+        </article>
+    </template>
+</template>

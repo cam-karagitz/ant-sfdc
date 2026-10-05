@@ -1,0 +1,106 @@
+<template>
+    <aside class="c-price" aria-label="Price">
+        <template lwc:if={showsTerms}>
+            <p class="c-price__label">Annual premium</p>
+            <p class={premiumClass} aria-live="polite">{premium}</p>
+            <p class="c-price__per">{perMonth}</p>
+
+            <dl class="c-price__terms">
+                <div>
+                    <dt>Limit</dt>
+                    <dd>{limit}</dd>
+                </div>
+                <div>
+                    <dt>Deductible</dt>
+                    <dd>{deductible}</dd>
+                </div>
+            </dl>
+        </template>
+
+        <template lwc:if={hasReferrals}>
+            <div class="c-price__review" role="status">
+                <p class="c-price__review-title">
+                    <lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon>
+                    Needs underwriting review
+                </p>
+                <ul>
+                    <template for:each={referrals} for:item="referral">
+                        <li key={referral.key}>{referral.text}</li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+        <template lwc:if={isAdviceFailed}>
+            <p class="c-advice c-advice__retry-row">
+                <img src={sparkUrl} alt="" class="c-advice__spark" />
+                <button type="button" class="c-advice__retry" onclick={handleRetry}>Try suggestions again</button>
+            </p>
+        </template>
+        <template lwc:elseif={showsAdvice}>
+            <section class="c-advice" aria-label="Claude suggests" aria-live="polite">
+                <p class="c-advice__head">
+                    <img src={sparkUrl} alt="" class="c-advice__spark" />
+                    Claude suggests
+                </p>
+                <template lwc:if={isAdviceLoading}>
+                    <p class="c-advice__quiet c-advice__quiet_busy">Reading the answers so far</p>
+                </template>
+                <template lwc:elseif={hasSuggestions}>
+                    <ul class="c-advice__list">
+                        <template for:each={advice} for:item="item">
+                            <li key={item.key} class={item.className}>
+                                <template lwc:if={item.isAvoid}>
+                                    <p class="c-advice__tag">Avoid</p>
+                                </template>
+                                <p class="c-advice__title">{item.title}</p>
+                                <p class="c-advice__move">{item.move}</p>
+                                <p class="c-advice__why">{item.why}</p>
+                                <template lwc:if={item.warning}>
+                                    <p class="c-advice__warning">{item.warning}</p>
+                                </template>
+                                <div class="c-advice__foot">
+                                    <span class={item.effectClass}>{item.effect}</span>
+                                    <span class="c-advice__actions">
+                                        <button type="button" class="c-advice__dismiss" data-key={item.questionKey} data-value={item.value} onclick={handleDismiss}>
+                                            {item.dismissLabel}
+                                        </button>
+                                        <template lwc:if={item.canApply}>
+                                            <button type="button" class="c-advice__apply" data-key={item.questionKey} data-value={item.value} onclick={handleApply}>
+                                                Apply
+                                            </button>
+                                        </template>
+                                    </span>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <p class="c-advice__quiet">Nothing more to suggest here.</p>
+                </template>
+            </section>
+        </template>
+
+        <h3 class={headingClass}>{heading}</h3>
+        <ol class="c-price__lines">
+            <template for:each={lines} for:item="line">
+                <li key={line.key} class="c-price__line">
+                    <span class="c-price__line-title">{line.title}</span>
+                    <span class="c-price__line-effect">{line.effect}</span>
+                    <span class={line.amountClass}>{line.amount}</span>
+                    <template lwc:if={line.detail}>
+                        <span class="c-price__line-detail">{line.detail}</span>
+                    </template>
+                </li>
+            </template>
+        </ol>
+        <template lwc:if={canFold}>
+            <button type="button" class="c-price__more" aria-expanded={isOpenLabel} onclick={handleToggle}>{toggleLabel}</button>
+        </template>
+        <p class="c-price__total">
+            <span>Annual premium</span>
+            <span>{premium}</span>
+        </p>
+    </aside>
+</template>

@@ -1,0 +1,130 @@
+@import 'c/antsuranceCockpitTokens';
+
+/* One white strip of six figures, split by hairlines. Slim on purpose: the briefing is the focal point. */
+:host {
+    display: block;
+    container-type: inline-size;
+}
+
+.c-figures {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    /* Beside the loss ratio trend the strip is as tall as that card, and its figures share the height. */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-figures__cell + .c-figures__cell {
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-figure {
+    position: relative;
+    display: grid;
+    /* The label and its arrow share the first row; the value and the note run the full width under them. */
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-content: center;
+    gap: 0.125rem 0.25rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem 1rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-figure:hover {
+    background: var(--ants-ivory);
+}
+
+.c-figure:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-figure__label {
+    white-space: nowrap;
+}
+
+/* Each figure opens the list or dashboard behind it. A quiet arrow says so at rest and answers the
+   pointer and the keyboard, so the tile does not only look pressable once it is hovered. */
+.c-figure__go {
+    align-self: center;
+    margin-right: -0.25rem;
+    line-height: 1;
+    opacity: 0.45;
+    transition:
+        opacity 120ms ease,
+        transform 120ms ease;
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+    --sds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-figure:hover .c-figure__go,
+.c-figure:focus-visible .c-figure__go {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-figure__go {
+        transition: none;
+    }
+
+    .c-figure:hover .c-figure__go,
+    .c-figure:focus-visible .c-figure__go {
+        transform: none;
+    }
+}
+
+.c-figure__value,
+.c-figure__note {
+    grid-column: 1 / -1;
+}
+
+.c-figure__value {
+    font-family: var(--ants-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.c-figure__note {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-figure__note_good {
+    color: var(--ants-olive-ink);
+}
+
+.c-figure__note_alert {
+    color: var(--ants-clay-dark);
+}
+
+/* Six across needs about 11rem a figure for its label and note to sit on one line; below that, two rows of three. */
+@container (max-width: 68rem) {
+    .c-figures {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .c-figures__cell:nth-child(4) {
+        border-left: 0;
+    }
+
+    .c-figures__cell:nth-child(n + 4) {
+        border-top: 1px solid var(--ants-line);
+    }
+}

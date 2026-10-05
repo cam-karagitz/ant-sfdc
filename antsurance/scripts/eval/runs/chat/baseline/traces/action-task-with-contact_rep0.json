@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000040t1nsAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nAdd a task to send Maria Reyes her updated ID cards tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Preferred_Contact_Method__c, Email FROM Contact WHERE AccountId = '001aj000040t1nsAAA' AND Name LIKE '%Maria%' LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Email\":\"maria.reyes@example.com\",\"Preferred_Contact_Method__c\":\"Phone\",\"Name\":\"Maria Reyes\",\"Id\":\"003aj00002T8yQHAAZ\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "I couldn't add the task because I can only read records, not create them. You can add it yourself from the Activity panel on [Maria Reyes](/lightning/r/003aj00002T8yQHAAZ/view):\n\n- **Subject:** Send updated ID cards\n- **Due date:** 3 Oct 2026\n- **Name:** Maria Reyes\n- **Related To:** Reyes Household\n\nMaria's preferred contact method is **phone**, but she has an email on file: maria.reyes@example.com."
+  }
+]

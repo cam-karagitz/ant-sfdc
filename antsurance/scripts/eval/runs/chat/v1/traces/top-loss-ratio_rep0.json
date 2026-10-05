@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which policy has the highest loss ratio, and what is it?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Loss_Ratio__c, Incurred_Losses__c, Annual_Premium__c, Line_of_Business__c, Status__c, Account__r.Id, Account__r.Name FROM Policy__c WHERE Loss_Ratio__c != null ORDER BY Loss_Ratio__c DESC LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Park Household\",\"Id\":\"001aj000040sVmxAAE\"},\"Account__c\":\"001aj000040sVmxAAE\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Annual_Premium__c\":1121.00,\"Incurred_Losses__c\":23300.00,\"Loss_Ratio__c\":2078.5,\"Name\":\"ANT-HO-205860\",\"Id\":\"a00aj00003jKVOsAAO\"},{\"Account__r\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040sVmRAAU\"},\"Account__c\":\"001aj000040sVmRAAU\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Annual_Premium__c\":2240.00,\"Incurred_Losses__c\":45000.00,\"Loss_Ratio__c\":2008.9,\"Name\":\"ANT-HO-204585\",\"Id\":\"a00aj00003jKVNfAAO\"},{\"Account__r\":{\"Name\":\"Haddad Household\",\"Id\":\"001aj000040sVmZAAU\"},\"Account__c\":\"001aj000040sVmZAAU\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Annual_Premium__c\":2890.00,\"Incurred_Losses__c\":58000.00,\"Loss_Ratio__c\":2006.9,\"Name\":\"ANT-PA-204857\",\"Id\":\"a00aj00003jKVNvAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The policy with the highest loss ratio is [ANT-HO-205860](/lightning/r/a00aj00003jKVOsAAO/view). It's an active homeowners policy for [Park Household](/lightning/r/001aj000040sVmxAAE/view), with a loss ratio of **2,078.5%**. Its incurred losses are **$23,300**, against an annual premium of only **$1,121**.\n\nThe next two are very close behind:\n- [ANT-HO-204585](/lightning/r/a00aj00003jKVNfAAO/view) for [Okafor Household](/lightning/r/001aj000040sVmRAAU/view) is at **2,008.9%** ($45,000 in losses on $2,240 premium).\n- [ANT-PA-204857](/lightning/r/a00aj00003jKVNvAAO/view) for [Haddad Household](/lightning/r/001aj000040sVmZAAU/view) is at **2,006.9%** ($58,000 in losses on $2,890 premium)."
+  }
+]

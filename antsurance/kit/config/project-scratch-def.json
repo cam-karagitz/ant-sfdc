@@ -1,0 +1,12 @@
+{
+  "orgName": "Antsurance trial",
+  "edition": "Developer",
+  "description": "A throwaway org for trying Antsurance. Everything the app needs is switched on here, so nothing has to be merged.",
+  "features": ["StateAndCountryPicklist", "Communities"],
+  "settings": {
+    "quoteSettings": { "enableQuote": true },
+    "pathAssistantSettings": { "pathAssistantEnabled": true },
+    "communitiesSettings": { "enableNetworksEnabled": true },
+    "lightningExperienceSettings": { "enableS1DesktopEnabled": true }
+  }
+}

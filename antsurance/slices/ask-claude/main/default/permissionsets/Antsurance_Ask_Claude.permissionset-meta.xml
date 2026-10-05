@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Ask_Claude</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <classAccesses>
+        <apexClass>AntsuranceClaudeActions</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AntsuranceClaudeController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Use Ask Claude: its tab, its utility bar item, and the Claude API credential stored in this org. It gives access to no records: Claude reads only what the person asking can already read.</description>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>Anthropic-ApiUser</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Ask Claude</label>
+    <tabSettings>
+        <tab>Antsurance_Claude</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

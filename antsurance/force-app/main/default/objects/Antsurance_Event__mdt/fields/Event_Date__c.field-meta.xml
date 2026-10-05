@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Event_Date__c</fullName>
+    <description>The day of the event. Leave empty and fill Days Ago for an event that should always read as recent.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>The day it happened. Leave empty to use Days Ago.</inlineHelpText>
+    <label>Event Date</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is the average annual premium on Homeowners policies in force?"
+  },
+  {
+    "role": "assistant",
+    "content": "[The chat showed an error: Execution failed at this code:\n\nSystem.UnexpectedException: Non-grouped query that uses overall aggregate functions cannot also use LIMIT System.UnexpectedException: Non-grouped query that uses overall aggregate functions cannot also use LIMIT]"
+  }
+]

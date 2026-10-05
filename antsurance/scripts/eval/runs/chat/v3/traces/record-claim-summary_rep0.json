@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "[00002216: Burst pipe flooded finished basement](/lightning/r/500aj00003jLAOcAAO/view) is a **High** severity water damage claim on [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view) for the [Okafor Household](/lightning/r/001aj000040t3cpAAA/view). Marcus Lindahl is handling it. It has been **Under Investigation** for 10 days.\n\n- **Loss:** On 21 Sep a braided supply line failed while the family was away. It damaged the flooring, drywall up to four feet, the furnace and stored belongings.\n- **Coverage:** The policy was in force on the date of loss. Sudden and accidental discharge is covered, and the **$2,500** deductible applies.\n- **Money:** The reserve is **$48,450**, up from $45,000 after the Northshore rebuild estimate. **$5,000** has been paid as an advance, leaving **$43,450** outstanding.\n- **Status:** Drying is done and moisture readings are normal. The claim is waiting on the mitigation invoice and approval of the rebuild estimate.\n- **Next steps:** There are 4 open tasks due 4 to 6 Oct: review the drying invoice, confirm the failed supply line is kept and check subrogation, approve the rebuild estimate, and call Chinedu Okafor.\n\nThere is no SIU referral, and subrogation potential is not flagged yet."
+  }
+]

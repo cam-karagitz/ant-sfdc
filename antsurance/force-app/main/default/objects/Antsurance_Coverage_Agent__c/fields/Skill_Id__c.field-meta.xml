@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Skill_Id__c</fullName>
+    <description>The id of the antsurance-coverage skill attached to the agent, set by the setup step.</description>
+    <label>Skill Id</label>
+    <length>80</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

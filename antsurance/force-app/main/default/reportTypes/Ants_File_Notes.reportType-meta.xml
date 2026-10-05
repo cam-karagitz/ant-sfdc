@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>File_Note__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description>Notes written on claims, policies and customers, by type and author. Use for adjuster activity.</description>
+    <label>File Notes</label>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Note_Type__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Note_Date__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Author_Name__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Case__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Policy__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Customer</displayNameOverride>
+            <field>Account__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Case__c.Status</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Case__c.Severity__c</field>
+            <table>File_Note__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CreatedDate</field>
+            <table>File_Note__c</table>
+        </columns>
+        <masterLabel>File note</masterLabel>
+    </sections>
+</ReportType>

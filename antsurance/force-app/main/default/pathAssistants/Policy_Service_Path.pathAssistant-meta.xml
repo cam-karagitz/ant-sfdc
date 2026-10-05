@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Case</entityName>
+    <fieldName>Status</fieldName>
+    <masterLabel>Policy Service Path</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>Request_Type__c</fieldNames>
+        <fieldNames>Policy__c</fieldNames>
+        <fieldNames>ContactId</fieldNames>
+        <info>Confirm who is asking, which policy the request is for and exactly what they want changed.</info>
+        <picklistValueName>New</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Request_Type__c</fieldNames>
+        <fieldNames>Priority</fieldNames>
+        <info>Make the change or gather what underwriting needs. Tell the policyholder if the premium will change.</info>
+        <picklistValueName>In Progress</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>ContactId</fieldNames>
+        <info>We need something from the policyholder, such as a driver license number or a signed form. Follow up after three business days.</info>
+        <picklistValueName>Waiting on Customer</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>The request is complete. Send confirmation and any updated policy documents.</info>
+        <picklistValueName>Closed</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Policy_Service</recordTypeName>
+</PathAssistant>

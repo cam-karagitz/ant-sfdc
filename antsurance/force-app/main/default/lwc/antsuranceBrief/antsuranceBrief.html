@@ -1,0 +1,25 @@
+<template>
+    <template lwc:if={hasPoints}>
+        <ul class="c-points">
+            <template for:each={blocks} for:item="block">
+                <li key={block.key} class={block.rowClass}>
+                    <template lwc:if={block.label}>
+                        <span class="c-point__icon" aria-hidden="true">
+                            <lightning-icon icon-name={block.icon} size="x-small"></lightning-icon>
+                        </span>
+                        <div class="c-point__main">
+                            <p class="c-point__label">{block.label}</p>
+                            <c-antsurance-markdown value={block.body}></c-antsurance-markdown>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <c-antsurance-markdown class="c-point__plain" value={block.body}></c-antsurance-markdown>
+                    </template>
+                </li>
+            </template>
+        </ul>
+    </template>
+    <template lwc:else>
+        <c-antsurance-markdown class="c-plain" value={value}></c-antsurance-markdown>
+    </template>
+</template>

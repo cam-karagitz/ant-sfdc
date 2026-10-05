@@ -1,0 +1,90 @@
+<template>
+    <section class="c-list" aria-label={ariaLabel}>
+        <header class="c-list__head">
+            <h2 class="c-list__title">{title}</h2>
+            <template lwc:if={countLabel}>
+                <span class="c-list__count">{countLabel}</span>
+            </template>
+            <span class="c-list__spacer"></span>
+            <template lwc:if={showViewAll}>
+                <a class="c-list__all" href={viewAllUrl} onclick={handleViewAll}>{viewAllLabel}</a>
+            </template>
+            <template lwc:if={canCreate}>
+                <lightning-button label="New" onclick={handleNew} class="c-list__new"></lightning-button>
+            </template>
+        </header>
+        <template lwc:if={note}>
+            <p class="c-list__hint">{note}</p>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-list__note" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-skeleton" aria-hidden="true">
+                <template for:each={skeletonRows} for:item="bone">
+                    <div key={bone.key} class="c-skeleton__row">
+                        <template lwc:if={hasIcons}>
+                            <span class="c-ui-bone c-ui-bone_tile c-skeleton__tile"></span>
+                        </template>
+                        <span class={bone.lineClass}></span>
+                        <span class="c-ui-bone c-ui-bone_line c-skeleton__end"></span>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={isEmpty}>
+            <p class="c-list__note">
+                {emptyText}
+                <template lwc:if={canCreate}>
+                    <button type="button" class="c-list__add c-ui-focus" onclick={handleNew}>Add the first one</button>
+                </template>
+            </p>
+        </template>
+
+        <template lwc:if={hasRows}>
+            <table class="c-list__table c-ui-arrive">
+                <thead>
+                    <tr>
+                        <template for:each={columns} for:item="column">
+                            <th key={column.path} scope="col" class={column.className}>{column.label}</th>
+                        </template>
+                        <th class="c-list__cell c-list__cell_go"><span class="slds-assistive-text">Open</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={tableRows} for:item="row">
+                        <tr key={row.id} class={row.className} data-record-id={row.targetId} onclick={handleRowClick}>
+                            <template for:each={row.cells} for:item="cell">
+                                <td key={cell.key} class={cell.className}>
+                                    <span class="c-list__lead">
+                                        <template lwc:if={cell.icon}>
+                                            <span class={cell.icon.tileClass}>
+                                                <lightning-icon icon-name={cell.icon.name} size="xx-small" alternative-text={cell.icon.label}></lightning-icon>
+                                            </span>
+                                        </template>
+                                        <template lwc:if={cell.isLinked}>
+                                            <a class={cell.linkClass} href={cell.url} data-record-id={cell.targetId} onclick={handleOpen}>{cell.text}</a>
+                                        </template>
+                                        <template lwc:if={cell.isChip}>
+                                            <span class={cell.chipClass}>{cell.text}</span>
+                                        </template>
+                                        <template lwc:if={cell.isPlain}>{cell.text}</template>
+                                    </span>
+                                </td>
+                            </template>
+                            <td class="c-list__cell c-list__cell_go">
+                                <template lwc:if={row.targetId}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small" class="c-ui-chevron"></lightning-icon>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <c-antsurance-step-pager total={pagerTotal} page-size={pageSize} page={page} label={pagerLabel} onpagechange={handlePage}></c-antsurance-step-pager>
+        </template>
+    </section>
+</template>

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What endorsements are on policy ANT-HO-204534?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Account__r.Name, Account__r.Id, (SELECT Id, Name, Form_Number__c, Type__c, Premium_Change__c, Description__c FROM Endorsements__r) FROM Policy__c WHERE Name = 'ANT-HO-204534'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Endorsements__r\":[{\"Description__c\":\"Covers water that backs up through sewers or drains or overflows from a sump. The standard policy excludes it.\",\"Premium_Change__c\":95.00,\"Type__c\":\"Endorsement\",\"Form_Number__c\":\"ANT HO 04 95\",\"Name\":\"Water Backup and Sump Overflow\",\"Id\":\"a05aj00000fP0RtAAK\",\"Policy__c\":\"a00aj00003jKc7KAAS\"},{\"Description__c\":\"Four percent off for a monitored burglar and fire alarm.\",\"Premium_Change__c\":-76.00,\"Type__c\":\"Discount\",\"Form_Number__c\":\"ANT HO 09 14\",\"Name\":\"Protective Device Discount\",\"Id\":\"a05aj00000fP0RuAAK\",\"Policy__c\":\"a00aj00003jKc7KAAS\"},{\"Description__c\":\"Names Heartland Home Lending as mortgagee. A dwelling loss is paid jointly, and the lender is told before the policy is cancelled.\",\"Type__c\":\"Lienholder or Mortgagee\",\"Form_Number__c\":\"ANT HO 05 10\",\"Name\":\"Mortgagee Clause\",\"Id\":\"a05aj00000fP0RvAAK\",\"Policy__c\":\"a00aj00003jKc7KAAS\"},{\"Description__c\":\"Earthquake, landslide, sinkhole and settling are not covered.\",\"Type__c\":\"Exclusion\",\"Form_Number__c\":\"ANT HO 02 30\",\"Name\":\"Earth Movement Exclusion\",\"Id\":\"a05aj00000fP0RwAAK\",\"Policy__c\":\"a00aj00003jKc7KAAS\"}],\"Account__c\":\"001aj000040t1nsAAA\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKc7KAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-HO-204534](/lightning/r/a00aj00003jKc7KAAS/view) belongs to the [Reyes Household](/lightning/r/001aj000040t1nsAAA/view) and has **4 endorsements**. Together they add **+$19** a year to the premium.\n\n| Endorsement | Type | Form | Premium |\n|---|---|---|---|\n| [Water Backup and Sump Overflow](/lightning/r/a05aj00000fP0RtAAK/view) | Endorsement | ANT HO 04 95 | +$95 |\n| [Protective Device Discount](/lightning/r/a05aj00000fP0RuAAK/view) | Discount | ANT HO 09 14 | –$76 |\n| [Mortgagee Clause](/lightning/r/a05aj00000fP0RvAAK/view) | Mortgagee | ANT HO 05 10 | None listed |\n| [Earth Movement Exclusion](/lightning/r/a05aj00000fP0RwAAK/view) | Exclusion | ANT HO 02 30 | None listed |\n\n- **Water backup:** Adds cover for water that backs up through sewers or drains, or overflows from a sump. The standard policy excludes this.\n- **Discount:** 4% off for a monitored burglar and fire alarm.\n- **Mortgagee:** Heartland Home Lending is named. Dwelling losses are paid jointly, and the lender is told before the policy is cancelled.\n- **Exclusion:** Earthquake, landslide, sinkhole and settling aren't covered."
+  }
+]

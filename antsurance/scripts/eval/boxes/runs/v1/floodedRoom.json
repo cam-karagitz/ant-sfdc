@@ -1,0 +1,63 @@
+{
+ "width": 1280,
+ "height": 829,
+ "answers": {
+  "fraction": {
+   "ms": 2433,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Basement family room with leather sofas and chairs coated in silt and debris after flooding, with mud on the floor and a water line on the wall.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"red leather sofa on the right\",\"detail\":\"coated in silt and mud, soaked\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.6,\"y\":0.2,\"width\":0.4,\"height\":0.8}},{\"area\":\"dark red leather loveseat in back\",\"detail\":\"silt residue and debris, soaked\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.16,\"y\":0.14,\"width\":0.36,\"height\":0.48}},{\"area\":\"orange and gray sofa on the left\",\"detail\":\"heavy silt coating, water soaked\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.0,\"y\":0.38,\"width\":0.24,\"height\":0.58}},{\"area\":\"floor\",\"detail\":\"covered in mud, silt and scattered debris\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.0,\"y\":0.6,\"width\":0.62,\"height\":0.4}},{\"area\":\"wall on the right\",\"detail\":\"water line and staining\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.9,\"y\":0.06,\"width\":0.1,\"height\":0.3}}]}]}"
+  },
+  "pixel": {
+   "ms": 2419,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Basement family room with dark red leather sofas and chairs, an orange and white chair, pillows and a fallen plant, all coated in silt and residue, with a water line on the wall at right.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"dark red leather sofa at right\",\"detail\":\"coated in silt and mud residue, soaked\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":610,\"y\":170,\"width\":670,\"height\":659}},{\"area\":\"dark red leather loveseat at center\",\"detail\":\"spotted with silt, seat cushions soaked and sagging\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":205,\"y\":122,\"width\":455,\"height\":410}},{\"area\":\"orange and white chair at left\",\"detail\":\"caked in gray silt residue\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":315,\"width\":302,\"height\":475}},{\"area\":\"wall at right\",\"detail\":\"stained with a water line and residue\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":1150,\"y\":90,\"width\":130,\"height\":250}},{\"area\":\"floor\",\"detail\":\"covered in mud and debris\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":510,\"width\":640,\"height\":319}}]}]}"
+  },
+  "grid": {
+   "ms": 2841,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Basement room with burgundy and orange leather furniture, pillows and a fake plant piled together, coated in white mold or residue, with debris on a wet looking floor.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"burgundy leather sofa on the right\",\"detail\":\"heavy white mold or residue growth over the leather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":6.9,\"y\":2.0,\"width\":3.1,\"height\":8.0}},{\"area\":\"burgundy leather armchair and loveseat in the back\",\"detail\":\"white spotting and mold growth over the leather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":1.6,\"y\":1.4,\"width\":3.3,\"height\":4.8}},{\"area\":\"orange and white furniture on the left\",\"detail\":\"coated in white residue with a water line and staining\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.0,\"y\":3.8,\"width\":2.4,\"height\":5.8}},{\"area\":\"leather chair and white pillows in the front\",\"detail\":\"spotted with mold and soiled\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":4.8,\"y\":3.5,\"width\":2.6,\"height\":6.5}},{\"area\":\"basement floor\",\"detail\":\"silt, debris and standing moisture\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.8,\"y\":6.2,\"width\":4.2,\"height\":3.8}}]}]}"
+  },
+  "refine": {
+   "ms": 2247,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":155,\"y\":150,\"width\":613,\"height\":605}},{\"number\":2,\"found\":true,\"box\":{\"x\":130,\"y\":115,\"width\":510,\"height\":465}},{\"number\":3,\"found\":true,\"box\":{\"x\":0,\"y\":145,\"width\":368,\"height\":580}},{\"number\":4,\"found\":true,\"box\":{\"x\":160,\"y\":230,\"width\":164,\"height\":400}},{\"number\":5,\"found\":true,\"box\":{\"x\":0,\"y\":80,\"width\":768,\"height\":303}}]}",
+   "crops": [
+    {
+     "left": 442.5,
+     "top": 5.25,
+     "scale": 0.9164677804295943,
+     "width": 768,
+     "height": 755
+    },
+    {
+     "left": 91.25,
+     "top": 19.5,
+     "scale": 1.1244509516837482,
+     "width": 768,
+     "height": 690
+    },
+    {
+     "left": 0,
+     "top": 196.25,
+     "scale": 1.2132701421800949,
+     "width": 459,
+     "height": 768
+    },
+    {
+     "left": 1117.5,
+     "top": 27.5,
+     "scale": 2.0,
+     "width": 324,
+     "height": 748
+    },
+    {
+     "left": 0,
+     "top": 430.25,
+     "scale": 0.96,
+     "width": 768,
+     "height": 383
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 2700,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Basement family room with burgundy leather sofas and chairs, an orange and white chair, and floor all coated in silt and white residue after flooding, with a plant and debris on the floor.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"burgundy leather sofa on the right\",\"detail\":\"soaked and coated with silt and white residue\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":610,\"y\":170,\"width\":670,\"height\":659}},{\"area\":\"burgundy leather sofa in the back\",\"detail\":\"soaked and spotted with silt and residue\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":205,\"y\":120,\"width\":450,\"height\":410}},{\"area\":\"orange and white chair on the left\",\"detail\":\"coated in mud and silt residue\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":315,\"width\":305,\"height\":475}},{\"area\":\"wall on the right\",\"detail\":\"stained with a water line and silt\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":1150,\"y\":0,\"width\":130,\"height\":330}},{\"area\":\"floor\",\"detail\":\"covered in mud, silt and debris\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":510,\"width\":640,\"height\":319}}]}]}"
+  }
+ }
+}

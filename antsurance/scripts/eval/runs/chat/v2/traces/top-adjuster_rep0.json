@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which adjuster has the most open claims, and what is their total outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Handled_By__c, COUNT(Id) cnt, SUM(Outstanding_Reserve__c) os FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Handled_By__c ORDER BY COUNT(Id) DESC LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"os\":202870.0,\"cnt\":13,\"Handled_By__c\":\"Dana Whitaker\"},{\"os\":109810.0,\"cnt\":11,\"Handled_By__c\":\"Marcus Lindahl\"},{\"os\":696500.0,\"cnt\":2,\"Handled_By__c\":\"Anjali Venkataraman\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Dana Whitaker** has the most open claims, with **13**. Her total outstanding reserve is **$202,870**.\n\n| Adjuster | Open claims | Outstanding reserve |\n|---|---|---|\n| Dana Whitaker | 13 | $202,870 |\n| Marcus Lindahl | 11 | $109,810 |\n| Anjali Venkataraman | 2 | $696,500 |\n\nAnjali Venkataraman has only 2 open claims, but she holds by far the largest reserve, so those claims are probably severe."
+  }
+]

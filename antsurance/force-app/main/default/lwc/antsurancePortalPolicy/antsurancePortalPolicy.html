@@ -1,0 +1,219 @@
+<template>
+    <template lwc:if={policy}>
+        <article class="c-page">
+            <header class="c-top">
+                <div class="c-top__head">
+                    <span class="c-icon c-top__icon"><lightning-icon icon-name={lineIcon} size="small" alternative-text=""></lightning-icon></span>
+                    <div class="c-top__title">
+                        <p class="c-eyebrow">{policy.line} policy {policy.policyNumber}</p>
+                        <h1 class="c-h1">{title}</h1>
+                        <template lwc:if={subtitle}><p class="c-top__sub">{subtitle}</p></template>
+                    </div>
+                    <span class={statusClass}>{policy.status}</span>
+                </div>
+                <dl class="c-facts">
+                    <div class="c-facts__item">
+                        <dt>What you pay</dt>
+                        <dd>{policy.premiumText} a year</dd>
+                        <template for:each={payNotes} for:item="note"><dd key={note} class="c-facts__note">{note}</dd></template>
+                    </div>
+                    <div class="c-facts__item">
+                        <dt>This term</dt>
+                        <dd>{term}</dd>
+                        <template lwc:if={policy.timeLeftText}><dd class="c-facts__note">{policy.timeLeftText}</dd></template>
+                    </div>
+                    <template lwc:if={renewal}>
+                        <div class="c-facts__item">
+                            <dt>Renewal</dt>
+                            <dd>{renewal.title}</dd>
+                            <dd class="c-facts__note">{renewal.note}</dd>
+                        </div>
+                    </template>
+                </dl>
+                <div class="c-top__actions">
+                    <button type="button" class="c-button c-button_primary" onclick={handleAskPolicy}>Ask Claude about this policy</button>
+                    <button type="button" class="c-button" onclick={handleClaim}>File a claim</button>
+                    <template lwc:if={isAuto}>
+                        <button type="button" class="c-button" onclick={handleDriver}>Add a driver</button>
+                    </template>
+                    <button type="button" class="c-button" onclick={handleChange}>Ask for a change</button>
+                </div>
+            </header>
+
+            <!-- One screen at a time: the parts of the policy sit behind tabs, each showing how much is in it. -->
+            <div class="c-tabs">
+                <div class="c-tabs__bar" role="tablist" aria-label="About this policy">
+                    <template for:each={tabs} for:item="tab">
+                        <button key={tab.name} type="button" role="tab" class={tab.className} data-name={tab.name} aria-selected={tab.ariaSelected} onclick={handleTab} onkeydown={handleTabKey}>
+                            <span>{tab.label}</span>
+                            <template lwc:if={tab.showCount}><span class="c-tabs__count">{tab.count}</span></template>
+                        </button>
+                    </template>
+                </div>
+
+                <div class="c-tabs__panel" role="tabpanel" aria-label={shownLabel}>
+                    <template lwc:if={showCovered}>
+                <section class={coveragesClass} data-section="coverages">
+                    <!-- Rows, not cards: a name on one line, a plain sentence and an everyday example under it, and the
+                         limit in its own column. Narrow cards broke every one of these across four lines. -->
+                    <div class="c-list">
+                        <template for:each={groups} for:item="group">
+                            <div key={group.key} class="c-list__group">
+                                <h3 class="c-list__label">{group.title}</h3>
+                                <ul class="c-list__rows">
+                                    <template for:each={group.cards} for:item="coverage">
+                                        <li key={coverage.key} class="c-line c-line_cover">
+                                            <span class="c-icon c-icon_small"><lightning-icon icon-name={coverage.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                            <div class="c-line__main">
+                                                <p class="c-line__name">{coverage.name}</p>
+                                                <template lwc:if={coverage.plainWords}><p class="c-line__words">{coverage.plainWords}</p></template>
+                                                <template lwc:if={coverage.example}><p class="c-line__example">{coverage.example}</p></template>
+                                            </div>
+                                            <div class="c-line__figure">
+                                                <template lwc:if={coverage.limitWords}><p class="c-line__limit">{coverage.limitWords}</p></template>
+                                                <template lwc:if={coverage.limitBasis}><p class="c-line__basis">{coverage.limitBasis}</p></template>
+                                                <template lwc:if={coverage.deductibleWords}><p class="c-line__deductible">{coverage.deductibleWords}</p></template>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+                </section>
+                    </template>
+                    <template lwc:if={showPeople}>
+            <div class="c-pair">
+                <template lwc:if={hasPeople}>
+                    <section class={peopleClass} data-section="people">
+                        <h2 class="c-h2">Who is on it</h2>
+                        <ul class="c-rows">
+                            <template for:each={people} for:item="person">
+                                <li key={person.key}>
+                                    <div class="c-row">
+                                        <span class="c-face" aria-hidden="true">{person.initials}</span>
+                                        <span class="c-row__main"><span class="c-row__title">{person.name}</span><span class="c-row__sub">{person.about}</span></span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+                <template lwc:if={hasItems}>
+                    <section class={itemsClass} data-section="items">
+                        <h2 class="c-h2">{itemsTitle}</h2>
+                        <ul class="c-rows">
+                            <template for:each={items} for:item="item">
+                                <li key={item.key}>
+                                    <div class="c-row c-row_top">
+                                        <span class="c-icon"><lightning-icon icon-name={item.icon} size="small" alternative-text=""></lightning-icon></span>
+                                        <span class="c-row__main">
+                                            <span class="c-row__title">{item.name}</span>
+                                            <template lwc:if={item.detail}><span class="c-row__sub">{item.detail}</span></template>
+                                            <template lwc:if={item.applies}><span class="c-row__sub">{item.applies}</span></template>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+            </div>
+                    </template>
+                    <template lwc:if={showChanges}>
+                <section class={extrasClass} data-section="extras">
+                    <div class="c-list">
+                        <template for:each={changeGroups} for:item="group">
+                            <div key={group.key} class="c-list__group">
+                                <h3 class="c-list__label">{group.label}</h3>
+                                <ul class="c-list__rows">
+                                    <template for:each={group.rows} for:item="row">
+                                        <li key={row.key} class="c-line">
+                                            <span class={group.iconClass}><lightning-icon icon-name={group.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                            <div class="c-line__main">
+                                                <p class="c-line__name">{row.title}<template lwc:if={row.formName}> <span class="c-line__form">{row.formName}</span></template></p>
+                                                <p class="c-line__words">{row.words}</p>
+                                            </div>
+                                            <template lwc:if={row.price}><p class="c-line__price">{row.price}</p></template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                        <template lwc:if={includedNote}><p class="c-bill__note c-bill__note_ruled">{includedNote}</p></template>
+                    </div>
+                </section>
+                    </template>
+                    <template lwc:if={showDocuments}>
+                        <section class="c-part" data-section="documents">
+                            <c-antsurance-portal-documents policy-id={policy.id} onopen={handleInnerOpen}></c-antsurance-portal-documents>
+                        </section>
+                    </template>
+                    <template lwc:if={showBill}>
+                        <section class="c-part" data-section="bill">
+                            <div class="c-list">
+                                <div class="c-list__group">
+                                    <div class="c-bill__head">
+                                        <h3 class="c-list__label">Where you stand</h3>
+                                        <span class={billStandingClass}>{policy.bill.standing}</span>
+                                    </div>
+                                    <ul class="c-list__rows">
+                                        <template for:each={billRows} for:item="row">
+                                            <li key={row.key} class="c-line">
+                                                <span class={row.tone}><lightning-icon icon-name={row.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                                <div class="c-line__main">
+                                                    <p class="c-line__name">{row.title}</p>
+                                                    <p class="c-line__words">{row.text}</p>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                                <div class="c-list__group">
+                                    <h3 class="c-list__label">What has changed your price</h3>
+                                    <template lwc:if={hasBillChanges}>
+                                        <ul class="c-list__rows">
+                                            <template for:each={billChanges} for:item="change">
+                                                <li key={change.key} class="c-line">
+                                                    <span class={change.tone}><lightning-icon icon-name={change.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                                    <div class="c-line__main">
+                                                        <p class="c-line__name">{change.label}</p>
+                                                        <template lwc:if={change.whenText}><p class="c-line__words">{change.whenText}</p></template>
+                                                    </div>
+                                                    <p class="c-line__price">{change.amountText}</p>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:if={hasBillChanges}><p class="c-bill__note">{includedNote}</p></template>
+                                    <template lwc:if={policy.bill.changeNote}><p class="c-bill__note">{policy.bill.changeNote}</p></template>
+                                </div>
+                            </div>
+                            <div class="c-bill__foot">
+                                <button type="button" class="c-button" onclick={handleAskBill}>Ask Claude about this bill</button>
+                                <p class="c-bill__basis">{policy.bill.basis}</p>
+                            </div>
+                        </section>
+                    </template>
+                    <template lwc:if={showKnow}>
+            <section class="c-part">
+                <div class="c-list">
+                    <ul class="c-list__rows">
+                        <template for:each={goodToKnow} for:item="row">
+                            <li key={row.key} class="c-line">
+                                <span class="c-icon c-icon_small"><lightning-icon icon-name={row.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                <div class="c-line__main">
+                                    <p class="c-line__name">{row.title}</p>
+                                    <p class="c-line__words">{row.text}</p>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </section>
+                    </template>
+                </div>
+            </div>
+        </article>
+    </template>
+</template>

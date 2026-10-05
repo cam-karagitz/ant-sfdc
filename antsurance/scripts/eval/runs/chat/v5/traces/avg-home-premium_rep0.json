@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "What is the average annual premium on Homeowners policies in force?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT AVG(Annual_Premium__c) avgP, COUNT(Id) cnt, SUM(Annual_Premium__c) total FROM Policy__c WHERE Line_of_Business__c = 'Homeowners' AND Status__c IN ('Active','Pending Renewal')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"total\":80486.0,\"cnt\":33,\"avgP\":2438.969696969697}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Homeowners policies in force carry an average annual premium of **$2,439**. That comes from 33 policies with $80,486 in total premium between them."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Average premium\",\n      \"value\": \"$2,439\",\n      \"note\": \"Homeowners, in force\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Policies in force\",\n      \"value\": \"33\",\n      \"note\": \"Active or Pending Renewal\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Total premium\",\n      \"value\": \"$80,486\",\n      \"note\": \"Annual, Homeowners\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Average premium by line of business\",\n    \"Homeowners policies renewing soon\",\n    \"Homeowners policies with past due payments\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Average premium\",\n        \"value\": \"$2,439\",\n        \"note\": \"Homeowners, in force\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Policies in force\",\n        \"value\": \"33\",\n        \"note\": \"Active or Pending Renewal\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Total premium\",\n        \"value\": \"$80,486\",\n        \"note\": \"Annual, Homeowners\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Average premium by line of business\",\n      \"Homeowners policies renewing soon\",\n      \"Homeowners policies with past due payments\"\n    ]\n  }\n]"
+  }
+]

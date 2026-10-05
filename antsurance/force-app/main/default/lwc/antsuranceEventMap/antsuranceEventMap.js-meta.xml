@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>A street map of an event: the area it crossed, shaded, and a marker for each insured location in or just outside it. Moves by dragging or the arrow keys.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

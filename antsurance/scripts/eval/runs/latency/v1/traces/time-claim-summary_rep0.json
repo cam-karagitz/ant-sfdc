@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "**[00002118](/lightning/r/500aj00003jKuVeAAK/view)** is a **High** severity water damage claim. It's Under Investigation and has been open for 10 days. A supply line burst on 21 Sep at the [Okafor Household](/lightning/r/001aj000040sVmRAAU/view) in Evanston and flooded the finished basement. The policy was in force on the date of loss.\n\n- **Policy:** [ANT-HO-204585](/lightning/r/a00aj00003jKVNfAAO/view), Homeowners, $2,500 deductible\n- **Money:** estimated loss **$48,500**; reserve **$45,000**; **$5,000** advance paid; **$40,000** reserve still outstanding\n- **Coverage:** covered as a sudden and accidental discharge\n- **Latest (30 Sep):** Drying is done and moisture readings are normal. Marcus Lindahl is waiting on the mitigation invoice and the rebuild estimate.\n- **Your tasks:** review the drying vendor's invoice (due 4 Oct) and approve the rebuild estimate (due 5 Oct)\n\nNo fraud (SIU) referral and no subrogation potential are flagged."
+  }
+]

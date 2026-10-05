@@ -1,0 +1,73 @@
+<template>
+    <section class="c-docs">
+        <template lwc:if={isLoading}>
+            <p class="c-docs__quiet">Loading your documents</p>
+        </template>
+        <template lwc:elseif={hasDocuments}>
+            <!-- One row: which document on the left, what to do with it on the right. -->
+            <div class="c-docs__bar">
+                <template lwc:if={hasSeveral}>
+                    <div class="c-docs__tabs" role="tablist" aria-label="Documents for this policy">
+                        <template for:each={tabs} for:item="tab">
+                            <button key={tab.key} type="button" role="tab" class={tab.className} data-key={tab.key} aria-selected={tab.selected} onclick={handleTab} onkeydown={handleTabKey}>
+                                <lightning-icon icon-name={tab.icon} size="x-small" alternative-text=""></lightning-icon>
+                                <span>{tab.label}</span>
+                            </button>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="c-docs__one">
+                        <span class="c-icon c-icon_small"><lightning-icon icon-name={icon} size="x-small" alternative-text=""></lightning-icon></span>
+                        <span class="c-docs__name">{document.label}</span>
+                    </p>
+                </template>
+                <div class="c-docs__actions">
+                    <template lwc:if={isReady}>
+                        <button type="button" class="c-button" aria-pressed={largePressed} onclick={handleSize}>{sizeLabel}</button>
+                        <a class="c-button c-docs__download" href={downloadUrl} download={document.fileName}>
+                            <lightning-icon icon-name="utility:download" size="x-small" alternative-text=""></lightning-icon>
+                            Download
+                        </a>
+                    </template>
+                    <template lwc:else>
+                        <button type="button" class="c-button c-button_primary" disabled={isMaking} onclick={handleMake}>{makeLabel}</button>
+                    </template>
+                </div>
+            </div>
+            <p class="c-docs__about">{madeLine}</p>
+            <template lwc:if={failure}>
+                <div class="c-docs__failure" role="alert">
+                    <p>{failure}</p>
+                    <button type="button" class="c-link" onclick={handleAskTeam}>Ask us to send it</button>
+                </div>
+            </template>
+
+            <template lwc:if={isReady}>
+                <div class="c-docs__preview">
+                    <template lwc:if={previewFailed}>
+                        <p class="c-docs__quiet">The preview is not ready yet. Download the document to read it.</p>
+                    </template>
+                    <template lwc:else>
+                        <img class={pageClass} src={pageUrl} alt={pageAlt} onerror={handlePreviewError} />
+                    </template>
+                </div>
+                <template lwc:if={hasPages}>
+                    <nav class="c-docs__pager" aria-label="Pages of this document">
+                        <button type="button" class="c-button" disabled={prevDisabled} onclick={handlePrev}>Previous</button>
+                        <span class="c-docs__count">{pageLabel}</span>
+                        <button type="button" class="c-button" disabled={nextDisabled} onclick={handleNext}>Next</button>
+                    </nav>
+                </template>
+            </template>
+            <template lwc:else>
+                <template lwc:if={isMaking}>
+                    <p class="c-docs__making" role="status">We are printing a copy from your policy as it stands today. It takes a few seconds.</p>
+                </template>
+            </template>
+        </template>
+        <template lwc:else>
+            <p class="c-docs__quiet">{failure}</p>
+        </template>
+    </section>
+</template>

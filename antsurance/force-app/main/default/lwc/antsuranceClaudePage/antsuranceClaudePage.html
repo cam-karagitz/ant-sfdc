@@ -1,0 +1,36 @@
+<template>
+    <div class="c-page">
+        <div class="c-page__chat">
+            <c-antsurance-claude lwc:ref="chat"></c-antsurance-claude>
+        </div>
+        <aside class="c-page__rail" aria-label="About Ask Claude">
+            <section class="c-can">
+                <h2 class="c-rail__title">What Claude can do</h2>
+                <ul class="c-can__list">
+                    <template for:each={abilities} for:item="ability">
+                        <li key={ability.id} class="c-can__item">
+                            <span class="c-can__icon">
+                                <lightning-icon icon-name={ability.icon} size="x-small"></lightning-icon>
+                            </span>
+                            <span class="c-can__name">{ability.name}</span>
+                            <span class="c-can__line">{ability.line}</span>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+            <section class="c-try">
+                <h2 class="c-rail__title">Try asking</h2>
+                <ul class="c-try__list">
+                    <template for:each={questions} for:item="question">
+                        <li key={question.id}>
+                            <button type="button" class="c-try__button" data-prompt={question.prompt} title={question.prompt} onclick={handleAsk}>
+                                <span class="c-try__label">{question.label}</span>
+                                <span class="c-try__kind">{question.kind}</span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</template>

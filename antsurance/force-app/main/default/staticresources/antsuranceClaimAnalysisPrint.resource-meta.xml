@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>text/css</contentType>
+    <description>Print rules for the claim analysis report: on paper, only the report, full width, breaking across pages like a document.</description>
+</StaticResource>

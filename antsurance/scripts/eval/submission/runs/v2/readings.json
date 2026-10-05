@@ -1,0 +1,422 @@
+[
+ {
+  "unreadable": null,
+  "title": "New workers' compensation submission: Lakeshore Dental Group",
+  "summary": "Broker email from Prairie State Insurance Agency submitting workers' compensation for Lakeshore Dental Group, a three office Chicago dental practice, effective Dec 1, 2026. It gives headline figures and asks for a quote by Oct 20 at or under the expiring $17,900 premium.",
+  "problems": [
+   "The email does not say whether there is a written safety program, return to work program or drug free workplace.",
+   "The stated payroll and headcount exclude the six or so hires planned for the January 2027 Lincoln Park office, which falls within the policy term."
+  ],
+  "pages": 1,
+  "name": "Broker's email",
+  "losses": [],
+  "kindLabel": "Cover note",
+  "kind": "cover_note",
+  "facts": [
+   {
+    "value": "Marguerite Ellison, Account Executive, Prairie State Insurance Agency, (217) 555-0142",
+    "page": 1,
+    "label": "Sender"
+   },
+   {
+    "value": "Oct 1, 2026",
+    "page": 1,
+    "label": "Date sent"
+   },
+   {
+    "value": "Dec 1, 2026",
+    "page": 1,
+    "label": "Effective date"
+   },
+   {
+    "value": "Quillhaven Mutual",
+    "page": 1,
+    "label": "Current carrier"
+   },
+   {
+    "value": "$17,900; quote must be at or under to move",
+    "page": 1,
+    "label": "Expiring premium"
+   },
+   {
+    "value": "Oct 20, 2026",
+    "page": 1,
+    "label": "Quote deadline"
+   },
+   {
+    "value": "Fourth office in Lincoln Park opening January 2027, adding about six people; their payroll not included in $1,530,000",
+    "page": 1,
+    "label": "Growth"
+   },
+   {
+    "value": "Antsurance already writes their property and general liability",
+    "page": 1,
+    "label": "Existing relationship"
+   },
+   {
+    "value": "All three claims closed",
+    "page": 1,
+    "label": "Claims status"
+   },
+   {
+    "value": "Application (2 pages), Loss run (1 page)",
+    "page": 1,
+    "label": "Attachments listed"
+   }
+  ],
+  "answers": [
+   {
+    "words": "a dental practice with three Chicago offices",
+    "value": "Dental practice with three Chicago offices",
+    "page": 1,
+    "note": null,
+    "key": "description",
+    "basis": "read"
+   },
+   {
+    "words": "a dental practice with three Chicago offices",
+    "value": "IL",
+    "page": 1,
+    "note": "Chicago offices are in Illinois",
+    "key": "state",
+    "basis": "worked_out"
+   },
+   {
+    "words": "a dental practice with three Chicago offices",
+    "value": "healthcare",
+    "page": 1,
+    "note": "Dental practice is healthcare",
+    "key": "classGroup",
+    "basis": "worked_out"
+   },
+   {
+    "words": "24 employees",
+    "value": "24",
+    "page": 1,
+    "note": null,
+    "key": "employees",
+    "basis": "read"
+   },
+   {
+    "words": "an estimated payroll of $1,530,000",
+    "value": "1530000",
+    "page": 1,
+    "note": null,
+    "key": "payroll",
+    "basis": "read"
+   },
+   {
+    "words": "Dr. Shah is to be covered",
+    "value": "true",
+    "page": 1,
+    "note": null,
+    "key": "ownersIncluded",
+    "basis": "read"
+   },
+   {
+    "words": "The experience mod is 0.94.",
+    "value": "average",
+    "page": 1,
+    "note": "0.94 falls in 0.90 to 1.10",
+    "key": "experienceMod",
+    "basis": "worked_out"
+   },
+   {
+    "words": "They have had three claims in the last three years, all closed.",
+    "value": "1to3",
+    "page": 1,
+    "note": "Three claims falls in one to three",
+    "key": "priorClaims",
+    "basis": "worked_out"
+   },
+   {
+    "words": "a $1,000,000 employers liability limit",
+    "value": "1000000",
+    "page": 1,
+    "note": null,
+    "key": "employersLiability",
+    "basis": "read"
+   },
+   {
+    "words": "They want guaranteed cost",
+    "value": "guaranteed",
+    "page": 1,
+    "note": null,
+    "key": "plan",
+    "basis": "read"
+   }
+  ]
+ },
+ {
+  "unreadable": null,
+  "title": "Workers' compensation application",
+  "summary": "Agency-prepared workers' compensation application for Lakeshore Dental Group, LLC, a three-office dental practice in Chicago, requesting coverage Dec 1, 2026 to Dec 1, 2027. It lists 24 employees, $1,530,000 payroll, a 0.94 mod and 3 claims in three years.",
+  "problems": [
+   "The drug-free workplace question has neither Yes nor No checked.",
+   "The applicant statement is not signed, and the name, title and date are blank."
+  ],
+  "pages": 2,
+  "name": "Application",
+  "losses": [],
+  "kindLabel": "Application",
+  "kind": "application",
+  "facts": [
+   {
+    "value": "Prairie State Insurance Agency, Springfield, Illinois",
+    "page": 1,
+    "label": "Prepared by"
+   },
+   {
+    "value": "Dec 1, 2026 to Dec 1, 2027",
+    "page": 1,
+    "label": "Policy period requested"
+   },
+   {
+    "value": "Quillhaven Mutual, $17,900",
+    "page": 1,
+    "label": "Current carrier and expiring premium"
+   },
+   {
+    "value": "14 (established 2012)",
+    "page": 1,
+    "label": "Years in business"
+   },
+   {
+    "value": "Dr. Anita Shah, Managing Partner",
+    "page": 1,
+    "label": "Contact"
+   },
+   {
+    "value": "7 employees, $318,000",
+    "page": 1,
+    "label": "Clerical payroll"
+   },
+   {
+    "value": "17 employees, $1,212,000",
+    "page": 1,
+    "label": "Clinical payroll"
+   },
+   {
+    "value": "Dr. Anita Shah's payroll is included in the total",
+    "page": 1,
+    "label": "Owner payroll"
+   },
+   {
+    "value": "Jan 1, 2026",
+    "page": 2,
+    "label": "Experience mod effective date"
+   },
+   {
+    "value": "Past three policy years attached separately",
+    "page": 2,
+    "label": "Loss runs"
+   }
+  ],
+  "answers": [
+   {
+    "words": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+    "value": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+    "page": 1,
+    "note": null,
+    "key": "description",
+    "basis": "read"
+   },
+   {
+    "words": "Illinois (all employees)",
+    "value": "IL",
+    "page": 1,
+    "note": null,
+    "key": "state",
+    "basis": "read"
+   },
+   {
+    "words": "Dentists, hygienists and dental assistants (clinical) 17 $1,212,000",
+    "value": "healthcare",
+    "page": 1,
+    "note": "Dental practice, mostly clinical payroll, fits Healthcare",
+    "key": "classGroup",
+    "basis": "worked_out"
+   },
+   {
+    "words": "24 in total: 20 full time and 4 part time",
+    "value": "24",
+    "page": 1,
+    "note": null,
+    "key": "employees",
+    "basis": "read"
+   },
+   {
+    "words": "Total estimated annual payroll 24 $1,530,000",
+    "value": "1530000",
+    "page": 1,
+    "note": null,
+    "key": "payroll",
+    "basis": "read"
+   },
+   {
+    "words": "Are owners and officers to be covered? X Yes",
+    "value": "true",
+    "page": 1,
+    "note": null,
+    "key": "ownersIncluded",
+    "basis": "read"
+   },
+   {
+    "words": "0.94, effective January 1, 2026",
+    "value": "average",
+    "page": 2,
+    "note": "0.94 falls in 0.90 to 1.10",
+    "key": "experienceMod",
+    "basis": "worked_out"
+   },
+   {
+    "words": "Workers' compensation claims in the past three years 3",
+    "value": "1to3",
+    "page": 2,
+    "note": "3 falls in one to three",
+    "key": "priorClaims",
+    "basis": "worked_out"
+   },
+   {
+    "words": "X Yes No Written safety and infection control program, reviewed every year.",
+    "value": "true",
+    "page": 2,
+    "note": null,
+    "key": "safetyProgram",
+    "basis": "read"
+   },
+   {
+    "words": "Is there a return-to-work program for injured employees? Yes X No",
+    "value": "false",
+    "page": 2,
+    "note": null,
+    "key": "returnToWork",
+    "basis": "read"
+   },
+   {
+    "words": "$1,000,000 each accident, $1,000,000 each employee by disease, $1,000,000 policy limit by disease",
+    "value": "1000000",
+    "page": 2,
+    "note": null,
+    "key": "employersLiability",
+    "basis": "read"
+   },
+   {
+    "words": "X Guaranteed cost",
+    "value": "guaranteed",
+    "page": 2,
+    "note": null,
+    "key": "plan",
+    "basis": "read"
+   }
+  ]
+ },
+ {
+  "unreadable": null,
+  "title": "Workers' compensation loss run",
+  "summary": "Quillhaven Mutual loss run for Lakeshore Dental Group, LLC, Chicago, Illinois, valued as of September 30, 2026, covering three policy years. It lists 4 claims, 1 still open, with $26,650 paid, $6,500 reserved and $33,150 total incurred.",
+  "problems": [
+   "The current policy year is reported only to Sep 30, 2026, so two months of the year are not shown."
+  ],
+  "pages": 1,
+  "name": "Loss run",
+  "losses": [
+   {
+    "reserved": 0,
+    "period": "Dec 1, 2023 to Dec 1, 2024",
+    "paid": 10200,
+    "note": "Both closed; one lost time wrist sprain $8,960.",
+    "claims": 2
+   },
+   {
+    "reserved": 6500,
+    "period": "Dec 1, 2024 to Dec 1, 2025",
+    "paid": 14300,
+    "note": "Open lost time shoulder strain, treatment continuing.",
+    "claims": 1
+   },
+   {
+    "reserved": 0,
+    "period": "Dec 1, 2025 to Sep 30, 2026",
+    "paid": 2150,
+    "note": "Partial year to valuation date; claim closed, medical only.",
+    "claims": 1
+   }
+  ],
+  "kindLabel": "Loss run",
+  "kind": "loss_run",
+  "facts": [
+   {
+    "value": "Quillhaven Mutual",
+    "page": 1,
+    "label": "Current carrier"
+   },
+   {
+    "value": "QM-WC-0418823",
+    "page": 1,
+    "label": "Policy number"
+   },
+   {
+    "value": "Sep 30, 2026",
+    "page": 1,
+    "label": "Valuation date"
+   },
+   {
+    "value": "Dec 1 to Dec 1; current year ends Dec 1, 2026",
+    "page": 1,
+    "label": "Policy term"
+   },
+   {
+    "value": "$1,402,000",
+    "page": 1,
+    "label": "Audited payroll Dec 1, 2023 to Dec 1, 2024"
+   },
+   {
+    "value": "$1,468,000",
+    "page": 1,
+    "label": "Audited payroll Dec 1, 2024 to Dec 1, 2025"
+   },
+   {
+    "value": "$1,530,000",
+    "page": 1,
+    "label": "Estimated payroll Dec 1, 2025 to Dec 1, 2026"
+   },
+   {
+    "value": "Payroll rose each year, from $1,402,000 to an estimated $1,530,000",
+    "page": 1,
+    "label": "Payroll growth"
+   },
+   {
+    "value": "Jun 2, 2025 hygienist repetitive shoulder strain, lost time, treatment continuing, $6,500 reserved",
+    "page": 1,
+    "label": "Open claim"
+   }
+  ],
+  "answers": [
+   {
+    "words": "Insured: Lakeshore Dental Group, LLC, Chicago, Illinois.",
+    "value": "IL",
+    "page": 1,
+    "note": null,
+    "key": "state",
+    "basis": "read"
+   },
+   {
+    "words": "Claims Open Paid Reserved Total incurred 4 1 $26,650 $6,500 $33,150",
+    "value": "4plus",
+    "page": 1,
+    "note": "4 claims listed falls in Four or more",
+    "key": "priorClaims",
+    "basis": "worked_out"
+   },
+   {
+    "words": "Insured: Lakeshore Dental Group, LLC",
+    "value": "healthcare",
+    "page": 1,
+    "note": "Dental practice is healthcare work",
+    "key": "classGroup",
+    "basis": "worked_out"
+   }
+  ]
+ }
+]

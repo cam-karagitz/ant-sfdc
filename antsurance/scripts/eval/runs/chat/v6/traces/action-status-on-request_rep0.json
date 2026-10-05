@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002609: Moving to a new home in Belvidere\" open (object Case, Id 500aj00003jfwUXAAY). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nMark this request as waiting on the customer."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_case_status",
+    "content": "{\n  \"new_status\": \"Waiting on Customer\",\n  \"case_id\": \"500aj00003jfwUXAAY\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"case_status\",\n    \"caseId\": \"500aj00003jfwUXAAY\",\n    \"status\": \"Waiting on Customer\",\n    \"fromStatus\": \"In Progress\"\n  }\n]"
+  }
+]

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>A weather or catastrophe event shown on the Event response page: what it was, when, and the area it crossed. Add a record in Setup to plan for a new event; nothing here is a customer record. The records that ship are samples.</description>
+    <label>Antsurance Event</label>
+    <pluralLabel>Antsurance Events</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Asset_Compact</fullName>
+    <fields>Name</fields>
+    <fields>Asset_Type__c</fields>
+    <fields>Identifier__c</fields>
+    <fields>Insured_Value__c</fields>
+    <fields>Location__c</fields>
+    <label>Insured Asset Compact Layout</label>
+</CompactLayout>

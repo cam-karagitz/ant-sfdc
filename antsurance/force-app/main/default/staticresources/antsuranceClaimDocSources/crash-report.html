@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 0.5in 0.55in; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 9pt; color: #111; }
+.hdr { display: flex; align-items: center; gap: 14px; border: 2px solid #111; padding: 8px 12px; }
+.seal { width: 54px; height: 54px; border: 2px solid #111; border-radius: 50%; display: grid; place-items: center; text-align: center; font-size: 6.5pt; font-weight: 700; line-height: 1.15; }
+.hdr h1 { margin: 0; font-size: 14pt; letter-spacing: 0.5px; }
+.hdr p { margin: 2px 0 0; font-size: 8.5pt; }
+.hdr .no { margin-left: auto; text-align: right; font-size: 8.5pt; }
+.hdr .no b { display: block; font-size: 13pt; font-family: "Courier New", monospace; }
+.grid { display: grid; border-left: 1px solid #111; border-top: 1px solid #111; margin-top: 8px; }
+.g4 { grid-template-columns: repeat(4, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g2 { grid-template-columns: 1fr 1fr; }
+.cell { border-right: 1px solid #111; border-bottom: 1px solid #111; padding: 3px 6px 5px; min-height: 34px; }
+.cell label { display: block; font-size: 6.5pt; text-transform: uppercase; letter-spacing: 0.4px; color: #444; }
+.cell span { font-family: "Courier New", monospace; font-size: 10pt; font-weight: 700; }
+.span2 { grid-column: span 2; } .span3 { grid-column: span 3; } .span4 { grid-column: span 4; }
+h2 { margin: 10px 0 0; padding: 3px 8px; background: #111; color: #fff; font-size: 9pt; letter-spacing: 1px; }
+.narr { border: 1px solid #111; border-top: 0; padding: 8px 10px; font-family: "Courier New", monospace; font-size: 10pt; line-height: 1.5; }
+.diagram { border: 1px solid #111; border-top: 0; height: 150px; position: relative; overflow: hidden; }
+.foot { margin-top: 8px; font-size: 7.5pt; color: #444; display: flex; justify-content: space-between; }
+</style></head><body>
+<div class="hdr"><div class="seal">VILLAGE OF<br>OAK PARK<br>POLICE</div>
+<div><h1>TRAFFIC CRASH REPORT</h1><p>Oak Park Police Department &middot; Records Division &middot; Driver exchange copy</p></div>
+<div class="no">Agency crash report no.<b>OP-26-031877</b></div></div>
+
+<div class="grid g4">
+  <div class="cell"><label>Date of crash</label><span>09/30/2026</span></div>
+  <div class="cell"><label>Time</label><span>17:42</span></div>
+  <div class="cell"><label>Day</label><span>WEDNESDAY</span></div>
+  <div class="cell"><label>No. of units</label><span>02</span></div>
+  <div class="cell span2"><label>Location</label><span>HARLEM AVE AT LAKE ST, OAK PARK</span></div>
+  <div class="cell"><label>Weather / light</label><span>CLEAR / DAYLIGHT</span></div>
+  <div class="cell"><label>Road surface</label><span>DRY</span></div>
+  <div class="cell"><label>Type of crash</label><span>REAR END</span></div>
+  <div class="cell"><label>Injuries</label><span>NONE REPORTED</span></div>
+  <div class="cell"><label>Traffic control</label><span>SIGNAL, WORKING</span></div>
+  <div class="cell"><label>Private property</label><span>NO</span></div>
+</div>
+
+<h2>UNIT 1 &nbsp;(STRUCK)</h2>
+<div class="grid g4" style="margin-top:0">
+  <div class="cell span2"><label>Driver</label><span>NAKAMURA, HANA</span></div>
+  <div class="cell"><label>Direction</label><span>SOUTHBOUND</span></div>
+  <div class="cell"><label>Maneuver</label><span>STOPPED IN TRAFFIC</span></div>
+  <div class="cell span2"><label>Vehicle</label><span>2023 HONDA CR-V, GRAY</span></div>
+  <div class="cell"><label>Plate / state</label><span>DN 48 217 / IL</span></div>
+  <div class="cell"><label>Damage area</label><span>REAR</span></div>
+  <div class="cell span2"><label>Insurance company</label><span>ANTSURANCE</span></div>
+  <div class="cell"><label>Towed</label><span>NO</span></div>
+  <div class="cell"><label>Citation</label><span>NONE</span></div>
+</div>
+
+<h2>UNIT 2 &nbsp;(STRIKING)</h2>
+<div class="grid g4" style="margin-top:0">
+  <div class="cell span2"><label>Driver</label><span>PRUITT, DEREK M.</span></div>
+  <div class="cell"><label>Direction</label><span>SOUTHBOUND</span></div>
+  <div class="cell"><label>Maneuver</label><span>STRAIGHT AHEAD</span></div>
+  <div class="cell span2"><label>Vehicle</label><span>2018 CHEVROLET SILVERADO 1500, WHITE</span></div>
+  <div class="cell"><label>Plate / state</label><span>2274 91B / IL</span></div>
+  <div class="cell"><label>Damage area</label><span>FRONT</span></div>
+  <div class="cell span2"><label>Insurance company / policy no.</label><span>GREAT PLAINS MUTUAL / GPM-4471902</span></div>
+  <div class="cell"><label>Towed</label><span>NO</span></div>
+  <div class="cell"><label>Citation</label><span>YES, TR-2609-5518</span></div>
+  <div class="cell span4"><label>Violation</label><span>625 ILCS 5/11-601(a) FAILURE TO REDUCE SPEED TO AVOID AN ACCIDENT</span></div>
+</div>
+
+<h2>NARRATIVE</h2>
+<div class="narr">UNIT 1 WAS STOPPED SOUTHBOUND ON HARLEM AVE FOR A RED SIGNAL AT LAKE ST. UNIT 2 WAS TRAVELING SOUTHBOUND BEHIND UNIT 1 AND FAILED TO STOP, STRIKING THE REAR OF UNIT 1. DRIVER OF UNIT 2 STATED HE LOOKED DOWN AT HIS PHONE MOUNT AND DID NOT SEE TRAFFIC HAD STOPPED. DRIVER OF UNIT 1 STATED SHE HAD BEEN STOPPED FOR SEVERAL SECONDS. ONE INDEPENDENT WITNESS (PEDESTRIAN, NE CORNER) CONFIRMED UNIT 1 WAS STOPPED. BOTH DRIVERS DECLINED MEDICAL ATTENTION. BOTH VEHICLES DRIVEN FROM SCENE. DRIVER OF UNIT 2 CITED.</div>
+
+<h2>WITNESS AND REPORTING OFFICER</h2>
+<div class="grid g3" style="margin-top:0">
+  <div class="cell"><label>Witness</label><span>ALVAREZ, TERESA</span></div>
+  <div class="cell"><label>Witness phone</label><span>(708) 555-0119</span></div>
+  <div class="cell"><label>Statement taken</label><span>YES</span></div>
+  <div class="cell"><label>Reporting officer</label><span>P.O. R. SALGADO</span></div>
+  <div class="cell"><label>Star no.</label><span>214</span></div>
+  <div class="cell"><label>Report date</label><span>09/30/2026</span></div>
+</div>
+<div class="foot"><span>This copy is provided to involved drivers for insurance purposes. Sample document created for a software demonstration. Not a real record.</span><span>Page 1 of 1</span></div>
+</body></html>

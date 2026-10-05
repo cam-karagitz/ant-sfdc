@@ -1,0 +1,70 @@
+<template>
+    <section class="c-board" aria-labelledby="board-heading">
+        <header class="c-board__header">
+            <template lwc:if={line}>
+                <span class={lineTileClass} title={line}>
+                    <lightning-icon icon-name={lineIconName} size="x-small" alternative-text={line}></lightning-icon>
+                </span>
+            </template>
+            <h2 id="board-heading" class="c-board__title">Quote options</h2>
+            <p class="c-board__sub">{summary}</p>
+        </header>
+        <template lwc:if={outcome}>
+            <div class={outcome.className}>
+                <lightning-icon icon-name={outcome.icon} size="x-small"></lightning-icon>
+                <p class="c-outcome__text"><span class="c-outcome__title">{outcome.title}</span> {outcome.text}</p>
+                <template lwc:if={outcome.policyUrl}>
+                    <a class="c-outcome__link" href={outcome.policyUrl} onclick={handleOpenPolicy}>Open the policy</a>
+                </template>
+            </div>
+        </template>
+        <template lwc:if={errorMessage}>
+            <p class="c-board__empty" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={hasQuotes}>
+            <ul class="c-options">
+                <template for:each={options} for:item="option">
+                    <li key={option.recordId}>
+                        <a class={option.cardClass} href={option.url} data-record-id={option.recordId} title={option.title} onclick={handleOpen}>
+                            <span class="c-option__top">
+                                <span class="c-option__number">{option.number}</span>
+                                <template lwc:if={option.isRecommended}>
+                                    <span class="c-option__pick">
+                                        <lightning-icon icon-name="utility:favorite" size="xx-small" class="c-option__star"></lightning-icon>
+                                        Recommended
+                                    </span>
+                                </template>
+                                <span class={option.statusClass}>{option.status}</span>
+                            </span>
+                            <span class="c-option__name">{option.name}</span>
+                            <span class={option.premiumClass}>{option.premium}</span>
+                            <template lwc:if={option.isPriced}>
+                                <span class="c-option__per">a year</span>
+                            </template>
+                            <span class="c-option__terms">
+                                <span class="c-option__term">
+                                    <span class="c-option__label">Limit</span>
+                                    <span class="c-option__value">{option.limit}</span>
+                                </span>
+                                <span class="c-option__term">
+                                    <span class="c-option__label">Deductible</span>
+                                    <span class="c-option__value">{option.deductible}</span>
+                                </span>
+                            </span>
+                            <span class="c-option__foot">
+                                <span class={option.ageClass}>{option.age}</span>
+                                <span class="c-option__open">
+                                    Open
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small" class="c-option__chevron"></lightning-icon>
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:elseif={isLoaded}>
+            <p class="c-board__empty">No quotes on this sale yet. Use Generate Quote to price an option.</p>
+        </template>
+    </section>
+</template>

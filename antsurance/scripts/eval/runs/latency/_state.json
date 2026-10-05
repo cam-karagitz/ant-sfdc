@@ -1,0 +1,41 @@
+{
+  "train_ids": [
+    "time-claim-summary",
+    "time-claim-open",
+    "time-customer-summary"
+  ],
+  "test_ids": [
+    "time-policy-summary",
+    "time-claim-next"
+  ],
+  "metrics": [
+    {
+      "id": "pass",
+      "kind": "binary",
+      "label": "Correct"
+    }
+  ],
+  "perf_fields": [
+    {
+      "id": "latency_s",
+      "label": "Time",
+      "unit": "s"
+    },
+    {
+      "id": "rounds",
+      "label": "Lookups"
+    },
+    {
+      "id": "tool_calls",
+      "label": "Queries"
+    }
+  ],
+  "goal": {
+    "target": "pass",
+    "direction": "higher",
+    "hold": [
+      "latency_s",
+      "rounds"
+    ]
+  }
+}

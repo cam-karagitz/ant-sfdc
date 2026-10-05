@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete all the closed claims that are more than two years old."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete records from this chat, and that includes closing out several claims in one go. I can only read records and prepare single changes for you to approve. You can do this deletion in Salesforce if you have the permission, or ask your admin."
+  }
+]

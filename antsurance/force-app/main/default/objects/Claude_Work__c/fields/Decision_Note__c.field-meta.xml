@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Decision_Note__c</fullName>
+    <description>What happened on approval, or why it was dismissed.</description>
+    <label>Decision Note</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

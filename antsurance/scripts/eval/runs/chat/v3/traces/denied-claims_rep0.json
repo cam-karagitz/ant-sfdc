@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which claims were denied?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Loss_Type__c, Date_of_Loss__c, Estimated_Loss__c, Account.Name, Account.Id, Policy__r.Name, Policy__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Status = 'Denied' ORDER BY Date_of_Loss__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-PA-206438\",\"Id\":\"a00aj00003jLANmAAO\"},\"Account\":{\"Name\":\"Lombardi Household\",\"Id\":\"001aj000040t3dbAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jLANmAAO\",\"AccountId\":\"001aj000040t3dbAAA\",\"Estimated_Loss__c\":650.00,\"Date_of_Loss__c\":\"2026-08-19\",\"Loss_Type__c\":\"Glass\",\"Subject\":\"Windshield cracked by highway debris\",\"CaseNumber\":\"00002235\",\"Id\":\"500aj00003jLAOvAAO\"},{\"Policy__r\":{\"Name\":\"ANT-CP-207033\",\"Id\":\"a00aj00003jLAOLAA4\"},\"Account\":{\"Name\":\"Lincoln Square Books & Paper\",\"Id\":\"001aj000040t3dmAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jLAOLAA4\",\"AccountId\":\"001aj000040t3dmAAA\",\"Estimated_Loss__c\":23900.00,\"Date_of_Loss__c\":\"2026-08-18\",\"Loss_Type__c\":\"Fire\",\"Subject\":\"Small electrical fire in the back office\",\"CaseNumber\":\"00002250\",\"Id\":\"500aj00003jLAPAAA4\"},{\"Policy__r\":{\"Name\":\"ANT-GL-205248\",\"Id\":\"a00aj00003jKdyaAAC\"},\"Account\":{\"Name\":\"Marigold Cafe & Catering\",\"Id\":\"001aj000040t3d5AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyaAAC\",\"AccountId\":\"001aj000040t3d5AAA\",\"Estimated_Loss__c\":5000.00,\"Date_of_Loss__c\":\"2026-07-28\",\"Loss_Type__c\":\"Liability\",\"Subject\":\"Guest alleges food poisoning after wedding\",\"CaseNumber\":\"00002228\",\"Id\":\"500aj00003jLAOoAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "There are **3** denied claims:\n\n| Claim | Customer | Loss | Date of loss | Est. loss |\n|---|---|---|---|---|\n| [00002235](/lightning/r/500aj00003jLAOvAAO/view): Windshield cracked by debris | [Lombardi Household](/lightning/r/001aj000040t3dbAAA/view) | Glass | 19 Aug 2026 | $650 |\n| [00002250](/lightning/r/500aj00003jLAPAAA4/view): Electrical fire in back office | [Lincoln Square Books & Paper](/lightning/r/001aj000040t3dmAAA/view) | Fire | 18 Aug 2026 | **$23,900** |\n| [00002228](/lightning/r/500aj00003jLAOoAAO/view): Food poisoning allegation | [Marigold Cafe & Catering](/lightning/r/001aj000040t3d5AAA/view) | Liability | 28 Jul 2026 | $5,000 |\n\nI can look up why any of these was denied from its file notes."
+  }
+]

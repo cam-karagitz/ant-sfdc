@@ -1,0 +1,411 @@
+@import 'c/antsuranceUiStyles';
+
+/* A reserve meter on ivory paper. Brand values are fixed on purpose so the card keeps
+   its look under any org theme. */
+:host {
+    display: block;
+    /* The card lays itself out by its own width, so it holds in a narrow side column and in a wide one. */
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #e9b3a0;
+    --ants-olive-deep: #4c5c35;
+    --ants-olive-tint: #e3e9d8;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-meter {
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+}
+
+.c-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.5rem 1.25rem;
+    color: var(--ants-ivory);
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.c-banner_good {
+    background: var(--ants-olive-deep);
+}
+
+.c-banner_bad {
+    background: var(--ants-clay-dark);
+}
+
+/* A claim that closed in the ordinary way: a quiet band, not a warning. */
+.c-banner_closed {
+    border-bottom: 1px solid var(--ants-line);
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+}
+
+.c-meter__body {
+    padding: 1.125rem 1.25rem 1.25rem;
+}
+
+/* The chips sit beside the title while there is room and drop under it, whole, when there is not. */
+.c-meter__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.375rem 0.75rem;
+}
+
+.c-meter__eyebrow {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-meter__flags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.375rem;
+    min-width: 0;
+    margin-left: auto;
+}
+
+.c-flag {
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Why the claim has its severity, under the chips and away from the dollar figure, so the chip
+   does not read as a verdict on what is paid against what is reserved. */
+.c-meter__why {
+    margin: 0.25rem 0 0;
+    font-size: 0.6875rem;
+    line-height: 1.3;
+    color: var(--ants-muted);
+    text-align: right;
+}
+
+.c-flag_alert {
+    border-color: var(--ants-clay-dark);
+    background: var(--ants-clay-dark);
+    color: var(--ants-ivory);
+}
+
+.c-meter__figure {
+    margin: 0.625rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.c-meter__figure_text {
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+}
+
+.c-meter__caption {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* Paid, then what is still reserved, then any estimate the reserve does not yet cover. */
+.c-bar {
+    display: flex;
+    overflow: hidden;
+    height: 0.875rem;
+    margin-top: 1rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+}
+
+.c-bar__paid {
+    background: var(--ants-clay-deep);
+}
+
+.c-bar__open {
+    background: var(--ants-clay-tint);
+}
+
+.c-bar__gap {
+    background: repeating-linear-gradient(135deg, var(--ants-line) 0 4px, var(--ants-oat) 4px 8px);
+}
+
+.c-legend {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+}
+
+.c-legend dt {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-legend dd {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* What the reserve is measured against, in words, so the estimate beside it is not read as a shortfall. */
+.c-meter__reserve {
+    margin: 0.625rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-dot {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+}
+
+.c-dot_paid {
+    background: var(--ants-clay-deep);
+}
+
+.c-dot_open {
+    background: var(--ants-clay-tint);
+}
+
+.c-dot_gap {
+    border: 1px solid var(--ants-muted);
+    background: var(--ants-oat);
+}
+
+/* Three plain figures along the foot of the card. */
+.c-clock {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--ants-line);
+    background: #fff;
+}
+
+.c-clock > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 0.75rem 0.5rem 0.75rem 1.25rem;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-clock > div:first-child {
+    border-left: 0;
+}
+
+.c-clock dd {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.c-clock dt {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+/* Whose claim or request this is, at the foot of the card: the label on its own line, the name in full
+   beneath it. A name too long for a narrow card breaks between words, evenly, and never inside one. */
+.c-who {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0.75rem 1.25rem 0.875rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-who__label {
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-who__name {
+    align-self: flex-start;
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--ants-line);
+    text-underline-offset: 0.15em;
+    text-wrap: balance;
+}
+
+.c-who__name:hover {
+    color: var(--ants-clay-dark);
+    text-decoration-color: var(--ants-clay-deep);
+}
+
+.c-policy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-policy:hover,
+.c-policy:focus-visible {
+    border-color: var(--ants-clay);
+}
+
+.c-policy__label {
+    grid-row: span 2;
+    align-self: center;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-policy__number {
+    font-family: var(--ants-display);
+    font-weight: 600;
+}
+
+.c-policy__line {
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* What is left to do on a request, or that it is done. */
+.c-next {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-left: 3px solid var(--ants-clay);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: #fff;
+}
+
+.c-next_done {
+    border-left-color: var(--ants-olive-deep);
+}
+
+.c-next__label {
+    flex: none;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-next_done .c-next__label {
+    color: var(--ants-olive-deep);
+}
+
+.c-next__text {
+    margin: 0;
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+}
+
+.c-meter__action {
+    display: block;
+    margin-top: 0.75rem;
+    white-space: nowrap;
+}
+
+.c-meter__error {
+    margin: 0;
+    padding: 1.25rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-meter__loading {
+    position: relative;
+    min-height: 12rem;
+}
+
+/* A narrow card: the three figures along the foot keep their labels whole by giving up padding first,
+   then by going two across with the third beneath. */
+@container (max-width: 21rem) {
+    .c-meter__body {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .c-clock > div {
+        padding: 0.75rem 0.25rem 0.75rem 0.875rem;
+    }
+
+    .c-clock dt {
+        font-size: 0.6875rem;
+    }
+}
+
+@container (max-width: 19.5rem) {
+    .c-clock {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-clock > div:nth-child(3) {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--ants-line);
+        border-left: 0;
+    }
+
+    .c-legend {
+        gap: 0.25rem;
+    }
+}

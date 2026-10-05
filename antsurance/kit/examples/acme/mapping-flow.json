@@ -1,0 +1,17 @@
+{
+  "capability": "automation",
+  "only": ["Flow:Policy_Past_Due_Follow_Up"],
+  "prefix": "Acme",
+  "objects": {
+    "Policy__c": {"to": "Acme_Policy__c"}
+  },
+  "fields": {
+    "Policy__c.Account__c": {"to": "Acme_Policy__c.Customer__c"},
+    "Policy__c.Payment_Status__c": {"to": "Acme_Policy__c.Billing_State__c"},
+    "Policy__c.Primary_Insured__c": {"to": "Acme_Policy__c.Main_Contact__c"}
+  },
+  "recordTypes": {},
+  "picklistValues": {
+    "Policy__c.Payment_Status__c": {"Past Due": "Overdue"}
+  }
+}

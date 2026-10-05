@@ -1,0 +1,259 @@
+@import 'c/antsuranceUiStyles';
+
+/* One coverage: a donut for its share of premium beside its limit and deductible.
+   Brand values are fixed on purpose so the card keeps its look under any org theme. */
+:host {
+    display: block;
+    /* The card lays itself out by its own width, so it holds in a narrow side column and in a wide one. */
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --ants-reply-size: 0.875rem;
+}
+
+.c-cover {
+    padding: 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+}
+
+.c-cover__eyebrow {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+/* The ring beside the figures. On a card too narrow for both, the figures drop under the ring at full size. */
+.c-cover__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 0.75rem;
+}
+
+.c-donut {
+    position: relative;
+    flex: none;
+    width: 8rem;
+    height: 8rem;
+}
+
+.c-donut__svg {
+    width: 100%;
+    height: 100%;
+    /* Start the donut at 12 o'clock. */
+    transform: rotate(-90deg);
+}
+
+.c-donut__track,
+.c-donut__value {
+    /* A slim ring leaves the figure inside it room to breathe. */
+    fill: none;
+    stroke-width: 10;
+}
+
+.c-donut__track {
+    stroke: #fff;
+}
+
+.c-donut__value {
+    stroke: var(--ants-clay-deep);
+}
+
+.c-donut__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+}
+
+.c-donut__share {
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.c-donut__caption {
+    font-size: 0.6875rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-cover__facts {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.c-cover__facts dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-cover__facts dd {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-cover__facts dd.c-cover__limit {
+    font-size: 1.5rem;
+    line-height: 1.15;
+}
+
+.c-cover__facts dd.c-cover__sub {
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--ants-muted);
+    /* Words about the limit, so they may wrap; the figures above them may not. */
+    white-space: normal;
+}
+
+.c-cover__premium {
+    margin: 1rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* The way back: the policy this coverage is on and who holds it, both as links. */
+.c-cover__policy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.625rem;
+    margin: 0.75rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e8e6dc;
+    font-size: 0.8125rem;
+}
+
+.c-cover__policy-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a4a35;
+    white-space: nowrap;
+}
+
+.c-cover__policy-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.375rem;
+    min-width: 0;
+}
+
+.c-cover__link {
+    font-weight: 600;
+    color: #8a4a35;
+    text-decoration: underline;
+    text-decoration-color: #e8e6dc;
+    text-underline-offset: 0.15em;
+}
+
+.c-cover__link:hover {
+    color: #8a4a35;
+    text-decoration-color: #ae5f46;
+}
+
+.c-cover__for {
+    color: #66645e;
+}
+
+.c-cover__what {
+    margin-top: 1rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.875rem;
+    background: #fff;
+}
+
+.c-cover__what-label {
+    margin: 0 0 0.375rem;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-cover__error {
+    margin: 0;
+    color: var(--ants-clay-dark);
+}
+
+.c-cover__id {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.c-cover__titles {
+    min-width: 0;
+}
+
+.c-cover__name {
+    margin: 0.125rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-cover__loading {
+    display: grid;
+    gap: 0.75rem;
+    min-height: 10rem;
+}
+
+.c-cover__bone_ring {
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+}
+
+.c-cover__bone_line {
+    width: 70%;
+}
+
+/* A narrow card: a smaller donut and limit, so the figures stay whole beside it. */
+@container (max-width: 20rem) {
+    .c-cover__top {
+        gap: 0.875rem;
+    }
+
+    .c-donut {
+        width: 6.5rem;
+        height: 6.5rem;
+    }
+
+    .c-cover__facts dd.c-cover__limit {
+        font-size: 1.25rem;
+    }
+}

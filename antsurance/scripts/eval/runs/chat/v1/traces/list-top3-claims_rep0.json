@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "List the three largest open claims by outstanding reserve."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Account.Id, Account.Name, Handled_By__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040sVmdAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Anjali Venkataraman\",\"AccountId\":\"001aj000040sVmdAAE\",\"Outstanding_Reserve__c\":490000.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002123\",\"Id\":\"500aj00003jKuVjAAK\"},{\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000040sVmbAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Anjali Venkataraman\",\"AccountId\":\"001aj000040sVmbAAE\",\"Outstanding_Reserve__c\":206500.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002121\",\"Id\":\"500aj00003jKuVhAAK\"},{\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040sVmgAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Handled_By__c\":\"Dana Whitaker\",\"AccountId\":\"001aj000040sVmgAAE\",\"Outstanding_Reserve__c\":81000.00,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002125\",\"Id\":\"500aj00003jKuVlAAK\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "These are the three open claims with the largest outstanding reserves. Together they add up to **$777,500**.\n\n| Claim | Customer | Reserve | Status | Handler |\n|---|---|---|---|---|\n| [00002123](/lightning/r/500aj00003jKuVjAAK/view): Kitchen fire spread to three apartments | [Copperfield Property Management](/lightning/r/001aj000040sVmdAAE/view) | **$490,000** | Appraisal | Anjali Venkataraman |\n| [00002121](/lightning/r/500aj00003jKuVhAAK/view): Installer fell from roof | [Ridgeline Roofing & Solar](/lightning/r/001aj000040sVmbAAE/view) | **$206,500** | Under Investigation | Anjali Venkataraman |\n| [00002125](/lightning/r/500aj00003jKuVlAAK/view): Tractor-trailer jackknifed, cargo loss | [Sagebrush Freight Lines](/lightning/r/001aj000040sVmgAAE/view) | **$81,000** | Approved | Dana Whitaker |\n\nThe top two are rated Catastrophic, and Anjali Venkataraman is handling both."
+  }
+]

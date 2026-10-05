@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Event response: a storm's area on a map, the insured locations and value inside it, the coverages that respond, and a plan with first calls drafted by Claude.</description>
+    <label>Events</label>
+    <lwcComponent>antsuranceEvents</lwcComponent>
+    <motif>Custom53: Bell</motif>
+</CustomTab>

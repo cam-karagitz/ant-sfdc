@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Underwriting_Memo__c</fullName>
+    <description>Claude's memo for the underwriter on a referred quote, stored as JSON by the underwriting review component. Redraft it there rather than editing here.</description>
+    <label>Underwriting Memo</label>
+    <length>32768</length>
+    <visibleLines>8</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

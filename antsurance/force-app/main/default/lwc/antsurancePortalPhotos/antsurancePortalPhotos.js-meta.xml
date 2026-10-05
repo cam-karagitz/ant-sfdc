@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Damage photos on the portal: a customer adds up to five to a claim, Claude says whether each is usable and what is missing, and they are shown one at a time.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

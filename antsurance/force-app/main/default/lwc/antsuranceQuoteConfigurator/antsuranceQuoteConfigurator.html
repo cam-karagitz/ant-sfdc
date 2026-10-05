@@ -1,0 +1,213 @@
+<template>
+    <section class="c-config" aria-label="Quote configuration" lwc:ref="top">
+        <template lwc:if={errorMessage}>
+            <p class="c-config__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-config__loading">
+                <lightning-spinner alternative-text="Loading the quote questions" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:elseif={hasNoQuestions}>
+            <p class="c-config__empty">{noQuestionsText}</p>
+        </template>
+
+        <!-- Guided: one section of questions at a time, with the price alongside. -->
+        <template lwc:elseif={isEditing}>
+            <header class="c-top">
+                <div class="c-top__titles">
+                    <p class="c-eyebrow">{eyebrow}</p>
+                    <h2 class="c-top__title">Quote questions</h2>
+                    <template lwc:if={prefilledText}>
+                        <p class="c-top__meta">
+                            <lightning-icon icon-name="utility:magicwand" size="xx-small"></lightning-icon>
+                            {prefilledText}
+                        </p>
+                    </template>
+                </div>
+                <div class="c-channel" role="radiogroup" aria-label="How this quote is coming in">
+                    <template for:each={channels} for:item="option">
+                        <button
+                            key={option.value}
+                            type="button"
+                            class={option.className}
+                            role="radio"
+                            aria-checked={option.checked}
+                            data-value={option.value}
+                            onclick={handleChannel}
+                        >
+                            <lightning-icon icon-name={option.icon} size="xx-small"></lightning-icon>
+                            {option.label}
+                        </button>
+                    </template>
+                </div>
+            </header>
+
+            <ol class="c-steps">
+                <template for:each={steps} for:item="step">
+                    <li key={step.key} class="c-steps__item">
+                        <button type="button" class={step.className} data-index={step.index} aria-current={step.current} onclick={handleStep}>
+                            <span class="c-step__badge">{step.badge}</span>
+                            <span class="c-step__title">{step.title}</span>
+                        </button>
+                    </li>
+                </template>
+            </ol>
+
+            <div class="c-grid">
+                <div class="c-main">
+                    <template lwc:if={isReview}>
+                        <h3 class="c-section__title">Review</h3>
+                        <p class="c-section__intro">Read the answers back to the customer, name the option, then save.</p>
+                        <template lwc:if={pitch}>
+                            <div class="c-pitch">
+                                <img src={sparkUrl} alt="" class="c-pitch__spark" />
+                                <div>
+                                    <p class="c-pitch__label">One way to put it to the customer</p>
+                                    <p class="c-pitch__line">{pitchText}</p>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="c-name">
+                            <lightning-input
+                                label="Name this option"
+                                value={optionName}
+                                max-length="80"
+                                placeholder="For example, Standard deductible"
+                                onchange={handleName}
+                            ></lightning-input>
+                        </div>
+                        <c-antsurance-quote-answers sections={answerSections}></c-antsurance-quote-answers>
+                    </template>
+                    <template lwc:else>
+                        <h3 class="c-section__title">{currentSection.title}</h3>
+                        <p class="c-section__intro">{currentSection.intro}</p>
+                        <ul class="c-questions">
+                            <template for:each={currentQuestions} for:item="question">
+                                <li key={question.key} class="c-question">
+                                    <p class="c-question__label">{question.label}</p>
+                                    <p class="c-question__ask">{question.ask}</p>
+                                    <template lwc:if={question.isPills}>
+                                        <div class="c-pills" role="radiogroup" aria-label={question.label}>
+                                            <template for:each={question.options} for:item="option">
+                                                <button
+                                                    key={option.value}
+                                                    type="button"
+                                                    class={option.className}
+                                                    role="radio"
+                                                    aria-checked={option.checked}
+                                                    data-key={question.key}
+                                                    data-value={option.value}
+                                                    onclick={handlePick}
+                                                >
+                                                    <span>{option.label}</span>
+                                                    <template lwc:if={option.effect}>
+                                                        <span class="c-pill__effect">{option.effect}</span>
+                                                    </template>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template lwc:elseif={question.isSelect}>
+                                        <lightning-combobox
+                                            class="c-question__input c-question__input_wide"
+                                            variant="label-hidden"
+                                            label={question.label}
+                                            value={question.value}
+                                            options={question.selectOptions}
+                                            data-key={question.key}
+                                            onchange={handleInput}
+                                        ></lightning-combobox>
+                                    </template>
+                                    <template lwc:else>
+                                        <lightning-input
+                                            class={question.inputClass}
+                                            variant="label-hidden"
+                                            label={question.label}
+                                            type={question.inputType}
+                                            formatter={question.formatter}
+                                            step={question.step}
+                                            min="0"
+                                            value={question.value}
+                                            data-key={question.key}
+                                            data-type={question.type}
+                                            onchange={handleInput}
+                                        ></lightning-input>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+                <c-antsurance-quote-price
+                    class="c-side"
+                    pricing={pricing}
+                    busy={isPricing}
+                    show-all={isReview}
+                    in-progress
+                    suggestions={shownSuggestions}
+                    advice-state={adviceState}
+                    onapplysuggestion={handleApplySuggestion}
+                    ondismisssuggestion={handleDismissSuggestion}
+                    onretrysuggestions={handleRetrySuggestions}
+                ></c-antsurance-quote-price>
+            </div>
+
+            <footer class="c-foot">
+                <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                <span class="c-foot__space"></span>
+                <lightning-button label="Back" icon-name="utility:chevronleft" disabled={isFirstStep} onclick={handleBack}></lightning-button>
+                <template lwc:if={isReview}>
+                    <template lwc:if={canIssue}>
+                        <lightning-button label="Save as draft" disabled={isSaving} onclick={handleSave}></lightning-button>
+                        <lightning-button variant="brand" label={issueLabel} disabled={isSaving} onclick={handleSaveAndIssue}></lightning-button>
+                    </template>
+                    <template lwc:else>
+                        <lightning-button variant="brand" label="Save changes" disabled={isSaving} onclick={handleSave}></lightning-button>
+                    </template>
+                </template>
+                <template lwc:else>
+                    <lightning-button
+                        variant="brand"
+                        label={nextLabel}
+                        icon-name="utility:chevronright"
+                        icon-position="right"
+                        onclick={handleNext}
+                    ></lightning-button>
+                </template>
+            </footer>
+        </template>
+
+        <!-- Summary: what was answered and how it priced. -->
+        <template lwc:else>
+            <header class="c-top">
+                <div class="c-top__titles">
+                    <p class="c-eyebrow">{eyebrow}</p>
+                    <h2 class="c-top__title">Configuration</h2>
+                    <p class="c-top__meta">
+                        <lightning-icon icon-name={channelIcon} size="xx-small"></lightning-icon>
+                        {summaryMeta}
+                    </p>
+                </div>
+                <template lwc:if={canEdit}>
+                    <lightning-button label="Edit answers" icon-name="utility:edit" onclick={handleEdit}></lightning-button>
+                </template>
+                <template lwc:else>
+                    <span class="c-top__locked">
+                        <lightning-icon icon-name="utility:lock" size="xx-small"></lightning-icon>
+                        {lockedText}
+                    </span>
+                </template>
+            </header>
+            <template lwc:if={isNarrow}>
+                <c-antsurance-tabs class="c-grid__tabs" label="Parts of the configuration" tabs={narrowTabs} value={narrowTab} onselect={handleNarrowTab}></c-antsurance-tabs>
+            </template>
+            <div class={gridClass}>
+                <c-antsurance-quote-answers class="c-main" sections={answerSections}></c-antsurance-quote-answers>
+                <c-antsurance-quote-price class="c-side" pricing={pricing} breakdown-only></c-antsurance-quote-price>
+            </div>
+        </template>
+    </section>
+</template>

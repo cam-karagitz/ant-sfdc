@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fast_Mode__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Ask for faster output from the same model, at a higher price. Only some models and accounts have it. When it is off, or the API refuses it, requests go at standard speed.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Faster answers at a higher price. Turn off if your Anthropic account does not have fast mode.</inlineHelpText>
+    <label>Fast Mode</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "What commission rate do we pay our agencies?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't find commission rates in the CRM. Agency accounts, policies and policy sales have no commission field that I can see, so any rate I gave you would be a guess.\n\nYour producer agreements or the finance or distribution team should have the rates. What the CRM does show is which agency placed each policy and how much premium that is, if that would help.\n\n?> Premium in force by agency\n?> Which agencies placed the most policies?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Premium in force by agency\",\n      \"Which agencies placed the most policies?\"\n    ]\n  }\n]"
+  }
+]

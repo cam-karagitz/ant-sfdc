@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Create a follow-up task for me to review the Reyes Household renewal, due 20 October 2026."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Expiration_Date__c, Annual_Premium__c, Account__r.Id, Account__r.Name FROM Policy__c WHERE Account__r.Name LIKE '%Reyes%' AND Status__c IN ('Active','Pending Renewal') ORDER BY Expiration_Date__c LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Account__c\":\"001aj000040t1nsAAA\",\"Annual_Premium__c\":1890.00,\"Expiration_Date__c\":\"2027-03-15\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKc7KAAS\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Account__c\":\"001aj000040t1nsAAA\",\"Annual_Premium__c\":410.00,\"Expiration_Date__c\":\"2027-03-15\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jKc7LAAS\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t1nsAAA\"},\"Account__c\":\"001aj000040t1nsAAA\",\"Annual_Premium__c\":2380.00,\"Expiration_Date__c\":\"2027-05-13\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKc7JAAS\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "I couldn't create the task because I can only read records here. You'll need to add it from the record page.\n\nAlso, [Reyes Household](/lightning/r/001aj000040t1nsAAA/view) has nothing in renewal right now. All three of its policies are **Active**, and none expires before March 2027:\n\n| Policy | Line | Expires | Premium |\n|---|---|---|---|\n| [ANT-HO-204534](/lightning/r/a00aj00003jKc7KAAS/view) | Homeowners | 15 Mar 2027 | $1,890 |\n| [ANT-UM-204551](/lightning/r/a00aj00003jKc7LAAS/view) | Umbrella | 15 Mar 2027 | $410 |\n| [ANT-PA-204517](/lightning/r/a00aj00003jKc7JAAS/view) | Personal Auto | 13 May 2027 | $2,380 |\n\nTo add the task, open the policy you want to review, or the household if it covers all three. Then use **New Task** in the Activity panel, set the due date to **20 Oct 2026** and assign it to yourself."
+  }
+]

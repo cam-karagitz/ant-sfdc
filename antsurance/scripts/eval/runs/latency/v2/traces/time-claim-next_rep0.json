@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat should I do next on this claim?"
+  },
+  {
+    "role": "assistant",
+    "content": "The rebuild estimate from Northshore Renovation is in, and the reserve has already gone up to **$48,450**. Your next steps are to approve the estimate and close out the four open tasks, all due in the next few days:\n\n1. **Approve the rebuild estimate** (High, due 5 Oct). Its rebuild line is **$27,450**, up from $24,000.\n2. **Review the drying vendor's mitigation invoice** (High, due 4 Oct). The reserve allows **$9,500** for drying, and $5,000 has been paid so far as an advance.\n3. **Check the failed supply line has been kept and assess subrogation** (due 4 Oct). It's marked as having no subrogation potential, but a braided line that failed at the fitting could point to a product defect.\n4. **Call [Chinedu Okafor](/lightning/r/003aj00002T9O6GAAV/view)** (due 6 Oct) to update him on approvals and timing.\n\nOnce the estimate and invoice are approved, the claim could move from Under Investigation to Approved. The **$43,450** still outstanding has the $2,500 deductible to come off it."
+  }
+]

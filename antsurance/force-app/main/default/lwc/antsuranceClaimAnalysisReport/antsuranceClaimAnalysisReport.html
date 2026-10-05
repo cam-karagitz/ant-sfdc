@@ -1,0 +1,331 @@
+<template>
+    <template lwc:if={report}>
+        <article class={reportClass} aria-label="Claim analysis report">
+            <header class="c-mast">
+                <div class="c-mast__top">
+                    <div class="c-mast__what">
+                        <p class="c-eyebrow">Claim analysis</p>
+                        <p class="c-mast__written">{writtenLine}</p>
+                    </div>
+                    <div class="c-tools c-noprint">
+                        <template lwc:if={noteDone}><span class="c-done">{noteDone}</span></template>
+                        <lightning-button label="Print" icon-name="utility:print" onclick={handlePrint}></lightning-button>
+                        <lightning-button label="Add to file notes" icon-name="utility:note" data-action="note" disabled={noteDisabled} onclick={handleAsk}></lightning-button>
+                    </div>
+                </div>
+                <h2 class={headlineClass} lwc:ref="headline">
+                    <template for:each={headlineParts} for:item="part">
+                        <span key={part.key} class="c-clause">{part.text}</span>
+                    </template>
+                </h2>
+                <!-- Out of sight: each clause on one line, to learn whether it fits the masthead's width. -->
+                <p class="c-mast__headline c-mast__ruler" aria-hidden="true" lwc:ref="ruler">
+                    <template for:each={headlineParts} for:item="part">
+                        <span key={part.key} class="c-clause">{part.text}</span>
+                    </template>
+                </p>
+                <p class={claimClass}><span class="c-mast__number">{claimLine}</span>{subject}</p>
+                <dl class={metaClass}>
+                    <div class="c-mast__fact">
+                        <dt>Customer</dt>
+                        <dd><button type="button" class="c-link" data-record={docket.customerId} onclick={handleOpenRecord}>{docket.customerName}</button></dd>
+                    </div>
+                    <div class="c-mast__fact">
+                        <dt>Policy</dt>
+                        <dd><button type="button" class="c-link" data-record={docket.policyId} onclick={handleOpenRecord}>{docket.policyName}</button></dd>
+                    </div>
+                    <div class="c-mast__fact">
+                        <dt>Loss</dt>
+                        <dd>{lossLine}</dd>
+                    </div>
+                    <div class="c-mast__fact">
+                        <dt>Handled by</dt>
+                        <dd>{docket.handledBy}</dd>
+                    </div>
+                </dl>
+
+                <div class={figuresClass}>
+                    <div class="c-figure">
+                        <p class="c-figure__label">Coverage</p>
+                        <p class="c-figure__value"><span class={verdictClass}>{verdict}</span></p>
+                        <p class="c-figure__note">{verdictNote}</p>
+                    </div>
+                    <div class="c-figure">
+                        <p class="c-figure__label">Payable</p>
+                        <p class="c-figure__value c-figure__value_number">{payable}</p>
+                        <p class="c-figure__note">{payableNote}</p>
+                    </div>
+                    <div class="c-figure">
+                        <p class="c-figure__label">Reserve</p>
+                        <p class="c-figure__value c-figure__value_number">
+                            {reserveFigure}
+                            <template lwc:if={reserveChange}><span class={reserveChange.className}>{reserveChange.label}</span></template>
+                        </p>
+                        <p class="c-figure__note">{reserveNote}</p>
+                    </div>
+                </div>
+            <template lwc:if={confirmingNote}>
+                <div class="c-confirm c-noprint" role="group" aria-label="Confirm adding to file notes">
+                    <p class="c-confirm__line">{confirm.line}</p>
+                    <div class="c-confirm__actions">
+                        <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                        <lightning-button label="Confirm" variant="brand" disabled={isSaving} onclick={handleConfirm}></lightning-button>
+                    </div>
+                    <template lwc:if={actionError}><p class="c-confirm__error" role="alert">{actionError}</p></template>
+                </div>
+            </template>
+            </header>
+
+            <template lwc:if={isStale}>
+                <p class="c-stale" role="status">
+                    <lightning-icon icon-name="utility:clock" size="xx-small" class="c-stale__icon"></lightning-icon>
+                    <span>{staleLine}</span>
+                </p>
+            </template>
+
+            <div class="c-bar c-noprint">
+                <c-antsurance-tabs class="c-bar__tabs" label="Sections of the claim analysis" tabs={tabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+            </div>
+            <section class={panels.summary} role="tabpanel" aria-label="Summary">
+                <h3 class={titleClass}><span class="c-section__num">1</span>What happened</h3>
+                <div class="c-prose"><c-antsurance-markdown value={whatHappened}></c-antsurance-markdown></div>
+            </section>
+
+            <section class={panels.evidence} role="tabpanel" aria-label="Evidence">
+                <h3 class={titleClass}><span class="c-section__num">2</span>Evidence reviewed</h3>
+                <ul class="c-evidence">
+                    <template for:each={evidence} for:item="line">
+                        <li key={line.key} class={line.className}>
+                            <span class="c-evidence__key">{line.key}</span>
+                            <div class="c-evidence__what">
+                                <template lwc:if={line.canOpen}>
+                                    <button type="button" class="c-link c-evidence__title" data-key={line.key} title={line.openLabel} onclick={handleOpenEvidence}>{line.title}</button>
+                                </template>
+                                <template lwc:else>
+                                    <p class="c-evidence__title">{line.title}</p>
+                                </template>
+                                <p class="c-evidence__kind">{line.kindLabel}</p>
+                            </div>
+                            <p class="c-evidence__shows">{line.shows}</p>
+                        </li>
+                    </template>
+                </ul>
+                <c-antsurance-step-pager class="c-noprint" total={evidenceCount} page-size={evidencePageSize} page={evidencePage} label="evidence items" onpagechange={handleEvidencePage}></c-antsurance-step-pager>
+            </section>
+
+            <section class={panels.damage} role="tabpanel" aria-label="Damage">
+                <h3 class={titleClass}><span class="c-section__num">3</span>Damage</h3>
+                <template lwc:if={hasPhotos}>
+                    <!-- One flat section: the verdict, the photo with its boxes beside the findings, and the rest folded. Photos are worked on in the Photos card, not here. -->
+                    <template lwc:if={consistency}>
+                        <div class="c-damage__read">
+                            <p class="c-damage__fit"><span class={consistency.className}>{consistency.label}</span></p>
+                            <p class="c-damage__fitnote">{consistency.note}</p>
+                        </div>
+                    </template>
+                    <div class="c-damage__photos">
+                        <c-antsurance-claim-photo-viewer lwc:ref="viewer" record-id={recordId} file-ids={photoIds} flat></c-antsurance-claim-photo-viewer>
+                    </div>
+                    <c-antsurance-accordion label="Claude's read, signs and cost" summary={handlingSummary} open={isPrinting}>
+                        <div class="c-damage__read">
+                            <div class="c-prose"><c-antsurance-markdown value={damageText}></c-antsurance-markdown></div>
+                            <template lwc:if={hasSignals}>
+                                <p class="c-label">Signs that change handling</p>
+                                <ul class="c-points">
+                                    <template for:each={signals} for:item="signal">
+                                        <li key={signal.key}>{signal.text}</li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:if={repairRange}>
+                                <p class="c-label">Rough range for what the photos show, not an estimate</p>
+                                <p class="c-damage__range">{repairRange.figure}</p>
+                                <p class="c-damage__basis">{repairRange.basis}</p>
+                            </template>
+                        </div>
+                    </c-antsurance-accordion>
+                </template>
+                <template lwc:else>
+                    <div class="c-prose"><c-antsurance-markdown value={damageText}></c-antsurance-markdown></div>
+                </template>
+            </section>
+
+            <section class={panels.coverage} role="tabpanel" aria-label="Coverage">
+                <h3 class={titleClass}><span class="c-section__num">4</span>Coverage</h3>
+                <div class="c-prose"><c-antsurance-markdown value={coverageText}></c-antsurance-markdown></div>
+                <template lwc:if={hasCheck}>
+                    <dl class="c-facts">
+                        <template for:each={coverageFacts} for:item="fact">
+                            <div key={fact.key} class="c-fact">
+                                <dt>{fact.label}</dt>
+                                <dd>
+                                    <template lwc:if={fact.isLink}>
+                                        <button type="button" class="c-link c-fact__value" data-record={fact.recordId} onclick={handleOpenRecord}>{fact.value}</button>
+                                    </template>
+                                    <template lwc:else><span class="c-fact__value">{fact.value}</span></template>
+                                    <template lwc:if={fact.note}><span class="c-fact__note">{fact.note}</span></template>
+                                </dd>
+                            </div>
+                        </template>
+                    </dl>
+                    <div class="c-folds">
+                    <template lwc:if={hasFindings}>
+                        <c-antsurance-accordion label="What the record shows" count={findings.length} summary={findingsSummary} open={foldOpen.findings} data-fold="findings" ontoggle={handleFold}>
+                        <ol class="c-findings">
+                            <template for:each={findings} for:item="finding">
+                                <li key={finding.key} class="c-finding">
+                                    <span class="c-finding__num">{finding.number}</span>
+                                    <p class="c-finding__text">{finding.text}</p>
+                                    <p class="c-finding__source">
+                                        <span class="c-finding__kind">{finding.sourceKind}</span>
+                                        <template lwc:if={finding.isLink}>
+                                            <button type="button" class="c-link" data-record={finding.recordId} onclick={handleOpenRecord}>{finding.sourceLabel}</button>
+                                        </template>
+                                        <template lwc:else><span>{finding.sourceLabel}</span></template>
+                                    </p>
+                                </li>
+                            </template>
+                        </ol>
+                        </c-antsurance-accordion>
+                    </template>
+                    <template lwc:if={hasQuestions}>
+                        <c-antsurance-accordion label="Still to ask the insured" count={questions.length} open={foldOpen.questions} data-fold="questions" ontoggle={handleFold}>
+                        <ul class="c-points">
+                            <template for:each={questions} for:item="question">
+                                <li key={question.key}>{question.text}</li>
+                            </template>
+                        </ul>
+                        </c-antsurance-accordion>
+                    </template>
+                    </div>
+                    <p class="c-basis">Read from the coverages and endorsements recorded on this policy, not the wording of the policy forms.</p>
+                </template>
+            </section>
+
+            <section class={panels.flags} role="tabpanel" aria-label="Flags">
+                <h3 class={titleClass}><span class="c-section__num">5</span>Gaps and flags</h3>
+                <template lwc:if={noGaps}>
+                    <p class="c-quiet">Nothing is missing and nothing in the evidence is at odds with the reported loss.</p>
+                </template>
+                <div class="c-gaps">
+                    <template lwc:if={hasToCheck}>
+                        <div class="c-gaps__group">
+                            <p class="c-label"><span class="c-chip c-chip_watch">To check</span></p>
+                            <ul class="c-points">
+                                <template for:each={toCheck} for:item="gap">
+                                    <li key={gap.key}>{gap.text}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                    <template lwc:if={hasEvidenceNeeded}>
+                        <div class="c-gaps__group">
+                            <p class="c-label"><span class="c-chip c-chip_quiet">Evidence still needed</span></p>
+                            <ul class="c-points">
+                                <template for:each={evidenceNeeded} for:item="gap">
+                                    <li key={gap.key}>{gap.text}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <section class={panels.reserve} role="tabpanel" aria-label="Reserve">
+                <h3 class={titleClass}><span class="c-section__num">6</span>Reserve</h3>
+                <template lwc:if={hasRecommendation}>
+                    <div class="c-reserve">
+                        <table class="c-sum">
+                            <caption class="slds-assistive-text">How the recommended reserve is built up</caption>
+                            <tbody>
+                                <template for:each={reserveLines} for:item="line">
+                                    <tr key={line.key}>
+                                        <th scope="row">{line.label}</th>
+                                        <td>{line.amount}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                            <tfoot>
+                                <tr class="c-sum__total">
+                                    <th scope="row">Recommended reserve</th>
+                                    <td>{reserveFigure}</td>
+                                </tr>
+                                <tr class="c-sum__now">
+                                    <th scope="row">Reserve now</th>
+                                    <td>{reserveNowText}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="c-reserve__why">
+                            <div class="c-prose"><c-antsurance-markdown value={reserveReason}></c-antsurance-markdown></div>
+                            <template lwc:if={canSetReserve}>
+                                <lightning-button label={setReserveLabel} data-action="reserve" class="c-noprint c-reserve__set" onclick={handleAsk}></lightning-button>
+                            </template>
+                            <template lwc:if={reserveDone}><p class="c-done">{reserveDone}</p></template>
+                        </div>
+                    </div>
+                    <template lwc:if={confirmingReserve}>
+                        <div class="c-confirm c-noprint" role="group" aria-label="Confirm changing the reserve">
+                            <p class="c-confirm__line">{confirm.line}</p>
+                            <div class="c-confirm__actions">
+                                <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                                <lightning-button label="Confirm" variant="brand" disabled={isSaving} onclick={handleConfirm}></lightning-button>
+                            </div>
+                            <template lwc:if={actionError}><p class="c-confirm__error" role="alert">{actionError}</p></template>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:else>
+                    <div class="c-prose"><c-antsurance-markdown value={reserveReason}></c-antsurance-markdown></div>
+                    <p class="c-quiet c-reserve__none">No change to the reserve is recommended. It stands at {reserveNowText}.</p>
+                </template>
+            </section>
+
+            <section class={panels.steps} role="tabpanel" aria-label="Next steps">
+                <h3 class={titleClass}><span class="c-section__num">7</span>Where to start</h3>
+                <template lwc:if={hasSteps}>
+                    <ol class="c-next">
+                        <template for:each={steps} for:item="step">
+                            <li key={step.key} class={step.className}>
+                                <input type="checkbox" class="c-next__check c-noprint" id={step.inputId} data-index={step.key} checked={step.checked} disabled={step.added} onchange={handleChoose} />
+                                <span class="c-next__num" aria-hidden="true">{step.number}</span>
+                                <label class="c-next__text" for={step.inputId}>
+                                    <span class="c-next__subject">{step.subject}</span>
+                                    <span class="c-next__why">{step.why}</span>
+                                </label>
+                                <template lwc:if={step.added}><span class="c-chip c-chip_good">On the task list</span></template>
+                            </li>
+                        </template>
+                    </ol>
+                    <c-antsurance-step-pager class="c-noprint" total={steps.length} page-size={stepsPageSize} page={stepsPage} label="next steps" onpagechange={handleStepsPage}></c-antsurance-step-pager>
+                    <div class="c-next__actions c-noprint">
+                        <template lwc:if={allOnList}>
+                            <span class="c-quiet">Every step is on the task list.</span>
+                        </template>
+                        <template lwc:else>
+                            <lightning-button label={addTasksLabel} variant="brand" data-action="tasks" disabled={addTasksDisabled} onclick={handleAsk}></lightning-button>
+                        </template>
+                        <template lwc:if={tasksDone}><span class="c-done">{tasksDone}</span></template>
+                    </div>
+                    <template lwc:if={confirmingTasks}>
+                        <div class="c-confirm c-noprint" role="group" aria-label="Confirm adding tasks">
+                            <p class="c-confirm__line">{confirm.line}</p>
+                            <div class="c-confirm__actions">
+                                <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                                <lightning-button label="Confirm" variant="brand" disabled={isSaving} onclick={handleConfirm}></lightning-button>
+                            </div>
+                            <template lwc:if={actionError}><p class="c-confirm__error" role="alert">{actionError}</p></template>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:else>
+                    <p class="c-quiet">No next steps were suggested.</p>
+                </template>
+            </section>
+
+            <footer class="c-foot">
+                <p>Claude advises and the adjuster decides. Photos show only what is visible, and repair cost needs&nbsp;an&nbsp;appraiser.</p>
+            </footer>
+        </article>
+    </template>
+</template>

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSet this claim to Waiting on Customer."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't set that status: **Waiting on Customer** is only for service requests. Claims go through New, Under Investigation, Appraisal, Approved, Payment Issued, then Closed or Denied.\n\n[00002118](/lightning/r/500aj00003jKuVeAAK/view) is **Under Investigation** now. According to the latest file note, the claim is waiting on the drying vendor's mitigation invoice and the contractor's rebuild estimate, not on the customer. If you'd like, I can move it to another claim status, such as Appraisal. I can also add a file note about what you're waiting on."
+  }
+]

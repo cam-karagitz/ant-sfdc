@@ -1,0 +1,147 @@
+<template>
+    <article class="c-file" aria-labelledby="file-headline">
+        <template lwc:if={errorMessage}>
+            <p class="c-file__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={file}>
+            <header class="c-file__head c-ui-arrive">
+                <p class="c-file__eyebrow">Across Antsurance</p>
+                <h2 id="file-headline" class="c-file__headline">{headline}</h2>
+            </header>
+
+            <template lwc:if={hasContact}>
+                <c-antsurance-tabs class="c-file__tabs" label="This person's file" tabs={tabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+                <template lwc:if={showsPolicies}>
+                    <div role="tabpanel" aria-label="Policies and roles" class="c-file__panel c-ui-arrive">
+                        <ul class="c-list">
+                            <template for:each={pagePolicies} for:item="policy">
+                                <li key={policy.policyId}>
+                                    <a class="c-policy c-ui-open c-ui-focus" href={policy.url} data-record-id={policy.policyId} onclick={handleOpen}>
+                                        <span class={policy.icon.tileClass}>
+                                            <lightning-icon icon-name={policy.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                        </span>
+                                        <span class="c-policy__words">
+                                            <span class="c-policy__name">
+                                                {policy.policyName}
+                                                <template lwc:if={policy.isThisPolicy}>
+                                                    <span class="c-policy__here">This policy</span>
+                                                </template>
+                                            </span>
+                                            <span class="c-policy__roles">{policy.rolesLine}</span>
+                                            <span class="c-policy__line">{policy.lineAndItem}</span>
+                                        </span>
+                                        <template lwc:if={policy.showsStatus}>
+                                            <span class="c-policy__status">{policy.status}</span>
+                                        </template>
+                                        <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text="" class="c-ui-chevron"></lightning-icon>
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                        <c-antsurance-step-pager total={policyCount} page-size={pageSize} page={policyPage} label="policies" onpagechange={handlePolicyPage}></c-antsurance-step-pager>
+                    </div>
+                </template>
+                <template lwc:if={showsCases}>
+                    <div role="tabpanel" aria-label="Claims and requests" class="c-file__panel c-ui-arrive">
+                        <template lwc:if={hasCases}>
+                            <ol class="c-list c-history">
+                                <template for:each={cases} for:item="item">
+                                    <li key={item.caseId}>
+                                        <a class="c-case c-ui-open c-ui-focus" href={item.url} data-record-id={item.caseId} onclick={handleOpen}>
+                                            <span class="c-case__when">
+                                                <span class="c-case__day">{item.day}</span>
+                                                <span class="c-case__year">{item.year}</span>
+                                            </span>
+                                            <span class={item.dotClass} aria-hidden="true"></span>
+                                            <span class="c-case__words">
+                                                <span class="c-case__subject">{item.subject}</span>
+                                                <span class="c-case__meta">{item.meta}</span>
+                                            </span>
+                                            <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text="" class="c-ui-chevron"></lightning-icon>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ol>
+                            <template lwc:if={moreCases}>
+                                <a class="c-list__more c-ui-focus" href={contactUrl} data-record-id={file.contactId} onclick={handleOpen}>{moreCases}</a>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <div class="c-clear">
+                                <span class="c-ui-tile c-ui-tile_olive">
+                                    <lightning-icon icon-name="utility:check" size="x-small" alternative-text=""></lightning-icon>
+                                </span>
+                                <p class="c-clear__text">{noCasesText}</p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:if={showsOthers}>
+                    <div role="tabpanel" aria-label="Also on this policy" class="c-file__panel c-ui-arrive">
+                        <template lwc:if={hasOthers}>
+                            <ul class="c-people">
+                                <template for:each={others} for:item="person">
+                                    <li key={person.participantId}>
+                                        <a class="c-person c-ui-open c-ui-open_card c-ui-focus" href={person.url} data-record-id={person.participantId} onclick={handleOpen}>
+                                            <span class={person.icon.tileClass}>
+                                                <lightning-icon icon-name={person.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                            </span>
+                                            <span class="c-person__words">
+                                                <span class="c-person__name">{person.name}</span>
+                                                <span class="c-person__role">{person.roleLine}</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                        <template lwc:else>
+                            <p class="c-others__none">No one else is on this policy.</p>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <template lwc:else>
+                <section class="c-others c-ui-arrive" aria-labelledby="others-title">
+                    <h3 id="others-title" class="c-others__title">{othersTitle}</h3>
+                    <template lwc:if={hasOthers}>
+                        <ul class="c-people">
+                            <template for:each={others} for:item="person">
+                                <li key={person.participantId}>
+                                    <a class="c-person c-ui-open c-ui-open_card c-ui-focus" href={person.url} data-record-id={person.participantId} onclick={handleOpen}>
+                                        <span class={person.icon.tileClass}>
+                                            <lightning-icon icon-name={person.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                        </span>
+                                        <span class="c-person__words">
+                                            <span class="c-person__name">{person.name}</span>
+                                            <span class="c-person__role">{person.roleLine}</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-others__none">No one else is on this policy.</p>
+                    </template>
+                </section>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-file__waiting" aria-hidden="true">
+                <span class="c-ui-bone c-ui-bone_line c-bone_eyebrow"></span>
+                <span class="c-ui-bone c-ui-bone_title c-bone_headline"></span>
+                <span class="c-ui-bone c-ui-bone_line c-bone_tabs"></span>
+                <template for:each={bones} for:item="bone">
+                    <div key={bone} class="c-bone_row">
+                        <span class="c-ui-bone c-ui-bone_tile"></span>
+                        <span class="c-bone_words">
+                            <span class="c-ui-bone c-ui-bone_line c-bone_name"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_meta"></span>
+                        </span>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </article>
+</template>

@@ -1,0 +1,599 @@
+{
+ "assembly": {
+  "settled": 11,
+  "rows": [
+   {
+    "valueLabel": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+    "value": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+    "type": "text",
+    "status": "read",
+    "sources": [
+     {
+      "words": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+      "valueLabel": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+      "value": "General and pediatric dentistry. Three offices in Chicago, Illinois.",
+      "page": 1,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "a dental practice with three Chicago offices",
+      "valueLabel": "Dental practice with three Chicago offices",
+      "value": "Dental practice with three Chicago offices",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "The business",
+    "options": [],
+    "label": "What the business does",
+    "key": "description"
+   },
+   {
+    "valueLabel": "Illinois",
+    "value": "IL",
+    "type": "choice",
+    "status": "read",
+    "sources": [
+     {
+      "words": "Illinois (all employees)",
+      "valueLabel": "Illinois",
+      "value": "IL",
+      "page": 1,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "Insured: Lakeshore Dental Group, LLC, Chicago, Illinois.",
+      "valueLabel": "Illinois",
+      "value": "IL",
+      "page": 1,
+      "note": null,
+      "document": "Loss run",
+      "basis": "read"
+     },
+     {
+      "words": "a dental practice with three Chicago offices",
+      "valueLabel": "Illinois",
+      "value": "IL",
+      "page": 1,
+      "note": "Chicago offices place it in Illinois",
+      "document": "Broker's email",
+      "basis": "worked_out"
+     }
+    ],
+    "section": "The business",
+    "options": [
+     {
+      "value": "IL",
+      "label": "Illinois"
+     },
+     {
+      "value": "WI",
+      "label": "Wisconsin"
+     },
+     {
+      "value": "MI",
+      "label": "Michigan"
+     },
+     {
+      "value": "IA",
+      "label": "Iowa"
+     },
+     {
+      "value": "IN",
+      "label": "Indiana"
+     }
+    ],
+    "label": "State",
+    "key": "state"
+   },
+   {
+    "valueLabel": "Healthcare",
+    "value": "healthcare",
+    "type": "choice",
+    "status": "worked_out",
+    "sources": [
+     {
+      "words": "Dentists, hygienists and dental assistants (clinical) 17 $1,212,000",
+      "valueLabel": "Healthcare",
+      "value": "healthcare",
+      "page": 1,
+      "note": "Dental practice, most payroll clinical, placed in healthcare",
+      "document": "Application",
+      "basis": "worked_out"
+     },
+     {
+      "words": "Insured: Lakeshore Dental Group, LLC",
+      "valueLabel": "Healthcare",
+      "value": "healthcare",
+      "page": 1,
+      "note": "Dental practice placed in healthcare",
+      "document": "Loss run",
+      "basis": "worked_out"
+     },
+     {
+      "words": "a dental practice with three Chicago offices",
+      "valueLabel": "Healthcare",
+      "value": "healthcare",
+      "page": 1,
+      "note": "Dental practice is healthcare",
+      "document": "Broker's email",
+      "basis": "worked_out"
+     }
+    ],
+    "section": "The business",
+    "options": [
+     {
+      "value": "clerical",
+      "label": "Clerical and office"
+     },
+     {
+      "value": "retail",
+      "label": "Retail and hospitality"
+     },
+     {
+      "value": "healthcare",
+      "label": "Healthcare"
+     },
+     {
+      "value": "restaurant",
+      "label": "Restaurant and brewing"
+     },
+     {
+      "value": "manufacturing",
+      "label": "Manufacturing and machine shop"
+     },
+     {
+      "value": "trucking",
+      "label": "Trucking"
+     },
+     {
+      "value": "construction",
+      "label": "Construction and roofing"
+     }
+    ],
+    "label": "Kind of work",
+    "key": "classGroup"
+   },
+   {
+    "valueLabel": "24",
+    "value": "24",
+    "type": "number",
+    "status": "read",
+    "sources": [
+     {
+      "words": "24 in total: 20 full time and 4 part time",
+      "valueLabel": "24",
+      "value": "24",
+      "page": 1,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "24 employees and an estimated payroll of $1,530,000",
+      "valueLabel": "24",
+      "value": "24",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "The business",
+    "options": [],
+    "label": "Employees",
+    "key": "employees"
+   },
+   {
+    "valueLabel": "$1,530,000",
+    "value": "1530000",
+    "type": "currency",
+    "status": "read",
+    "sources": [
+     {
+      "words": "Total estimated annual payroll 24 $1,530,000",
+      "valueLabel": "$1,530,000",
+      "value": "1530000",
+      "page": 1,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "Year to date: 1 claim. Estimated payroll $1,530,000.",
+      "valueLabel": "$1,530,000",
+      "value": "1530000",
+      "page": 1,
+      "note": null,
+      "document": "Loss run",
+      "basis": "read"
+     },
+     {
+      "words": "24 employees and an estimated payroll of $1,530,000",
+      "valueLabel": "$1,530,000",
+      "value": "1530000",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "Payroll",
+    "options": [],
+    "label": "Annual payroll",
+    "key": "payroll"
+   },
+   {
+    "valueLabel": "Yes",
+    "value": "true",
+    "type": "toggle",
+    "status": "read",
+    "sources": [
+     {
+      "words": "Are owners and officers to be covered? X Yes",
+      "valueLabel": "Yes",
+      "value": "true",
+      "page": 1,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "and Dr. Shah is to be covered.",
+      "valueLabel": "Yes",
+      "value": "true",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "Payroll",
+    "options": [
+     {
+      "value": "true",
+      "label": "Yes"
+     },
+     {
+      "value": "false",
+      "label": "No"
+     }
+    ],
+    "label": "Owners and officers covered",
+    "key": "ownersIncluded"
+   },
+   {
+    "valueLabel": "0.90 to 1.10",
+    "value": "average",
+    "type": "choice",
+    "status": "worked_out",
+    "sources": [
+     {
+      "words": "0.94, effective January 1, 2026",
+      "valueLabel": "0.90 to 1.10",
+      "value": "average",
+      "page": 2,
+      "note": "0.94 falls in 0.90 to 1.10",
+      "document": "Application",
+      "basis": "worked_out"
+     },
+     {
+      "words": "The experience mod is 0.94.",
+      "valueLabel": "0.90 to 1.10",
+      "value": "average",
+      "page": 1,
+      "note": "0.94 falls in 0.90 to 1.10",
+      "document": "Broker's email",
+      "basis": "worked_out"
+     }
+    ],
+    "section": "Experience",
+    "options": [
+     {
+      "value": "credit",
+      "label": "Under 0.90"
+     },
+     {
+      "value": "average",
+      "label": "0.90 to 1.10"
+     },
+     {
+      "value": "debit",
+      "label": "1.10 to 1.40"
+     },
+     {
+      "value": "high",
+      "label": "Over 1.40"
+     }
+    ],
+    "label": "Experience mod",
+    "key": "experienceMod"
+   },
+   {
+    "valueLabel": null,
+    "value": null,
+    "type": "choice",
+    "status": "conflict",
+    "sources": [
+     {
+      "words": "Workers' compensation claims in the past three years 3",
+      "valueLabel": "One to three",
+      "value": "1to3",
+      "page": 2,
+      "note": "3 falls in one to three",
+      "document": "Application",
+      "basis": "worked_out"
+     },
+     {
+      "words": "Claims Open Paid Reserved Total incurred 4 1 $26,650 $6,500 $33,150",
+      "valueLabel": "Four or more",
+      "value": "4plus",
+      "page": 1,
+      "note": "4 claims listed falls in four or more",
+      "document": "Loss run",
+      "basis": "worked_out"
+     },
+     {
+      "words": "They have had three claims in the last three years, all closed.",
+      "valueLabel": "One to three",
+      "value": "1to3",
+      "page": 1,
+      "note": "Three claims falls in one to three",
+      "document": "Broker's email",
+      "basis": "worked_out"
+     }
+    ],
+    "section": "Experience",
+    "options": [
+     {
+      "value": "0",
+      "label": "None"
+     },
+     {
+      "value": "1to3",
+      "label": "One to three"
+     },
+     {
+      "value": "4plus",
+      "label": "Four or more"
+     }
+    ],
+    "label": "Claims, past 3 years",
+    "key": "priorClaims"
+   },
+   {
+    "valueLabel": "Yes",
+    "value": "true",
+    "type": "toggle",
+    "status": "read",
+    "sources": [
+     {
+      "words": "X Yes No Written safety and infection control program, reviewed every year.",
+      "valueLabel": "Yes",
+      "value": "true",
+      "page": 2,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     }
+    ],
+    "section": "Experience",
+    "options": [
+     {
+      "value": "true",
+      "label": "Yes"
+     },
+     {
+      "value": "false",
+      "label": "No"
+     }
+    ],
+    "label": "Written safety program",
+    "key": "safetyProgram"
+   },
+   {
+    "valueLabel": "No",
+    "value": "false",
+    "type": "toggle",
+    "status": "read",
+    "sources": [
+     {
+      "words": "Is there a return-to-work program for injured employees? Yes X No",
+      "valueLabel": "No",
+      "value": "false",
+      "page": 2,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     }
+    ],
+    "section": "Experience",
+    "options": [
+     {
+      "value": "true",
+      "label": "Yes"
+     },
+     {
+      "value": "false",
+      "label": "No"
+     }
+    ],
+    "label": "Return-to-work program",
+    "key": "returnToWork"
+   },
+   {
+    "valueLabel": null,
+    "value": null,
+    "type": "toggle",
+    "status": "not_found",
+    "sources": [],
+    "section": "Experience",
+    "options": [
+     {
+      "value": "true",
+      "label": "Yes"
+     },
+     {
+      "value": "false",
+      "label": "No"
+     }
+    ],
+    "label": "Drug-free workplace",
+    "key": "drugFree"
+   },
+   {
+    "valueLabel": "$1,000,000 each",
+    "value": "1000000",
+    "type": "choice",
+    "status": "read",
+    "sources": [
+     {
+      "words": "$1,000,000 each accident, $1,000,000 each employee by disease, $1,000,000 policy limit by disease",
+      "valueLabel": "$1,000,000 each",
+      "value": "1000000",
+      "page": 2,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "with a $1,000,000 employers liability limit",
+      "valueLabel": "$1,000,000 each",
+      "value": "1000000",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "Coverage",
+    "options": [
+     {
+      "value": "500000",
+      "label": "$500,000 each"
+     },
+     {
+      "value": "1000000",
+      "label": "$1,000,000 each"
+     }
+    ],
+    "label": "Employers liability",
+    "key": "employersLiability"
+   },
+   {
+    "valueLabel": "Guaranteed cost",
+    "value": "guaranteed",
+    "type": "choice",
+    "status": "read",
+    "sources": [
+     {
+      "words": "X Guaranteed cost",
+      "valueLabel": "Guaranteed cost",
+      "value": "guaranteed",
+      "page": 2,
+      "note": null,
+      "document": "Application",
+      "basis": "read"
+     },
+     {
+      "words": "They want guaranteed cost with a $1,000,000 employers liability limit",
+      "valueLabel": "Guaranteed cost",
+      "value": "guaranteed",
+      "page": 1,
+      "note": null,
+      "document": "Broker's email",
+      "basis": "read"
+     }
+    ],
+    "section": "Coverage",
+    "options": [
+     {
+      "value": "guaranteed",
+      "label": "Guaranteed cost"
+     },
+     {
+      "value": "deductible",
+      "label": "Small deductible plan"
+     }
+    ],
+    "label": "Pricing plan",
+    "key": "plan"
+   }
+  ],
+  "referrals": [],
+  "notFound": 1,
+  "conflicts": 1,
+  "conditionals": [
+   {
+    "valueLabel": "Four or more",
+    "reasons": [
+     "Four or more claims in three years"
+    ],
+    "question": "Claims, past 3 years",
+    "document": "Loss run"
+   }
+  ],
+  "answersJson": "{\"plan\":\"guaranteed\",\"employersLiability\":\"1000000\",\"returnToWork\":\"false\",\"safetyProgram\":\"true\",\"experienceMod\":\"average\",\"ownersIncluded\":\"true\",\"payroll\":1530000,\"employees\":24,\"classGroup\":\"healthcare\",\"state\":\"IL\",\"description\":\"General and pediatric dentistry. Three offices in Chicago, Illinois.\"}"
+ },
+ "advice": {
+  "replySubject": "Lakeshore Dental Group workers compensation: items needed before quoting",
+  "replyBody": "Hi Marguerite,\n\nThank you for sending the workers compensation submission for Lakeshore Dental Group, effective Dec 1, 2026. Before we can put a quote together, could you help with the following:\n\n1. Claim count: the application shows 3 claims and your email says three, all closed, but the Quillhaven Mutual loss run shows 4 claims with one still open. Please confirm the correct count.\n2. Open claim: a status update on the hygienist shoulder strain from Jun 2, 2025, which shows $6,500 reserved.\n3. A signed and dated application; the applicant statement is blank.\n4. The drug-free workplace question on the application, which is unanswered.\n5. Estimated headcount, payroll and job split for the Lincoln Park office opening January 2027.\n\nIf we can have these soon, it will help us work toward your Oct 20, 2026 deadline.\n\nThanks,\nDemo User\nAntsurance",
+  "issues": [
+   {
+    "title": "Claim count disagrees",
+    "kind": "inconsistent",
+    "detail": "The application lists 3 claims in three years and the broker's email says three claims, all closed. The Quillhaven Mutual loss run valued Sep 30, 2026 lists 4 claims, $33,150 incurred, one open. Four or more would refer the quote to an underwriter.",
+    "ask": "Confirm the correct claim count for the past three years and correct the application if needed."
+   },
+   {
+    "title": "Open shoulder strain claim",
+    "kind": "appetite",
+    "detail": "The loss run shows a hygienist shoulder strain from Jun 2, 2025 still open with lost time, $14,300 paid and $6,500 reserved, while the broker's email says all claims are closed.",
+    "ask": "Provide a current status and outlook on the open hygienist shoulder strain claim."
+   },
+   {
+    "title": "Application unsigned",
+    "kind": "missing",
+    "detail": "The application's applicant statement is not signed, and the name, title and date are blank.",
+    "ask": "Send a signed and dated application."
+   },
+   {
+    "title": "Drug-free workplace unanswered",
+    "kind": "missing",
+    "detail": "The application has neither Yes nor No checked for drug-free workplace, and no other document answers it.",
+    "ask": "Confirm whether there is a drug-free workplace program."
+   },
+   {
+    "title": "Fourth office opening Jan 2027",
+    "kind": "appetite",
+    "detail": "The broker's email says a Lincoln Park office opens January 2027 adding about six people, whose payroll is not in the $1,530,000 on the application.",
+    "ask": "Provide estimated headcount, payroll and class split for the Lincoln Park office."
+   },
+   {
+    "title": "Employee count differs",
+    "kind": "differs_from_record",
+    "detail": "Antsurance holds 22 employees; the application gives 24 (20 full time, 4 part time).",
+    "ask": null
+   },
+   {
+    "title": "No return-to-work program",
+    "kind": "appetite",
+    "detail": "The application answers No to a return-to-work program, alongside a lost time claim still open on the loss run.",
+    "ask": null
+   },
+   {
+    "title": "Premium target and payroll growth",
+    "kind": "appetite",
+    "detail": "The broker's email asks for a quote at or under the expiring $31,400. The loss run shows payroll rising from $1,402,000 to $1,468,000 to $1,530,000, and the current year is valued only through Sep 30, 2026.",
+    "ask": null
+   }
+  ],
+  "headline": "Workers compensation cross-sell for Lakeshore Dental Group; not ready to quote until claims count, signature and drug-free answer are resolved."
+ }
+}

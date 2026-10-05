@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204585\" open (object Policy__c, Id a00aj00003jKdxxAAC). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat is the loss ratio on this policy?"
+  },
+  {
+    "role": "assistant",
+    "content": "The loss ratio on [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view) is **2,162.9%**. That means **$48,450** in incurred losses against **$2,240** in annual premium.\n\nAll of it comes from one open claim, [00002216](/lightning/r/500aj00003jLAOcAAO/view), for a burst pipe that flooded the finished basement:\n- **Paid:** $5,000, an advance for emergency drying\n- **Outstanding reserve:** $43,450, after the reserve went up from $45,000 to $48,450 based on the Northshore Renovation rebuild estimate\n\nThe claim is still Under Investigation, so the ratio could change. The policy renews in **105 days**, on 15 Jan 2027."
+  }
+]

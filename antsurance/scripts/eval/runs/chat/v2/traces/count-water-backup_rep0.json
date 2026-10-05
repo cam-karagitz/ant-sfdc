@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies carry a Water Backup endorsement?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status__c, COUNT_DISTINCT(Policy__c) c FROM Policy_Endorsement__c WHERE Name LIKE '%Water Backup%' GROUP BY Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":33,\"Status__c\":\"Active\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**33 policies** carry a Water Backup endorsement, and every one of those endorsements is **Active**.\n\nI counted each policy once, matching on endorsements with \"Water Backup\" in the name. If one has a different name, such as \"Sewer Backup\", it isn't included. I didn't check whether the policies themselves are still in force."
+  }
+]

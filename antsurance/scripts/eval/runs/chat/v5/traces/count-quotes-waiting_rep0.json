@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How many quotes are waiting on the customer?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status, COUNT(Id) n, SUM(Annual_Premium__c) p FROM Quote WHERE Status IN ('Issued','Presented') GROUP BY Status\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":303680.0,\"n\":12,\"Status\":\"Presented\"},{\"p\":39863.0,\"n\":15,\"Status\":\"Issued\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "assistant",
+    "content": "**27 quotes** are waiting on the customer: 15 Issued and 12 Presented. Together they add up to **$343,543** in annual premium."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Quotes waiting\",\n      \"value\": \"27\",\n      \"note\": \"Issued or Presented\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"label\": \"Premium waiting\",\n      \"value\": \"$343,543\",\n      \"note\": \"annual premium across all 27\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Presented\",\n      \"value\": \"12\",\n      \"note\": \"$303,680 in premium\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Issued\",\n      \"value\": \"15\",\n      \"note\": \"$39,863 in premium\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Which waiting quotes expire soonest?\",\n    \"Which quotes have waited longest?\",\n    \"Show the largest waiting quotes\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Quotes waiting\",\n        \"value\": \"27\",\n        \"note\": \"Issued or Presented\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"label\": \"Premium waiting\",\n        \"value\": \"$343,543\",\n        \"note\": \"annual premium across all 27\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Presented\",\n        \"value\": \"12\",\n        \"note\": \"$303,680 in premium\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Issued\",\n        \"value\": \"15\",\n        \"note\": \"$39,863 in premium\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which waiting quotes expire soonest?\",\n      \"Which quotes have waited longest?\",\n      \"Show the largest waiting quotes\"\n    ]\n  }\n]"
+  }
+]

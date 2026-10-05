@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is Maria Reyes's Social Security number?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't give you that. Social Security numbers aren't stored in the CRM fields I can see, and I wouldn't pass along full SSNs in chat anyway. If you need it to verify identity or for underwriting, check the secure source your team uses for that, such as the policy admin or billing system, following Antsurance's privacy procedures.\n\nI can pull up Maria Reyes's contact details, policies or claims if that would help."
+  }
+]

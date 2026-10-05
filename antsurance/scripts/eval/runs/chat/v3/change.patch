@@ -1,0 +1,64 @@
+--- scripts/eval/runs/chat/v3/AntsuranceClaudeController.before.cls.txt	2026-10-02 22:45:53
++++ force-app/main/default/classes/AntsuranceClaudeController.cls	2026-10-02 22:45:53
+@@ -58,7 +58,8 @@
+         'The panel renders Markdown. Use bold for the few figures that matter, a bullet list for a short set of records, ' +
+         'and a table when comparing several records across the same fields (five columns at most, short cell values). ' +
+         'Use a heading only when an answer has distinct sections. No HTML and no images. ' +
+-        'Write dates the way people say them, such as 28 Sep or 28 Sep 2026, and money with a currency symbol and thousands separators.\n\n' +
++        'Write dates the way people say them, such as 28 Sep or 28 Sep 2026, and money with a currency symbol and thousands separators. ' +
++        'Do not use em dashes or en dashes anywhere, including in a task subject or a note you propose: use a comma, a colon or the word to.\n\n' +
+         'Link a record by its name whenever you mention it and have its Id, written as [Name](/lightning/r/RECORD_ID/view) with the 18-character Id, ' +
+         'so include Id (and Account.Id and similar for parents you mention) in your queries.\n\n' +
+         'A user message may begin with a bracketed Page context note, added by the app, naming the record the user has open. ' +
+@@ -74,6 +75,7 @@
+         'So never say a task, note or status change has been made; say it is ready for them to confirm. ' +
+         'A later user message may begin with a bracketed App note saying which cards they confirmed or cancelled: only then is it done. ' +
+         'Propose a change only when the user asks for one, propose exactly what they asked for, and look up any Id you need first. ' +
++        'A task to call, write to or meet the customer is about a person: on a claim or service request that person is its Contact, so pass their Id as contact_id. ' +
+         'When you propose, the card shows the details, so add at most one short sentence. ' +
+         'You cannot make any other change: no deleting, no editing reserves, premiums or other fields, no creating other records. ' +
+         'When asked for one, say plainly that you cannot do it from here, and do not propose something else in its place unless they ask.';
+--- scripts/eval/runs/chat/v3/AntsuranceClaudeActions.before.cls.txt	2026-10-02 22:46:27
++++ force-app/main/default/classes/AntsuranceClaudeActions.cls	2026-10-02 22:47:46
+@@ -119,14 +119,15 @@
+                     'subject' => text('What to do, as a short imperative line, for example: Call Maria Reyes about the contractor estimate'),
+                     'due_date' => text('The due date as YYYY-MM-DD. Work it out from today\'s date when they say tomorrow, Friday or in three days.'),
+                     'related_record_id' => text('The 18-character Id of the claim, service request, policy, policy sale, quote or customer account the task is about. Use the open record when they say this or here.'),
+-                    'contact_id' => text(
++                    'contact_id' => optionalText(
+                         'The Id of the contact the task is about. Set it whenever the task is to call, write to, meet or send something to a person, named or not (the customer, him, her): ' +
+-                        'take the Id from the open record\'s facts when that person is there, otherwise query for it. Leave it out only when the task involves no person.'
++                        'take the Id from the open record\'s facts when that person is there, otherwise query for it. Null only when the task involves no person.'
+                     ),
+                     'priority' => choice(PRIORITIES, 'Normal unless they say it is urgent or can wait.'),
+-                    'notes' => text('Optional comments for the task: context the user gave that does not fit the subject.')
++                    'notes' => optionalText('Comments for the task: context the user gave that does not fit the subject. Null when there is none.')
+                 },
+-                new List<String>{ 'subject', 'due_date', 'related_record_id', 'priority' }
++                // Every field is required so that leaving the contact out is a decision, not an omission.
++                new List<String>{ 'subject', 'due_date', 'related_record_id', 'contact_id', 'priority', 'notes' }
+             ),
+             tool(
+                 NOTE_TOOL,
+@@ -320,7 +321,8 @@
+ 
+         Outcome outcome = new Outcome();
+         outcome.recordId = task.Id;
+-        outcome.message = 'Task created: ' + task.Subject + ', due ' + formatDate(task.ActivityDate) + '.';
++        // The card above already shows the subject.
++        outcome.message = 'Task created, due ' + formatDate(task.ActivityDate) + '.';
+         outcome.linkLabel = 'Open task';
+         outcome.touchedIds.add(parent.recordId);
+         return outcome;
+@@ -457,6 +459,11 @@
+         return new Map<String, Object>{ 'type' => 'string', 'description' => description };
+     }
+ 
++    /** A string the model must give or explicitly leave null. */
++    private static Map<String, Object> optionalText(String description) {
++        return new Map<String, Object>{ 'type' => new List<String>{ 'string', 'null' }, 'description' => description };
++    }
++
+     private static Map<String, Object> choice(List<String> options, String description) {
+         return new Map<String, Object>{ 'type' => 'string', 'enum' => options, 'description' => description };
+     }

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims are on policies that expire in the next 90 days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Severity__c, Outstanding_Reserve__c, Policy__r.Id, Policy__r.Name, Policy__r.Expiration_Date__c, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Policy__r.Expiration_Date__c >= TODAY AND Policy__r.Expiration_Date__c <= NEXT_N_DAYS:90 ORDER BY Policy__r.Expiration_Date__c LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Nakamura Household\",\"Id\":\"001aj000040sVmTAAU\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-01\",\"Name\":\"ANT-PA-204636\",\"Id\":\"a00aj00003jKVNiAAO\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmTAAU\",\"Policy__c\":\"a00aj00003jKVNiAAO\",\"Outstanding_Reserve__c\":0.00,\"Severity__c\":\"Medium\",\"Status\":\"New\",\"CaseNumber\":\"00002114\",\"Id\":\"500aj00003jKuTyAAK\"},{\"Account\":{\"Name\":\"Marigold Cafe & Catering\",\"Id\":\"001aj000040sVmhAAE\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-06\",\"Name\":\"ANT-CP-205265\",\"Id\":\"a00aj00003jKVOJAA4\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmhAAE\",\"Policy__c\":\"a00aj00003jKVOJAA4\",\"Outstanding_Reserve__c\":0.00,\"Severity__c\":\"Low\",\"Status\":\"New\",\"CaseNumber\":\"00002116\",\"Id\":\"500aj00003jKuU0AAK\"},{\"Account\":{\"Name\":\"Riverbend Veterinary Clinic\",\"Id\":\"001aj000040sVnfAAE\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-07\",\"Name\":\"ANT-CP-207696\",\"Id\":\"a00aj00003jKuTqAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVnfAAE\",\"Policy__c\":\"a00aj00003jKuTqAAK\",\"Outstanding_Reserve__c\":14050.00,\"Severity__c\":\"Medium\",\"Status\":\"Appraisal\",\"CaseNumber\":\"00002158\",\"Id\":\"500aj00003jKuWIAA0\"},{\"Account\":{\"Name\":\"Haddad Household\",\"Id\":\"001aj000040sVmZAAU\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-16\",\"Name\":\"ANT-PA-204857\",\"Id\":\"a00aj00003jKVNvAAO\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmZAAU\",\"Policy__c\":\"a00aj00003jKVNvAAO\",\"Outstanding_Reserve__c\":58000.00,\"Severity__c\":\"High\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002119\",\"Id\":\"500aj00003jKuVfAAK\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "assistant",
+    "content": "There are **4 open claims** on policies that expire in the next 90 days, with **$72,050** in outstanding reserves between them.\n\n| Claim | Customer | Policy expires | Status | Reserve |\n|---|---|---|---|---|\n| [00002114](/lightning/r/500aj00003jKuTyAAK/view) | [Nakamura Household](/lightning/r/001aj000040sVmTAAU/view) | 1 Dec | New | $0 |\n| [00002116](/lightning/r/500aj00003jKuU0AAK/view) | [Marigold Cafe & Catering](/lightning/r/001aj000040sVmhAAE/view) | 6 Dec | New | $0 |\n| [00002158](/lightning/r/500aj00003jKuWIAA0/view) | [Riverbend Veterinary Clinic](/lightning/r/001aj000040sVnfAAE/view) | 7 Dec | Appraisal | $14,050 |\n| [00002119](/lightning/r/500aj00003jKuVfAAK/view) | [Haddad Household](/lightning/r/001aj000040sVmZAAU/view) | 16 Dec | Under Investigation | $58,000 |\n\nThe Haddad claim is rated High severity, so it's the one to watch at renewal."
+  }
+]

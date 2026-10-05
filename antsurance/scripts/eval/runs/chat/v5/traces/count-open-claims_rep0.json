@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims do we have right now?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT(Id) c, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":745350.0,\"c\":26}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "You have **26 open claims** right now, and together they carry **$745,350** in outstanding reserve."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Open claims\",\n      \"value\": \"26\",\n      \"note\": \"not yet closed or denied\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"across 26 open claims\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Break open claims down by status\",\n    \"Which open claims are high severity?\",\n    \"Show open claims by adjuster\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Open claims\",\n        \"value\": \"26\",\n        \"note\": \"not yet closed or denied\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$745,350\",\n        \"note\": \"across 26 open claims\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Break open claims down by status\",\n      \"Which open claims are high severity?\",\n      \"Show open claims by adjuster\"\n    ]\n  }\n]"
+  }
+]

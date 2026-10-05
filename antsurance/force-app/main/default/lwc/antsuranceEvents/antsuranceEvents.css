@@ -1,0 +1,889 @@
+@import 'c/antsuranceUiStyles';
+
+/* The Event response page. Brand values are fixed on purpose so it keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #3d4b2a;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #6b4e12;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --c-map-height: 24rem;
+}
+
+.c-events {
+    container: events / inline-size;
+    margin: 0.75rem;
+    padding: 1.125rem 1.5rem 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-events__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+    padding-bottom: 0.875rem;
+}
+
+.c-events__titles {
+    /* Room for the line under the title on one line: with less, the event picker goes under instead of squeezing it. */
+    flex: 1 1 24rem;
+    min-width: 0;
+}
+
+.c-events__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-events__sub {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+}
+
+.c-events__picker {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.c-events__error {
+    margin: 0 0 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e3b9a8;
+    border-radius: 0.625rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.875rem;
+}
+
+/* ---------- The answer: three statements side by side ---------- */
+
+.c-answers {
+    display: grid;
+    /* What is exposed is short, so it takes only what it needs. Who we call first names people and
+       carries a button, so it gets the most room and its names stay on one line. */
+    grid-template-columns: minmax(0, 1fr) fit-content(24rem) minmax(0, 1.5fr);
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+}
+
+.c-answer {
+    min-width: 0;
+    padding: 0.75rem 1rem;
+}
+
+.c-answer + .c-answer {
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-answer_act {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+/* The button goes under the words where the cell cannot give them this much beside it. */
+.c-answer__words {
+    flex: 1 1 18rem;
+    min-width: 0;
+}
+
+.c-answer__label {
+    margin: 0;
+    color: var(--ants-clay-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.c-answer__main {
+    margin: 0.125rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+    /* A name is kept whole; one too long for a narrow cell still breaks instead of running out of it. */
+    overflow-wrap: break-word;
+}
+
+.c-answer__detail {
+    margin: 0.125rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+/* ---------- The map beside the panel ---------- */
+
+.c-body {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding-top: 1rem;
+}
+
+.c-body.c-body_alone {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.c-panel.c-panel_gone {
+    display: none;
+}
+
+.c-body__map {
+    position: relative;
+    min-width: 0;
+}
+
+.c-panel {
+    container: panel / inline-size;
+    min-width: 0;
+}
+
+.c-pane {
+    padding-top: 0.75rem;
+}
+
+.c-pane__heading {
+    margin: 0.875rem 0 0.25rem;
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.c-pane__lead {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-pane__none {
+    margin: 0;
+    padding: 1.25rem 0;
+    color: var(--ants-muted);
+    font-size: 0.875rem;
+}
+
+.c-pane__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* ---------- The chosen location, laid over the foot of the map ---------- */
+
+.c-chosen {
+    position: absolute;
+    left: 0.625rem;
+    bottom: 2.75rem;
+    width: min(21rem, calc(100% - 4rem));
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.875rem;
+    background: #fff;
+    box-shadow: 0 6px 18px rgb(20 20 19 / 14%);
+    font-size: 0.8125rem;
+}
+
+.c-chosen__head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.c-chosen__name {
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+}
+
+.c-chosen__close {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.375rem;
+    background: none;
+    cursor: pointer;
+}
+
+.c-chosen__close:hover {
+    background: var(--ants-oat);
+}
+
+.c-chosen__close:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 1px;
+}
+
+.c-chosen__about {
+    margin: 0.125rem 0 0.375rem;
+    color: var(--ants-muted);
+}
+
+.c-chosen__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-chosen__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.3125rem 0;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-chosen__what {
+    display: grid;
+    min-width: 0;
+}
+
+.c-chosen__thing {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.c-chosen__what a {
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-chosen__figure {
+    flex: none;
+    display: grid;
+    justify-items: end;
+    gap: 0.125rem;
+}
+
+.c-chosen__value {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-chosen__foot {
+    margin: 0.375rem 0 0;
+    color: var(--ants-muted);
+}
+
+/* ---------- Status words: the word carries the meaning, the tint only helps find it ---------- */
+
+.c-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-status_yes {
+    border-color: #c9d4b6;
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-status_no {
+    border-color: var(--ants-clay-dark);
+    background: var(--ants-clay-dark);
+    color: var(--ants-ivory);
+}
+
+.c-status_open {
+    border-color: #e3d2a6;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-status_none {
+    color: var(--ants-muted);
+}
+
+/* ---------- Exposure ---------- */
+
+.c-figures {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-figure {
+    display: grid;
+    gap: 0.0625rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.c-figure:hover {
+    border-color: var(--ants-clay);
+}
+
+.c-figure__label {
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.c-figure__value {
+    font-family: var(--ants-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.c-figure__note {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.c-expect {
+    margin-top: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid var(--ants-clay);
+    border-radius: 0 0.625rem 0.625rem 0;
+    background: var(--ants-ivory);
+}
+
+.c-expect__main {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.c-expect__basis {
+    margin: 0.125rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+.c-lines,
+.c-places,
+.c-claims,
+.c-calls,
+.c-covers {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-line,
+.c-place {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.375rem 0.375rem;
+    border: 0;
+    border-bottom: 1px solid var(--ants-line);
+    border-radius: 0.5rem 0.5rem 0 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.c-line__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    min-width: 0;
+}
+
+.c-place__main {
+    flex: 1 1 auto;
+    display: grid;
+    min-width: 0;
+}
+
+.c-line__name,
+.c-place__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-line__about,
+.c-place__about {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.c-line__value {
+    flex: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-covers {
+    padding-top: 0.25rem;
+}
+
+.c-cover {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 0.5rem;
+    align-items: center;
+    padding: 0.3125rem 0;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-cover__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-cover__about {
+    grid-column: 1 / -1;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-notes {
+    margin: 0.5rem 0 0;
+    padding-left: 1.125rem;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    list-style: disc;
+}
+
+.c-notes li {
+    text-wrap: pretty;
+}
+
+.c-notes li + li {
+    margin-top: 0.1875rem;
+}
+
+/* ---------- Locations ---------- */
+
+.c-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.1875rem 0.625rem;
+    border: 1px solid var(--ants-clay);
+    border-radius: 999px;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+    --sds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-filter:hover {
+    background: #f3dcd3;
+}
+
+.c-filter:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-place_chosen {
+    background: var(--ants-clay-tint);
+    box-shadow: inset 3px 0 0 var(--ants-clay-deep);
+}
+
+.c-place__figure {
+    flex: none;
+    display: grid;
+    justify-items: end;
+}
+
+.c-place__value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-place__cover {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* ---------- Claims ---------- */
+
+.c-claim {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4375rem 0;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-claim__main {
+    display: grid;
+    min-width: 0;
+}
+
+.c-claim__name {
+    color: var(--ants-clay-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-claim__about,
+.c-claim__fit {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-claim__side {
+    flex: none;
+    display: grid;
+    justify-items: end;
+    gap: 0.125rem;
+}
+
+.c-claim__fit {
+    white-space: nowrap;
+}
+
+/* ---------- Plan ---------- */
+
+.c-plan__bar,
+.c-calls__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 0.75rem;
+}
+
+.c-plan__about,
+.c-calls__note {
+    flex: 1 1 14rem;
+    min-width: 0;
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+.c-plan__wait {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 0.875rem;
+}
+
+.c-plan__waiting {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+}
+
+.c-plan__headline {
+    margin: 0.75rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+.c-plan__part {
+    padding: 0.625rem 0 0.5rem;
+}
+
+.c-plan__label {
+    margin: 0;
+    color: var(--ants-clay-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.c-plan__text {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-linkish {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-linkish:hover {
+    color: var(--ants-clay-deep);
+}
+
+.c-linkish:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+/* ---------- Calls ---------- */
+
+.c-call {
+    padding: 0.5rem 0 0.375rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-call__head {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.c-call__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    min-width: 0;
+}
+
+.c-call__name {
+    color: var(--ants-clay-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-call__who {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-call__reason {
+    margin: 0 0 0.375rem;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+.c-call__message {
+    --slds-c-textarea-sizing-min-height: 5.25rem;
+    --sds-c-textarea-sizing-min-height: 5.25rem;
+}
+
+.c-calls__foot {
+    padding-top: 0.625rem;
+}
+
+.c-made {
+    margin-top: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #c9d4b6;
+    border-radius: 0.625rem;
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+    font-size: 0.8125rem;
+}
+
+.c-made__line {
+    margin: 0;
+    font-weight: 600;
+}
+
+.c-made__list {
+    margin: 0.25rem 0 0;
+    padding-left: 1.125rem;
+    list-style: disc;
+}
+
+.c-made__list a {
+    color: var(--ants-olive-ink);
+    text-decoration: underline;
+}
+
+/* ---------- Empty and waiting ---------- */
+
+.c-empty {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 1rem 0;
+}
+
+.c-empty__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.c-empty__text {
+    margin: 0.125rem 0 0.25rem;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-bone_answer {
+    height: 4.5rem;
+    margin: 0.5rem;
+    border-radius: 0.75rem;
+}
+
+.c-bone_map {
+    height: 24rem;
+    border-radius: 1rem;
+}
+
+/* ---------- Narrow. Keyed to the page's own width, not the window's, so it answers when the page is
+   squeezed inside a wider window too. The map stays beside the panel and the three answers stay in a
+   row for as long as they can be read that way: stacked, the page ran to a screen and a half. ---------- */
+
+@container events (max-width: 62rem) {
+    /* The picker stays beside the title, and the line under the title takes the whole row. */
+    .c-events__titles {
+        display: contents;
+    }
+
+    .c-events__title {
+        flex: 1 1 auto;
+    }
+
+    .c-events__sub {
+        order: 1;
+        flex: 0 0 100%;
+        margin-top: -0.25rem;
+        padding-left: 3.375rem;
+    }
+
+    .c-answers {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .c-body {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+@container events (max-width: 46rem) {
+    .c-events__sub {
+        padding-left: 0;
+    }
+
+    .c-answers {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-answer + .c-answer {
+        border-left: 0;
+        border-top: 1px solid var(--ants-line);
+    }
+
+    .c-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* A narrow panel: two figures to a row, each with its note beside the number, and tighter rows. */
+@container panel (max-width: 33rem) {
+    .c-figures {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-figure {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0 0.5rem;
+    }
+
+    .c-figure__label {
+        flex: 0 0 100%;
+    }
+
+    .c-line,
+    .c-place {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+}
+
+@media print {
+    .c-events {
+        margin: 0;
+        border: 0;
+    }
+}

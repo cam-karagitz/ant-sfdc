@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/pdf</contentType>
+    <description>Sample submission for Read a submission: a fictional broker's email sending the Lakeshore Dental Group workers' compensation submission. Everything in it is invented.</description>
+</StaticResource>

@@ -1,0 +1,411 @@
+<template>
+    <article class={chatClass} aria-label="Ask Claude" ondragenter={handleDragEnter} ondragover={handleDragOver} ondragleave={handleDragLeave} ondrop={handleDrop}>
+        <div class={dropClass} aria-hidden="true">
+            <div class="c-drop__card">
+                <lightning-icon icon-name="utility:upload" size="small"></lightning-icon>
+                <p class="c-drop__lead">Drop to attach</p>
+                <p class="c-drop__text">Photos and PDFs, up to four</p>
+            </div>
+        </div>
+        <header class="c-chat__header" lwc:if={hasHeader}>
+            <span class="c-chat__logo" aria-hidden="true">
+                <img src={sparkUrl} alt="" />
+            </span>
+            <div class="c-chat__titles">
+                <h2 class="c-chat__title">Ask Claude</h2>
+                <p class="c-chat__subtitle">Answers drawn from your live Salesforce records</p>
+            </div>
+            <lightning-button
+                label="New chat"
+                icon-name="utility:new_direct_message"
+                disabled={isResetDisabled}
+                onclick={handleReset}
+            ></lightning-button>
+        </header>
+
+        <section
+            class="c-chat__log"
+            role="log"
+            aria-live="polite"
+            aria-label="Conversation with Claude"
+            tabindex="0"
+            lwc:ref="log"
+        >
+            <template lwc:if={isEmpty}>
+                <div class="c-empty">
+                    <p class="c-empty__greeting">{emptyGreeting}</p>
+                    <p class="c-empty__hint">{emptyHint}</p>
+                    <ul class="c-empty__grid">
+                        <template for:each={suggestions} for:item="suggestion">
+                            <li key={suggestion.id}>
+                                <button
+                                    type="button"
+                                    class="c-suggestion"
+                                    data-prompt={suggestion.prompt}
+                                    onclick={handleSuggestion}
+                                >
+                                    <span class="c-suggestion__icon">
+                                        <lightning-icon icon-name={suggestion.icon} size="x-small"></lightning-icon>
+                                    </span>
+                                    <span class="c-suggestion__title">{suggestion.title}</span>
+                                    <span class="c-suggestion__prompt">{suggestion.detail}</span>
+                                </button>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+
+            <ol class="c-turns">
+                <template for:each={turns} for:item="turn">
+                    <li key={turn.id} class={turn.rowClass}>
+                        <template lwc:if={turn.isClaude}>
+                            <span class="c-avatar c-avatar_claude" aria-hidden="true">
+                                <img src={sparkUrl} alt="" />
+                            </span>
+                            <div class="c-reply">
+                                <span class="slds-assistive-text">{turn.author} said</span>
+                                <template lwc:if={turn.hasText}>
+                                    <c-antsurance-markdown value={turn.text}></c-antsurance-markdown>
+                                </template>
+                                <template lwc:if={turn.isRetry}>
+                                    <div class="c-timeout" role="status">
+                                        <p class="c-timeout__lead">Out of time</p>
+                                        <p class="c-timeout__text">{turn.text}</p>
+                                        <button type="button" class="c-timeout__button" disabled={isSending} onclick={handleRetry}>
+                                            <lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>
+                                            Try again
+                                        </button>
+                                    </div>
+                                </template>
+                                <template lwc:if={turn.hasBlocks}>
+                                    <div class="c-blocks">
+                                        <template for:each={turn.blocks} for:item="block">
+                                            <div key={block.id} class="c-block" style={block.style} data-id={block.id} onblockexpand={handleBlockExpand} onblockresize={handleBlockResize}>
+                                                <template lwc:if={block.isRecord}>
+                                                    <c-antsurance-claude-record spec={block.spec} compact={compact}></c-antsurance-claude-record>
+                                                </template>
+                                                <template lwc:elseif={block.isMetrics}>
+                                                    <c-antsurance-claude-metrics spec={block.spec} compact={compact}></c-antsurance-claude-metrics>
+                                                </template>
+                                                <template lwc:elseif={block.isChart}>
+                                                    <c-antsurance-claude-chart spec={block.spec} compact={compact}></c-antsurance-claude-chart>
+                                                </template>
+                                                <template lwc:elseif={block.isWorkList}>
+                                                    <c-antsurance-claude-work-list spec={block.spec} compact={compact}></c-antsurance-claude-work-list>
+                                                </template>
+                                                <template lwc:elseif={block.isForm}>
+                                                    <c-antsurance-claude-form
+                                                        spec={block.spec}
+                                                        block-id={block.id}
+                                                        compact={compact}
+                                                        resolved={block.resolved}
+                                                        onformdone={handleFormDone}
+                                                    ></c-antsurance-claude-form>
+                                                </template>
+                                                <template lwc:elseif={block.isDraft}>
+                                                    <c-antsurance-claude-draft spec={block.spec} compact={compact}></c-antsurance-claude-draft>
+                                                </template>
+                                                <template lwc:elseif={block.isComparison}>
+                                                    <c-antsurance-claude-comparison spec={block.spec} compact={compact}></c-antsurance-claude-comparison>
+                                                </template>
+                                                <template lwc:elseif={block.isTimeline}>
+                                                    <c-antsurance-claude-timeline spec={block.spec} compact={compact}></c-antsurance-claude-timeline>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template for:each={turn.proposals} for:item="card">
+                                    <section key={card.id} class={card.cardClass} aria-label={card.title}>
+                                        <header class="c-action__head">
+                                            <lightning-icon class="c-action__icon" icon-name={card.iconName} size="x-small"></lightning-icon>
+                                            <h3 class="c-action__title">{card.title}</h3>
+                                            <span class="c-action__status">{card.statusLabel}</span>
+                                        </header>
+                                        <dl class="c-action__details">
+                                            <template for:each={card.details} for:item="detail">
+                                                <div key={detail.key} class="c-action__row">
+                                                    <dt>{detail.label}</dt>
+                                                    <dd>
+                                                        <template lwc:if={detail.url}>
+                                                            <a href={detail.url} data-record-id={detail.recordId} onclick={handleOpenRecord}>{detail.value}</a>
+                                                        </template>
+                                                        <template lwc:else>{detail.value}</template>
+                                                    </dd>
+                                                </div>
+                                            </template>
+                                        </dl>
+                                        <template lwc:if={card.hasBody}>
+                                            <div class="c-action__body">
+                                                <c-antsurance-markdown value={card.body}></c-antsurance-markdown>
+                                            </div>
+                                        </template>
+                                        <template lwc:if={card.isPending}>
+                                            <template lwc:if={card.errorMessage}>
+                                                <p class="c-action__error" role="alert">{card.errorMessage}</p>
+                                            </template>
+                                            <footer class="c-action__foot">
+                                                <p class="c-action__hint">Nothing is saved until you confirm.</p>
+                                                <div class="c-action__buttons">
+                                                    <button type="button" class="c-action__button" data-id={card.id} disabled={card.isSaving} onclick={handleCancel}>
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        class="c-action__button c-action__button_confirm"
+                                                        data-id={card.id}
+                                                        disabled={card.isSaving}
+                                                        onclick={handleConfirm}
+                                                    >
+                                                        {card.confirmLabel}
+                                                    </button>
+                                                </div>
+                                            </footer>
+                                        </template>
+                                        <template lwc:if={card.isDone}>
+                                            <footer class="c-action__foot" role="status">
+                                                <p class="c-action__result">{card.resultMessage}</p>
+                                                <a class="c-action__open" href={card.resultUrl} data-record-id={card.resultRecordId} onclick={handleOpenRecord}>
+                                                    {card.resultLinkLabel}
+                                                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                                                </a>
+                                            </footer>
+                                        </template>
+                                        <template lwc:if={card.isCancelled}>
+                                            <footer class="c-action__foot" role="status">
+                                                <p class="c-action__hint">Canceled. Nothing was saved.</p>
+                                            </footer>
+                                        </template>
+                                    </section>
+                                </template>
+                                <p class="c-meta">{turn.meta}</p>
+                                <template lwc:if={turn.hasQueries}>
+                                    <details class="c-queries">
+                                        <summary class="c-queries__summary">
+                                            <lightning-icon icon-name="utility:database" size="xx-small"></lightning-icon>
+                                            {turn.queryLabel}
+                                        </summary>
+                                        <ol class="c-queries__list">
+                                            <template for:each={turn.queries} for:item="query">
+                                                <li key={query.id}><code>{query.soql}</code></li>
+                                            </template>
+                                        </ol>
+                                    </details>
+                                </template>
+                                <template lwc:if={turn.hasNext}>
+                                    <ul class={nextClass} aria-label="Questions to ask next" onscroll={handleNextScroll}>
+                                        <template for:each={turn.nextQuestions} for:item="question">
+                                            <li key={question.key}>
+                                                <button type="button" class="c-next__chip" data-prompt={question.text} disabled={isSending} onclick={handleSuggestion}>
+                                                    <template lwc:if={question.startsChange}>
+                                                        <lightning-icon icon-name="utility:edit" size="xx-small" alternative-text="Prepares a change for your OK:" title="Prepares a change for your OK"></lightning-icon>
+                                                    </template>
+                                                    {question.text}
+                                                </button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="c-ask">
+                                <span class="slds-assistive-text">You said</span>
+                                <template lwc:if={turn.hasFiles}>
+                                    <button type="button" class="c-sent" data-turn={turn.id} title="View at full size" aria-label={turn.filesLabel} onclick={handleViewSent}>
+                                        <span class="c-sent__tiles">
+                                            <template for:each={turn.fileTiles} for:item="file">
+                                                <template lwc:if={file.isImage}>
+                                                    <img key={file.id} class="c-sent__tile" src={file.thumbUrl} alt="" />
+                                                </template>
+                                                <template lwc:else>
+                                                    <span key={file.id} class="c-sent__tile c-sent__tile_doc">
+                                                        <lightning-icon icon-name="doctype:pdf" size="x-small"></lightning-icon>
+                                                    </span>
+                                                </template>
+                                            </template>
+                                            <template lwc:if={turn.filesMore}>
+                                                <span class="c-sent__tile c-sent__tile_more">{turn.filesMore}</span>
+                                            </template>
+                                        </span>
+                                        <span class="c-sent__text">{turn.filesText}</span>
+                                        <lightning-icon class="c-sent__open" icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                                    </button>
+                                </template>
+                                <p class="c-ask__bubble">
+                                    <lightning-formatted-text value={turn.text}></lightning-formatted-text>
+                                </p>
+                                <p class="c-meta">{turn.meta}</p>
+                            </div>
+                            <template lwc:if={hasUserPhoto}>
+                                <img class="c-avatar c-avatar_user" src={userPhotoUrl} alt={userName} />
+                            </template>
+                            <template lwc:else>
+                                <span class="c-avatar c-avatar_user" role="img" aria-label={userName}>{userInitials}</span>
+                            </template>
+                        </template>
+                    </li>
+                </template>
+                <template lwc:if={isSending}>
+                    <li class="c-turn">
+                        <span class="c-avatar c-avatar_claude c-avatar_thinking" aria-hidden="true">
+                            <img src={sparkUrl} alt="" />
+                        </span>
+                        <div class="c-thinking" role="status">
+                            <span class="slds-assistive-text">Claude is working</span>
+                            <template lwc:if={progressLabel}>
+                                <span class="c-thinking__progress">
+                                    <lightning-icon icon-name="utility:database" size="xx-small"></lightning-icon>
+                                    {progressLabel}
+                                </span>
+                            </template>
+                            <span class="c-thinking__bar"></span>
+                            <span class="c-thinking__bar c-thinking__bar_short"></span>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+        </section>
+
+        <footer class="c-chat__footer">
+            <template lwc:if={errorMessage}>
+                <p class="c-error" role="alert">{errorMessage}</p>
+            </template>
+            <div class={composerClass}>
+                <label class="slds-assistive-text" for="chat-input">Message Claude</label>
+                <input type="file" class="c-composer__file" accept={acceptedTypes} multiple tabindex="-1" aria-hidden="true" onchange={handleFilesPicked} lwc:ref="file" />
+                <template lwc:if={showFiles}>
+                    <ul class="c-files" aria-label="Files to send with your message">
+                        <template for:each={pending} for:item="file">
+                            <li key={file.id} class="c-file" title={file.title}>
+                                <button type="button" class="c-file__view" data-id={file.id} aria-label={file.viewLabel} onclick={handleViewPending}>
+                                    <template lwc:if={file.isPdf}>
+                                        <span class="c-file__icon"><lightning-icon icon-name="doctype:pdf" size="x-small"></lightning-icon></span>
+                                    </template>
+                                    <template lwc:else>
+                                        <img class="c-file__thumb" src={file.thumbUrl} alt="" />
+                                    </template>
+                                    <span class="c-file__text">
+                                        <span class="c-file__name">{file.displayName}</span>
+                                        <span class="c-file__size">{file.kindLabel}, {file.sizeLabel}</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="c-file__remove" data-id={file.id} title={file.removeLabel} aria-label={file.removeLabel} onclick={handleRemoveFile}>
+                                    <lightning-icon icon-name="utility:close" size="xx-small"></lightning-icon>
+                                </button>
+                            </li>
+                        </template>
+                        <template lwc:if={isPreparing}>
+                            <li class="c-file c-file_reading" role="status">
+                                <span class="c-file__icon"><lightning-icon icon-name="utility:spinner" size="xx-small"></lightning-icon></span>
+                                <span class="c-file__name">Reading the file</span>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <div class="c-composer__line">
+                    <textarea
+                        id="chat-input"
+                        class="c-composer__input"
+                        rows="1"
+                        maxlength="4000"
+                        placeholder={placeholder}
+                        disabled={isSending}
+                        oninput={handleInput}
+                        onkeydown={handleKeydown}
+                        onpaste={handlePaste}
+                        lwc:ref="input"
+                    ></textarea>
+                    <template lwc:if={compact}>
+                        <button type="button" class="c-composer__tool c-composer__tool_line" title={attachTitle} aria-label="Attach photos or PDFs" disabled={isAttachDisabled} onclick={handleAttach}>
+                            <lightning-icon icon-name="utility:attach" size="xx-small"></lightning-icon>
+                        </button>
+                        <lightning-button-icon
+                            class="c-composer__send"
+                            variant="brand"
+                            icon-name="utility:arrowup"
+                            alternative-text="Send"
+                            title="Send"
+                            disabled={isSendDisabled}
+                            onclick={handleSend}
+                        ></lightning-button-icon>
+                    </template>
+                </div>
+                <div class="c-composer__bar">
+                    <template lwc:if={contextLabel}>
+                        <span class="c-composer__context" title={contextTitle}>
+                            <lightning-icon icon-name="utility:record_lookup" size="xx-small" alternative-text="Open record"></lightning-icon>
+                            <span class="c-composer__context-text">{contextLabel}</span>
+                        </span>
+                        <span class="c-composer__break"></span>
+                    </template>
+                    <template lwc:if={compact}>
+                        <button
+                            type="button"
+                            class="c-composer__reset"
+                            title="Start a new chat"
+                            aria-label="Start a new chat"
+                            disabled={isResetDisabled}
+                            onclick={handleReset}
+                        >
+                            <lightning-icon icon-name="utility:new_direct_message" size="xx-small"></lightning-icon>
+                        </button>
+                    </template>
+                    <button type="button" class="c-composer__tool c-composer__tool_bar" title={attachTitle} aria-label="Attach photos or PDFs" disabled={isAttachDisabled} onclick={handleAttach}>
+                        <lightning-icon icon-name="utility:attach" size="xx-small"></lightning-icon>
+                    </button>
+                    <template lwc:if={hasRecordFiles}>
+                        <lightning-button-menu
+                            class="c-composer__record-files"
+                            label={recordFilesLabel}
+                            variant="bare"
+                            menu-alignment="bottom-left"
+                            alternative-text={recordFilesLabel}
+                            title="Attach a photo or PDF that is already on this record"
+                            disabled={isAttachDisabled}
+                            onopen={loadRecordFiles}
+                            onselect={handleRecordFile}
+                        >
+                            <template for:each={recordFileOptions} for:item="option">
+                                <lightning-menu-item key={option.value} value={option.value} label={option.label} prefix-icon-name={option.icon} disabled={option.disabled}></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </template>
+                    <template lwc:if={isPage}>
+                        <span class="c-composer__hint">Claude reads records with your Salesforce permissions.</span>
+                    </template>
+                    <span class="c-composer__spacer"></span>
+                    <lightning-button-menu
+                        label={modelLabel}
+                        variant="bare"
+                        menu-alignment="bottom-right"
+                        alternative-text="Choose a model"
+                        title="Choose a model"
+                        disabled={isSending}
+                        onselect={handleModelSelect}
+                    >
+                        <template for:each={modelOptions} for:item="option">
+                            <lightning-menu-item
+                                key={option.value}
+                                value={option.value}
+                                label={option.label}
+                                checked={option.checked}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                    <template lwc:if={isPage}>
+                        <lightning-button-icon
+                            variant="brand"
+                            icon-name="utility:arrowup"
+                            alternative-text="Send"
+                            title="Send"
+                            disabled={isSendDisabled}
+                            onclick={handleSend}
+                        ></lightning-button-icon>
+                    </template>
+                </div>
+            </div>
+        </footer>
+    </article>
+</template>

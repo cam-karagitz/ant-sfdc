@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Agency_Compact</compactLayoutAssignment>
+    <description>An independent agency or broker that places business with Antsurance.</description>
+    <label>Agency</label>
+    <picklistValues>
+        <picklist>Customer_Segment__c</picklist>
+        <values>
+            <fullName>Agency Partner</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Industry</picklist>
+        <values>
+            <fullName>Insurance</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

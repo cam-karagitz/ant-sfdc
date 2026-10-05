@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has been open the longest, and for how many days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Reported_Date__c, CreatedDate, Account.Name, Account.Id FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Reported_Date__c ASC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Tamarack Outfitters\",\"Id\":\"001aj000040t1o6AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t1o6AAA\",\"CreatedDate\":\"2026-10-03T03:11:13.000Z\",\"Reported_Date__c\":\"2026-08-23\",\"Status\":\"Payment Issued\",\"Subject\":\"Storefront window smashed, merchandise taken\",\"CaseNumber\":\"00002047\",\"Id\":\"500aj00003jKc9bAAC\"},{\"Account\":{\"Name\":\"Fitzgerald Household\",\"Id\":\"001aj000040t1oFAAQ\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t1oFAAQ\",\"CreatedDate\":\"2026-10-03T03:11:13.000Z\",\"Reported_Date__c\":\"2026-08-29\",\"Status\":\"Payment Issued\",\"Subject\":\"Hail dents across the hood and roof\",\"CaseNumber\":\"00002053\",\"Id\":\"500aj00003jKc9hAAC\"},{\"Account\":{\"Name\":\"Northpoint Physical Therapy\",\"Id\":\"001aj000040t1oWAAQ\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t1oWAAQ\",\"CreatedDate\":\"2026-10-03T03:11:13.000Z\",\"Reported_Date__c\":\"2026-08-29\",\"Status\":\"Payment Issued\",\"Subject\":\"Break-in through rear door, registers taken\",\"CaseNumber\":\"00002064\",\"Id\":\"500aj00003jKc9sAAC\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The oldest open claim is [00002047](/lightning/r/500aj00003jKc9bAAC/view) for [Tamarack Outfitters](/lightning/r/001aj000040t1o6AAA/view). It was reported on 23 Aug, so it has been open **40 days**.\n\n- **What happened:** A storefront window was smashed and merchandise was taken.\n- **Status:** Payment Issued, but the claim isn't closed yet.\n\nI counted from the reported date, not the record's created date, because the created date only shows when the data was loaded. Next oldest are [00002053](/lightning/r/500aj00003jKc9hAAC/view) and [00002064](/lightning/r/500aj00003jKc9sAAC/view), both reported on 29 Aug (**34 days**) and both also at Payment Issued."
+  }
+]

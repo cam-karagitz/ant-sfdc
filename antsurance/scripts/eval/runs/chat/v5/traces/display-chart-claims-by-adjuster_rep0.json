@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "Chart open claims by adjuster"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Handled_By__c, COUNT(Id) c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Handled_By__c ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":13,\"Handled_By__c\":\"Dana Whitaker\"},{\"c\":11,\"Handled_By__c\":\"Marcus Lindahl\"},{\"c\":2,\"Handled_By__c\":\"Anjali Venkataraman\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "Of the 26 open claims, **Dana Whitaker** has the most at **13**. Marcus Lindahl has 11 and Anjali Venkataraman has 2."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"title\": \"Open claims by adjuster\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"Dana Whitaker\",\n      \"value\": 13\n    },\n    {\n      \"label\": \"Marcus Lindahl\",\n      \"value\": 11\n    },\n    {\n      \"label\": \"Anjali Venkataraman\",\n      \"value\": 2\n    }\n  ],\n  \"highlight_label\": \"Dana Whitaker\",\n  \"caption\": \"Count of open claims by handling adjuster\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Outstanding reserve by adjuster\",\n    \"Show Dana Whitaker's open claims\",\n    \"Which open claims are high severity?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Open claims by adjuster\",\n    \"caption\": \"Count of open claims by handling adjuster\",\n    \"chartType\": \"bar\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"Dana Whitaker\",\n        \"value\": 13\n      },\n      {\n        \"label\": \"Marcus Lindahl\",\n        \"value\": 11\n      },\n      {\n        \"label\": \"Anjali Venkataraman\",\n        \"value\": 2\n      }\n    ],\n    \"highlight\": \"Dana Whitaker\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Outstanding reserve by adjuster\",\n      \"Show Dana Whitaker's open claims\",\n      \"Which open claims are high severity?\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has been open the longest, and for how many days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Days_Open__c, Reported_Date__c, Handled_By__c, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Days_Open__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Tamarack Outfitters\",\"Id\":\"001aj000041E8MlAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MlAAK\",\"Handled_By__c\":\"Marcus Lindahl\",\"Reported_Date__c\":\"2026-08-25\",\"Days_Open__c\":40,\"Status\":\"Payment Issued\",\"Subject\":\"Storefront window smashed, merchandise taken\",\"CaseNumber\":\"00002575\",\"Id\":\"500aj00003jfwTzAAI\"},{\"Account\":{\"Name\":\"Cold Harbor Storage & Logistics\",\"Id\":\"001aj000041E8NRAA0\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8NRAA0\",\"Handled_By__c\":\"Dana Whitaker\",\"Reported_Date__c\":\"2026-08-31\",\"Days_Open__c\":34,\"Status\":\"Payment Issued\",\"Subject\":\"Visitor slipped on ice in the parking lot\",\"CaseNumber\":\"00002592\",\"Id\":\"500aj00003jfwUGAAY\"},{\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000041E8MnAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MnAAK\",\"Handled_By__c\":\"Dana Whitaker\",\"Reported_Date__c\":\"2026-09-01\",\"Days_Open__c\":33,\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002573\",\"Id\":\"500aj00003jfwTxAAI\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_record",
+    "content": "{\n  \"record_id\": \"500aj00003jfwTzAAI\",\n  \"say\": \"Claim [00002575](/lightning/r/500aj00003jfwTzAAI/view), the smashed storefront window and stolen merchandise at Tamarack Outfitters, has been open longest: **40 days** since it was reported on Aug 25. Payment has been issued, so it may just need to be closed. Next oldest is [00002592](/lightning/r/500aj00003jfwUGAAY/view) at 34 days.\\n\\n?> Show all open claims by days open\\n?> What's left to do on claim 00002575?\\n?> Close claim 00002575\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown: the summary card for Storefront window smashed, merchandise taken."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"record\",\n    \"recordId\": \"500aj00003jfwTzAAI\",\n    \"objectApiName\": \"Case\",\n    \"card\": \"case\",\n    \"eyebrow\": \"Claim 00002575\",\n    \"name\": \"Storefront window smashed, merchandise taken\",\n    \"tone\": \"watch\",\n    \"status\": \"Payment Issued\",\n    \"figure\": \"$0\",\n    \"figureLabel\": \"Outstanding reserve\",\n    \"facts\": [\n      {\n        \"label\": \"Customer\",\n        \"value\": \"Tamarack Outfitters\"\n      },\n      {\n        \"label\": \"Policy\",\n        \"value\": \"ANT-CP-205112\"\n      },\n      {\n        \"label\": \"Loss type\",\n        \"value\": \"Vandalism\"\n      },\n      {\n        \"label\": \"Severity\",\n        \"value\": \"Medium\"\n      },\n      {\n        \"label\": \"Reported\",\n        \"value\": \"Aug 25, 2026\"\n      },\n      {\n        \"label\": \"Handled by\",\n        \"value\": \"Marcus Lindahl\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show all open claims by days open\",\n      \"What's left to do on claim 00002575?\",\n      \"Close claim 00002575\"\n    ]\n  }\n]"
+  }
+]

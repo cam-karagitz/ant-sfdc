@@ -1,0 +1,388 @@
+{
+ "results": [
+  {
+   "case": "auto-teen-good-student",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2230,
+    "suggestions": [
+     {
+      "why": "Sofia is a high school junior on the honor roll with a 3.7 grade average, which qualifies her as a good student.",
+      "value": "true",
+      "toLabel": "Yes",
+      "title": "Apply the good student discount",
+      "referrals": [],
+      "questionLabel": "Good student",
+      "questionKey": "goodStudent",
+      "premiumChange": -219,
+      "newPremium": 3040,
+      "kind": "change",
+      "fromLabel": "No"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 1,
+    "id": "auto-teen-good-student"
+   }
+  },
+  {
+   "case": "home-basement-water-backup",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2580,
+    "suggestions": [
+     {
+      "why": "Their 2025 sump pump failure flooded the finished basement and went unpaid because the old policy lacked water backup cover.",
+      "value": "25000",
+      "toLabel": "$25,000",
+      "title": "Add water backup cover",
+      "referrals": [],
+      "questionLabel": "Water backup",
+      "questionKey": "waterBackup",
+      "premiumChange": 120,
+      "newPremium": 2196,
+      "kind": "change",
+      "fromLabel": "None"
+     },
+     {
+      "why": "Dropping to $100,000 would leave too little underneath if the Okafors later add an umbrella over their home and auto.",
+      "value": "100000",
+      "toLabel": "$100,000",
+      "title": "Keep liability at $300,000",
+      "referrals": [],
+      "questionLabel": "Personal liability",
+      "questionKey": "liability",
+      "premiumChange": -28,
+      "newPremium": 2048,
+      "kind": "avoid",
+      "fromLabel": "$300,000"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 2,
+    "id": "home-basement-water-backup"
+   }
+  },
+  {
+   "case": "auto-has-home-policy",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2658,
+    "suggestions": [
+     {
+      "why": "We insure 88 Elm St in Wheaton under an active Whitfield homeowners policy, which contradicts the answer that they do not own a home.",
+      "value": "true",
+      "toLabel": "Yes",
+      "title": "Mark the customer as homeowner",
+      "referrals": [],
+      "questionLabel": "Owns their home",
+      "questionKey": "homeowner",
+      "premiumChange": -60,
+      "newPremium": 1269,
+      "kind": "change",
+      "fromLabel": "No"
+     },
+     {
+      "why": "The Whitfields already hold an active homeowners policy with us, so this auto quote qualifies for the bundle.",
+      "value": "true",
+      "toLabel": "Yes",
+      "title": "Add the home bundle discount",
+      "referrals": [],
+      "questionLabel": "Bundle with home or renters",
+      "questionKey": "bundle",
+      "premiumChange": -120,
+      "newPremium": 1209,
+      "kind": "change",
+      "fromLabel": "No"
+     }
+    ],
+    "pitch": "This covers your car with 100/300/100 liability and a $500 deductible, plus rental and roadside help, for $1,329 a year, about $111 a month.",
+    "dropped": 0,
+    "proposed": 2,
+    "id": "auto-has-home-policy"
+   }
+  },
+  {
+   "case": "gl-subcontractor-share",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2124,
+    "suggestions": [
+     {
+      "why": "Last year's premium audit found 18% of work subcontracted, all to insured subcontractors with certificates on file.",
+      "value": "under25",
+      "toLabel": "Under 25%",
+      "title": "Set subcontracting to under 25%",
+      "referrals": [],
+      "questionLabel": "Work given to subcontractors",
+      "questionKey": "subcontractors",
+      "premiumChange": -2693,
+      "newPremium": 23795,
+      "kind": "change",
+      "fromLabel": "25% or more"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 1,
+    "id": "gl-subcontractor-share"
+   }
+  },
+  {
+   "case": "auto-under-an-umbrella",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2517,
+    "suggestions": [
+     {
+      "why": "The Alvarez umbrella policy needs auto liability of at least 250/500/100 underneath it, and 100/300/100 falls short.",
+      "value": "500000",
+      "toLabel": "250/500/100",
+      "title": "Raise liability to 250/500/100",
+      "referrals": [],
+      "questionLabel": "Liability limits",
+      "questionKey": "liability",
+      "premiumChange": 288,
+      "newPremium": 2469,
+      "kind": "change",
+      "fromLabel": "100/300/100"
+     },
+     {
+      "why": "No claims in the past three years and a long record with us suggest they can carry a higher deductible.",
+      "value": "1000",
+      "toLabel": "$1,000",
+      "title": "Raise the collision deductible",
+      "referrals": [],
+      "questionLabel": "Collision deductible",
+      "questionKey": "collision",
+      "premiumChange": -185,
+      "newPremium": 1996,
+      "kind": "change",
+      "fromLabel": "$500"
+     }
+    ],
+    "pitch": null,
+    "dropped": 1,
+    "proposed": 3,
+    "id": "auto-under-an-umbrella"
+   }
+  },
+  {
+   "case": "home-wants-a-lower-bill",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 1946,
+    "suggestions": [
+     {
+      "why": "The Schmidts asked twice this year to lower the bill, are comfortable carrying small losses, and have no claims in nine years.",
+      "value": "2500",
+      "toLabel": "$2,500",
+      "title": "Raise the deductible",
+      "referrals": [],
+      "questionLabel": "Deductible",
+      "questionKey": "deductible",
+      "premiumChange": -317,
+      "newPremium": 1453,
+      "kind": "change",
+      "fromLabel": "$500"
+     },
+     {
+      "why": "With no claims in nine years and a wish to lower the bill, a higher wind and hail deductible suits them.",
+      "value": "1pct",
+      "toLabel": "1% of dwelling",
+      "title": "Use a percentage wind deductible",
+      "referrals": [],
+      "questionLabel": "Wind and hail deductible",
+      "questionKey": "windHail",
+      "premiumChange": -87,
+      "newPremium": 1683,
+      "kind": "change",
+      "fromLabel": "Same as above"
+     },
+     {
+      "why": "They want a lower price, but their auto liability is $300,000, so cutting home liability would leave them less protected than on their auto.",
+      "value": "100000",
+      "toLabel": "$100,000",
+      "title": "Keep liability at $300,000",
+      "referrals": [],
+      "questionLabel": "Personal liability",
+      "questionKey": "liability",
+      "premiumChange": -28,
+      "newPremium": 1742,
+      "kind": "avoid",
+      "fromLabel": "$300,000"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 3,
+    "id": "home-wants-a-lower-bill"
+   }
+  },
+  {
+   "case": "wc-return-to-work",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2567,
+    "suggestions": [
+     {
+      "why": "Underwriting notes on the current policy show a formal return-to-work program since 2024 with documented light-duty roles.",
+      "value": "true",
+      "toLabel": "Yes",
+      "title": "Mark return-to-work program as yes",
+      "referrals": [],
+      "questionLabel": "Return-to-work program",
+      "questionKey": "returnToWork",
+      "premiumChange": -6549,
+      "newPremium": 211747,
+      "kind": "change",
+      "fromLabel": "No"
+     },
+     {
+      "why": "We hold a closed lathe laceration claim from March 2026, so answering none would misstate their history.",
+      "value": "0",
+      "toLabel": "None",
+      "title": "Keep claims at one to three",
+      "referrals": [],
+      "questionLabel": "Claims, past 3 years",
+      "questionKey": "priorClaims",
+      "premiumChange": -10914,
+      "newPremium": 207382,
+      "kind": "avoid",
+      "fromLabel": "One to three"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 2,
+    "id": "wc-return-to-work"
+   }
+  },
+  {
+   "case": "fleet-dash-cameras",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 2499,
+    "suggestions": [
+     {
+      "why": "Our notes show every van was fitted with dash cameras and GPS telematics in March 2026.",
+      "value": "true",
+      "toLabel": "Yes",
+      "title": "Record the telematics and dash cameras",
+      "referrals": [],
+      "questionLabel": "Telematics or dash cameras",
+      "questionKey": "telematics",
+      "premiumChange": -2476,
+      "newPremium": 33134,
+      "kind": "change",
+      "fromLabel": "No"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 1,
+    "id": "fleet-dash-cameras"
+   }
+  },
+  {
+   "case": "auto-umbrella-wants-cheaper",
+   "checks": {
+    "hit": true,
+    "valid": true,
+    "at_most_three": true,
+    "no_arithmetic_or_dashes": true
+   },
+   "out": {
+    "ms": 1939,
+    "suggestions": [
+     {
+      "why": "The Alvarez umbrella policy needs auto liability of at least 250/500/100 underneath it, so lowering limits would break that requirement.",
+      "value": "300000",
+      "toLabel": "100/300/100",
+      "title": "Keep liability at 250/500/100",
+      "referrals": [],
+      "questionLabel": "Liability limits",
+      "questionKey": "liability",
+      "premiumChange": -288,
+      "newPremium": 2181,
+      "kind": "avoid",
+      "fromLabel": "250/500/100"
+     },
+     {
+      "why": "Tomas wants the cheapest cover and the household has no claims in the past three years.",
+      "value": "1000",
+      "toLabel": "$1,000",
+      "title": "Raise the collision deductible",
+      "referrals": [],
+      "questionLabel": "Collision deductible",
+      "questionKey": "collision",
+      "premiumChange": -211,
+      "newPremium": 2258,
+      "kind": "change",
+      "fromLabel": "$500"
+     },
+     {
+      "why": "With no claims in three years and a request for lower cost, a higher deductible suits this household.",
+      "value": "1000",
+      "toLabel": "$1,000",
+      "title": "Raise the comprehensive deductible",
+      "referrals": [],
+      "questionLabel": "Comprehensive deductible",
+      "questionKey": "comprehensive",
+      "premiumChange": -94,
+      "newPremium": 2375,
+      "kind": "change",
+      "fromLabel": "$500"
+     }
+    ],
+    "pitch": null,
+    "dropped": 0,
+    "proposed": 3,
+    "id": "auto-umbrella-wants-cheaper"
+   }
+  }
+ ],
+ "problems": []
+}

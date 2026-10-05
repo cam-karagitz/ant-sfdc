@@ -1,0 +1,78 @@
+{
+  "type": "sfdc_cms__view",
+  "title": "Home",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"3ef8ef4e-7c68-4eb7-984e-5c67f88c172b\",\"columns\":[{\"UUID\":\"dc3adf21-cfb5-4fa5-9659-f4736a79351b\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {},
+                      "definition": "c:antsurancePortalApp",
+                      "id": "ed46939c-955c-48c3-b9b2-df5d351e494c",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "dc3adf21-cfb5-4fa5-9659-f4736a79351b",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "3ef8ef4e-7c68-4eb7-984e-5c67f88c172b",
+              "type": "component"
+            }
+          ],
+          "id": "fdc2a17e-731a-4918-add4-64c36082f252",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "pageTitle": "Home",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "a72fefc6-844f-478a-b6c4-1849f076a047",
+              "type": "component"
+            }
+          ],
+          "id": "f28613cb-f49c-4348-b40f-40f8d9c9b6c9",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "7a9226e5-3766-4eb4-8026-531b85e04425",
+      "type": "component"
+    },
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "home"
+  },
+  "urlName": "home"
+}

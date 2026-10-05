@@ -1,0 +1,15 @@
+<template>
+    <template lwc:if={isOnChatTab}>
+        <div class="c-here">
+            <span class="c-here__icon" aria-hidden="true">
+                <lightning-icon icon-name="utility:comments" size="small"></lightning-icon>
+            </span>
+            <p class="c-here__lead">Ask Claude is open on this page</p>
+            <p class="c-here__text">Use the chat on the page. This panel is for asking from any other page.</p>
+            <button type="button" class="c-here__button" onclick={handleHide}>Hide this panel</button>
+        </div>
+    </template>
+    <div class={chatClass}>
+        <c-antsurance-claude compact record-id={recordId}></c-antsurance-claude>
+    </div>
+</template>

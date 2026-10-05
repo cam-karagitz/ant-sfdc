@@ -1,0 +1,245 @@
+<template>
+    <article class="c-photos" aria-busy={isBusy}>
+        <header class="c-head">
+            <div class="c-head__titles">
+                <h2 class="c-head__title">Photos</h2>
+                <p class="c-head__meta">{metaLine}</p>
+            </div>
+            <div class="c-head__actions">
+                <input type="file" id="photos" class="c-file" accept="image/*" multiple onchange={handleFiles} />
+                <label for="photos" class={addClass}>
+                    <lightning-icon icon-name="utility:add" size="xx-small" alternative-text="" class="c-add__icon"></lightning-icon>
+                    {addLabel}
+                </label>
+                <template lwc:if={hasPhotos}>
+                    <lightning-button
+                        label={assessLabel}
+                        variant={assessVariant}
+                        icon-name="utility:sparkles"
+                        disabled={cannotAssess}
+                        onclick={handleAssess}
+                    ></lightning-button>
+                </template>
+            </div>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-skeleton" aria-hidden="true">
+                <span class="c-skeleton__tile"></span>
+                <span class="c-skeleton__tile"></span>
+                <span class="c-skeleton__tile"></span>
+            </div>
+        </template>
+
+        <template lwc:elseif={isEmpty}>
+            <div class="c-empty">
+                <p class="c-empty__title">No photos on this claim yet</p>
+                <p class="c-empty__text">
+                    Add photos of the damage. Claude marks what is damaged in each one, checks it against the reported loss and says what to do next.
+                </p>
+            </div>
+        </template>
+
+        <template lwc:elseif={hasPhotos}>
+            <template lwc:if={staleLine}>
+                <p class="c-stale">
+                    <lightning-icon icon-name="utility:info" size="xx-small" alternative-text="" class="c-stale__icon"></lightning-icon>
+                    <span>{staleLine} Assess again to include them.</span>
+                </p>
+            </template>
+
+            <c-antsurance-claim-photo-viewer record-id={recordId} view={view} lead-tab="Assessment" tail-tab={nextTab} onmarkssaved={handleMarksSaved}>
+                <div slot="lead" class="c-lead">
+                    <template lwc:if={isAssessing}>
+                        <div class="c-working" role="status">
+                            <span class="c-working__dot" aria-hidden="true"></span>
+                            <p class="c-working__caption">{assessingCaption}</p>
+                            <template lwc:if={progressLine}>
+                                <p class="c-working__progress">{progressLine}</p>
+                            </template>
+                            <p class="c-working__note">{assessingNote}</p>
+                        </div>
+                    </template>
+
+                    <template lwc:if={hasFailures}>
+                        <ul class="c-failures">
+                            <template for:each={failureRows} for:item="failure">
+                                <li key={failure.key} class="c-failure" role="alert">
+                                    <div class="c-failure__text">
+                                        <p class="c-failure__title">{failure.title}</p>
+                                        <p class="c-failure__message">{failure.message}</p>
+                                    </div>
+                                    <lightning-button label="Try again" data-index={failure.index} onclick={handleRetry}></lightning-button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+
+                    <template lwc:if={isPartial}>
+                        <div class="c-invite">
+                            <p class="c-invite__title">Assessment not finished</p>
+                            <p class="c-invite__text">{partialLine}</p>
+                            <template lwc:if={canContinue}>
+                                <lightning-button class="c-invite__action" label={continueLabel} variant="brand" onclick={handleContinue}></lightning-button>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isUnassessed}>
+                        <div class="c-invite">
+                            <p class="c-invite__title">Not assessed yet</p>
+                            <p class="c-invite__text">
+                                Claude looks at every photo with the claim file beside it, marks the damage, and says whether it fits what was reported.
+                            </p>
+                            <p class="c-limits">Claude assesses what is visible. Hidden damage and repair cost need an appraiser.</p>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isAssessed}>
+                        <section class="c-read" aria-label="Claude's assessment of the photos">
+                            <div class={assessment.verdictClass}>
+                                <lightning-icon icon-name={assessment.verdictIcon} size="x-small" alternative-text="" class="c-verdict__icon"></lightning-icon>
+                                <div class="c-verdict__text">
+                                    <p class="c-verdict__label">{assessment.verdictLabel}</p>
+                                    <p class="c-verdict__note">{assessment.consistencyNote}</p>
+                                </div>
+                            </div>
+
+                            <div class="c-folds">
+                                <c-antsurance-accordion label="What the photos show" summary={assessment.lossSeen} open={folds.shows} data-name="shows" ontoggle={handleFold}>
+                                    <p class="c-seen">{assessment.lossSeen}</p>
+                                    <p class="c-summary">{assessment.damageSummary}</p>
+                                </c-antsurance-accordion>
+                                <template lwc:if={assessment.hasVehicle}>
+                                    <c-antsurance-accordion label="Where on the vehicle" summary={assessment.panelCount} open={folds.vehicle} data-name="vehicle" ontoggle={handleFold}>
+                                        <c-antsurance-claim-photo-car panels={assessment.panels}></c-antsurance-claim-photo-car>
+                                    </c-antsurance-accordion>
+                                </template>
+                                <template lwc:if={assessment.hasSignals}>
+                                    <c-antsurance-accordion label="Worth knowing" count={assessment.signalRows.length} open={folds.signals} data-name="signals" ontoggle={handleFold}>
+                                        <ul class="c-signals">
+                                            <template for:each={assessment.signalRows} for:item="signal">
+                                                <li key={signal.key} class="c-signal">{signal.text}</li>
+                                            </template>
+                                        </ul>
+                                    </c-antsurance-accordion>
+                                </template>
+                            </div>
+
+                            <p class="c-limits">Claude assesses what is visible. Hidden damage and repair cost need an appraiser.</p>
+                            <template lwc:if={assessment.footLine}>
+                                <p class="c-foot">{assessment.footLine}</p>
+                            </template>
+                        </section>
+                    </template>
+                </div>
+
+                <template lwc:if={isAssessed}>
+                    <div slot="tail" class="c-next">
+                        <c-antsurance-accordion label="Next step" summary={assessment.stepLabel} open={folds.step} data-name="step" ontoggle={handleFold}>
+                            <div class="c-fold__body">
+                                <p class="c-step__label">
+                                    <lightning-icon icon-name={assessment.stepIcon} size="x-small" alternative-text="" class="c-step__icon"></lightning-icon>
+                                    {assessment.stepLabel}
+                                </p>
+                                <p class="c-step__reason">{assessment.nextStepReason}</p>
+                            </div>
+                        </c-antsurance-accordion>
+                        <template lwc:if={assessment.hasRange}>
+                            <c-antsurance-accordion label="Rough range for what the photos show" summary={assessment.rangeLabel} open={folds.range} data-name="range" ontoggle={handleFold}>
+                                <div class="c-fold__body">
+                                    <p class="c-range__figure">{assessment.rangeLabel}</p>
+                                    <p class="c-range__kind">Only the damage visible in these photos. A rough order of magnitude, not an estimate of the claim.</p>
+                                    <p class="c-range__basis">{assessment.repairBasis}</p>
+                                </div>
+                            </c-antsurance-accordion>
+                        </template>
+                        <template lwc:if={assessment.hasSuggestions}>
+                            <c-antsurance-accordion label="Claude suggests" summary={assessment.suggestionCount} open={folds.suggest} data-name="suggest" ontoggle={handleFold}>
+                                <div class="c-fold__body">
+                                    <ul class="c-suggestions">
+                                        <template for:each={assessment.suggestionRows} for:item="suggestion">
+                                            <li key={suggestion.key} class="c-suggestion">
+                                                <div class="c-suggestion__main">
+                                                    <p class="c-suggestion__title">{suggestion.title}</p>
+                                                    <p class="c-suggestion__reason">{suggestion.reason}</p>
+                                                </div>
+                                                <template lwc:if={suggestion.isDone}>
+                                                    <span class="c-done">
+                                                        <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                                                        Done
+                                                    </span>
+                                                </template>
+                                                <template lwc:elseif={suggestion.isConfirming}>
+                                                    <div class="c-confirm">
+                                                        <p class="c-confirm__effect">{suggestion.effect}</p>
+                                                        <div class="c-confirm__buttons">
+                                                            <lightning-button label="Cancel" disabled={suggestion.isApplying} onclick={handleCancelSuggestion}></lightning-button>
+                                                            <lightning-button
+                                                                label="Confirm"
+                                                                variant="brand"
+                                                                data-index={suggestion.index}
+                                                                disabled={suggestion.isApplying}
+                                                                onclick={handleConfirmSuggestion}
+                                                            ></lightning-button>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template lwc:else>
+                                                    <lightning-button
+                                                        class="c-suggestion__apply"
+                                                        label={suggestion.applyLabel}
+                                                        data-index={suggestion.index}
+                                                        onclick={handleSuggest}
+                                                    ></lightning-button>
+                                                </template>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </c-antsurance-accordion>
+                        </template>
+                        <template lwc:if={assessment.hasNeeded}>
+                            <c-antsurance-accordion label="Photos still needed" summary={assessment.neededCount} open={folds.needed} data-name="needed" ontoggle={handleFold}>
+                                <div class="c-fold__body">
+                                    <ul class="c-needed">
+                                        <template for:each={assessment.neededRows} for:item="needed">
+                                            <li key={needed.key} class="c-needed__row">
+                                                <span class="c-needed__box" aria-hidden="true"></span>
+                                                <span class="c-needed__text">{needed.text}</span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </c-antsurance-accordion>
+                        </template>
+                        <template lwc:if={assessment.hasNote}>
+                            <c-antsurance-accordion label="For the file" summary={noteGist} open={folds.note} data-name="note" ontoggle={handleFold}>
+                                <div class="c-fold__body">
+                                    <div class="c-note__body">
+                                        <c-antsurance-markdown value={assessment.note}></c-antsurance-markdown>
+                                    </div>
+                                    <div class="c-note__action">
+                                        <template lwc:if={noteAdded}>
+                                            <span class="c-done">
+                                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                                                Added to the file
+                                            </span>
+                                        </template>
+                                        <template lwc:else>
+                                            <lightning-button label="Add to file notes" icon-name="utility:add" disabled={isAddingNote} onclick={handleAddNote}></lightning-button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </c-antsurance-accordion>
+                        </template>
+                    </div>
+                </template>
+            </c-antsurance-claim-photo-viewer>
+        </template>
+    </article>
+</template>

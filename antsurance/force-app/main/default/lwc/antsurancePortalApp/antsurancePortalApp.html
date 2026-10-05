@@ -1,0 +1,357 @@
+<template>
+    <div class={siteClass}>
+        <header class="c-top">
+            <div class="c-wrap c-top__inner">
+                <button type="button" class="c-top__brand" data-page="home" onclick={handleNav} aria-label="Antsurance home">
+                    <img class="c-top__lockup" src={lockup} alt="Antsurance" />
+                </button>
+                <template lwc:if={isReady}>
+                    <nav class="c-nav" aria-label="Your account">
+                        <template for:each={nav} for:item="item">
+                            <button key={item.page} type="button" class={item.className} data-page={item.page} aria-current={item.current} onclick={handleNav}>{item.label}</button>
+                        </template>
+                    </nav>
+                    <!-- Claude lives in the header, so it never sits on top of what is being read. Where the header runs
+                         out of room the household name goes first, then this button's label, and nothing is cut. -->
+                    <button type="button" class={launcherClass} onclick={handleToggleChat} aria-expanded={chatExpanded} aria-label="Ask Claude" title="Ask Claude">
+                        <img class="c-launcher__spark" src={spark} alt="" />
+                        <span class="c-launcher__label">Ask Claude</span>
+                    </button>
+                    <div class="c-top__who">
+                        <a class="c-link c-top__out" href={signOutUrl}>Sign out</a>
+                        <span class="c-top__name">{home.householdName}</span>
+                    </div>
+                </template>
+            </div>
+        </header>
+
+        <div class="c-scroll">
+            <div class="c-announce" role="status" aria-live="polite">
+                <template lwc:if={announcement}>
+                    <p class="c-announce__line"><img class="c-announce__spark" src={spark} alt="" />{announcement}</p>
+                </template>
+            </div>
+
+            <div class="c-wrap c-stage">
+                <main class={mainClass}>
+                    <template lwc:if={isLoading}>
+                        <p class="c-state">Loading your account</p>
+                    </template>
+                    <template lwc:if={failure}>
+                        <div class="c-state c-state_card" role="alert">
+                            <h1 class="c-h2">We could not show your account</h1>
+                            <p>{failure}</p>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isReady}>
+                        <template lwc:if={notFound}>
+                            <div class="c-state c-state_card">
+                                <h1 class="c-h2">We could not find that on your account</h1>
+                                <p>It may have been removed, or the link may be for a different account.</p>
+                                <button type="button" class="c-button c-button_primary" data-page="home" onclick={handleNav}>Back to home</button>
+                            </div>
+                        </template>
+
+                        <!-- Home -->
+                        <template lwc:if={isHome}>
+                            <section class="c-hero">
+                                <p class="c-eyebrow">{greeting}</p>
+                                <h1 class="c-h1 c-hero__title">What do you need?</h1>
+                                <div class="c-ask">
+                                    <img class="c-ask__spark" src={spark} alt="" />
+                                    <label class="slds-assistive-text c-hidden" for="ask-input">Ask Claude about your insurance</label>
+                                    <input id="ask-input" class="c-ask__input" type="text" placeholder="Ask about a policy, a bill or a claim" oninput={handlePrompt} onkeydown={handlePromptKey} />
+                                    <button type="button" class="c-button c-button_primary c-ask__send" onclick={handleAsk}>Ask Claude</button>
+                                </div>
+                                <div class={chipsClass}>
+                                    <template for:each={home.suggestions} for:item="suggestion">
+                                        <button key={suggestion} type="button" class="c-hero__chip" data-text={suggestion} onclick={handleSuggestion}><span class="c-hero__chiptext">{suggestion}</span></button>
+                                    </template>
+                                </div>
+                            </section>
+
+                            <template lwc:if={hasOpenClaims}>
+                                <section class={homeSection.claims} data-section="claims">
+                                    <div class="c-section__head">
+                                        <h2 class="c-h2">Your open claims</h2>
+                                        <button type="button" class="c-link" data-page="claims" onclick={handleNav}>All claims</button>
+                                    </div>
+                                    <div class="c-stack">
+                                        <template for:each={openClaims} for:item="claim">
+                                            <c-antsurance-portal-claim-tracker key={claim.id} claim={claim} linked onopen={handleOpen}></c-antsurance-portal-claim-tracker>
+                                        </template>
+                                    </div>
+                                </section>
+                            </template>
+
+                            <section class={homeSection.policies} data-section="policies">
+                                <div class="c-section__head">
+                                    <h2 class="c-h2">Your policies</h2>
+                                    <span class="c-section__links">
+                                        <button type="button" class="c-link" data-page="quotes" onclick={handleNav}>Get a quote</button>
+                                        <button type="button" class="c-link" data-page="policies" onclick={handleNav}>All policies</button>
+                                    </span>
+                                </div>
+                                <div class="c-grid">
+                                    <template for:each={activePolicies} for:item="policy">
+                                        <c-antsurance-portal-policy-card key={policy.id} policy={policy} onopen={handleOpen}></c-antsurance-portal-policy-card>
+                                    </template>
+                                </div>
+                                <template lwc:if={hasOpenQuotes}>
+                                    <ul class="c-rows">
+                                        <template for:each={openQuotes} for:item="quote">
+                                            <li key={quote.id}>
+                                                <button type="button" class="c-row" data-page="quote" data-record={quote.id} aria-label={quote.label} onclick={handleNav}>
+                                                    <span class="c-row__main"><span class="c-row__title">{quote.title}</span><span class="c-row__sub">{quote.sub}</span></span>
+                                                    <span class="c-row__figures">
+                                                        <template lwc:if={quote.premiumText}><span class="c-row__end">{quote.premiumText}</span></template>
+                                                        <span class="c-chip c-chip_clay">{quote.statusWord}</span>
+                                                    </span>
+                                                    <lightning-icon class="c-row__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                                </button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </section>
+
+                            <section class={homeSection.requests} data-section="requests">
+                                <div class="c-section__head">
+                                    <h2 class="c-h2">Requests in progress</h2>
+                                    <button type="button" class="c-link" data-page="requests" onclick={handleNav}>All requests</button>
+                                </div>
+                                <template lwc:if={hasOpenRequests}>
+                                    <ul class="c-rows">
+                                        <template for:each={openRequests} for:item="request">
+                                            <li key={request.id}>
+                                                <button type="button" class="c-row" data-page="request" data-record={request.id} aria-label={request.label} onclick={handleNav}>
+                                                    <span class="c-row__main"><span class="c-row__title">{request.title}</span><span class="c-row__sub">{request.sub}</span></span>
+                                                    <span class={request.chipClass}>{request.statusWord}</span>
+                                                    <lightning-icon class="c-row__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                                </button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p class="c-quiet">Nothing in progress. Ask Claude, or send a request, when you need a change.</p>
+                                </template>
+                            </section>
+                        </template>
+
+                        <!-- Policies -->
+                        <template lwc:if={isPolicies}>
+                            <section class="c-page">
+                                <h1 class="c-h1">Your policies</h1>
+                                <div class="c-grid">
+                                    <template for:each={activePolicies} for:item="policy">
+                                        <c-antsurance-portal-policy-card key={policy.id} policy={policy} onopen={handleOpen}></c-antsurance-portal-policy-card>
+                                    </template>
+                                </div>
+                                <template lwc:if={hasPastPolicies}>
+                                    <h2 class="c-h2 c-page__sub">No longer in force</h2>
+                                    <div class="c-grid">
+                                        <template for:each={pastPolicies} for:item="policy">
+                                            <c-antsurance-portal-policy-card key={policy.id} policy={policy} onopen={handleOpen}></c-antsurance-portal-policy-card>
+                                        </template>
+                                    </div>
+                                </template>
+                            </section>
+                        </template>
+
+                        <!-- One policy -->
+                        <template lwc:if={isPolicy}>
+                            <section class="c-page">
+                                <button type="button" class="c-link c-back" data-page="policies" onclick={handleNav}>All policies</button>
+                                <c-antsurance-portal-policy policy={policy} pointed={pointedSection} onopen={handleOpen} onask={handleAskEvent}></c-antsurance-portal-policy>
+                            </section>
+                        </template>
+
+                        <!-- Claims -->
+                        <template lwc:if={isClaims}>
+                            <section class="c-page">
+                                <h1 class="c-h1 c-h1_count">Your claims <span class="c-chip">{claimList.count}</span></h1>
+                                <div class="c-split">
+                                    <template lwc:if={hasClaims}>
+                                        <div class="c-stack">
+                                            <template for:each={claimList.rows} for:item="claim">
+                                                <c-antsurance-portal-claim-tracker key={claim.id} claim={claim} linked onopen={handleOpen}></c-antsurance-portal-claim-tracker>
+                                            </template>
+                                            <template lwc:if={claimList.show}>
+                                                <nav class="c-pager" aria-label="Pages of claims">
+                                                    <button type="button" class="c-button" data-list="claims" data-step="-1" disabled={claimList.prevDisabled} onclick={handlePage}>Previous</button>
+                                                    <span class="c-pager__label">{claimList.label}</span>
+                                                    <button type="button" class="c-button" data-list="claims" data-step="1" disabled={claimList.nextDisabled} onclick={handlePage}>Next</button>
+                                                </nav>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="c-quiet c-quiet_card">You have no claims.</p>
+                                    </template>
+                                    <aside class="c-support">
+                                        <h2 class="c-h2">If something happens</h2>
+                                        <ol class="c-steps">
+                                            <template for:each={claimSteps} for:item="step">
+                                                <li key={step.key} class="c-steps__item"><span class="c-steps__number">{step.number}</span><span>{step.text}</span></li>
+                                            </template>
+                                        </ol>
+                                        <button type="button" class="c-button c-button_primary" data-page="newClaim" onclick={handleNav}>File a claim</button>
+                                        <button type="button" class="c-button" data-text="I need to file a claim" onclick={handleSuggestion}>Tell Claude what happened</button>
+                                    </aside>
+                                </div>
+                            </section>
+                        </template>
+
+                        <!-- One claim -->
+                        <template lwc:if={isClaim}>
+                            <section class="c-page">
+                                <button type="button" class="c-link c-back" data-page="claims" onclick={handleNav}>All claims</button>
+                                <div class="c-split">
+                                    <div class="c-stack">
+                                        <c-antsurance-portal-claim-tracker claim={claim}></c-antsurance-portal-claim-tracker>
+                                        <div class="c-card">
+                                            <c-antsurance-portal-photos claim-id={claim.id} can-add={claim.isOpen} loss-type={claim.title}></c-antsurance-portal-photos>
+                                        </div>
+                                    </div>
+                                    <aside class="c-support">
+                                        <h2 class="c-h2">What you can do</h2>
+                                        <button type="button" class="c-button c-button_primary" onclick={handleAskClaim}>Ask Claude about this claim</button>
+                                        <button type="button" class="c-button" data-page="newRequest" onclick={handleNav}>Send a message to our team</button>
+                                        <template lwc:if={claimPolicy}>
+                                            <p class="c-support__label">The policy it is on</p>
+                                            <c-antsurance-portal-policy-card policy={claimPolicy} compact onopen={handleOpen}></c-antsurance-portal-policy-card>
+                                        </template>
+                                    </aside>
+                                </div>
+                            </section>
+                        </template>
+
+                        <!-- Requests -->
+                        <template lwc:if={isRequests}>
+                            <section class="c-page">
+                                <h1 class="c-h1 c-h1_count">Your requests <span class="c-chip">{requestList.count}</span></h1>
+                                <div class="c-split">
+                                <template lwc:if={hasRequests}>
+                                    <div class="c-stack">
+                                    <ul class="c-rows">
+                                        <template for:each={requestList.rows} for:item="request">
+                                            <li key={request.id}>
+                                                <button type="button" class="c-row" data-page="request" data-record={request.id} aria-label={request.label} onclick={handleNav}>
+                                                    <span class="c-row__main"><span class="c-row__title">{request.title}</span><span class="c-row__sub">{request.sub}</span></span>
+                                                    <span class={request.chipClass}>{request.statusWord}</span>
+                                                    <lightning-icon class="c-row__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                                </button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <template lwc:if={requestList.show}>
+                                        <nav class="c-pager" aria-label="Pages of requests">
+                                            <button type="button" class="c-button" data-list="requests" data-step="-1" disabled={requestList.prevDisabled} onclick={handlePage}>Previous</button>
+                                            <span class="c-pager__label">{requestList.label}</span>
+                                            <button type="button" class="c-button" data-list="requests" data-step="1" disabled={requestList.nextDisabled} onclick={handlePage}>Next</button>
+                                        </nav>
+                                    </template>
+                                    </div>
+                                </template>
+                                <template lwc:else>
+                                    <p class="c-quiet c-quiet_card">You have not sent any requests yet.</p>
+                                </template>
+                                    <aside class="c-support">
+                                        <h2 class="c-h2">Need a change?</h2>
+                                        <p class="c-support__text">{changeNote}</p>
+                                        <button type="button" class="c-button c-button_primary" data-page="newRequest" onclick={handleNav}>Ask for a change</button>
+                                        <template lwc:if={hasAuto}>
+                                            <button type="button" class="c-button" data-page="addDriver" onclick={handleNav}>Add a driver</button>
+                                        </template>
+                                        <button type="button" class="c-button" data-text="What can I change on my policies from here?" onclick={handleSuggestion}>Ask Claude</button>
+                                    </aside>
+                                </div>
+                            </section>
+                        </template>
+
+                        <!-- One request -->
+                        <template lwc:if={isRequest}>
+                            <section class="c-page">
+                                <button type="button" class="c-link c-back" data-page="requests" onclick={handleNav}>All requests</button>
+                                <c-antsurance-portal-request request={request} onask={handleAskEvent} onopen={handleOpen} onchanged={handleRequestChanged}></c-antsurance-portal-request>
+                            </section>
+                        </template>
+
+                        <!-- Quotes: the lines to ask about, a quote being answered, and a quote already sent. -->
+                        <template lwc:if={isQuotes}>
+                            <section class="c-page">
+                                <c-antsurance-portal-quote quotes={home.quotes} onopen={handleOpen} onask={handleAskEvent}></c-antsurance-portal-quote>
+                            </section>
+                        </template>
+                        <template lwc:if={isNewQuote}>
+                            <section class="c-page">
+                                <button type="button" class="c-link c-back" data-page="quotes" onclick={handleNav}>All quotes</button>
+                                <c-antsurance-portal-quote class="c-answering" slug={route.recordId} onformchange={handleFormChange} onsent={handleSent} onopen={handleOpen} onask={handleAskEvent}></c-antsurance-portal-quote>
+                            </section>
+                        </template>
+                        <template lwc:if={isQuote}>
+                            <section class="c-page">
+                                <button type="button" class="c-link c-back" data-page="quotes" onclick={handleNav}>All quotes</button>
+                                <c-antsurance-portal-quote quote-id={route.recordId} onloaded={handleQuoteLoaded} onopen={handleOpen} onask={handleAskEvent}></c-antsurance-portal-quote>
+                            </section>
+                        </template>
+
+                        <!-- The forms, each beside what happens next. With the conversation open, Claude is the companion instead. -->
+                        <template lwc:if={isForm}>
+                            <section class="c-split c-split_form">
+                                <c-antsurance-portal-form kind={route.page} policies={home.policies} preset-policy={route.recordId} onformchange={handleFormChange} onsent={handleSent} onopen={handleOpen}></c-antsurance-portal-form>
+                                <aside class="c-support c-support_form">
+                                    <h2 class="c-h2">What happens next</h2>
+                                    <ol class="c-steps">
+                                        <template for:each={support.steps} for:item="step">
+                                            <li key={step.key} class="c-steps__item"><span class="c-steps__number">{step.number}</span><span>{step.text}</span></li>
+                                        </template>
+                                    </ol>
+                                    <button type="button" class="c-button c-button_primary" onclick={handleFillWithClaude}>Ask Claude to fill this in</button>
+                                    <template lwc:if={support.hasPolicy}>
+                                        <p class="c-support__label">The policy it is about</p>
+                                        <c-antsurance-portal-policy-card policy={support.policy} compact onopen={handleOpen}></c-antsurance-portal-policy-card>
+                                    </template>
+                                </aside>
+                            </section>
+                        </template>
+                    </template>
+                </main>
+
+                <template lwc:if={isReady}>
+                    <aside class={dockClass} aria-label="Claude">
+                        <div class="c-dock__head">
+                            <img class="c-dock__spark" src={spark} alt="" />
+                            <div class="c-dock__title">
+                                <p class="c-dock__name">Claude</p>
+                                <p class="c-dock__sub">Your Antsurance assistant</p>
+                            </div>
+                            <div class="c-dock__tools">
+                                <!-- Offered once there is a conversation to start over. -->
+                                <template lwc:if={hasConversation}>
+                                    <button type="button" class="c-dock__tool c-dock__tool_new" onclick={handleNewChat} aria-label="New chat: start the conversation over" title="New chat">
+                                        <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
+                                        <span class="c-dock__toollabel">New chat</span>
+                                    </button>
+                                </template>
+                                <button type="button" class="c-dock__tool c-dock__tool_widen" onclick={handleWiden} aria-label={widenLabel} title={widenLabel}>
+                                    <lightning-icon icon-name={widenIcon} size="x-small" alternative-text=""></lightning-icon>
+                                </button>
+                                <button type="button" class="c-dock__tool" onclick={handleCloseChat} aria-label="Close the conversation" title="Close">
+                                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text=""></lightning-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <c-antsurance-portal-chat class="c-dock__chat" screen={screen} first-name={home.firstName} starters={chatStarters} onactions={handleActions} onopen={handleOpen} ontalk={handleTalk}></c-antsurance-portal-chat>
+                    </aside>
+                </template>
+            </div>
+        </div>
+
+        <footer class="c-foot">
+            <p class="c-wrap c-foot__line">Antsurance is a fictional insurer used for demonstrations. Assistant powered by Claude, from Anthropic.</p>
+        </footer>
+    </div>
+</template>

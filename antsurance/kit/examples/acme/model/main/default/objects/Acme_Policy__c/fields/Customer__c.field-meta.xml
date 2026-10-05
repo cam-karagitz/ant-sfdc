@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The account that holds this policy. A lookup, so a policy can be without one.</description>
+    <label>Customer</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Acme Policies</relationshipLabel>
+    <relationshipName>Acme_Policies</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

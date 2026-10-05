@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "Give me a rundown of open claims: how many, the total outstanding reserve, and the split by severity."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Severity__c, COUNT(Id) c, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Severity__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":101900.0,\"c\":10,\"Severity__c\":\"Medium\"},{\"r\":446500.0,\"c\":2,\"Severity__c\":\"Catastrophic\"},{\"r\":5450.0,\"c\":8,\"Severity__c\":\"Low\"},{\"r\":191500.0,\"c\":6,\"Severity__c\":\"High\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"There are **26 open claims** carrying **$745,350** in outstanding reserve. The 2 Catastrophic claims hold 60% of that reserve.\",\n  \"tiles\": [\n    {\n      \"label\": \"Open claims\",\n      \"value\": \"26\",\n      \"note\": \"all severities\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"across 26 open claims\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"label\": \"Catastrophic reserve\",\n      \"value\": \"$446,500\",\n      \"note\": \"on just 2 claims\",\n      \"tone\": \"alert\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"\",\n  \"title\": \"Open claims by severity\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"dollars\",\n  \"points\": [\n    {\n      \"label\": \"Catastrophic (2)\",\n      \"value\": 446500\n    },\n    {\n      \"label\": \"High (6)\",\n      \"value\": 191500\n    },\n    {\n      \"label\": \"Medium (10)\",\n      \"value\": 101900\n    },\n    {\n      \"label\": \"Low (8)\",\n      \"value\": 5450\n    }\n  ],\n  \"highlight_label\": \"Catastrophic (2)\",\n  \"caption\": \"Outstanding reserve on open claims, by severity, with claim counts in brackets\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Open claims\",\n        \"value\": \"26\",\n        \"note\": \"all severities\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$745,350\",\n        \"note\": \"across 26 open claims\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"label\": \"Catastrophic reserve\",\n        \"value\": \"$446,500\",\n        \"note\": \"on just 2 claims\",\n        \"tone\": \"alert\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Open claims by severity\",\n    \"caption\": \"Outstanding reserve on open claims, by severity, with claim counts in brackets\",\n    \"chartType\": \"bar\",\n    \"unit\": \"dollars\",\n    \"points\": [\n      {\n        \"label\": \"Catastrophic (2)\",\n        \"value\": 446500\n      },\n      {\n        \"label\": \"High (6)\",\n        \"value\": 191500\n      },\n      {\n        \"label\": \"Medium (10)\",\n        \"value\": 101900\n      },\n      {\n        \"label\": \"Low (8)\",\n        \"value\": 5450\n      }\n    ],\n    \"highlight\": \"Catastrophic (2)\"\n  }\n]"
+  }
+]

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Policy_Sale</fullName>
+    <active>true</active>
+    <businessProcess>InsuranceSales</businessProcess>
+    <description>A new business quote, renewal or cross-sell, tracked from submission to bound.</description>
+    <label>Policy Sale</label>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>New Business</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Renewal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cross-Sell</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

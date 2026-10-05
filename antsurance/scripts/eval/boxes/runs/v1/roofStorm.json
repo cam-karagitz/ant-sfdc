@@ -1,0 +1,56 @@
+{
+ "width": 964,
+ "height": 643,
+ "answers": {
+  "fraction": {
+   "ms": 2220,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Front of a single story brick house with a large section of the roof torn open, exposing and breaking the wood framing.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"roof over the center of the house\",\"detail\":\"roof covering and decking torn off, rafters broken and displaced, open to the weather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.31,\"y\":0.22,\"width\":0.47,\"height\":0.32}},{\"area\":\"roof on the left side\",\"detail\":\"shingles and decking stripped, bare wood framing exposed\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.0,\"y\":0.22,\"width\":0.35,\"height\":0.25}},{\"area\":\"roof on the right side near the eave\",\"detail\":\"shingles and decking torn loose, debris on the roof\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.72,\"y\":0.31,\"width\":0.12,\"height\":0.07}},{\"area\":\"front window header panels\",\"detail\":\"white panels above the windows dented and pushed loose\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.26,\"y\":0.30,\"width\":0.42,\"height\":0.06}}]}]}"
+  },
+  "pixel": {
+   "ms": 2224,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Front of a single story brick house with a large section of the roof torn open, exposing and breaking the wood framing.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"roof over the center of the house\",\"detail\":\"shingles and decking torn off, rafters broken and displaced, open to the weather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":195,\"y\":215,\"width\":555,\"height\":130}},{\"area\":\"left side of the roof\",\"detail\":\"shingles and decking stripped, exposed framing and debris\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":220,\"width\":330,\"height\":85}},{\"area\":\"right side roof edge and eave\",\"detail\":\"framing pieces torn loose and hanging over the eave, debris on the roof\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":650,\"y\":225,\"width\":160,\"height\":130}},{\"area\":\"front yard\",\"detail\":\"scattered storm debris and a loose board by the right shrubs\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":860,\"y\":390,\"width\":70,\"height\":60}}]}]}"
+  },
+  "grid": {
+   "ms": 2401,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Front of a single story brick house with a large section of the roof torn open, exposing and breaking the wood framing.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"main roof over the center of the house\",\"detail\":\"roof covering and decking torn off, rafters broken and displaced, open to the weather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0.1,\"y\":3.3,\"width\":7.7,\"height\":1.8}},{\"area\":\"roof edge and framing at right of center\",\"detail\":\"broken framing and debris hanging over the eave\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":6.8,\"y\":3.5,\"width\":1.1,\"height\":1.9}},{\"area\":\"left side roof near eave\",\"detail\":\"loose debris and torn material on remaining roof\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.9,\"y\":4.3,\"width\":1.0,\"height\":0.5}},{\"area\":\"right side wall near eave\",\"detail\":\"loose board lying against wall and shrubs\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":8.7,\"y\":6.0,\"width\":0.9,\"height\":0.9}}]}]}"
+  },
+  "refine": {
+   "ms": 1724,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":0,\"y\":30,\"width\":665,\"height\":120}},{\"number\":2,\"found\":true,\"box\":{\"x\":0,\"y\":30,\"width\":768,\"height\":175}},{\"number\":3,\"found\":true,\"box\":{\"x\":0,\"y\":65,\"width\":405,\"height\":260}},{\"number\":4,\"found\":true,\"box\":{\"x\":28,\"y\":32,\"width\":146,\"height\":110}}]}",
+   "crops": [
+    {
+     "left": 56.25,
+     "top": 182.5,
+     "scale": 0.921968787515006,
+     "width": 768,
+     "height": 181
+    },
+    {
+     "left": 0,
+     "top": 198.75,
+     "scale": 1.8640776699029127,
+     "width": 768,
+     "height": 237
+    },
+    {
+     "left": 610.0,
+     "top": 192.5,
+     "scale": 2.0,
+     "width": 480,
+     "height": 392
+    },
+    {
+     "left": 842.5,
+     "top": 375.0,
+     "scale": 2.0,
+     "width": 212,
+     "height": 180
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 2640,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Front of a single story brick house with a large section of the roof torn open, exposing and breaking the wood framing.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"center roof over the entry\",\"detail\":\"roof decking and shingles torn away, rafters broken and displaced, open to the weather\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":195,\"y\":215,\"width\":560,\"height\":125}},{\"area\":\"left side of the roof\",\"detail\":\"shingles and decking stripped, bare roof framing exposed\",\"severity\":\"severe\",\"panel\":\"none\",\"box\":{\"x\":0,\"y\":220,\"width\":330,\"height\":85}},{\"area\":\"right side roof edge and fascia\",\"detail\":\"roof edge torn and debris hanging over the eave\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":685,\"y\":290,\"width\":130,\"height\":75}},{\"area\":\"wood trim above the right front windows\",\"detail\":\"trim torn loose along the roof line\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":545,\"y\":300,\"width\":120,\"height\":30}}]}]}"
+  }
+ }
+}

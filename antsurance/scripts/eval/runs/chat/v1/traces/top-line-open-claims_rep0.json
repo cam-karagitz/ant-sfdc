@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which line of business has the most open claims, and how many?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Policy__r.Line_of_Business__c lob, COUNT(Id) c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Policy__r.Line_of_Business__c ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":7,\"lob\":\"Personal Auto\"},{\"c\":7,\"lob\":\"Commercial Property\"},{\"c\":4,\"lob\":\"General Liability\"},{\"c\":2,\"lob\":\"Homeowners\"},{\"c\":2,\"lob\":\"Commercial Auto\"},{\"c\":2,\"lob\":\"Workers Compensation\"},{\"c\":2,\"lob\":\"Renters\"}],\"truncated\":false,\"rowCount\":7}"
+  },
+  {
+    "role": "assistant",
+    "content": "It's a tie: **Personal Auto** and **Commercial Property** each have **7 open claims**. Between them they make up 14 of the 26 open claims.\n\n| Line of business | Open claims |\n|---|---|\n| Personal Auto | **7** |\n| Commercial Property | **7** |\n| General Liability | 4 |\n| Homeowners | 2 |\n| Commercial Auto | 2 |\n| Workers Compensation | 2 |\n| Renters | 2 |"
+  }
+]

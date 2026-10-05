@@ -1,0 +1,49 @@
+{
+ "width": 1272,
+ "height": 913,
+ "answers": {
+  "fraction": {
+   "ms": 2456,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Right side of a white four door sedan showing the rear quarter panel, rear bumper corner, rear door and part of the front door.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"right rear corner of rear bumper\",\"detail\":\"bumper cover pushed in and separated from the quarter panel, gap at the taillight\",\"severity\":\"moderate\",\"panel\":\"rear_bumper\",\"box\":{\"x\":0.06,\"y\":0.28,\"width\":0.24,\"height\":0.48}},{\"area\":\"right rear quarter panel\",\"detail\":\"dented and creased behind the fuel door down toward the bumper\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":0.11,\"y\":0.26,\"width\":0.27,\"height\":0.28}},{\"area\":\"right rear taillight area\",\"detail\":\"taillight pushed in or displaced with a dark gap\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":0.09,\"y\":0.28,\"width\":0.06,\"height\":0.1}},{\"area\":\"right rear door\",\"detail\":\"slight ripples in the panel below the window\",\"severity\":\"minor\",\"panel\":\"rear_right_door\",\"box\":{\"x\":0.47,\"y\":0.28,\"width\":0.33,\"height\":0.2}}]}]}"
+  },
+  "pixel": {
+   "ms": 3894,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Right (passenger) side of a white four door sedan, from the rear corner to the front door, parked on a street.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"right rear quarter panel\",\"detail\":\"wavy dents and creases pushed in behind the fuel door toward the tail light\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":130,\"y\":200,\"width\":430,\"height\":290}},{\"area\":\"rear bumper, right corner\",\"detail\":\"pulled out of line with an open gap at the quarter panel\",\"severity\":\"moderate\",\"panel\":\"rear_bumper\",\"box\":{\"x\":70,\"y\":340,\"width\":300,\"height\":360}},{\"area\":\"right rear wheel well liner or splash shield\",\"detail\":\"torn loose and hanging down to the ground\",\"severity\":\"minor\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":195,\"y\":690,\"width\":160,\"height\":125}}]}]}"
+  },
+  "grid": {
+   "ms": 2360,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Passenger side of a white four door sedan from the rear doors back, showing the rear quarter panel, rear bumper corner and taillight area.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"right rear quarter panel\",\"detail\":\"pushed in and creased above the wheel arch toward the taillight\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":1.0,\"y\":2.6,\"width\":3.2,\"height\":2.8}},{\"area\":\"rear bumper, right corner\",\"detail\":\"pushed in with gap at the quarter panel seam\",\"severity\":\"moderate\",\"panel\":\"rear_bumper\",\"box\":{\"x\":0.6,\"y\":3.6,\"width\":2.4,\"height\":3.8}},{\"area\":\"right taillight\",\"detail\":\"missing or broken out of its housing\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":0.9,\"y\":2.8,\"width\":0.5,\"height\":0.9}},{\"area\":\"trunk lid, right rear corner\",\"detail\":\"lifted and misaligned\",\"severity\":\"moderate\",\"panel\":\"trunk\",\"box\":{\"x\":1.1,\"y\":2.1,\"width\":1.4,\"height\":0.8}}]}]}"
+  },
+  "refine": {
+   "ms": 3000,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":130,\"y\":150,\"width\":450,\"height\":290}},{\"number\":2,\"found\":true,\"box\":{\"x\":100,\"y\":130,\"width\":345,\"height\":500}},{\"number\":3,\"found\":false,\"box\":{\"x\":0,\"y\":0,\"width\":0,\"height\":0}}]}",
+   "crops": [
+    {
+     "left": 22.5,
+     "top": 127.5,
+     "scale": 1.1888544891640866,
+     "width": 768,
+     "height": 516
+    },
+    {
+     "left": 0,
+     "top": 250.0,
+     "scale": 1.4222222222222223,
+     "width": 633,
+     "height": 768
+    },
+    {
+     "left": 155.0,
+     "top": 658.75,
+     "scale": 2.0,
+     "width": 480,
+     "height": 374
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 4546,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Right (passenger) side of a white four door sedan showing the rear quarter panel, rear bumper corner and both right doors\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"right rear quarter panel\",\"detail\":\"dented and creased behind the fuel door toward the rear corner\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":135,\"y\":240,\"width\":400,\"height\":240}},{\"area\":\"rear bumper, right corner\",\"detail\":\"pushed out and separated from the quarter panel\",\"severity\":\"moderate\",\"panel\":\"rear_bumper\",\"box\":{\"x\":70,\"y\":340,\"width\":300,\"height\":360}},{\"area\":\"right taillight\",\"detail\":\"lens appears broken or missing, dark opening visible\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":115,\"y\":258,\"width\":62,\"height\":85}},{\"area\":\"rear wheel well liner\",\"detail\":\"torn loose and hanging down to the ground\",\"severity\":\"moderate\",\"panel\":\"rear_right_quarter\",\"box\":{\"x\":195,\"y\":690,\"width\":160,\"height\":125}}]}]}"
+  }
+ }
+}

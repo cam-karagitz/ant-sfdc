@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "Claim [00002118](/lightning/r/500aj00003jKuVeAAK/view) is a **High** severity water damage claim for the [Okafor Household](/lightning/r/001aj000040sVmRAAU/view). A supply line to the basement bathroom burst on 21 Sep while the family was away. It is **Under Investigation** with Marcus Lindahl, has been open 10 days, and the policy was in force on the date of loss ([ANT-HO-204585](/lightning/r/a00aj00003jKVNfAAO/view), $2,500 deductible).\n\n- **Money:** Estimated loss **$48,500**, reserve **$45,000**, paid **$5,000** (an advance for drying), outstanding **$40,000**\n- **Coverage:** Sudden and accidental discharge, which is covered\n- **Latest (30 Sep):** Drying is done and moisture readings are normal. Waiting on the mitigation invoice and the rebuild estimate.\n- **Your open tasks:** Review the mitigation invoice (due 4 Oct) and approve the rebuild estimate (due 5 Oct), both High priority\n\nThe estimated loss is $3,500 more than the reserve. No SIU referral and no subrogation potential."
+  }
+]

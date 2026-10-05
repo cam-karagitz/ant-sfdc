@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "On the Standard deductible quote for the Dubois Household - Personal Auto sale, what did the customer answer about marital status?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status, Configuration__c, Opportunity.Id, Opportunity.Name FROM Quote WHERE Opportunity.Name LIKE '%Dubois%' AND Name LIKE '%Standard%' LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Opportunity\":{\"Name\":\"Dubois Household - Personal Auto\",\"Id\":\"006aj00000epHJEAA2\"},\"OpportunityId\":\"006aj00000epHJEAA2\",\"Configuration__c\":\"{\\\"pricing\\\":{\\\"referrals\\\":[],\\\"premium\\\":1560,\\\"lines\\\":[{\\\"label\\\":\\\"Base rate\\\",\\\"effect\\\":\\\"2 vehicles\\\",\\\"amount\\\":2900},{\\\"label\\\":\\\"Marital status: Married or partnered\\\",\\\"effect\\\":\\\"-5%\\\",\\\"amount\\\":-145},{\\\"label\\\":\\\"Insured today: Yes, 3 years or more\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-220},{\\\"label\\\":\\\"Youngest driver: 65 or older\\\",\\\"effect\\\":\\\"+6%\\\",\\\"amount\\\":152},{\\\"label\\\":\\\"At-fault accidents, past 3 years: None\\\",\\\"effect\\\":\\\"-5%\\\",\\\"amount\\\":-135},{\\\"label\\\":\\\"Main vehicle ownership: Leased\\\",\\\"effect\\\":\\\"+3%\\\",\\\"amount\\\":77},{\\\"label\\\":\\\"Main vehicle anti-theft: Yes\\\",\\\"effect\\\":\\\"-3%\\\",\\\"amount\\\":-79},{\\\"label\\\":\\\"Liability limits: 50/100/50\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-204},{\\\"label\\\":\\\"Uninsured motorist: Match liability\\\",\\\"effect\\\":\\\"+6%\\\",\\\"amount\\\":141},{\\\"label\\\":\\\"Collision deductible: $1,000\\\",\\\"effect\\\":\\\"-9%\\\",\\\"amount\\\":-224},{\\\"label\\\":\\\"Bundle with home or renters: Yes\\\",\\\"effect\\\":\\\"-10%\\\",\\\"amount\\\":-226},{\\\"label\\\":\\\"Paperless and autopay: Yes\\\",\\\"effect\\\":\\\"-3%\\\",\\\"amount\\\":-61},{\\\"label\\\":\\\"Safe driving app: Yes\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-158},{\\\"label\\\":\\\"Medical payments: $5,000\\\",\\\"effect\\\":\\\"Added cover\\\",\\\"amount\\\":38},{\\\"label\\\":\\\"Rental reimbursement: Yes\\\",\\\"effect\\\":\\\"Added cover\\\",\\\"amount\\\":54},{\\\"label\\\":\\\"Territory and rating tier\\\",\\\"effect\\\":\\\"-18%\\\",\\\"amount\\\":-350}],\\\"limitAmount\\\":100000,\\\"deductible\\\":1000},\\\"answers\\\":{\\\"vehicleList\\\":\\\"2020 Hyundai Kona and 2017 Chevrolet Equinox\\\",\\\"telematics\\\":\\\"true\\\",\\\"paperless\\\":\\\"true\\\",\\\"payInFull\\\":\\\"false\\\",\\\"bundle\\\":\\\"true\\\",\\\"roadside\\\":\\\"false\\\",\\\"rental\\\":\\\"true\\\",\\\"medical\\\":\\\"5000\\\",\\\"comprehensive\\\":\\\"500\\\",\\\"collision\\\":\\\"1000\\\",\\\"uninsured\\\":\\\"match\\\",\\\"liability\\\":\\\"100000\\\",\\\"antiTheft\\\":\\\"true\\\",\\\"ownership\\\":\\\"leased\\\",\\\"mileage\\\":\\\"7to12\\\",\\\"use\\\":\\\"commute\\\",\\\"vehicles\\\":\\\"2\\\",\\\"goodStudent\\\":\\\"false\\\",\\\"accidents\\\":\\\"0\\\",\\\"violations\\\":\\\"0\\\",\\\"youngestDriver\\\":\\\"65plus\\\",\\\"drivers\\\":\\\"2\\\",\\\"priorInsurance\\\":\\\"3plus\\\",\\\"homeowner\\\":\\\"false\\\",\\\"maritalStatus\\\":\\\"married\\\"},\\\"tier\\\":0.8168,\\\"configuredOn\\\":\\\"2026-09-03\\\",\\\"version\\\":1}\",\"Status\":\"Presented\",\"Name\":\"Standard deductible\",\"Id\":\"0Q0aj000003bR9JCAU\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "The customer said **Married or partnered** on the [Standard deductible](/lightning/r/0Q0aj000003bR9JCAU/view) quote for [Dubois Household - Personal Auto](/lightning/r/006aj00000epHJEAA2/view). That answer took **5% ($145)** off the premium. The answers were filled in on Sep 3, 2026, and the quote is now at Presented.\n\n?> What else did the Dubois customer answer?\n?> Compare the Dubois quote options\n?> Why is this quote's premium $1,560?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What else did the Dubois customer answer?\",\n      \"Compare the Dubois quote options\",\n      \"Why is this quote's premium $1,560?\"\n    ]\n  }\n]"
+  }
+]

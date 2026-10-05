@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What are the VINs of the vehicles on policy ANT-PA-204517?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Account__r.Name, Account__r.Id, (SELECT Id, Name, Identifier__c, Model_Year__c, Asset_Type__c FROM Assets__r) FROM Policy__c WHERE Name = 'ANT-PA-204517'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Assets__r\":[{\"Asset_Type__c\":\"Vehicle\",\"Model_Year__c\":\"2022\",\"Identifier__c\":\"2T3ZY4K05N9372487\",\"Name\":\"2022 Toyota RAV4\",\"Id\":\"a04aj000007yO6fAAE\",\"Policy__c\":\"a00aj00003jfwRBAAY\"},{\"Asset_Type__c\":\"Vehicle\",\"Model_Year__c\":\"2019\",\"Identifier__c\":\"1HGBW40G4K5395405\",\"Name\":\"2019 Honda Accord\",\"Id\":\"a04aj000007yO6gAAE\",\"Policy__c\":\"a00aj00003jfwRBAAY\"}],\"Account__c\":\"001aj000041E8MXAA0\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jfwRBAAY\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view) for [Reyes Household](/lightning/r/001aj000041E8MXAA0/view) covers two vehicles:\n\n| Vehicle | VIN |\n|---|---|\n| 2022 Toyota RAV4 | **2T3ZY4K05N9372487** |\n| 2019 Honda Accord | **1HGBW40G4K5395405** |"
+  }
+]

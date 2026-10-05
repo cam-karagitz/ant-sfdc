@@ -1,0 +1,79 @@
+<template>
+    <article class="c-offer" aria-label="Quote">
+        <template lwc:if={errorMessage}>
+            <p class="c-offer__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={quote}>
+            <header class="c-offer__band">
+                <span class="c-offer__number">Quote {quote.number}</span>
+                <span class={statusClass}>{quote.status}</span>
+            </header>
+            <div class="c-offer__body">
+                <div class="c-offer__id">
+                    <template lwc:if={quote.line}>
+                        <span class={quote.lineTileClass} title={quote.line}>
+                            <lightning-icon icon-name={quote.lineIconName} size="x-small" alternative-text={quote.line}></lightning-icon>
+                        </span>
+                    </template>
+                    <div class="c-offer__id-text">
+                        <p class="c-offer__option">{quote.option}</p>
+                        <template lwc:if={quote.line}>
+                            <p class="c-offer__line">{quote.line}</p>
+                        </template>
+                    </div>
+                </div>
+                <template lwc:if={isPriced}>
+                    <p class="c-offer__premium">{quote.premium}</p>
+                    <p class="c-offer__per">{perLine}</p>
+                </template>
+                <template lwc:else>
+                    <p class="c-offer__unpriced">Draft</p>
+                    <p class="c-offer__per">The price shown is not saved yet. Save the quote to set its terms.</p>
+                </template>
+
+                <template lwc:if={comparison}>
+                    <p class={comparisonClass}>{comparison}</p>
+                </template>
+
+                <template lwc:if={isPriced}>
+                    <dl class="c-offer__terms">
+                        <div>
+                            <dt>Limit</dt>
+                            <dd>{quote.limit}</dd>
+                        </div>
+                        <div>
+                            <dt>Deductible</dt>
+                            <dd>{quote.deductible}</dd>
+                        </div>
+                    </dl>
+                </template>
+
+                <template lwc:if={hasValidity}>
+                    <div class="c-valid">
+                        <div class="c-valid__labels">
+                            <span>Issued {quote.issued}</span>
+                            <span class={validityClass}>{validityLabel}</span>
+                        </div>
+                        <span class="c-valid__track" role="img" aria-label={validityLabel}>
+                            <span class={validityBarClass} style={validityStyle}></span>
+                        </span>
+                    </div>
+                </template>
+            </div>
+
+            <footer class="c-offer__foot">
+                <template lwc:if={quote.saleId}>
+                    <a class="c-offer__sale" href={saleUrl} onclick={handleOpenSale}>{quote.saleName}</a>
+                </template>
+                <template lwc:if={quote.underwriter}>
+                    <span class="c-offer__underwriter">{underwriterLabel}</span>
+                </template>
+            </footer>
+        </template>
+        <template lwc:else>
+            <div class="c-offer__loading">
+                <lightning-spinner alternative-text="Loading quote" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "Create a follow-up task for me to review the Reyes Household renewal, due 20 October 2026."
+  },
+  {
+    "role": "assistant",
+    "content": "I need the Reyes Household account and its renewal policy."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, (SELECT Id, Name, Line_of_Business__c, Status__c, Expiration_Date__c FROM Policies__r WHERE Status__c IN ('Active','Pending Renewal') ORDER BY Expiration_Date__c) FROM Account WHERE Name LIKE '%Reyes%'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policies__r\":[{\"Expiration_Date__c\":\"2027-03-15\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKdxuAAC\",\"Account__c\":\"001aj000040t3coAAA\"},{\"Expiration_Date__c\":\"2027-03-15\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jKdxvAAC\",\"Account__c\":\"001aj000040t3coAAA\"},{\"Expiration_Date__c\":\"2027-05-13\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKdxtAAC\",\"Account__c\":\"001aj000040t3coAAA\"}],\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": null,\n  \"related_record_id\": \"001aj000040t3coAAA\",\n  \"due_date\": \"2026-10-20\",\n  \"subject\": \"Review Reyes Household renewal\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review Reyes Household renewal\",\n    \"dueDate\": \"2026-10-20\",\n    \"relatedId\": \"001aj000040t3coAAA\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

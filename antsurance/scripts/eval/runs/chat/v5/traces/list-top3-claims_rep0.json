@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "List the three largest open claims by outstanding reserve."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Handled_By__c, Days_Open__c, Account.Name, Policy__r.Line_of_Business__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Line_of_Business__c\":\"Workers Compensation\",\"Id\":\"a00aj00003jfwRdAAI\"},\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000041E8MiAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jfwRdAAI\",\"AccountId\":\"001aj000041E8MiAAK\",\"Days_Open__c\":8,\"Handled_By__c\":\"Anjali Venkataraman\",\"Outstanding_Reserve__c\":266500,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002569\",\"Id\":\"500aj00003jfwTtAAI\"},{\"Policy__r\":{\"Line_of_Business__c\":\"Commercial Property\",\"Id\":\"a00aj00003jfwRhAAI\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000041E8MkAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jfwRhAAI\",\"AccountId\":\"001aj000041E8MkAAK\",\"Days_Open__c\":27,\"Handled_By__c\":\"Anjali Venkataraman\",\"Outstanding_Reserve__c\":180000,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002571\",\"Id\":\"500aj00003jfwTvAAI\"},{\"Policy__r\":{\"Line_of_Business__c\":\"Commercial Auto\",\"Id\":\"a00aj00003jfwRpAAI\"},\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000041E8MnAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jfwRpAAI\",\"AccountId\":\"001aj000041E8MnAAK\",\"Days_Open__c\":33,\"Handled_By__c\":\"Dana Whitaker\",\"Outstanding_Reserve__c\":81000,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002573\",\"Id\":\"500aj00003jfwTxAAI\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_work_list",
+    "content": "{\n  \"title\": \"Largest open claims by outstanding reserve\",\n  \"items\": [\n    {\n      \"title\": \"Installer fell from second-story roof\",\n      \"subtitle\": \"Ridgeline Roofing & Solar, Workers Compensation\",\n      \"record_id\": \"500aj00003jfwTtAAI\",\n      \"amount\": \"$266,500\",\n      \"chips\": [\n        {\n          \"label\": \"Catastrophic\",\n          \"tone\": \"alert\"\n        },\n        {\n          \"label\": \"Under Investigation\",\n          \"tone\": \"watch\"\n        },\n        {\n          \"label\": \"Anjali Venkataraman\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    },\n    {\n      \"title\": \"Kitchen fire spread to three apartments\",\n      \"subtitle\": \"Copperfield Property Management, Commercial Property\",\n      \"record_id\": \"500aj00003jfwTvAAI\",\n      \"amount\": \"$180,000\",\n      \"chips\": [\n        {\n          \"label\": \"Catastrophic\",\n          \"tone\": \"alert\"\n        },\n        {\n          \"label\": \"Appraisal\",\n          \"tone\": \"watch\"\n        },\n        {\n          \"label\": \"27 days open\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    },\n    {\n      \"title\": \"Tractor-trailer jackknifed on I-80, cargo loss\",\n      \"subtitle\": \"Sagebrush Freight Lines, Commercial Auto\",\n      \"record_id\": \"500aj00003jfwTxAAI\",\n      \"amount\": \"$81,000\",\n      \"chips\": [\n        {\n          \"label\": \"High severity\",\n          \"tone\": \"alert\"\n        },\n        {\n          \"label\": \"Approved\",\n          \"tone\": \"good\"\n        },\n        {\n          \"label\": \"Dana Whitaker\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What's the total outstanding reserve?\",\n    \"Show the history of claim 00002569\",\n    \"Open claims by handler\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"work_list\",\n    \"title\": \"Largest open claims by outstanding reserve\",\n    \"items\": [\n      {\n        \"title\": \"Installer fell from second-story roof\",\n        \"subtitle\": \"Ridgeline Roofing & Solar, Workers Compensation\",\n        \"recordId\": \"500aj00003jfwTtAAI\",\n        \"amount\": \"$266,500\",\n        \"chips\": [\n          {\n            \"label\": \"Catastrophic\",\n            \"tone\": \"alert\"\n          },\n          {\n            \"label\": \"Under Investigation\",\n            \"tone\": \"watch\"\n          },\n          {\n            \"label\": \"Anjali Venkataraman\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      },\n      {\n        \"title\": \"Kitchen fire spread to three apartments\",\n        \"subtitle\": \"Copperfield Property Management, Commercial Property\",\n        \"recordId\": \"500aj00003jfwTvAAI\",\n        \"amount\": \"$180,000\",\n        \"chips\": [\n          {\n            \"label\": \"Catastrophic\",\n            \"tone\": \"alert\"\n          },\n          {\n            \"label\": \"Appraisal\",\n            \"tone\": \"watch\"\n          },\n          {\n            \"label\": \"27 days open\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      },\n      {\n        \"title\": \"Tractor-trailer jackknifed on I-80, cargo loss\",\n        \"subtitle\": \"Sagebrush Freight Lines, Commercial Auto\",\n        \"recordId\": \"500aj00003jfwTxAAI\",\n        \"amount\": \"$81,000\",\n        \"chips\": [\n          {\n            \"label\": \"High severity\",\n            \"tone\": \"alert\"\n          },\n          {\n            \"label\": \"Approved\",\n            \"tone\": \"good\"\n          },\n          {\n            \"label\": \"Dana Whitaker\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What's the total outstanding reserve?\",\n      \"Show the history of claim 00002569\",\n      \"Open claims by handler\"\n    ]\n  }\n]"
+  }
+]

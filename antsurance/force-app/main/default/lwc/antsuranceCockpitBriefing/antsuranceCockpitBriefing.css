@@ -1,0 +1,362 @@
+@import 'c/antsuranceCockpitTokens';
+@import 'c/antsuranceUiStyles';
+
+/* The focal point of Home: cream stock under a clay edge. Everything else on the page is quieter. */
+:host {
+    container-type: inline-size;
+}
+
+.c-briefing {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--ants-line);
+    border-top: 4px solid var(--ants-clay);
+    border-radius: 1.25rem;
+    background: var(--ants-ivory);
+    overflow: hidden;
+}
+
+.c-briefing__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+/* A button or a chip keeps its shape; the words beside it give way. */
+.c-briefing lightning-button,
+.c-briefing .c-chip {
+    flex: none;
+    /* Lightning sets the label to wrap inside the button, so the button itself is held at the width of its label. */
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+.c-briefing__tile {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-briefing__tile img {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.c-briefing__titles {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.c-briefing__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-briefing__written {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+/* One line about Claude's desk, when prepared work is waiting there. */
+.c-briefing__desk {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    border-bottom: 1px solid var(--ants-line);
+    background: var(--ants-clay-tint);
+}
+
+.c-desk-line__words {
+    flex: 1 1 auto;
+    display: grid;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.c-desk-line__lead {
+    color: var(--ants-clay-dark);
+}
+
+.c-desk-line__text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+.c-briefing__body {
+    /* Takes the height the rail beside it sets, and hands it to the rows, so no bare band is left under the pager. */
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.125rem 1.25rem 1.25rem;
+}
+
+/* The headline has the card's whole width: held to 52rem it wrapped beside half a card of nothing. */
+.c-briefing__headline {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    /* Even lines, so a narrower card does not leave one or two words on the last line. */
+    text-wrap: balance;
+}
+
+/* The headline comes in its clauses. In a narrow card they run on as plain text, in even lines. */
+.c-clause:not(:last-child)::after {
+    content: ' ';
+}
+
+/* In a card wide enough to hold a clause on one line, each clause is a block of its own, so a
+   headline that needs two lines breaks after its semicolon and not in the middle of a clause. */
+@container (min-width: 60rem) {
+    .c-clause {
+        display: inline-block;
+    }
+
+    .c-clause:not(:last-child) {
+        margin-right: 0.28em;
+    }
+}
+
+.c-briefing__first {
+    margin-top: 1.125rem;
+}
+
+/* ---- what to do first ---- */
+
+.c-priorities {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-priority {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-priority__number {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1.5px solid var(--ants-clay-deep);
+    border-radius: 50%;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-priority__title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: pretty;
+}
+
+.c-priority__why {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-priority__about {
+    margin: 0.25rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-priority__kind {
+    margin-right: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-priority__action {
+    flex: none;
+}
+
+.c-priority_done .c-priority__number {
+    border-color: var(--ants-olive-ink);
+    color: var(--ants-olive-ink);
+}
+
+.c-priority_done .c-priority__title {
+    color: var(--ants-muted);
+    text-decoration: line-through;
+}
+
+/* ---- before there is a briefing, and while one is written ---- */
+
+.c-briefing__invite {
+    /* Takes the height the rail beside it sets, with its content in the middle, so there is no bare band below. */
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem 1.25rem;
+}
+
+.c-invite__reads {
+    margin: 0.5rem 0 1rem;
+    max-width: 36rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-invite__ask lightning-button {
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+.c-invite__gets {
+    margin: 0;
+    padding: 0 0 0 1.5rem;
+    list-style: none;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-get + .c-get {
+    margin-top: 0.75rem;
+}
+
+.c-get__lead {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-get__detail {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+}
+
+.c-briefing__writing {
+    flex: 1 1 auto;
+    position: relative;
+    display: grid;
+    /* At the top of the card, in view as Home opens. The card is as tall as the rail beside it, and
+       centered in that height the ring sat below the bottom of the window. */
+    align-content: start;
+    justify-items: center;
+    gap: 0.25rem;
+    padding: 2.5rem 1.25rem;
+    text-align: center;
+}
+
+/* A quiet ring that turns while Claude reads. It holds still for people who ask for less motion. */
+.c-writing__ring {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-bottom: 0.5rem;
+    border: 3px solid var(--ants-clay-tint);
+    border-top-color: var(--ants-clay-deep);
+    border-radius: 50%;
+    animation: c-turn 0.9s linear infinite;
+}
+
+@keyframes c-turn {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-writing__ring {
+        animation: none;
+    }
+}
+
+.c-writing__lead {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-writing__detail {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-briefing__error {
+    margin: 0;
+    padding: 0 1.25rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--ants-clay-dark);
+}
+
+/* Narrow: what the briefing gives drops under the invitation instead of squeezing it. */
+@container (max-width: 46rem) {
+    .c-briefing__invite {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-invite__gets {
+        padding-left: 0;
+        border-left: 0;
+    }
+}
+
+/* Narrower: a row's button drops under its words, left aligned and at its own size. */
+@container (max-width: 36rem) {
+    .c-priority {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .c-priority__action {
+        grid-column: 2;
+        justify-self: start;
+    }
+}
+
+/* Narrower still: the desk line's button drops under its words, at its own size, instead of squeezing them. */
+@container (max-width: 34rem) {
+    .c-briefing__desk {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .c-briefing__head {
+        flex-wrap: wrap;
+    }
+}

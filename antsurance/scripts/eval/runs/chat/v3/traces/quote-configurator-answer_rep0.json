@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "On the Standard deductible quote for the Dubois Household - Personal Auto sale, what did the customer answer about marital status?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Configuration__c, Opportunity.Id, Opportunity.Name FROM Quote WHERE Opportunity.Name LIKE '%Dubois%' AND Name LIKE '%Standard%' LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Opportunity\":{\"Name\":\"Dubois Household - Personal Auto\",\"Id\":\"006aj00000elRnSAAU\"},\"OpportunityId\":\"006aj00000elRnSAAU\",\"Configuration__c\":\"{\\\"pricing\\\":{\\\"referrals\\\":[],\\\"premium\\\":1560,\\\"lines\\\":[{\\\"label\\\":\\\"Base rate\\\",\\\"effect\\\":\\\"2 vehicles\\\",\\\"amount\\\":2900.00},{\\\"label\\\":\\\"Marital status: Married or partnered\\\",\\\"effect\\\":\\\"-5%\\\",\\\"amount\\\":-145.00},{\\\"label\\\":\\\"Insured today: Yes, 3 years or more\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-220.40},{\\\"label\\\":\\\"Youngest driver: 65 or older\\\",\\\"effect\\\":\\\"+6%\\\",\\\"amount\\\":152.08},{\\\"label\\\":\\\"At-fault accidents, past 3 years: None\\\",\\\"effect\\\":\\\"-5%\\\",\\\"amount\\\":-134.33},{\\\"label\\\":\\\"Ownership: Leased\\\",\\\"effect\\\":\\\"+3%\\\",\\\"amount\\\":76.57},{\\\"label\\\":\\\"Anti-theft device: Yes\\\",\\\"effect\\\":\\\"-3%\\\",\\\"amount\\\":-78.87},{\\\"label\\\":\\\"Liability limits: 50/100/50\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-204.00},{\\\"label\\\":\\\"Uninsured motorist: Match liability\\\",\\\"effect\\\":\\\"+6%\\\",\\\"amount\\\":140.76},{\\\"label\\\":\\\"Collision deductible: $1,000\\\",\\\"effect\\\":\\\"-9%\\\",\\\"amount\\\":-223.81},{\\\"label\\\":\\\"Bundle with home or renters: Yes\\\",\\\"effect\\\":\\\"-10%\\\",\\\"amount\\\":-226.30},{\\\"label\\\":\\\"Paperless and autopay: Yes\\\",\\\"effect\\\":\\\"-3%\\\",\\\"amount\\\":-61.10},{\\\"label\\\":\\\"Safe driving app: Yes\\\",\\\"effect\\\":\\\"-8%\\\",\\\"amount\\\":-158.05},{\\\"label\\\":\\\"Medical payments: $5,000\\\",\\\"effect\\\":\\\"Added cover\\\",\\\"amount\\\":38.00},{\\\"label\\\":\\\"Rental reimbursement: Yes\\\",\\\"effect\\\":\\\"Added cover\\\",\\\"amount\\\":54.00},{\\\"label\\\":\\\"Territory and rating tier\\\",\\\"effect\\\":\\\"-18.3%\\\",\\\"amount\\\":-349.83}],\\\"limitAmount\\\":100000,\\\"deductible\\\":1000},\\\"answers\\\":{\\\"vehicleList\\\":\\\"2020 Hyundai Kona\\\",\\\"telematics\\\":\\\"true\\\",\\\"paperless\\\":\\\"true\\\",\\\"payInFull\\\":\\\"false\\\",\\\"bundle\\\":\\\"true\\\",\\\"roadside\\\":\\\"false\\\",\\\"rental\\\":\\\"true\\\",\\\"medical\\\":\\\"5000\\\",\\\"comprehensive\\\":\\\"500\\\",\\\"collision\\\":\\\"1000\\\",\\\"uninsured\\\":\\\"match\\\",\\\"liability\\\":\\\"100000\\\",\\\"antiTheft\\\":\\\"true\\\",\\\"ownership\\\":\\\"leased\\\",\\\"mileage\\\":\\\"7to12\\\",\\\"use\\\":\\\"commute\\\",\\\"vehicles\\\":\\\"2\\\",\\\"goodStudent\\\":\\\"false\\\",\\\"accidents\\\":\\\"0\\\",\\\"violations\\\":\\\"0\\\",\\\"youngestDriver\\\":\\\"65plus\\\",\\\"drivers\\\":\\\"2\\\",\\\"priorInsurance\\\":\\\"3plus\\\",\\\"homeowner\\\":\\\"false\\\",\\\"maritalStatus\\\":\\\"married\\\"},\\\"tier\\\":0.8168,\\\"configuredOn\\\":\\\"2026-10-02\\\",\\\"version\\\":1}\",\"Name\":\"Standard deductible\",\"Id\":\"0Q0aj000003aaHtCAI\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "The customer answered **Married or partnered** on the [Standard deductible](/lightning/r/0Q0aj000003aaHtCAI/view) quote for [Dubois Household - Personal Auto](/lightning/r/006aj00000elRnSAAU/view). That answer gave them a **5% discount**, which took **$145** off the premium."
+  }
+]

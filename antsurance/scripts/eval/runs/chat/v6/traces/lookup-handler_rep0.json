@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "Who is handling the burst pipe claim for the Okafor Household?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Handled_By__c, Loss_Type__c, Account.Name, Account.Id FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Account.Name LIKE '%Okafor%' ORDER BY Reported_Date__c DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000041E8MYAA0\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MYAA0\",\"Loss_Type__c\":\"Water Damage\",\"Handled_By__c\":\"Marcus Lindahl\",\"Status\":\"Under Investigation\",\"Subject\":\"Burst pipe flooded finished basement\",\"CaseNumber\":\"00002566\",\"Id\":\"500aj00003jfwTqAAI\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Marcus Lindahl** is handling the Okafor Household's burst pipe claim, [00002566: Burst pipe flooded finished basement](/lightning/r/500aj00003jfwTqAAI/view). It's currently **Under Investigation**.\n\n?> Summarize claim 00002566\n?> What's the reserve on this claim?\n?> Remind me to call the Okafors Friday"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Summarize claim 00002566\",\n      \"What's the reserve on this claim?\",\n      \"Remind me to call the Okafors Friday\"\n    ]\n  }\n]"
+  }
+]

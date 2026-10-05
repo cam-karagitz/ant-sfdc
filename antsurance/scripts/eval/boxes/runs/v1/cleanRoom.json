@@ -1,0 +1,27 @@
+{
+ "width": 1020,
+ "height": 680,
+ "answers": {
+  "fraction": {
+   "ms": 1390,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Wide view of a manufactured home living room looking toward the kitchen and dining area, with a textured vaulted ceiling.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  },
+  "pixel": {
+   "ms": 1332,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Interior of a single wide manufactured home showing the living room with vaulted textured ceiling, open to the kitchen and dining area.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  },
+  "grid": {
+   "ms": 5923,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Wide view of a manufactured home living room looking toward the kitchen and dining area, with a textured vaulted ceiling.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  },
+  "refine": {
+   "ms": 0,
+   "text": "{\"areas\": []}",
+   "crops": []
+  },
+  "pixel_tight": {
+   "ms": 1889,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Wide view of a manufactured home living room with a textured vaulted ceiling, open to the kitchen and dining area.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  }
+ }
+}

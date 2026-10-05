@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How big is our book right now? Policies in force and total premium."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT(Id) c, SUM(Annual_Premium__c) p FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":1862894.0,\"c\":155}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "You have **155 policies in force** (Active or Pending Renewal), worth **$1,862,894** in annual premium. That works out to about $12,019 per policy on average."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Policies in force\",\n      \"value\": \"155\",\n      \"note\": \"Active or Pending Renewal\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Annual premium\",\n      \"value\": \"$1,862,894\",\n      \"note\": \"across policies in force\",\n      \"tone\": \"good\"\n    },\n    {\n      \"label\": \"Average premium\",\n      \"value\": \"$12,019\",\n      \"note\": \"per policy in force\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Break premium down by line of business\",\n    \"Which policies renew in the next 30 days?\",\n    \"How many policies are past due?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Policies in force\",\n        \"value\": \"155\",\n        \"note\": \"Active or Pending Renewal\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Annual premium\",\n        \"value\": \"$1,862,894\",\n        \"note\": \"across policies in force\",\n        \"tone\": \"good\"\n      },\n      {\n        \"label\": \"Average premium\",\n        \"value\": \"$12,019\",\n        \"note\": \"per policy in force\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Break premium down by line of business\",\n      \"Which policies renew in the next 30 days?\",\n      \"How many policies are past due?\"\n    ]\n  }\n]"
+  }
+]

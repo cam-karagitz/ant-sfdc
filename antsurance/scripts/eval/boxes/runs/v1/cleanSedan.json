@@ -1,0 +1,27 @@
+{
+ "width": 1280,
+ "height": 960,
+ "answers": {
+  "fraction": {
+   "ms": 2365,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Black Toyota Century sedan parked at a curb at night, seen from the front and its driver's side (left side, right hand drive car) at a distance.\",\"usable\":false,\"unusable_reason\":\"Too far away and dark to judge a scratch\",\"damage\":[]}]}"
+  },
+  "pixel": {
+   "ms": 1535,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Black Toyota Century sedan parked at a curb at night, seen from the front and passenger side, outside a lit cafe.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  },
+  "grid": {
+   "ms": 3061,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Full side view at night of a black Toyota Century sedan parked at a curb; no scratch is visible, though night lighting, reflections and distance could hide a fine scratch, so a close daylight photo of the side would help.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  },
+  "refine": {
+   "ms": 0,
+   "text": "{\"areas\": []}",
+   "crops": []
+  },
+  "pixel_tight": {
+   "ms": 1670,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Black Toyota Century sedan parked at a curb at night, seen from the front right with the right side and front visible.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[]}]}"
+  }
+ }
+}

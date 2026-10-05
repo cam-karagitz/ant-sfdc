@@ -1,0 +1,27 @@
+@page { size: Letter; margin: 0.75in; }
+* { box-sizing: border-box; }
+body { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; line-height: 1.4; color: #1c1c1c; margin: 0; }
+h1 { font-size: 16pt; margin: 0 0 2pt; }
+h2 { font-size: 11pt; margin: 16pt 0 5pt; padding-bottom: 3pt; border-bottom: 1.2pt solid #1c1c1c; text-transform: uppercase; letter-spacing: 0.04em; }
+.sub { color: #555; font-size: 9.5pt; margin: 0 0 10pt; }
+.letterhead { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5pt solid #2f4f6f; padding-bottom: 6pt; margin-bottom: 12pt; }
+.letterhead .name { font-size: 13pt; font-weight: bold; color: #2f4f6f; }
+.letterhead .meta { font-size: 8.5pt; color: #555; text-align: right; }
+table { width: 100%; border-collapse: collapse; }
+td, th { padding: 4.5pt 6pt; vertical-align: top; text-align: left; }
+table.form td { border: 0.6pt solid #9a9a9a; }
+table.form td.q { width: 42%; background: #f3f3f1; font-size: 9.5pt; color: #333; }
+table.grid th { background: #2f4f6f; color: #fff; font-size: 9pt; font-weight: bold; }
+table.grid td { border-bottom: 0.6pt solid #c8c8c8; font-size: 9.5pt; }
+table.grid td.n, table.grid th.n { text-align: right; }
+table.grid tr.total td { font-weight: bold; border-top: 1.2pt solid #1c1c1c; border-bottom: none; }
+.box { display: inline-block; width: 9pt; height: 9pt; border: 0.8pt solid #1c1c1c; margin: 0 3pt -1pt 0; text-align: center; font-size: 8pt; line-height: 8pt; }
+.note { font-size: 9pt; color: #555; margin-top: 6pt; }
+.foot { margin-top: 18pt; font-size: 8pt; color: #777; border-top: 0.6pt solid #c8c8c8; padding-top: 4pt; }
+.sig { margin-top: 14pt; display: flex; gap: 24pt; }
+.sig div { flex: 1; border-top: 0.8pt solid #1c1c1c; padding-top: 3pt; font-size: 8.5pt; color: #555; height: 30pt; }
+.page { page-break-after: always; }
+.mail { font-size: 10.5pt; }
+.mail .hdr td { padding: 2pt 6pt 2pt 0; font-size: 9.5pt; }
+.mail .hdr td.k { color: #666; width: 62pt; }
+.mail p { margin: 0 0 9pt; }

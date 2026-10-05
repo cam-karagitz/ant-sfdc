@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies carry a Water Backup endorsement?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT_DISTINCT(Policy__c) c, COUNT(Id) n FROM Policy_Endorsement__c WHERE Name LIKE '%Water Backup%'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"n\":33,\"c\":33}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**33 policies** have a Water Backup endorsement, one on each. That count covers every policy status and every endorsement status, not only policies in force."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Water Backup policies\",\n      \"value\": \"33\",\n      \"note\": \"any policy or endorsement status\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"How many of those policies are in force?\",\n    \"Water Backup policies by line of business\",\n    \"Which policies with Water Backup have open claims?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Water Backup policies\",\n        \"value\": \"33\",\n        \"note\": \"any policy or endorsement status\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"How many of those policies are in force?\",\n      \"Water Backup policies by line of business\",\n      \"Which policies with Water Backup have open claims?\"\n    ]\n  }\n]"
+  }
+]

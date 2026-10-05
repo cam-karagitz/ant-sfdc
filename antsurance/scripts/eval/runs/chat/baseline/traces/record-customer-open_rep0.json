@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Okafor Household\" open (object Account, Id 001aj000040t1ntAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhat is open here?"
+  },
+  {
+    "role": "assistant",
+    "content": "Let me check open claims, service requests, sales, and tasks for this household."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Priority, RecordType.DeveloperName, Reported_Date__c, Outstanding_Reserve__c, Request_Type__c, Policy__r.Name, Policy__c FROM Case WHERE AccountId = '001aj000040t1ntAAA' AND IsClosed = false ORDER BY Reported_Date__c LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, StageName, Type, Amount, CloseDate, Line_of_Business__c FROM Opportunity WHERE AccountId = '001aj000040t1ntAAA' AND IsClosed = false LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Subject, ActivityDate, Status, Priority FROM Task WHERE AccountId = '001aj000040t1ntAAA' AND IsClosed = false ORDER BY ActivityDate LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-HO-204585\",\"Id\":\"a00aj00003jKc7NAAS\"},\"RecordType\":{\"DeveloperName\":\"Claim\",\"Id\":\"012aj00000Ee8urAAB\"},\"Policy__c\":\"a00aj00003jKc7NAAS\",\"Outstanding_Reserve__c\":40000.00,\"Reported_Date__c\":\"2026-09-22\",\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Priority\":\"High\",\"Status\":\"Under Investigation\",\"Subject\":\"Burst pipe flooded finished basement\",\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\"},{\"Policy__r\":{\"Name\":\"ANT-PA-204568\",\"Id\":\"a00aj00003jKc7MAAS\"},\"RecordType\":{\"DeveloperName\":\"Policy_Service\",\"Id\":\"012aj00000Ee8usAAB\"},\"Policy__c\":\"a00aj00003jKc7MAAS\",\"Request_Type__c\":\"Change Coverage\",\"Outstanding_Reserve__c\":0.00,\"Reported_Date__c\":\"2026-09-30\",\"RecordTypeId\":\"012aj00000Ee8usAAB\",\"Priority\":\"Low\",\"Status\":\"New\",\"Subject\":\"Lower collision deductible to $250\",\"CaseNumber\":\"00002086\",\"Id\":\"500aj00003jKcAEAA0\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[],\"truncated\":false,\"rowCount\":0}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Priority\":\"Normal\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-02\",\"Subject\":\"Email Amara Okafor the deductible comparison\",\"Id\":\"00Taj00000MiwAfEAJ\"},{\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-04\",\"Subject\":\"Review mitigation invoice from drying vendor\",\"Id\":\"00Taj00000MiwAREAZ\"},{\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-05\",\"Subject\":\"Approve the rebuild estimate for the Okafor basement\",\"Id\":\"00Taj00000MiwAaEAJ\"},{\"Priority\":\"Normal\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-06\",\"Subject\":\"Quote the coverage change and confirm the premium difference\",\"Id\":\"00Taj00000MiwALEAZ\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "assistant",
+    "content": "Okafor Household has **one open claim**, **one open service request** and **4 open tasks**. There are no open policy sales.\n\n**Claim:** [00002038](/lightning/r/500aj00003jKc9SAAS/view): a burst pipe flooded the finished basement. It's on [ANT-HO-204585](/lightning/r/a00aj00003jKc7NAAS/view), is Under Investigation with High priority, has **$40,000** in outstanding reserve and was reported 22 Sep.\n\n**Service request:** [00002086](/lightning/r/500aj00003jKcAEAA0/view): lower the collision deductible to $250. It's on [ANT-PA-204568](/lightning/r/a00aj00003jKc7MAAS/view), is New with Low priority and was opened 30 Sep.\n\n**Tasks:**\n- **Due today:** [Email Amara Okafor the deductible comparison](/lightning/r/00Taj00000MiwAfEAJ/view)\n- 4 Oct (High): [Review mitigation invoice from drying vendor](/lightning/r/00Taj00000MiwAREAZ/view)\n- 5 Oct (High): [Approve the rebuild estimate for the Okafor basement](/lightning/r/00Taj00000MiwAaEAJ/view)\n- 6 Oct: [Quote the coverage change and confirm the premium difference](/lightning/r/00Taj00000MiwALEAZ/view)"
+  }
+]

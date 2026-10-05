@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Claude_Briefing__c</fullName>
+    <description>Claude's briefing for this person on the Home page, stored as JSON by the Home cockpit. Written again there rather than edited here.</description>
+    <label>Claude Briefing</label>
+    <length>32768</length>
+    <visibleLines>6</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

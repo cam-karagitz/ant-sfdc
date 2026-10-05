@@ -1,0 +1,86 @@
+<template>
+    <section class={cardClass} aria-label={spec.title}>
+        <header class="c-form__head">
+            <span class="c-form__icon" aria-hidden="true">
+                <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+            </span>
+            <h3 class="c-title">{spec.title}</h3>
+            <span class="c-form__status">{statusLabel}</span>
+            <template lwc:if={canExpand}>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </template>
+        </header>
+
+        <template lwc:if={isOpen}>
+            <template lwc:if={hasSuggestions}>
+                <p class="c-form__legend">
+                    <img class="c-form__spark" src={sparkUrl} alt="" />
+                    Claude filled in the marked fields. Change anything before you save.
+                </p>
+            </template>
+            <lightning-record-edit-form
+                lwc:ref="form"
+                object-api-name={spec.objectApiName}
+                record-id={spec.recordId}
+                record-type-id={spec.recordTypeId}
+                density="comfy"
+                onload={handleLoad}
+                onsuccess={handleSuccess}
+                onerror={handleError}
+            >
+                <div class="c-form__grid">
+                    <template for:each={fields} for:item="field">
+                        <div key={field.key} class={field.className}>
+                            <template lwc:if={field.suggested}>
+                                <lightning-input-field field-name={field.name} value={field.value} data-name={field.name} onchange={handleChange}></lightning-input-field>
+                            </template>
+                            <template lwc:else>
+                                <lightning-input-field field-name={field.name}></lightning-input-field>
+                            </template>
+                            <template lwc:if={field.marked}>
+                                <span class="c-field__mark">
+                                    <img class="c-form__spark" src={sparkUrl} alt="" />
+                                    Suggested
+                                </span>
+                            </template>
+                            <template lwc:if={field.was}>
+                                <span class="c-field__was">{field.was}</span>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </lightning-record-edit-form>
+            <template lwc:if={hasMore}>
+                <button type="button" class="c-more c-more_fields" onclick={handleMore}>{moreLabel}</button>
+            </template>
+            <template lwc:if={errorMessage}>
+                <p class="c-form__error" role="alert">{errorMessage}</p>
+            </template>
+            <footer class="c-form__foot">
+                <p class="c-form__hint">Nothing is saved until you press {saveLabel}.</p>
+                <div class="c-form__buttons">
+                    <button type="button" class="c-button" disabled={isSaving} onclick={handleCancel}>Cancel</button>
+                    <button type="button" class="c-button c-button_primary" disabled={isSaving} onclick={handleSave}>{saveLabel}</button>
+                </div>
+            </footer>
+        </template>
+
+        <template lwc:if={isSaved}>
+            <footer class="c-form__foot c-form__foot_result" role="status">
+                <p class="c-form__result">{resultMessage}</p>
+                <a class="c-form__open" href={resultUrl} onclick={handleOpen}>
+                    {resultLink}
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </a>
+            </footer>
+        </template>
+
+        <template lwc:if={isCancelled}>
+            <footer class="c-form__foot c-form__foot_result" role="status">
+                <p class="c-form__hint">Canceled. Nothing was saved.</p>
+            </footer>
+        </template>
+    </section>
+</template>

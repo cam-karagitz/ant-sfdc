@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Read a submission: drop a broker's application, loss runs and cover note on a policy sale or a lead. Claude fills the quote's answers with their sources, checks what would refer it, lists what is missing and drafts the reply. A person confirms.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Submission Intake</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Opportunity</object>
+                <object>Lead</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

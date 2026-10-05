@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which line of business has the most open claims, and how many?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Policy__r.Line_of_Business__c lob, COUNT(Id) c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Policy__r.Line_of_Business__c ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":8,\"lob\":\"Commercial Property\"},{\"c\":6,\"lob\":\"Personal Auto\"},{\"c\":4,\"lob\":\"General Liability\"},{\"c\":2,\"lob\":\"Homeowners\"},{\"c\":2,\"lob\":\"Commercial Auto\"},{\"c\":2,\"lob\":\"Renters\"},{\"c\":2,\"lob\":\"Workers Compensation\"}],\"truncated\":false,\"rowCount\":7}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"**Commercial Property** has the most open claims: **8** of the 26 open, followed by Personal Auto with 6.\\n\\n?> Show the open Commercial Property claims\\n?> Outstanding reserve by line of business\\n?> Which open claims are high severity?\",\n  \"title\": \"Open claims by line\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"Commercial Property\",\n      \"value\": 8\n    },\n    {\n      \"label\": \"Personal Auto\",\n      \"value\": 6\n    },\n    {\n      \"label\": \"General Liability\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Homeowners\",\n      \"value\": 2\n    },\n    {\n      \"label\": \"Commercial Auto\",\n      \"value\": 2\n    },\n    {\n      \"label\": \"Renters\",\n      \"value\": 2\n    },\n    {\n      \"label\": \"Workers Comp\",\n      \"value\": 2\n    }\n  ],\n  \"highlight_label\": \"Commercial Property\",\n  \"caption\": \"Open claims by the line of business of their policy\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Open claims by line\",\n    \"caption\": \"Open claims by the line of business of their policy\",\n    \"chartType\": \"bar\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"Commercial Property\",\n        \"value\": 8\n      },\n      {\n        \"label\": \"Personal Auto\",\n        \"value\": 6\n      },\n      {\n        \"label\": \"General Liability\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Homeowners\",\n        \"value\": 2\n      },\n      {\n        \"label\": \"Commercial Auto\",\n        \"value\": 2\n      },\n      {\n        \"label\": \"Renters\",\n        \"value\": 2\n      },\n      {\n        \"label\": \"Workers Comp\",\n        \"value\": 2\n      }\n    ],\n    \"highlight\": \"Commercial Property\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show the open Commercial Property claims\",\n      \"Outstanding reserve by line of business\",\n      \"Which open claims are high severity?\"\n    ]\n  }\n]"
+  }
+]

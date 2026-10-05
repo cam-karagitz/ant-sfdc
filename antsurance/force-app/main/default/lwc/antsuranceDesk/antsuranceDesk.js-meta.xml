@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Claude's desk on Home: the work Claude prepared on its own, waiting to be approved, edited or dismissed, the log of what it did, and the button that runs a shift.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

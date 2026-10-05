@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Show the trend in claims reported per month this year"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT CALENDAR_MONTH(Reported_Date__c) m, COUNT(Id) c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Reported_Date__c = THIS_YEAR GROUP BY CALENDAR_MONTH(Reported_Date__c) ORDER BY CALENDAR_MONTH(Reported_Date__c)\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":4,\"m\":5},{\"c\":4,\"m\":6},{\"c\":4,\"m\":7},{\"c\":7,\"m\":8},{\"c\":22,\"m\":9},{\"c\":5,\"m\":10}],\"truncated\":false,\"rowCount\":6}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"Claims reported spiked to **22 in September 2026**, about three times any other month this year. No claims were recorded before May, and October has **5** so far after 4 days.\\n\\n?> Why did claims spike in September?\\n?> Break down September claims by loss type\\n?> Which September claims are still open?\",\n  \"title\": \"Claims reported per month, 2026\",\n  \"chart_type\": \"line\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"May 2026\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Jun 2026\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Jul 2026\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Aug 2026\",\n      \"value\": 7\n    },\n    {\n      \"label\": \"Sep 2026\",\n      \"value\": 22\n    },\n    {\n      \"label\": \"Oct 2026\",\n      \"value\": 5\n    }\n  ],\n  \"highlight_label\": \"Sep 2026\",\n  \"caption\": \"Claims by reported date, Oct 2026 month to date\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Claims reported per month, 2026\",\n    \"caption\": \"Claims by reported date, Oct 2026 month to date\",\n    \"chartType\": \"line\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"May 2026\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Jun 2026\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Jul 2026\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Aug 2026\",\n        \"value\": 7\n      },\n      {\n        \"label\": \"Sep 2026\",\n        \"value\": 22\n      },\n      {\n        \"label\": \"Oct 2026\",\n        \"value\": 5\n      }\n    ],\n    \"highlight\": \"Sep 2026\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Why did claims spike in September?\",\n      \"Break down September claims by loss type\",\n      \"Which September claims are still open?\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,793 @@
+/* A claim's photographs. One photo at a time sits on a quiet stage with Claude's boxes over it;
+   severity runs from sand through amber to deep clay, the same in boxes, number tags and chips. A
+   person's marked areas are lettered, on square tags. What is known about the photo sits in tabs
+   beside it, five rows at a time, so the viewer keeps its height however much there is.
+   Brand values are fixed on purpose so the viewer keeps its look under any org theme. */
+:host {
+    display: block;
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-sand: #e2d3a8;
+    --ants-sand-tint: #f1ead6;
+    --ants-sand-ink: #5c5136;
+    --ants-amber: #d9a233;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: var(--ants-ink);
+}
+
+.c-error {
+    margin: 0 0 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-error_inline {
+    margin: 0.5rem 0 0;
+}
+
+/* The tabs run across the top; under them the photo and the chosen section sit side by side when
+   there is room. When there is not, the photo comes first and the tabs sit over their section. */
+.c-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        'photo'
+        'tabs'
+        'panel';
+    gap: 0.75rem 1.5rem;
+    align-items: start;
+}
+
+.c-layout__tabs {
+    grid-area: tabs;
+    min-width: 0;
+}
+
+.c-photo {
+    grid-area: photo;
+    min-width: 0;
+}
+
+.c-panel {
+    grid-area: panel;
+    min-width: 0;
+}
+
+/* Side by side from a middling column up: stacked, the photo and its section ran to more than a screen
+   in the main column of a record page on a small window. */
+@container (min-width: 36rem) {
+    .c-layout {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+        grid-template-areas:
+            'tabs tabs'
+            'photo panel';
+    }
+
+    .c-layout .c-stage {
+        --ants-marker-max-height: 15rem;
+        padding: 0.5rem;
+    }
+}
+
+@container (min-width: 44rem) {
+    .c-layout {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+
+    .c-layout:not(.c-layout_flat) .c-stage {
+        --ants-marker-max-height: 17rem;
+        padding: 0.75rem;
+    }
+}
+
+/* In a report there are no tabs: the photo and its findings sit side by side. */
+/* The photo is smaller there and stays beside its findings down to a narrow card, so the section fits a screen. */
+.c-layout_flat .c-stage {
+    --ants-marker-max-height: 14rem;
+    padding: 0.5rem;
+}
+
+@container (min-width: 34rem) {
+    .c-layout_flat {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+        grid-template-areas: 'photo panel';
+    }
+}
+
+/* One verdict on the fit for every finding in the photo, said once. */
+.c-sharedfit {
+    margin: 0 0 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+/* The stage: the photo at its own shape, never cropped, with the boxes laid over exactly that shape. */
+.c-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Every slide is as tall as the tallest photo, so a wide photo is not left with a gap beneath it. */
+    align-self: stretch;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    background: var(--ants-oat);
+    --ants-marker-max-height: 20rem;
+}
+
+/* A video plays in its slide, with the browser's own controls. It takes the room a photo would. */
+.c-stage__player {
+    display: block;
+    width: 100%;
+    max-height: var(--ants-marker-max-height);
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem;
+    background: transparent;
+    object-fit: contain;
+}
+
+/* The button that plays a video in its slide: the one filled thing on the stage. */
+.c-stage__play {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: 0.375rem;
+    padding: 0 0 0 0.125rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ants-clay-deep);
+    cursor: pointer;
+    --slds-c-icon-color-foreground-default: #fff;
+}
+
+.c-stage__play:hover {
+    background: var(--ants-clay-dark);
+}
+
+.c-stage__play:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 3px;
+}
+
+/* A video at rest, and one the browser cannot play: what it is, and the way to watch it. */
+.c-stage__video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    /* As tall as a photo would be, so the slide and the card do not change height as the carousel turns. */
+    min-height: min(var(--ants-marker-max-height), 16rem);
+    width: 100%;
+    text-align: center;
+}
+
+.c-stage__videoicon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}
+
+/* Beside a video, in place of the assessment: one fact and where the video is read. */
+.c-videonote {
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-videonote__lead {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-videonote__text {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-stage__videotitle {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-stage__videonote {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* Under the photo: which photo this is, and the tools for its boxes. */
+.c-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.c-bar__title {
+    flex: 1 1 8rem;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--ants-display);
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.c-bar__tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+}
+
+.c-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-link:hover,
+.c-link:focus-visible {
+    text-decoration: underline;
+}
+
+.c-link:focus-visible,
+.c-mark:focus-visible,
+.c-note:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+/* A small action on a row: remove, dismiss, put back. */
+.c-link_quiet {
+    flex: none;
+    font-size: 0.75rem;
+}
+
+.c-link_block {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+}
+
+/* The switch into marking: a pill, tinted while it is on. */
+.c-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex: none;
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease;
+}
+
+.c-mark:hover {
+    border-color: var(--ants-clay-deep);
+}
+
+.c-mark:active {
+    background: var(--ants-oat);
+}
+
+.c-mark_on,
+.c-mark_on:hover {
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-mark_start {
+    margin-top: 0.625rem;
+}
+
+.c-mark__icon {
+    --slds-c-icon-color-foreground-default: currentColor;
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.c-shows,
+.c-hint {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-hint {
+    color: var(--ants-muted);
+}
+
+.c-unusable {
+    margin: 0.5rem 0 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.625rem;
+    background: var(--ants-oat);
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+/* The other photos: one row, which slides sideways when there are more than fit. */
+.c-strip {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0.125rem;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.c-strip_compact {
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin-top: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+.c-strip__item {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3125rem;
+}
+
+.c-thumb {
+    display: block;
+    width: 4.5rem;
+    height: 3.375rem;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 0.625rem;
+    background: var(--ants-oat);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.c-thumb_compact {
+    width: 6.5rem;
+    height: 4.875rem;
+}
+
+.c-thumb:hover {
+    border-color: var(--ants-line);
+}
+
+.c-thumb_selected,
+.c-thumb_selected:hover {
+    border-color: var(--ants-clay-deep);
+}
+
+.c-thumb:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 1px;
+}
+
+.c-thumb__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.c-thumb__video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- The panel: one list at a time ---------- */
+
+.c-quiet {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0.625rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+/* The number that ties a box to its row in the list. */
+.c-tag {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: var(--ants-sand);
+    color: var(--ants-sand-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.c-tag_moderate {
+    background: var(--ants-amber);
+    color: var(--ants-ink);
+}
+
+.c-tag_severe {
+    background: var(--ants-clay-deep);
+    color: #fff;
+}
+
+/* A person's area: a letter on a square, outlined tag. */
+.c-tag_person {
+    border: 1.5px solid var(--ants-ink);
+    border-radius: 0.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+/* The findings on this photo: Claude's, numbered as its boxes are, then people's, lettered. Each
+   keeps to two short lines until it is chosen. */
+.c-finds {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-find {
+    border-bottom: 1px solid var(--ants-line);
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: background-color 120ms ease;
+}
+
+.c-find_lit {
+    background: #faf9f5;
+}
+
+.c-find_open {
+    background: var(--ants-oat);
+}
+
+.c-find__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-find__head:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-find__head .c-tag {
+    margin-top: 0.0625rem;
+}
+
+.c-find__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* The name and the chip share the first line; what Claude saw and how it fits run the full width under them. */
+.c-find__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.c-find__title {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.c-find__title::first-letter,
+.c-find__why::first-letter {
+    text-transform: uppercase;
+}
+
+.c-find__by {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--ants-clay-dark);
+}
+
+.c-find__why {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-find__fit {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-find__more {
+    padding: 0 0.5rem 0.625rem 2.375rem;
+}
+
+.c-find__meta {
+    margin: 0.375rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+}
+
+.c-find__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin-top: 0.25rem;
+}
+
+/* A close-up of one area: the whole photo sits behind a window the shape of the area. */
+.c-zoom {
+    width: min(100%, calc(9rem * var(--c-zoom-ratio, 1.5)));
+    aspect-ratio: var(--c-zoom-ratio, 1.5);
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    background-repeat: no-repeat;
+}
+
+/* Findings a person took off the photo, each with a way back. */
+.c-dismissed {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-dismissed__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+}
+
+.c-dismissed__text::first-letter {
+    text-transform: uppercase;
+}
+
+/* Chips carry their word; colour only repeats it. */
+.c-chip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-sand-tint);
+    color: var(--ants-sand-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.c-chip_moderate {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_severe {
+    background: var(--ants-clay-deep);
+    color: #fff;
+}
+
+.c-chip_quiet {
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+}
+
+.c-chip_clear {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+/* What the open row of a marked area holds. */
+.c-note {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+    font-size: 0.8125rem;
+}
+
+.c-note::placeholder {
+    color: var(--ants-muted);
+}
+
+.c-area__label {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.c-area__fact {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-area__stale {
+    margin: 0.5rem 0 0;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.5rem;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-area__pulse {
+    flex: none;
+    margin-top: 0.375rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-clay-deep);
+}
+
+.c-ask {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.c-ask__note {
+    flex: 1 1 12rem;
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-failed {
+    margin-top: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-failed__title {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-failed__text {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+/* Whose boxes are whose: a solid line for Claude, a dashed one for a person. */
+.c-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    white-space: nowrap;
+}
+
+.c-legend__line {
+    width: 1.25rem;
+    border-top: 2px solid var(--ants-amber);
+}
+
+.c-legend__line_person {
+    border-top: 2px dashed var(--ants-ink);
+}
+
+@container (max-width: 26rem) {
+    .c-stage {
+        --ants-marker-max-height: 16rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .c-area__pulse {
+        animation: c-area-pulse 1.2s ease-in-out infinite;
+    }
+}
+
+@keyframes c-area-pulse {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@media print {
+    .c-mark,
+    .c-hint,
+    .c-ask,
+    .c-link {
+        display: none;
+    }
+}

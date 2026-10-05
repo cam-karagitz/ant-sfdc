@@ -1,0 +1,205 @@
+@import 'c/antsurancePortalStyles';
+
+:host {
+    display: block;
+}
+
+/* A comfortable form column, starting at the same left edge as every other page. */
+.c-form {
+    width: 100%;
+    max-width: 45rem;
+    margin: 0;
+    padding: 1.75rem 2rem;
+    box-sizing: border-box;
+    border: 1px solid var(--p-line);
+    border-top: 3px solid var(--p-clay);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-form__intro {
+    margin: 0.5rem 0 0;
+    color: var(--p-muted);
+}
+
+.c-form__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.125rem 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.c-field {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    min-width: 0;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    border-radius: 0.75rem;
+    transition: background-color 0.3s ease;
+}
+
+.c-field_half {
+    grid-column: auto;
+}
+
+.c-field__label {
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.c-field__needed {
+    font-weight: 400;
+    color: var(--p-muted);
+}
+
+/* Every input is the full width of its column and the same height, whatever kind it is. */
+.c-field__input {
+    display: block;
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    font-size: 1rem;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #c9c6ba;
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.c-field__input_area {
+    height: auto;
+    min-height: 7rem;
+    padding: 0.75rem 0.875rem;
+    resize: vertical;
+}
+
+/* A select keeps its arrow though the native look is off. */
+select.c-field__input {
+    padding-right: 2.25rem;
+    background-image: linear-gradient(45deg, transparent 50%, #5f5d57 50%), linear-gradient(135deg, #5f5d57 50%, transparent 50%);
+    background-position: calc(100% - 1.125rem) 50%, calc(100% - 0.8125rem) 50%;
+    background-size: 0.3125rem 0.3125rem, 0.3125rem 0.3125rem;
+    background-repeat: no-repeat;
+}
+
+.c-field__input:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 1px;
+    border-color: var(--p-clay-deep);
+}
+
+.c-field__notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-field__notes:empty {
+    display: none;
+}
+
+/* A field Claude filled: a clay edge and a line saying so, until the customer edits it. */
+.c-field_claude .c-field__input {
+    border-color: var(--p-clay);
+    background-color: var(--p-clay-tint);
+}
+
+.c-field__claude {
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+/* A field Claude is pointing at. */
+.c-field_pointed {
+    background: var(--p-amber-tint);
+    box-shadow: 0 0 0 2px var(--p-amber-ink);
+}
+
+.c-field_error .c-field__input {
+    border-color: var(--p-clay-dark);
+}
+
+.c-field__error {
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+/* Photos of the damage sit in the form like a field that spans it. */
+.c-form__photos {
+    grid-column: 1 / -1;
+    padding-top: 1.125rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-form__foot {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-form__failure {
+    flex: 1 0 100%;
+    margin: 0;
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+.c-form__promise {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-form__receipt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.c-form__tick {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--p-olive-tint);
+    --slds-c-icon-color-foreground-default: var(--p-olive-ink);
+}
+
+.c-form__next {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+.c-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+    .c-form {
+        padding: 1.25rem;
+    }
+
+    .c-form__grid {
+        grid-template-columns: 1fr;
+    }
+}

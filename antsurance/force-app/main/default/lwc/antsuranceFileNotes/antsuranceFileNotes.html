@@ -1,0 +1,161 @@
+<template>
+    <article class="c-notes" aria-labelledby="notes-heading">
+        <header class="c-notes__header">
+            <div class="c-notes__titles">
+                <h2 id="notes-heading" class="c-notes__title">File notes</h2>
+                <p class="c-notes__count">{countLabel}</p>
+            </div>
+            <div class="c-notes__actions">
+                <lightning-button
+                    label="Draft with Claude"
+                    icon-name="utility:sparkles"
+                    disabled={isBusy}
+                    onclick={handleDraft}
+                ></lightning-button>
+                <lightning-button
+                    variant="brand"
+                    label="New note"
+                    icon-name="utility:add"
+                    disabled={isBusy}
+                    onclick={handleNew}
+                ></lightning-button>
+            </div>
+        </header>
+
+        <template lwc:if={loadError}>
+            <p class="c-notes__error" role="alert">{loadError}</p>
+        </template>
+
+        <template lwc:if={isComposing}>
+            <section class="c-composer" aria-label="New file note">
+                <div class="c-composer__top">
+                    <lightning-combobox
+                        class="c-composer__type"
+                        label="Note type"
+                        variant="label-hidden"
+                        placeholder="Note type"
+                        value={noteType}
+                        options={typeOptions}
+                        disabled={isBusy}
+                        onchange={handleTypeChange}
+                    ></lightning-combobox>
+                    <span class="c-composer__hint">Markdown works here: **bold**, lists, links.</span>
+                </div>
+                <template lwc:if={isDrafting}>
+                    <div class="c-composer__drafting" role="status">
+                        <img class="c-composer__spark" src={sparkUrl} alt="" />
+                        <span>{draftingLabel}</span>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <label class="slds-assistive-text" for="note-body">Note</label>
+                    <textarea
+                        id="note-body"
+                        class="c-composer__input"
+                        rows="6"
+                        maxlength="32000"
+                        placeholder="What happened, what was decided, what is next"
+                        disabled={isSaving}
+                        oninput={handleBodyInput}
+                        lwc:ref="body"
+                    ></textarea>
+                    <template lwc:if={hasDraft}>
+                        <div class="c-composer__preview" aria-label="Preview">
+                            <p class="c-composer__preview-label">Preview</p>
+                            <c-antsurance-markdown value={draft}></c-antsurance-markdown>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:if={saveError}>
+                    <p class="c-notes__error" role="alert">{saveError}</p>
+                </template>
+                <div class="c-composer__buttons">
+                    <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                    <lightning-button variant="brand" label="Save note" disabled={isSaveDisabled} onclick={handleSave}></lightning-button>
+                </div>
+            </section>
+        </template>
+
+        <template lwc:if={hasNotes}>
+            <ol class="c-timeline">
+                <template for:each={pageNotes} for:item="note">
+                    <li key={note.recordId} class="c-note">
+                        <span class={note.markerClass} aria-hidden="true">
+                            <template lwc:if={note.byClaude}><img class="c-note__spark" src={sparkUrl} alt="" /></template>
+                            <template lwc:else>{note.initials}</template>
+                        </span>
+                        <div class="c-note__main">
+                            <p class="c-note__meta">
+                                <span class="c-note__author">{note.authorName}</span>
+                                <template lwc:if={note.authorRole}>
+                                    <span class="c-note__role">{note.authorRole}</span>
+                                </template>
+                            </p>
+                            <p class="c-note__when">
+                                <span class={note.typeClass}>
+                                    <lightning-icon icon-name={note.typeIcon} size="xx-small" alternative-text="" class="c-note__type-icon"></lightning-icon>
+                                    {note.noteType}
+                                </span>
+                                <span>{note.when}</span>
+                                <template lwc:if={note.caseId}>
+                                    <a
+                                        class="c-note__case slds-truncate"
+                                        href={note.caseUrl}
+                                        data-record-id={note.caseId}
+                                        title={note.caseLabel}
+                                        onclick={handleOpenCase}
+                                        >{note.caseLabel}</a
+                                    >
+                                </template>
+                                <template lwc:if={note.documentId}>
+                                    <a class="c-note__case" href={note.documentUrl} data-record-id={note.documentId} onclick={handleOpenDocument}>Open in Notes</a>
+                                </template>
+                            </p>
+                            <template lwc:if={note.isFolded}>
+                                <p class="c-note__excerpt">{note.excerpt}</p>
+                            </template>
+                            <template lwc:else>
+                                <c-antsurance-markdown class="c-note__body" value={note.body}></c-antsurance-markdown>
+                            </template>
+                            <template lwc:if={note.isLong}>
+                                <button type="button" class="c-note__more c-ui-focus" data-record-id={note.recordId} aria-expanded={note.isOpen} onclick={handleFold}>
+                                    {note.foldLabel}
+                                </button>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+            <c-antsurance-step-pager total={noteCount} page-size={pageSize} page={page} label="file notes" onpagechange={handlePage}></c-antsurance-step-pager>
+        </template>
+        <template lwc:elseif={isLoaded}>
+            <template lwc:if={showsEmpty}>
+                <div class="c-empty c-ui-arrive">
+                    <span class="c-ui-tile c-ui-tile_large c-ui-tile_sand">
+                        <lightning-icon icon-name="utility:note" size="small" alternative-text=""></lightning-icon>
+                    </span>
+                    <div class="c-empty__words">
+                        <p class="c-empty__title">No notes on this file yet</p>
+                        <p class="c-empty__text">A note says what happened, what was decided and what is next, for whoever picks the file up.</p>
+                    </div>
+                    <lightning-button label="Write the first note" icon-name="utility:add" disabled={isBusy} onclick={handleNew}></lightning-button>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <ol class="c-timeline" aria-hidden="true">
+                <template for:each={bones} for:item="bone">
+                    <li key={bone} class="c-note c-note_waiting">
+                        <span class="c-ui-bone c-bone_marker"></span>
+                        <div class="c-note__main">
+                            <span class="c-ui-bone c-ui-bone_line c-bone_author"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_when"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_text"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_text c-bone_text_short"></span>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+        </template>
+    </article>
+</template>

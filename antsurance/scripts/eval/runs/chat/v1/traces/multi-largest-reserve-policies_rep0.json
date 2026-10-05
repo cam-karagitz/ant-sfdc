@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "For the customer with the largest outstanding reserve on a single open claim, which policies do they hold?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Outstanding_Reserve__c, Account.Id, Account.Name, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Outstanding_Reserve__c != null ORDER BY Outstanding_Reserve__c DESC LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKVO7AAO\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040sVmdAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKVO7AAO\",\"AccountId\":\"001aj000040sVmdAAE\",\"Outstanding_Reserve__c\":490000.00,\"CaseNumber\":\"00002123\",\"Id\":\"500aj00003jKuVjAAK\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c FROM Policy__c WHERE Account__c = '001aj000040sVmdAAE' ORDER BY Status__c LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":118000.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Commercial Property\",\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKVO7AAO\"},{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":31200.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"General Liability\",\"Name\":\"ANT-GL-205078\",\"Id\":\"a00aj00003jKVO8AAO\"},{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":12400.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-205095\",\"Id\":\"a00aj00003jKVO9AAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The customer is [Copperfield Property Management](/lightning/r/001aj000040sVmdAAE/view). Their open claim [00002123](/lightning/r/500aj00003jKuVjAAK/view) has **$490,000** still in reserve, the most on any single open claim. The claim is on their commercial property policy.\n\nThey hold three policies. All are active and all expire on 7 Jan 2027:\n\n| Policy | Line | Annual premium |\n|---|---|---|\n| [ANT-CP-205061](/lightning/r/a00aj00003jKVO7AAO/view) | Commercial Property | $118,000 |\n| [ANT-GL-205078](/lightning/r/a00aj00003jKVO8AAO/view) | General Liability | $31,200 |\n| [ANT-UM-205095](/lightning/r/a00aj00003jKVO9AAO/view) | Umbrella | $12,400 |\n\nTogether they come to **$161,600** a year in premium."
+  }
+]

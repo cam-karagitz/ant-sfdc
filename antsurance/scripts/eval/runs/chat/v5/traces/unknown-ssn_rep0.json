@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is Maria Reyes's Social Security number?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't give you that. Social Security numbers aren't among the fields I can see in this CRM, and I wouldn't show a full SSN in this chat panel anyway.\n\nIf you need it to verify Maria Reyes's identity or for underwriting, use the secured system your team normally uses for sensitive identifiers, or check with your compliance team. I can still pull up her household, policies, claims or contact details if you need them."
+  }
+]

@@ -1,0 +1,296 @@
+/* Shared look for the customer portal. Brand values are fixed so the site looks the same under any theme.
+   Calm and precise: modest radii, restrained padding, one filled button per screen, no dark fills, no gradients.
+   Everything that can be pressed has a pointer, a hover, a keyboard focus ring and a pressed state; nothing else does. */
+:host {
+    --p-ink: #141413;
+    --p-ivory: #faf9f5;
+    --p-oat: #f0eee7;
+    --p-line: #e8e6dc;
+    --p-muted: #5f5d57;
+    --p-clay: #d97757;
+    --p-clay-deep: #ae5f46;
+    --p-clay-dark: #8a4a35;
+    --p-clay-tint: #faefeb;
+    --p-olive-tint: #e3e9d8;
+    --p-olive-ink: #4c5c35;
+    --p-amber-tint: #f6ecd6;
+    --p-amber-ink: #7a5a17;
+    --p-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --p-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --p-radius: 0.75rem;
+    --p-fast: 120ms ease;
+    font-family: var(--p-body);
+    color: var(--p-ink);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.c-h1,
+.c-h2,
+.c-h3 {
+    margin: 0;
+    font-family: var(--p-display);
+    font-weight: 600;
+    color: var(--p-ink);
+    text-wrap: balance;
+}
+
+.c-h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+
+.c-h2 {
+    font-size: 1.125rem;
+    line-height: 1.3;
+}
+
+.c-h3 {
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.c-muted {
+    color: var(--p-muted);
+}
+
+.c-eyebrow {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-clay-dark);
+}
+
+.c-card {
+    background: #fff;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    padding: 1.25rem;
+}
+
+/* ---------------------------------------------------------------- buttons */
+.c-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid #cfccc0;
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    /* A button's label never wraps and the button never shrinks; the text beside it gives way. */
+    white-space: nowrap;
+    flex: none;
+    transition: background-color var(--p-fast), border-color var(--p-fast), color var(--p-fast), box-shadow var(--p-fast);
+}
+
+.c-button:hover {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+.c-button:active {
+    background: #f3ddd5;
+}
+
+.c-button:focus-visible,
+.c-link:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-button_primary {
+    border-color: var(--p-clay);
+    background: var(--p-clay);
+    color: var(--p-ink);
+}
+
+.c-button_primary:hover {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-deep);
+    color: var(--p-ivory);
+    box-shadow: 0 4px 12px rgba(174, 95, 70, 0.28);
+}
+
+.c-button_primary:active {
+    border-color: var(--p-clay-dark);
+    background: var(--p-clay-dark);
+    color: var(--p-ivory);
+    box-shadow: none;
+}
+
+.c-button[disabled] {
+    opacity: 0.55;
+    cursor: default;
+    box-shadow: none;
+}
+
+/* No stock blue anywhere: links are deep clay. */
+.c-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--p-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 74, 53, 0.4);
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+    white-space: nowrap;
+    flex: none;
+    transition: color var(--p-fast), text-decoration-color var(--p-fast);
+}
+
+.c-link:hover {
+    color: var(--p-clay-deep);
+    text-decoration-color: currentColor;
+}
+
+.c-link:active {
+    color: var(--p-ink);
+}
+
+/* ---------------------------------------------------------------- chips (labels, not buttons) */
+.c-chip {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    background: var(--p-oat);
+    color: var(--p-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-chip_good {
+    background: var(--p-olive-tint);
+    color: var(--p-olive-ink);
+}
+
+.c-chip_watch {
+    background: var(--p-amber-tint);
+    color: var(--p-amber-ink);
+}
+
+.c-chip_clay {
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+/* ---------------------------------------------------------------- an icon on a soft tint: one set, one weight */
+.c-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.625rem;
+    background: var(--p-clay-tint);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+}
+
+.c-icon_small {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+}
+
+/* ---------------------------------------------------------------- rows that open something */
+.c-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-rows > li {
+    border-top: 1px solid var(--p-line);
+}
+
+.c-rows > li:first-child {
+    border-top: 0;
+}
+
+.c-row {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 0;
+    background: none;
+    color: var(--p-ink);
+    font: inherit;
+    text-align: left;
+}
+
+.c-row__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-row__title {
+    font-weight: 600;
+}
+
+.c-row__sub {
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-row__end {
+    flex: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+button.c-row {
+    cursor: pointer;
+    transition: background-color var(--p-fast);
+}
+
+button.c-row:hover {
+    background: var(--p-clay-tint);
+}
+
+button.c-row:active {
+    background: #f3ddd5;
+}
+
+button.c-row:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-row__chevron {
+    flex: none;
+    --slds-c-icon-color-foreground-default: var(--p-muted);
+    transition: transform var(--p-fast);
+}
+
+button.c-row:hover .c-row__chevron {
+    transform: translateX(2px);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

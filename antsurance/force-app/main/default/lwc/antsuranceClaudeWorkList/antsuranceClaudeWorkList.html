@@ -1,0 +1,79 @@
+<template>
+    <template lwc:if={compact}>
+        <section class="c-mini" aria-label={spec.title}>
+            <header class="c-mini__head">
+                <div class="c-mini__titles">
+                    <h3 class="c-mini__title">{spec.title}</h3>
+                    <p class="c-mini__caption">{countLabel}</p>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </header>
+            <ol class="c-rows">
+                <template for:each={pageItems} for:item="item">
+                    <li key={item.key} class={item.className}>
+                        <span class="c-item__mark" aria-hidden="true"></span>
+                        <template lwc:if={item.url}>
+                            <a class="c-row__title c-item__title_link" href={item.url} data-record-id={item.recordId} onclick={handleOpen}>{item.title}</a>
+                        </template>
+                        <template lwc:else>
+                            <span class="c-row__title">{item.title}</span>
+                        </template>
+                        <span class="c-row__side">
+                            <template lwc:if={item.amount}>
+                                <span class="c-row__amount">{item.amount}</span>
+                            </template>
+                            <template lwc:if={item.topChip}>
+                                <span class={item.topChip.className}>{item.topChip.label}</span>
+                            </template>
+                        </span>
+                    </li>
+                </template>
+            </ol>
+            <template lwc:if={isPaged}>
+                <c-antsurance-step-pager class="c-pages" total={total} page-size={pageSize} page={page} label="items" onpagechange={handlePage}></c-antsurance-step-pager>
+            </template>
+        </section>
+    </template>
+    <template lwc:else>
+        <section class="c-list" aria-label={spec.title}>
+            <header class="c-list__head">
+                <span class="c-list__icon" aria-hidden="true">
+                    <lightning-icon icon-name="utility:task" size="x-small"></lightning-icon>
+                </span>
+                <h3 class="c-title">{spec.title}</h3>
+                <span class="c-list__count">{countLabel}</span>
+            </header>
+            <ol class="c-list__items">
+                <template for:each={pageItems} for:item="item">
+                    <li key={item.key} class={item.className}>
+                        <span class="c-item__mark" aria-hidden="true"></span>
+                        <div class="c-item__body">
+                            <template lwc:if={item.url}>
+                                <a class="c-item__title c-item__title_link" href={item.url} data-record-id={item.recordId} onclick={handleOpen}>{item.title}</a>
+                            </template>
+                            <template lwc:else>
+                                <span class="c-item__title">{item.title}</span>
+                            </template>
+                            <template lwc:if={item.subtitle}>
+                                <span class="c-item__subtitle">{item.subtitle}</span>
+                            </template>
+                            <template lwc:if={item.hasChips}>
+                                <span class="c-item__chips">
+                                    <template for:each={item.chips} for:item="chip">
+                                        <span key={chip.key} class={chip.className}>{chip.label}</span>
+                                    </template>
+                                </span>
+                            </template>
+                        </div>
+                        <template lwc:if={item.amount}>
+                            <span class="c-item__amount">{item.amount}</span>
+                        </template>
+                    </li>
+                </template>
+            </ol>
+            <c-antsurance-step-pager total={total} page-size={pageSize} page={page} label="items" onpagechange={handlePage}></c-antsurance-step-pager>
+        </section>
+    </template>
+</template>

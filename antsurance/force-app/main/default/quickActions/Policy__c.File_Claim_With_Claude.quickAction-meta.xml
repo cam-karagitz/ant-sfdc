@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Paste what the customer said and let Claude draft the claim for review.</description>
+    <label>File a Claim with Claude</label>
+    <lightningWebComponent>antsuranceClaimIntake</lightningWebComponent>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>LightningWebComponent</type>
+</QuickAction>

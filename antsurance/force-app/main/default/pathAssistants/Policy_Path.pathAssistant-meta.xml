@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Policy__c</entityName>
+    <fieldName>Status__c</fieldName>
+    <masterLabel>Policy Path</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>Annual_Premium__c</fieldNames>
+        <fieldNames>Coverage_Limit__c</fieldNames>
+        <fieldNames>Deductible__c</fieldNames>
+        <info>A quote has been issued. Follow up with the customer and bind coverage once they accept.</info>
+        <picklistValueName>Quoted</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Effective_Date__c</fieldNames>
+        <fieldNames>Expiration_Date__c</fieldNames>
+        <fieldNames>Payment_Status__c</fieldNames>
+        <info>Coverage is in force. Watch the payment status and the renewal date.</info>
+        <picklistValueName>Active</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Expiration_Date__c</fieldNames>
+        <fieldNames>Days_to_Renewal__c</fieldNames>
+        <fieldNames>Annual_Premium__c</fieldNames>
+        <info>The term is about to end. Review the account for rate changes and send the renewal offer.</info>
+        <picklistValueName>Pending Renewal</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Payment_Status__c</fieldNames>
+        <fieldNames>Expiration_Date__c</fieldNames>
+        <info>Coverage lapsed for non-payment or a missed renewal. Contact the policyholder about reinstatement.</info>
+        <picklistValueName>Lapsed</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>The policy was cancelled before the end of its term. Confirm any refund has been issued.</info>
+        <picklistValueName>Cancelled</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>The term ended and the policy was not renewed.</info>
+        <picklistValueName>Expired</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>__MASTER__</recordTypeName>
+</PathAssistant>

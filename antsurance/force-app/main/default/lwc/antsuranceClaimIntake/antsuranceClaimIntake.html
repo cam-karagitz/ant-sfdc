@@ -1,0 +1,236 @@
+<template>
+    <lightning-quick-action-panel header="File a Claim with Claude">
+        <div class="c-intake">
+            <template lwc:if={loadError}>
+                <p class="c-intake__error" role="alert">{loadError}</p>
+            </template>
+
+            <!-- Step one: what the customer said -->
+            <template lwc:if={isComposing}>
+                <p class="c-intake__lead">
+                    Paste what {customerLabel} said: an email, a web form message or your call notes. Claude drafts the claim and you check it before
+                    it is filed.
+                </p>
+
+                <template lwc:if={hasSamples}>
+                    <div class="c-samples">
+                        <span class="c-samples__label">Try a sample</span>
+                        <div class="c-samples__chips">
+                            <template for:each={samples} for:item="sample">
+                                <button
+                                    key={sample.key}
+                                    type="button"
+                                    class={sample.chipClass}
+                                    data-key={sample.key}
+                                    title={sample.hint}
+                                    disabled={isReading}
+                                    onclick={handleSample}
+                                >
+                                    <lightning-icon icon-name={sample.icon} size="xx-small" alternative-text=""></lightning-icon>
+                                    {sample.label}
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="c-message">
+                    <textarea
+                        class="c-message__input"
+                        lwc:ref="message"
+                        rows="11"
+                        maxlength="12000"
+                        aria-label="The customer's message"
+                        placeholder="Paste the message here"
+                        disabled={isReading}
+                        oninput={handleMessageInput}
+                    ></textarea>
+                    <template lwc:if={isReading}>
+                        <p class="c-message__status" role="status">
+                            <span class="c-pulse" aria-hidden="true"></span>
+                            {readingCaption}
+                        </p>
+                    </template>
+                </div>
+
+                <template lwc:if={errorMessage}>
+                    <p class="c-intake__error" role="alert">{errorMessage}</p>
+                </template>
+            </template>
+
+            <!-- The message is not a claim -->
+            <template lwc:elseif={isNotClaim}>
+                <div class="c-notclaim">
+                    <lightning-icon class="c-notclaim__icon" icon-name="utility:info" size="small" alternative-text=""></lightning-icon>
+                    <div>
+                        <p class="c-notclaim__title">This does not read as a claim</p>
+                        <p class="c-notclaim__text">{draft.notClaimReason}</p>
+                    </div>
+                </div>
+                <p class="c-intake__hint">Nothing has been filed. You can edit the message, or file it as a claim anyway and fill in the details yourself.</p>
+            </template>
+
+            <!-- Step two: review the claim Claude drafted -->
+            <template lwc:elseif={isReviewing}>
+                <p class="c-intake__lead">Claude drafted this from the message. Check it, change anything that is wrong, then create the claim.</p>
+
+                <fieldset class="c-policies">
+                    <legend class="c-label">Policy</legend>
+                    <template for:each={policyRows} for:item="policy">
+                        <label key={policy.policyId} class={policy.rowClass}>
+                            <input
+                                type="radio"
+                                class="c-policy__radio"
+                                name="policy"
+                                value={policy.policyId}
+                                checked={policy.isSelected}
+                                onchange={handlePolicyChange}
+                            />
+                            <span class="c-policy__main">
+                                <span class="c-policy__line">{policy.lineOfBusiness}</span>
+                                <span class="c-policy__detail">{policy.detail}</span>
+                            </span>
+                            <template lwc:if={policy.isPick}>
+                                <span class="c-tag c-tag_pick">Claude&rsquo;s pick</span>
+                            </template>
+                            <template lwc:if={policy.notInForce}>
+                                <span class="c-tag c-tag_warn">{policy.status}</span>
+                            </template>
+                        </label>
+                    </template>
+                    <template lwc:if={draft.policyReason}>
+                        <p class="c-policies__why">{draft.policyReason}</p>
+                    </template>
+                    <template lwc:if={coverageNote}>
+                        <p class={coverageNote.className}>
+                            <lightning-icon icon-name={coverageNote.icon} size="xx-small" alternative-text=""></lightning-icon>
+                            {coverageNote.text}
+                        </p>
+                    </template>
+                </fieldset>
+
+                <div class="c-form">
+                    <lightning-input
+                        class="c-form__wide"
+                        label="Subject"
+                        data-field="subject"
+                        value={form.subject}
+                        max-length="255"
+                        required
+                        onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                        type="date"
+                        label="Date of loss"
+                        data-field="dateOfLoss"
+                        value={form.dateOfLoss}
+                        max={today}
+                        date-style="medium"
+                        field-level-help={dateHelp}
+                        onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                        type="number"
+                        formatter="currency"
+                        step="1"
+                        min="0"
+                        label="Estimated loss"
+                        data-field="estimatedLoss"
+                        value={form.estimatedLoss}
+                        placeholder="No figure in the message"
+                        onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-combobox
+                        label="Loss type"
+                        data-field="lossType"
+                        value={form.lossType}
+                        options={lossTypeOptions}
+                        onchange={handleFieldChange}
+                    ></lightning-combobox>
+                    <lightning-combobox
+                        label="Severity"
+                        data-field="severity"
+                        value={form.severity}
+                        options={severityOptions}
+                        onchange={handleFieldChange}
+                    ></lightning-combobox>
+                    <lightning-input
+                        class="c-form__wide"
+                        label="Where it happened"
+                        data-field="lossLocation"
+                        value={form.lossLocation}
+                        max-length="255"
+                        placeholder="Not in the message"
+                        onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-textarea
+                        class="c-form__wide c-form__description"
+                        label="Description"
+                        data-field="description"
+                        value={form.description}
+                        max-length="30000"
+                        onchange={handleFieldChange}
+                    ></lightning-textarea>
+                    <lightning-combobox
+                        label="Reported by"
+                        data-field="contactId"
+                        value={form.contactId}
+                        options={contactOptions}
+                        placeholder="Someone else"
+                        onchange={handleFieldChange}
+                    ></lightning-combobox>
+                    <lightning-combobox
+                        label="How it arrived"
+                        data-field="origin"
+                        value={form.origin}
+                        options={originOptions}
+                        onchange={handleFieldChange}
+                    ></lightning-combobox>
+                </div>
+
+                <template lwc:if={hasWatch}>
+                    <section class="c-notes c-notes_watch">
+                        <h3 class="c-label">Worth noticing</h3>
+                        <ul class="c-notes__list">
+                            <template for:each={watchRows} for:item="row">
+                                <li key={row.key}>{row.text}</li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+
+                <template lwc:if={hasMissing}>
+                    <section class="c-notes">
+                        <h3 class="c-label">Still to ask the customer</h3>
+                        <ul class="c-notes__list">
+                            <template for:each={missingRows} for:item="row">
+                                <li key={row.key}>{row.text}</li>
+                            </template>
+                        </ul>
+                        <p class="c-notes__foot">These are saved with the customer&rsquo;s message as the first file note.</p>
+                    </section>
+                </template>
+
+                <template lwc:if={errorMessage}>
+                    <p class="c-intake__error" role="alert">{errorMessage}</p>
+                </template>
+            </template>
+        </div>
+
+        <div slot="footer" class="c-footer">
+            <template lwc:if={isComposing}>
+                <lightning-button label="Cancel" disabled={isReading} onclick={handleClose}></lightning-button>
+                <lightning-button variant="brand" label={readLabel} disabled={isReadDisabled} onclick={handleRead}></lightning-button>
+            </template>
+            <template lwc:elseif={isNotClaim}>
+                <lightning-button label="Edit the message" onclick={handleBack}></lightning-button>
+                <lightning-button label="File as a claim anyway" onclick={handleFileAnyway}></lightning-button>
+                <lightning-button variant="brand" label="Close" onclick={handleClose}></lightning-button>
+            </template>
+            <template lwc:elseif={isReviewing}>
+                <lightning-button label="Back to the message" disabled={isCreating} onclick={handleBack}></lightning-button>
+                <lightning-button variant="brand" label={createLabel} disabled={isCreating} onclick={handleCreate}></lightning-button>
+            </template>
+        </div>
+    </lightning-quick-action-panel>
+</template>

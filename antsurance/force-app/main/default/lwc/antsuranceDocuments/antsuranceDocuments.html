@@ -1,0 +1,157 @@
+<template>
+    <article class="c-docs">
+        <header class="c-docs__head">
+            <h2 class="c-docs__title">Documents</h2>
+            <template lwc:if={showSubtitle}>
+                <p class="c-docs__sub">{subtitle}</p>
+            </template>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-docs__empty" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={isLoadingList}>
+            <div class="c-docs__waiting">
+                <lightning-spinner alternative-text="Finding this record's documents" size="small"></lightning-spinner>
+            </div>
+        </template>
+        <template lwc:elseif={isEmpty}>
+            <p class="c-docs__empty">{emptyMessage}</p>
+        </template>
+        <template lwc:else>
+            <div class="c-docs__body">
+                <div class="c-docs__row">
+                    <c-antsurance-tabs
+                        class="c-docs__picker"
+                        label="Documents for this record"
+                        variant="pill"
+                        tabs={documentTabs}
+                        value={selectedKey}
+                        onselect={handleChoose}
+                    ></c-antsurance-tabs>
+                    <div class="c-docs__actions">
+                        <template lwc:if={isTight}>
+                            <lightning-button-menu label="Save or download" menu-alignment="auto" onselect={handleMenu}>
+                                <lightning-menu-item value="save" label={saveLabel} prefix-icon-name="utility:save" disabled={isSaving}></lightning-menu-item>
+                                <lightning-menu-item value="download" label="Download" prefix-icon-name="utility:download"></lightning-menu-item>
+                            </lightning-button-menu>
+                        </template>
+                        <template lwc:else>
+                            <lightning-button label={saveLabel} icon-name="utility:save" disabled={isSaving} onclick={handleSave}></lightning-button>
+                            <lightning-button label="Download" icon-name="utility:download" onclick={handleDownload}></lightning-button>
+                        </template>
+                        <lightning-button variant="brand" label="Open in New Tab" icon-name="utility:new_window" onclick={handleOpen}></lightning-button>
+                    </div>
+                </div>
+
+                <section class="c-docs__viewer" role="tabpanel" aria-label={selectedLabel}>
+                    <p class="c-docs__caption">{selectedDescription}</p>
+                    <template lwc:if={takesHolder}>
+                        <div class="c-docs__holder">
+                            <lightning-input
+                                class="c-docs__field"
+                                label="Certificate holder"
+                                placeholder="To whom it may concern"
+                                value={holderDraft}
+                                max-length="60"
+                                data-field="holder"
+                                onchange={handleHolderChange}
+                                onkeydown={handleHolderKey}
+                            ></lightning-input>
+                            <lightning-input
+                                class="c-docs__field c-docs__field_wide"
+                                label="Holder address"
+                                placeholder="Street, city, state and ZIP"
+                                value={addressDraft}
+                                max-length="120"
+                                data-field="address"
+                                onchange={handleHolderChange}
+                                onkeydown={handleHolderKey}
+                            ></lightning-input>
+                            <lightning-button label="Update" disabled={isHolderUnchanged} onclick={handleApplyHolder}></lightning-button>
+                        </div>
+                    </template>
+
+                    <template lwc:if={saved}>
+                        <p class="c-docs__saved" role="status">
+                            <lightning-icon icon-name="utility:success" size="x-small" variant="success"></lightning-icon>
+                            <span class="c-docs__saved-text">Saved to Files on this record as {saved.title}.</span>
+                            <button type="button" class="c-docs__link" onclick={handleViewFile}>View file</button>
+                        </p>
+                    </template>
+                    <template lwc:if={saveError}>
+                        <p class="c-docs__problem" role="alert">
+                            <lightning-icon icon-name="utility:error" size="x-small" variant="error"></lightning-icon>
+                            <span>{saveError}</span>
+                        </p>
+                    </template>
+
+                    <div class="c-docs__desk">
+                        <div class="c-docs__page" style={pageStyle}>
+                            <template lwc:if={isLoadingPreview}>
+                                <lightning-spinner alternative-text="Preparing the document" size="medium"></lightning-spinner>
+                            </template>
+                            <iframe class={frameClass} src={embedUrl} title={frameTitle} style={frameStyle} scrolling="no" onload={handleLoaded}></iframe>
+                        </div>
+                        <div class="c-docs__foot">
+                            <button type="button" class="c-docs__fold c-ui-focus" aria-expanded={isWholeText} onclick={handleFoldPreview}>
+                                <lightning-icon icon-name={foldIcon} size="xx-small" alternative-text=""></lightning-icon>
+                                {foldLabel}
+                            </button>
+                            <p class="c-docs__more">{pagesNote}</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </template>
+
+        <c-antsurance-accordion class="c-files" label="Saved on this record" count={fileCountLabel} summary={filesSummary} icon="utility:file" open={filesAreOpen} ontoggle={handleFilesToggle}>
+                <template lwc:if={isLoadingFiles}>
+                    <ul class="c-files__list" aria-hidden="true">
+                        <template for:each={bones} for:item="bone">
+                            <li key={bone} class="c-file c-file_waiting">
+                                <span class="c-ui-bone c-ui-bone_tile"></span>
+                                <span class="c-file__words">
+                                    <span class="c-ui-bone c-ui-bone_line c-bone_name"></span>
+                                    <span class="c-ui-bone c-ui-bone_line c-bone_meta"></span>
+                                </span>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:elseif={hasFiles}>
+                    <ul class="c-files__list c-ui-arrive">
+                        <template for:each={pageFiles} for:item="file">
+                            <li key={file.contentDocumentId}>
+                                <a class="c-file c-ui-open c-ui-focus" href={file.url} data-id={file.contentDocumentId} onclick={handleOpenFile}>
+                                    <span class={file.icon.tileClass}>
+                                        <lightning-icon icon-name={file.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                    </span>
+                                    <span class="c-file__words">
+                                        <span class="c-file__name">{file.title}</span>
+                                        <span class="c-file__meta">{file.meta}</span>
+                                    </span>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text="" class="c-ui-chevron"></lightning-icon>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                    <c-antsurance-step-pager total={fileCount} page-size={filePageSize} page={filePage} label="saved files" onpagechange={handleFilePage}></c-antsurance-step-pager>
+                </template>
+                <template lwc:else>
+                    <div class="c-files__none c-ui-arrive">
+                        <span class="c-ui-tile c-ui-tile_sand">
+                            <lightning-icon icon-name="utility:file" size="x-small" alternative-text=""></lightning-icon>
+                        </span>
+                        <div class="c-file__words">
+                            <p class="c-files__none-title">Nothing saved yet</p>
+                            <p class="c-files__none-text">{noFilesText}</p>
+                        </div>
+                        <template lwc:if={selected}>
+                            <lightning-button label={saveFirstLabel} icon-name="utility:save" disabled={isSaving} onclick={handleSave}></lightning-button>
+                        </template>
+                    </div>
+                </template>
+        </c-antsurance-accordion>
+    </article>
+</template>

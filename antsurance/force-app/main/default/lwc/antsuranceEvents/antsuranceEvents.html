@@ -1,0 +1,397 @@
+<template>
+    <section class="c-events" aria-label="Event response">
+        <header class="c-events__head">
+            <span class="c-ui-tile c-ui-tile_large c-ui-tile_clay">
+                <lightning-icon icon-name="utility:broadcast" size="small" alternative-text=""></lightning-icon>
+            </span>
+            <div class="c-events__titles">
+                <h1 class="c-events__title">Event response</h1>
+                <p class="c-events__sub">What a storm crossed, what is exposed and who to call first.</p>
+            </div>
+            <template lwc:if={eventTabs.length}>
+                <div class="c-events__picker">
+                    <c-antsurance-tabs label="Events" variant="pill" tabs={eventTabs} value={eventName} onselect={handleEvent}></c-antsurance-tabs>
+                </div>
+            </template>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-events__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={hasNoEvents}>
+            <div class="c-empty c-ui-arrive">
+                <span class="c-ui-tile c-ui-tile_large c-ui-tile_sand">
+                    <lightning-icon icon-name="utility:broadcast" size="small" alternative-text=""></lightning-icon>
+                </span>
+                <div>
+                    <p class="c-empty__title">No events are set up</p>
+                    <p class="c-empty__text">Add one in Setup, Custom Metadata Types, Antsurance Event: a name, the kind of event, the day, and a center with a radius.</p>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="c-answers" aria-hidden="true">
+                <span class="c-ui-bone c-bone_answer"></span>
+                <span class="c-ui-bone c-bone_answer"></span>
+                <span class="c-ui-bone c-bone_answer"></span>
+            </div>
+            <div class="c-body" aria-hidden="true">
+                <span class="c-ui-bone c-bone_map"></span>
+                <span class="c-ui-bone c-bone_map"></span>
+            </div>
+        </template>
+
+        <template lwc:if={exposure}>
+            <!-- The answer first: what happened, what is exposed, who we call. -->
+            <div class="c-answers c-ui-arrive">
+                <div class="c-answer">
+                    <p class="c-answer__label">What happened</p>
+                    <p class="c-answer__main">{happened}</p>
+                    <p class="c-answer__detail">{happenedDetail}</p>
+                </div>
+                <div class="c-answer">
+                    <p class="c-answer__label">What is exposed</p>
+                    <p class="c-answer__main">{exposedLine}</p>
+                    <p class="c-answer__detail">{exposedDetail}</p>
+                </div>
+                <div class="c-answer c-answer_act">
+                    <div class="c-answer__words">
+                        <p class="c-answer__label">Who we call first</p>
+                        <p class="c-answer__main">{callLine}</p>
+                        <p class="c-answer__detail">{callDetail}</p>
+                    </div>
+                    <template lwc:if={showCallAction}>
+                        <lightning-button label={callAction} variant={callActionVariant} icon-name={callActionIcon} disabled={isPlanning} onclick={handleWho}></lightning-button>
+                    </template>
+                </div>
+            </div>
+
+            <div class={bodyClass}>
+                <div class="c-body__map">
+                    <c-antsurance-event-map
+                        label={mapLabel}
+                        center-latitude={event.centerLatitude}
+                        center-longitude={event.centerLongitude}
+                        reach-miles={event.reachMiles}
+                        radius-miles={event.radiusMiles}
+                        points={event.points}
+                        places={mapPlaces}
+                        selected-key={selectedKey}
+                        onplaceselect={handleMapPlace}
+                    ></c-antsurance-event-map>
+                    <template lwc:if={selected}>
+                        <div class="c-chosen c-ui-arrive" role="region" aria-label="The chosen location">
+                            <div class="c-chosen__head">
+                                <a class="c-chosen__name" href={selected.url} data-record-id={selected.customerId} onclick={handleOpen}>{selected.customerName}</a>
+                                <button type="button" class="c-chosen__close" title="Close" aria-label="Close the chosen location" onclick={handleCloseSelected}>
+                                    <lightning-icon icon-name="utility:close" size="xx-small" alternative-text=""></lightning-icon>
+                                </button>
+                            </div>
+                            <p class="c-chosen__about">{selected.what}. {selected.where}.</p>
+                            <ul class="c-chosen__items">
+                                <template for:each={selected.items} for:item="item">
+                                    <li key={item.key} class="c-chosen__item">
+                                        <span class="c-chosen__what">
+                                            <span class="c-chosen__thing">{item.name}</span>
+                                            <a href={item.policyUrl} data-record-id={item.policyId} onclick={handleOpen}>{item.policyName}</a>
+                                        </span>
+                                        <span class="c-chosen__figure">
+                                            <span class="c-chosen__value">{item.value}</span>
+                                            <span class={item.statusClass}>{item.status}</span>
+                                        </span>
+                                    </li>
+                                </template>
+                            </ul>
+                            <p class="c-chosen__foot">
+                                <template lwc:if={selected.more}><span>{selected.more}. </span></template>
+                                <template lwc:if={selected.contact}><span>Contact: {selected.contact}.</span></template>
+                            </p>
+                        </div>
+                    </template>
+                </div>
+
+                <div class={panelClass}>
+                    <template lwc:if={hasExposure}>
+                        <c-antsurance-tabs label="Parts of the response" tabs={tabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+                    </template>
+
+                    <!-- Exposure -->
+                    <template lwc:if={isExposureTab}>
+                        <div class="c-pane" role="tabpanel" aria-label="Exposure">
+                            <template lwc:if={isEmpty}>
+                                <div class="c-empty">
+                                    <span class="c-ui-tile c-ui-tile_large c-ui-tile_olive">
+                                        <lightning-icon icon-name="utility:check" size="small" alternative-text=""></lightning-icon>
+                                    </span>
+                                    <div>
+                                        <p class="c-empty__title">Nothing we insure is inside this area</p>
+                                        <p class="c-empty__text">{exposedDetail} There is no exposure to count and nobody to call.</p>
+                                    </div>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <ul class="c-figures">
+                                    <template for:each={figures} for:item="figure">
+                                        <li key={figure.key}>
+                                            <button type="button" class="c-figure c-ui-open" data-key={figure.key} title={figure.title} onclick={handleFigure}>
+                                                <span class="c-figure__label">{figure.label}</span>
+                                                <span class="c-figure__value">{figure.value}</span>
+                                                <span class="c-figure__note">{figure.note}</span>
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <template lwc:if={expectLine}>
+                                    <div class="c-expect">
+                                        <p class="c-expect__main">{expectLine}</p>
+                                        <p class="c-expect__basis">{expectBasis}</p>
+                                    </div>
+                                </template>
+                                <h2 class="c-pane__heading">By line of business</h2>
+                                <ul class="c-lines">
+                                    <template for:each={lineRows} for:item="row">
+                                        <li key={row.line}>
+                                            <button type="button" class="c-line c-ui-open" data-line={row.line} title={row.title} onclick={handleLine}>
+                                                <span class={row.icon.tileClass}>
+                                                    <lightning-icon icon-name={row.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                                </span>
+                                                <span class="c-line__main">
+                                                    <span class="c-line__name">{row.line}</span>
+                                                    <span class="c-line__about">{row.policiesText}, {row.responds}</span>
+                                                </span>
+                                                <span class="c-line__value">{row.value}</span>
+                                                <lightning-icon class="c-ui-chevron" icon-name="utility:chevronright" size="xx-small" alternative-text=""></lightning-icon>
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-accordion label="Coverage on record" count={coverageCount} summary={coverageSummary}>
+                                    <ul class="c-covers">
+                                        <template for:each={coverageRows} for:item="row">
+                                            <li key={row.key} class="c-cover">
+                                                <span class="c-cover__name">{row.name}</span>
+                                                <span class={row.statusClass}>{row.status}</span>
+                                                <span class="c-cover__about">{row.policiesText}. {row.deductible}.</span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <c-antsurance-step-pager total={coverageCount} page-size={coverPageSize} page={coverPage} label="coverages" onpagechange={handleCoverPage}></c-antsurance-step-pager>
+                                    <ul class="c-notes">
+                                        <template for:each={coverageNotes} for:item="note">
+                                            <li key={note.key}>{note.text}</li>
+                                        </template>
+                                    </ul>
+                                </c-antsurance-accordion>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Locations -->
+                    <template lwc:if={isLocationsTab}>
+                        <div class="c-pane" role="tabpanel" aria-label="Locations">
+                            <div class="c-pane__bar">
+                                <c-antsurance-tabs label="Which locations" variant="pill" tabs={scopes} value={scope} onselect={handleScope}></c-antsurance-tabs>
+                                <template lwc:if={lineFilter}>
+                                    <button type="button" class="c-filter" title={lineFilterTitle} onclick={handleClearLine}>
+                                        {lineFilterLabel}
+                                        <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Show every line"></lightning-icon>
+                                    </button>
+                                </template>
+                            </div>
+                            <template lwc:if={hasPlaces}>
+                                <ul class="c-places">
+                                    <template for:each={placeRows} for:item="place">
+                                        <li key={place.key}>
+                                            <button type="button" class={place.className} data-key={place.key} aria-pressed={place.pressed} title={place.label} onclick={handlePlace}>
+                                                <span class={place.tileClass}>
+                                                    <lightning-icon icon-name={place.iconName} size="x-small" alternative-text=""></lightning-icon>
+                                                </span>
+                                                <span class="c-place__main">
+                                                    <span class="c-place__name">{place.name}</span>
+                                                    <span class="c-place__about">{place.about}</span>
+                                                </span>
+                                                <span class="c-place__figure">
+                                                    <span class="c-place__value">{place.value}</span>
+                                                    <span class="c-place__cover">{place.cover}</span>
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-step-pager total={placeTotal} page-size={placePageSize} page={placePage} label="locations" onpagechange={handlePlacePage}></c-antsurance-step-pager>
+                            </template>
+                            <template lwc:else>
+                                <p class="c-pane__none">{noPlacesText}</p>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Claims -->
+                    <template lwc:if={isClaimsTab}>
+                        <div class="c-pane" role="tabpanel" aria-label="Claims">
+                            <p class="c-pane__lead">{claimsLine}</p>
+                            <template lwc:if={hasClaims}>
+                                <ul class="c-claims">
+                                    <template for:each={claimRows} for:item="claim">
+                                        <li key={claim.claimId} class="c-claim">
+                                            <span class="c-claim__main">
+                                                <a class="c-claim__name" href={claim.url} data-record-id={claim.claimId} onclick={handleOpen}>{claim.subject}</a>
+                                                <span class="c-claim__about">{claim.about}</span>
+                                            </span>
+                                            <span class={claim.whenClass}>{claim.when}</span>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-step-pager total={claimTotal} page-size={claimPageSize} page={claimPage} label="claims" onpagechange={handleClaimPage}></c-antsurance-step-pager>
+                            </template>
+                            <template lwc:if={hasEarlier}>
+                                <c-antsurance-accordion label="Already open here" count={earlierTotal} summary="Open on these policies before the event, so not from it">
+                                    <ul class="c-claims">
+                                        <template for:each={earlierRows} for:item="claim">
+                                            <li key={claim.claimId} class="c-claim">
+                                                <span class="c-claim__main">
+                                                    <a class="c-claim__name" href={claim.url} data-record-id={claim.claimId} onclick={handleOpen}>{claim.subject}</a>
+                                                    <span class="c-claim__about">{claim.about}</span>
+                                                </span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <c-antsurance-step-pager total={earlierTotal} page-size={claimPageSize} page={earlierPage} label="claims already open" onpagechange={handleEarlierPage}></c-antsurance-step-pager>
+                                </c-antsurance-accordion>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Plan -->
+                    <template lwc:if={isPlanTab}>
+                        <div class="c-pane" role="tabpanel" aria-label="Plan">
+                            <template lwc:if={canPlan}>
+                                <div class="c-plan__bar">
+                                    <p class="c-plan__about">
+                                        <template lwc:if={plan}>{planWritten}</template>
+                                        <template lwc:else>Claude reads what this page worked out and writes the plan: what to expect, who to call first and why, and&nbsp;what&nbsp;to&nbsp;watch.</template>
+                                    </p>
+                                    <lightning-button variant={planVariant} label={planButton} icon-name="utility:sparkles" disabled={isPlanning} onclick={handlePlan}></lightning-button>
+                                </div>
+                                <template lwc:if={planError}>
+                                    <p class="c-events__error" role="alert">{planError}</p>
+                                </template>
+                                <template lwc:if={isPlanning}>
+                                    <div class="c-plan__wait" role="status">
+                                        <span class="c-ui-bone c-ui-bone_title"></span>
+                                        <span class="c-ui-bone c-ui-bone_line"></span>
+                                        <span class="c-ui-bone c-ui-bone_line"></span>
+                                        <p class="c-plan__waiting">Claude is reading the exposure and the claims. This takes about 20 seconds.</p>
+                                    </div>
+                                </template>
+                                <template lwc:elseif={plan}>
+                                    <p class="c-plan__headline">{plan.headline}</p>
+                                    <template lwc:if={expectLine}>
+                                        <div class="c-plan__part">
+                                            <p class="c-plan__label">What to expect</p>
+                                            <p class="c-plan__text">{expectLine}. {plan.expectNote}</p>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={hasCalls}>
+                                        <div class="c-plan__part">
+                                            <p class="c-plan__label">Call first</p>
+                                            <p class="c-plan__text">{planCallNames}.</p>
+                                            <button type="button" class="c-linkish" onclick={handleSeeCalls}>See why, and what to say to each</button>
+                                        </div>
+                                    </template>
+                                    <c-antsurance-accordion label="Staffing and vendors" count={staffing.length} summary="Who to line up">
+                                        <ul class="c-notes">
+                                            <template for:each={staffing} for:item="line"><li key={line.key}>{line.text}</li></template>
+                                        </ul>
+                                    </c-antsurance-accordion>
+                                    <c-antsurance-accordion label="Coverage to watch" count={coverageWatch.length} summary="Deductibles, exclusions, cover that is not stated">
+                                        <ul class="c-notes">
+                                            <template for:each={coverageWatch} for:item="line"><li key={line.key}>{line.text}</li></template>
+                                        </ul>
+                                    </c-antsurance-accordion>
+                                    <c-antsurance-accordion label="What this plan cannot know" count={notHeld.length} summary="What the system does not hold">
+                                        <ul class="c-notes">
+                                            <template for:each={notHeld} for:item="line"><li key={line.key}>{line.text}</li></template>
+                                        </ul>
+                                    </c-antsurance-accordion>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <p class="c-pane__none">Nothing we insure is inside this area, so there is nothing to plan.</p>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Calls -->
+                    <template lwc:if={isCallsTab}>
+                        <div class="c-pane" role="tabpanel" aria-label="Calls">
+                            <template lwc:if={hasCalls}>
+                                <p class="c-pane__lead">Edit what to say, choose who to call, and make the tasks. Nothing is sent to a customer.</p>
+                                <ul class="c-calls">
+                                    <template for:each={callRows} for:item="call">
+                                        <li key={call.key} class="c-call">
+                                            <div class="c-call__head">
+                                                <lightning-input type="checkbox" variant="label-hidden" label={call.checkLabel} checked={call.isChosen} data-key={call.key} onchange={handleChoose}></lightning-input>
+                                                <span class="c-call__main">
+                                                    <a class="c-call__name" href={call.url} data-record-id={call.customerId} onclick={handleOpen}>{call.customerName}</a>
+                                                    <span class="c-call__who">{call.who}</span>
+                                                </span>
+                                            </div>
+                                            <p class="c-call__reason">{call.reason}</p>
+                                            <lightning-textarea
+                                                class="c-call__message"
+                                                variant="label-hidden"
+                                                label={call.messageLabel}
+                                                value={call.message}
+                                                max-length="2000"
+                                                data-key={call.key}
+                                                onchange={handleMessage}
+                                            ></lightning-textarea>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-step-pager total={callTotal} page-size={callPageSize} page={callPage} label="calls" onpagechange={handleCallPage}></c-antsurance-step-pager>
+                                <div class="c-calls__foot">
+                                    <p class="c-calls__note">One task for each customer chosen, due today, up to five at a time. The message goes in the task for whoever&nbsp;makes&nbsp;the&nbsp;call.</p>
+                                    <lightning-button variant="brand" label={createLabel} disabled={cannotCreate} onclick={handleCreate}></lightning-button>
+                                </div>
+                                <template lwc:if={createError}>
+                                    <p class="c-events__error" role="alert">{createError}</p>
+                                </template>
+                                <template lwc:if={created}>
+                                    <div class="c-made" role="status">
+                                        <p class="c-made__line">{createdLine}</p>
+                                        <ul class="c-made__list">
+                                            <template for:each={createdRows} for:item="task">
+                                                <li key={task.taskId}><a href={task.url} data-record-id={task.taskId} onclick={handleOpen}>{task.subject}</a></li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <div class="c-empty">
+                                    <span class="c-ui-tile c-ui-tile_large c-ui-tile_sand">
+                                        <lightning-icon icon-name="utility:call" size="small" alternative-text=""></lightning-icon>
+                                    </span>
+                                    <div>
+                                        <p class="c-empty__title">No calls drafted yet</p>
+                                        <template lwc:if={canPlan}>
+                                            <p class="c-empty__text">The calls come from Claude's plan: who to ring first, and what to say.</p>
+                                            <button type="button" class="c-linkish" onclick={handleSeePlan}>Go to the Plan tab</button>
+                                        </template>
+                                        <template lwc:else>
+                                            <p class="c-empty__text">Nothing we insure is inside this area, so there is nobody to call.</p>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </section>
+</template>

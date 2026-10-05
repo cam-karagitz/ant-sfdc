@@ -1,0 +1,477 @@
+<template>
+    <section class="c-work" aria-label="Your workspace">
+        <div class="c-tabs" role="tablist" aria-label="Lists" onkeydown={handleTabKey}>
+            <template for:each={tabs} for:item="tab">
+                <button key={tab.key} type="button" role="tab" class={tab.className} aria-selected={tab.selected} tabindex={tab.tabIndex} data-key={tab.key} onclick={handleTab}>
+                    <span class="c-tab__label">{tab.label}</span>
+                    <template lwc:if={tab.hasCount}>
+                        <span class="c-tab__count">{tab.count}</span>
+                    </template>
+                </button>
+            </template>
+        </div>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-work__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <!-- ============================== Claude's desk ============================== -->
+        <div class={deskPanelClass} role="tabpanel" aria-label="Claude's desk">
+            <c-antsurance-desk lwc:ref="desk" onchanged={handleDeskChanged}></c-antsurance-desk>
+        </div>
+
+        <template lwc:if={isReady}>
+            <!-- ============================== My day ============================== -->
+            <template lwc:if={showDay}>
+                <div class="c-panel" role="tabpanel" aria-label="My day">
+                    <div class="c-panel__head">
+                        <p class="c-panel__summary">{daySummary}</p>
+                        <button type="button" class="c-link c-panel__all" data-view="tasks" onclick={handleViewAll}>All tasks</button>
+                    </div>
+                    <template lwc:if={hasTasks}>
+                        <template lwc:if={hasSeveralDayGroups}>
+                            <c-antsurance-tabs class="c-subtabs" variant="pill" label="Tasks by when they are due" tabs={dayTabs} value={dayGroupKey} onselect={handleDayGroup}></c-antsurance-tabs>
+                        </template>
+                            <div class="c-group" role="tabpanel" aria-label={dayGroup.label}>
+                                <ul class="c-rows">
+                                    <template for:each={shownTasks} for:item="task">
+                                        <li key={task.key} class={task.className}>
+                                            <div class="c-row__head">
+                                                <button type="button" class="c-tick" title={task.completeLabel} aria-label={task.completeLabel} data-record-id={task.recordId} disabled={isCompleting} onclick={handleComplete}>
+                                                    <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="" class="c-tick__mark"></lightning-icon>
+                                                </button>
+                                                <button type="button" class="c-row__toggle" aria-expanded={task.expanded} data-key={task.key} onclick={handleToggle}>
+                                                    <span class="c-row__main">
+                                                        <span class="c-row__title">{task.subject}</span>
+                                                        <template lwc:if={task.hasAbout}>
+                                                            <span class="c-row__sub"><span class="c-row__kind">{task.kind}</span>{task.about}</span>
+                                                        </template>
+                                                    </span>
+                                                    <span class="c-row__meta">
+                                                        <template lwc:if={task.isHigh}>
+                                                            <span class="c-chip c-chip_watch">High priority</span>
+                                                        </template>
+                                                        <span class={task.dueClass}>{task.dueLabel}</span>
+                                                    </span>
+                                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                                </button>
+                                            </div>
+                                            <template lwc:if={task.isOpen}>
+                                                <div class="c-row__detail c-row__detail_task">
+                                                    <dl class="c-facts">
+                                                        <div class="c-fact">
+                                                            <dt class="c-eyebrow">Due</dt>
+                                                            <dd class="c-fact__value">{task.dueDateLabel}</dd>
+                                                        </div>
+                                                        <div class="c-fact">
+                                                            <dt class="c-eyebrow">Priority</dt>
+                                                            <dd class="c-fact__value">{task.priorityLabel}</dd>
+                                                        </div>
+                                                        <template lwc:if={task.contactName}>
+                                                            <div class="c-fact">
+                                                                <dt class="c-eyebrow">With</dt>
+                                                                <dd class="c-fact__value">{task.contactName}</dd>
+                                                            </div>
+                                                        </template>
+                                                    </dl>
+                                                    <div class="c-row__actions">
+                                                        <lightning-button label="Mark complete" variant="brand" icon-name="utility:check" data-record-id={task.recordId} disabled={isCompleting} onclick={handleComplete}></lightning-button>
+                                                        <template lwc:if={task.canOpenAbout}>
+                                                            <lightning-button label={task.aboutLabel} data-record-id={task.relatedId} data-object={task.aboutObject} onclick={handleOpen}></lightning-button>
+                                                        </template>
+                                                        <lightning-button label="Open task" data-record-id={task.recordId} data-object="Task" onclick={handleOpen}></lightning-button>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <c-antsurance-step-pager total={dayTotal} page-size={rowsShown} page={dayPage} label={dayPagerLabel} data-list={dayPageName} onpagechange={handlePage}></c-antsurance-step-pager>
+                            </div>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-panel__empty">Your list is clear. New tasks show here as they come due.</p>
+                    </template>
+                </div>
+            </template>
+
+            <!-- ============================== Claims ============================== -->
+            <template lwc:if={showClaims}>
+                <div class="c-panel" role="tabpanel" aria-label="Claims">
+                    <div class="c-panel__head">
+                        <p class="c-panel__summary">{claimSummary}</p>
+                        <button type="button" class="c-link c-panel__all" data-view="claims" onclick={handleViewAll}>All open claims</button>
+                    </div>
+                    <template lwc:if={hasClaims}>
+                        <ul class="c-rows">
+                            <template for:each={shownClaims} for:item="claim">
+                                <li key={claim.key} class={claim.className}>
+                                    <div class="c-row__head">
+                                        <button type="button" class="c-row__toggle" aria-expanded={claim.expanded} data-key={claim.key} onclick={handleToggle}>
+                                            <span class="c-row__main">
+                                                <span class="c-row__title">{claim.subject}</span>
+                                                <span class="c-row__sub">{claim.subLabel}</span>
+                                            </span>
+                                            <span class="c-row__meta">
+                                                <span class={claim.severityClass}>{claim.severityLabel}</span>
+                                                <span class="c-chip">{claim.status}</span>
+                                                <span class="c-row__amount">
+                                                    <span class="c-row__figure">{claim.outstandingLabel}</span>
+                                                    <span class="c-row__unit">outstanding</span>
+                                                </span>
+                                            </span>
+                                            <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                        </button>
+                                    </div>
+                                    <template lwc:if={claim.isOpen}>
+                                        <div class="c-row__detail c-row__detail_claim">
+                                            <div class="c-claim__money">
+                                                <p class="c-eyebrow">Paid against reserve</p>
+                                                <div class="c-meter" role="img" aria-label={claim.paidShare}>
+                                                    <span class="c-meter__fill" style={claim.paidStyle}></span>
+                                                </div>
+                                                <dl class="c-facts c-facts_tight">
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Paid</dt>
+                                                        <dd class="c-fact__value">{claim.paidLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Reserved</dt>
+                                                        <dd class="c-fact__value">{claim.reserveLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Open for</dt>
+                                                        <dd class="c-fact__value">{claim.daysOpenLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Handled by</dt>
+                                                        <dd class="c-fact__value">{claim.handledByLabel}</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            <div class="c-claim__brief">
+                                                <p class="c-eyebrow">Claude's brief</p>
+                                                <template lwc:if={claim.hasBrief}>
+                                                    <p class="c-brief__headline">{claim.briefHeadline}</p>
+                                                </template>
+                                                <template lwc:else>
+                                                    <p class="c-brief__none">Not written yet. Open the claim and press Write the brief.</p>
+                                                </template>
+                                            </div>
+                                            <div class="c-row__actions">
+                                                <lightning-button label="Open claim" variant="brand" data-record-id={claim.recordId} data-object="Case" onclick={handleOpen}></lightning-button>
+                                                <template lwc:if={claim.accountId}>
+                                                    <lightning-button label="Open customer" data-record-id={claim.accountId} data-object="Account" onclick={handleOpen}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                        <c-antsurance-step-pager total={claims.length} page-size={rowsShown} page={pages.claims} label="claims" data-list="claims" onpagechange={handlePage}></c-antsurance-step-pager>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-panel__empty">No open claims. New ones show here, most serious first.</p>
+                    </template>
+                </div>
+            </template>
+
+            <!-- ============================== Renewals ============================== -->
+            <template lwc:if={showRenewals}>
+                <div class="c-panel" role="tabpanel" aria-label="Renewals">
+                    <div class="c-panel__head">
+                        <p class="c-panel__summary">{renewalSummary}</p>
+                        <button type="button" class="c-link c-panel__all" data-view="renewals" onclick={handleViewAll}>All renewals due</button>
+                    </div>
+                    <template lwc:if={hasRenewals}>
+                        <ul class="c-rows">
+                            <template for:each={shownRenewals} for:item="renewal">
+                                <li key={renewal.key} class={renewal.className}>
+                                    <div class="c-row__head">
+                                        <button type="button" class="c-row__toggle" aria-expanded={renewal.expanded} data-key={renewal.key} onclick={handleToggle}>
+                                            <span class={renewal.countdownClass}>
+                                                <span class="c-countdown__days">{renewal.daysLeft}</span>
+                                                <span class="c-countdown__unit">{renewal.daysUnit}</span>
+                                            </span>
+                                            <span class="c-row__main">
+                                                <span class="c-row__title">{renewal.accountName}</span>
+                                                <span class="c-row__sub">{renewal.detail}</span>
+                                            </span>
+                                            <span class="c-row__meta">
+                                                <span class={renewal.statusClass}>{renewal.statusLabel}</span>
+                                                <span class="c-row__amount">
+                                                    <span class="c-row__figure">{renewal.premiumLabel}</span>
+                                                    <span class="c-row__unit">a year now</span>
+                                                </span>
+                                            </span>
+                                            <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                        </button>
+                                    </div>
+                                    <template lwc:if={renewal.isOpen}>
+                                        <div class="c-row__detail c-row__detail_renewal">
+                                            <dl class="c-facts c-facts_figures">
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Premium now</dt>
+                                                    <dd class="c-fact__figure">{renewal.premiumLabel}</dd>
+                                                </div>
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">At renewal</dt>
+                                                    <dd class="c-fact__figure">{renewal.renewalPremiumLabel}</dd>
+                                                </div>
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Change</dt>
+                                                    <dd class={renewal.changeClass}>{renewal.changeLabel}</dd>
+                                                </div>
+                                            </dl>
+                                            <dl class="c-facts">
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Expires</dt>
+                                                    <dd class="c-fact__value">{renewal.expiresLabel}</dd>
+                                                </div>
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Sold through</dt>
+                                                    <dd class="c-fact__value">{renewal.soldThrough}</dd>
+                                                </div>
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Payments</dt>
+                                                    <dd class="c-fact__value">{renewal.paymentLabel}</dd>
+                                                </div>
+                                                <div class="c-fact">
+                                                    <dt class="c-eyebrow">Renewal sale</dt>
+                                                    <dd class="c-fact__value">{renewal.stageLabel}</dd>
+                                                </div>
+                                            </dl>
+                                            <div class="c-row__actions">
+                                                <lightning-button label="Open policy" variant="brand" data-record-id={renewal.recordId} data-object="Policy__c" onclick={handleOpen}></lightning-button>
+                                                <template lwc:if={renewal.hasSale}>
+                                                    <lightning-button label="Open renewal sale" data-record-id={renewal.renewalSaleId} data-object="Opportunity" onclick={handleOpen}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                        <c-antsurance-step-pager total={renewals.length} page-size={rowsShown} page={pages.renewals} label="renewals" data-list="renewals" onpagechange={handlePage}></c-antsurance-step-pager>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-panel__empty">Nothing renews in the next 60 days.</p>
+                    </template>
+                </div>
+            </template>
+
+            <!-- ============================== Pipeline ============================== -->
+            <template lwc:if={showPipeline}>
+                <div class="c-panel" role="tabpanel" aria-label="Pipeline">
+                    <div class="c-panel__head">
+                        <p class="c-panel__summary">{pipelineSummary}</p>
+                        <button type="button" class="c-link c-panel__all" data-view="sales" onclick={handleViewAll}>All open sales</button>
+                    </div>
+                    <ol class="c-stages" aria-label="Open sales by stage">
+                        <template for:each={stages} for:item="stage">
+                            <li key={stage.key} class="c-stages__item">
+                                <button type="button" class={stage.className} aria-pressed={stage.pressed} data-key={stage.key} onclick={handleStage}>
+                                    <span class="c-stage__step">Stage {stage.step}</span>
+                                    <span class="c-stage__name">{stage.name}</span>
+                                    <span class="c-stage__figure">{stage.amountLabel}</span>
+                                    <span class="c-stage__count">{stage.countLabel}</span>
+                                </button>
+                            </li>
+                        </template>
+                    </ol>
+                    <c-antsurance-tabs class="c-subtabs" variant="pill" label="Lists on the pipeline" tabs={pipeTabs} value={pipeView} onselect={handlePipeView}></c-antsurance-tabs>
+                    <div class="c-group" role="tabpanel" aria-label="Sales by stage" lwc:if={showsStage}>
+                        <h3 class="c-group__label">{stageHeading}</h3>
+                        <template lwc:if={hasStageSales}>
+                            <!-- A sale opens in place, as a row does on every other tab: what it is, then the way to it. -->
+                            <ul class="c-rows">
+                                <template for:each={shownStageSales} for:item="sale">
+                                    <li key={sale.key} class={sale.className}>
+                                        <div class="c-row__head">
+                                            <button type="button" class="c-row__toggle" aria-expanded={sale.expanded} data-key={sale.key} onclick={handleToggle}>
+                                                <span class="c-row__main">
+                                                    <span class="c-row__title">{sale.name}</span>
+                                                    <span class="c-row__sub">{sale.closeLabel}</span>
+                                                </span>
+                                                <span class="c-row__meta">
+                                                    <span class="c-row__amount">
+                                                        <span class="c-row__figure">{sale.amountLabel}</span>
+                                                    </span>
+                                                </span>
+                                                <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                            </button>
+                                        </div>
+                                        <template lwc:if={sale.isOpen}>
+                                            <div class="c-row__detail c-row__detail_quote">
+                                                <dl class="c-facts">
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Customer</dt>
+                                                        <dd class="c-fact__value">{sale.customerLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Line</dt>
+                                                        <dd class="c-fact__value">{sale.lineLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Next step</dt>
+                                                        <dd class="c-fact__value">{sale.nextLabel}</dd>
+                                                    </div>
+                                                </dl>
+                                                <div class="c-row__actions">
+                                                    <lightning-button label="Open sale" variant="brand" data-record-id={sale.recordId} data-object="Opportunity" onclick={handleOpen}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                            <c-antsurance-step-pager total={stageSales.length} page-size={rowsShown} page={pages.stage} label="sales at this stage" data-list="stage" onpagechange={handlePage}></c-antsurance-step-pager>
+                        </template>
+                    </div>
+                    <div class="c-group" role="tabpanel" aria-label="Quotes waiting" lwc:if={showsWaiting}>
+                        <div class="c-group__bar">
+                            <h3 class="c-group__label c-group__label_alert">{staleHeading}</h3>
+                            <button type="button" class="c-link c-panel__all" data-view="waiting" onclick={handleViewAll}>All waiting quotes</button>
+                        </div>
+                        <template lwc:if={hasStaleQuotes}>
+                            <ul class="c-rows">
+                                <template for:each={shownStaleQuotes} for:item="quote">
+                                    <li key={quote.key} class={quote.className}>
+                                        <div class="c-row__head">
+                                            <button type="button" class="c-row__toggle" aria-expanded={quote.expanded} data-key={quote.key} onclick={handleToggle}>
+                                                <span class="c-row__main">
+                                                    <span class="c-row__title">{quote.saleName}</span>
+                                                    <span class="c-row__sub">{quote.option}</span>
+                                                </span>
+                                                <span class="c-row__meta">
+                                                    <span class={quote.waitedClass}>{quote.waitedLabel}</span>
+                                                    <span class="c-row__amount">
+                                                        <span class="c-row__figure">{quote.premiumLabel}</span>
+                                                        <span class="c-row__unit">a year</span>
+                                                    </span>
+                                                </span>
+                                                <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                            </button>
+                                        </div>
+                                        <template lwc:if={quote.isOpen}>
+                                            <div class="c-row__detail c-row__detail_quote">
+                                                <dl class="c-facts">
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Customer</dt>
+                                                        <dd class="c-fact__value">{quote.customerLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Sent</dt>
+                                                        <dd class="c-fact__value">{quote.issuedLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Valid until</dt>
+                                                        <dd class="c-fact__value">{quote.validLabel}</dd>
+                                                    </div>
+                                                </dl>
+                                                <div class="c-row__actions">
+                                                    <lightning-button label="Open sale" variant="brand" data-record-id={quote.saleId} data-object="Opportunity" onclick={handleOpen}></lightning-button>
+                                                    <lightning-button label="Open quote" data-record-id={quote.recordId} data-object="Quote" onclick={handleOpen}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                            <c-antsurance-step-pager total={staleQuotes.length} page-size={rowsShown} page={pages.waiting} label="waiting quotes" data-list="waiting" onpagechange={handlePage}></c-antsurance-step-pager>
+                        </template>
+                        <template lwc:else>
+                            <p class="c-panel__empty">No quote has waited that long.</p>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- ============================== Underwriting ============================== -->
+            <template lwc:if={showUnderwriting}>
+                <div class="c-panel" role="tabpanel" aria-label="Underwriting">
+                    <div class="c-panel__head">
+                        <p class="c-panel__summary">{underwritingSummary}</p>
+                        <button type="button" class="c-link c-panel__all" data-view="quotes" onclick={handleViewAll}>All open quotes</button>
+                    </div>
+                    <template lwc:if={hasReferrals}>
+                        <ul class="c-rows">
+                            <template for:each={shownReferrals} for:item="referral">
+                                <li key={referral.key} class={referral.className}>
+                                    <div class="c-row__head">
+                                        <button type="button" class="c-row__toggle" aria-expanded={referral.expanded} data-key={referral.key} onclick={handleToggle}>
+                                            <span class="c-row__main">
+                                                <span class="c-row__title">{referral.saleName}</span>
+                                                <span class="c-row__sub">{referral.option}</span>
+                                            </span>
+                                            <span class="c-row__meta">
+                                                <span class={referral.memoClass}>{referral.memoChip}</span>
+                                                <span class="c-row__amount">
+                                                    <span class="c-row__figure">{referral.premiumLabel}</span>
+                                                    <span class="c-row__unit">a year</span>
+                                                </span>
+                                            </span>
+                                            <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="" class="c-row__chevron"></lightning-icon>
+                                        </button>
+                                    </div>
+                                    <template lwc:if={referral.isOpen}>
+                                        <div class="c-row__detail c-row__detail_referral">
+                                            <div class="c-referral__why">
+                                                <p class="c-eyebrow">Why it was referred</p>
+                                                <template lwc:if={referral.hasReasons}>
+                                                    <ul class="c-reasons">
+                                                        <template for:each={referral.reasons} for:item="reason">
+                                                            <li key={reason.key} class="c-reason">
+                                                                <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="" class="c-reason__icon"></lightning-icon>
+                                                                <span>{reason.text}</span>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                                <template lwc:else>
+                                                    <p class="c-brief__none">The reason was not recorded. Open the quote to see its answers.</p>
+                                                </template>
+                                                <dl class="c-facts c-facts_tight">
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Customer</dt>
+                                                        <dd class="c-fact__value">{referral.customerLabel}</dd>
+                                                    </div>
+                                                    <div class="c-fact">
+                                                        <dt class="c-eyebrow">Line</dt>
+                                                        <dd class="c-fact__value">{referral.lineLabel}</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            <div class="c-claim__brief">
+                                                <p class="c-eyebrow">Claude's memo</p>
+                                                <template lwc:if={referral.hasMemo}>
+                                                    <p class="c-memo__recommends">{referral.memoRecommendation}</p>
+                                                    <p class="c-brief__headline">{referral.memoHeadline}</p>
+                                                </template>
+                                                <template lwc:else>
+                                                    <p class="c-brief__none">Not drafted yet. Open the quote and press Draft a memo with Claude.</p>
+                                                </template>
+                                            </div>
+                                            <div class="c-row__actions">
+                                                <lightning-button label="Review quote" variant="brand" data-record-id={referral.recordId} data-object="Quote" onclick={handleOpen}></lightning-button>
+                                                <lightning-button label="Open sale" data-record-id={referral.saleId} data-object="Opportunity" onclick={handleOpen}></lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                        <c-antsurance-step-pager total={referrals.length} page-size={rowsShown} page={pages.underwriting} label="referrals" data-list="underwriting" onpagechange={handlePage}></c-antsurance-step-pager>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-panel__empty">Nothing is waiting on an underwriter. A quote shows here when its answers call for a review.</p>
+                    </template>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <p class="c-panel__empty c-panel__empty_loading" role="status">Loading your lists</p>
+        </template>
+    </section>
+</template>

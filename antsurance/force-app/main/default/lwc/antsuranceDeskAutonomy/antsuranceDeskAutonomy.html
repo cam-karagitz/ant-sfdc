@@ -1,0 +1,52 @@
+<template>
+    <lightning-modal-header label="What Claude may do"></lightning-modal-header>
+    <lightning-modal-body>
+        <div class="c-auto">
+            <p class="c-auto__intro">Choose how far Claude goes on its own for each kind of routine work. Anything that moves money or goes to a customer always waits for a person.</p>
+            <template lwc:if={errorMessage}>
+                <p class="c-auto__error" role="alert">{errorMessage}</p>
+            </template>
+            <template lwc:if={isReady}>
+                <ul class="c-auto__list">
+                    <template for:each={rows} for:item="row">
+                        <li key={row.key} class="c-kind">
+                            <div class="c-kind__words">
+                                <p class="c-kind__label">{row.label}</p>
+                                <p class="c-kind__what">{row.what}</p>
+                            </div>
+                            <div class="c-choices" role="radiogroup" aria-label={row.groupLabel}>
+                                <template for:each={row.choices} for:item="choice">
+                                    <button key={choice.key} type="button" role="radio" class={choice.className} aria-checked={choice.checked} data-kind={choice.kind} data-mode={choice.mode} disabled={choice.disabled} onclick={handlePick}>
+                                        <template lwc:if={choice.locked}>
+                                            <lightning-icon icon-name="utility:lock" size="xx-small" alternative-text="Locked" class="c-choice__lock"></lightning-icon>
+                                        </template>
+                                        <span>{choice.label}</span>
+                                    </button>
+                                </template>
+                            </div>
+                            <p class="c-kind__means">{row.means}</p>
+                            <template lwc:if={row.locked}>
+                                <p class="c-kind__lock">{row.lockReason}</p>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+                <template lwc:if={canManage}>
+                    <p class="c-auto__note">These settings apply to everyone. Changing one changes what the next shift does; work already on the desk is not affected.</p>
+                </template>
+                <template lwc:else>
+                    <p class="c-auto__note">Only a desk manager can change these settings.</p>
+                </template>
+            </template>
+            <template lwc:else>
+                <p class="c-auto__note">Loading the settings.</p>
+            </template>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <div class="c-auto__foot">
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+            <lightning-button label="Save" variant="brand" disabled={saveDisabled} onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-modal-footer>
+</template>

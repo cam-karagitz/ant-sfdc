@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Who are the licensed drivers in the Reyes household?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Household_Role__c, Primary_Member__c, Licensed_Driver__c, Account.Id, Account.Name FROM Contact WHERE Account.RecordType.DeveloperName = 'Household' AND Account.Name LIKE '%Reyes%' ORDER BY Account.Name, Primary_Member__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000040sVmQAAU\"},\"AccountId\":\"001aj000040sVmQAAU\",\"Licensed_Driver__c\":true,\"Primary_Member__c\":true,\"Household_Role__c\":\"Head of Household\",\"Name\":\"Maria Reyes\",\"Id\":\"003aj00002T8RBzAAN\"},{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000040sVmQAAU\"},\"AccountId\":\"001aj000040sVmQAAU\",\"Licensed_Driver__c\":true,\"Primary_Member__c\":false,\"Household_Role__c\":\"Spouse or Partner\",\"Name\":\"Daniel Reyes\",\"Id\":\"003aj00002T8RC0AAN\"},{\"Account\":{\"RecordTypeId\":\"012aj00000Ee4P9AAJ\",\"Name\":\"Reyes Household\",\"Id\":\"001aj000040sVmQAAU\"},\"AccountId\":\"001aj000040sVmQAAU\",\"Licensed_Driver__c\":true,\"Primary_Member__c\":false,\"Household_Role__c\":\"Dependent\",\"Name\":\"Sofia Reyes\",\"Id\":\"003aj00002T8RC1AAN\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "All three members of the [Reyes Household](/lightning/r/001aj000040sVmQAAU/view) are marked as licensed drivers:\n\n- [Maria Reyes](/lightning/r/003aj00002T8RBzAAN/view): head of household and primary member\n- [Daniel Reyes](/lightning/r/003aj00002T8RC0AAN/view): spouse or partner\n- [Sofia Reyes](/lightning/r/003aj00002T8RC1AAN/view): dependent"
+  }
+]

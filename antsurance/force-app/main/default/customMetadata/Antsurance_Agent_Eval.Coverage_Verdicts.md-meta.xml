@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Coverage verdicts</label>
+    <protected>false</protected>
+    <values>
+        <field>Agent__c</field>
+        <value xsi:type="xsd:string">coverage</value>
+    </values>
+    <values>
+        <field>Caveat__c</field>
+        <value xsi:type="xsd:string">Fourteen cases, written by one person in clean wording. It shows the reasoning holds, not how it does on a messy file.</value>
+    </values>
+    <values>
+        <field>Measured__c</field>
+        <value xsi:type="xsd:string">Fourteen written cases. The verdict had to match, and so did the coverage that responds, which was right 13 of 13 times.</value>
+    </values>
+    <values>
+        <field>Order__c</field>
+        <value xsi:type="xsd:double">1</value>
+    </values>
+    <values>
+        <field>Result__c</field>
+        <value xsi:type="xsd:string">14 of 14</value>
+    </values>
+    <values>
+        <field>Run_On__c</field>
+        <value xsi:type="xsd:date">2026-10-04</value>
+    </values>
+    <values>
+        <field>Source__c</field>
+        <value xsi:type="xsd:string">scripts/eval/coverage</value>
+    </values>
+</CustomMetadata>

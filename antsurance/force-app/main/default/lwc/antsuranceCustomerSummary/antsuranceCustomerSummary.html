@@ -1,0 +1,95 @@
+<template>
+    <article class="c-house" aria-label={cardTitle}>
+        <template lwc:if={errorMessage}>
+            <p class="c-house__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={summary}>
+            <header class="c-house__header">
+                <div class="c-house__titles">
+                    <h2 class="c-house__eyebrow">{cardTitle}</h2>
+                    <p class="c-house__since">{sinceLabel}</p>
+                    <template lwc:if={summary.phone}>
+                        <p class="c-house__phone">
+                            <lightning-icon icon-name="utility:call" size="xx-small" alternative-text="Phone"></lightning-icon>
+                            <a href={phoneUrl}>{summary.phone}</a>
+                        </p>
+                    </template>
+                </div>
+                <template lwc:if={hasMembers}>
+                    <ul class="c-faces" aria-label={membersLabel}>
+                        <template for:each={faces} for:item="face">
+                            <li key={face.key}>
+                                <template lwc:if={face.recordId}>
+                                    <a class="c-face" href={face.url} data-record-id={face.recordId} title={face.title} onclick={handleOpenContact}
+                                        >{face.initials}</a
+                                    >
+                                </template>
+                                <template lwc:else>
+                                    <span class="c-face c-face_more" title={face.title}>{face.initials}</span>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+            </header>
+
+            <dl class="c-house__stats">
+                <template for:each={stats} for:item="stat">
+                    <div key={stat.label}>
+                        <dd>{stat.value}</dd>
+                        <dt>{stat.label}</dt>
+                    </div>
+                </template>
+            </dl>
+
+            <div class="c-compare" role="img" aria-label={compareLabel}>
+                <div class="c-compare__row">
+                    <span class="c-compare__name">Premium a year</span>
+                    <span class="c-compare__track"><span class="c-compare__bar c-compare__bar_premium" style={premiumBarStyle}></span></span>
+                    <span class="c-compare__amount">{premiumLabel}</span>
+                </div>
+                <div class="c-compare__row">
+                    <span class="c-compare__name">Claims incurred</span>
+                    <span class="c-compare__track"><span class={lossBarClass} style={lossBarStyle}></span></span>
+                    <span class="c-compare__amount">{lossLabel}</span>
+                </div>
+                <p class="c-compare__note">{compareNote}</p>
+            </div>
+
+            <template lwc:if={isSummaryOnly}>
+                <!-- An agency's policies are a table in the page's main column, so the card stops at the numbers. -->
+            </template>
+            <template lwc:elseif={hasPolicies}>
+                <div class="c-house__listhead">
+                    <h3 class="c-house__subhead">{listTitle}</h3>
+                    <template lwc:if={hasMorePolicies}>
+                        <a class="c-house__all" href={viewAllUrl} onclick={handleViewAll}>{viewAllLabel}</a>
+                    </template>
+                </div>
+                <ul class="c-tiles">
+                    <template for:each={policies} for:item="policy">
+                        <li key={policy.recordId}>
+                            <a class="c-tile" href={policy.url} data-record-id={policy.recordId} title={policy.title} onclick={handleOpenPolicy}>
+                                <span class={policy.tileClass}>
+                                    <lightning-icon icon-name={policy.icon} size="x-small" alternative-text={policy.lineOfBusiness}></lightning-icon>
+                                </span>
+                                <span class="c-tile__line">{policy.lineOfBusiness}</span>
+                                <span class="c-tile__premium">{policy.premiumLabel}</span>
+                                <span class="c-tile__detail">{policy.detail}</span>
+                                <span class={policy.statusClass}>{policy.status}</span>
+                            </a>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template lwc:else>
+                <p class="c-house__empty">{emptyMessage}</p>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-house__loading">
+                <lightning-spinner alternative-text="Loading summary" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

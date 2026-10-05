@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-PA-204517\" open (object Policy__c, Id a00aj00003jKdxtAAC). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat coverages does this policy have?"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view) is a Personal Auto policy with **six coverages** that come to **$2,380** a year. It covers the 2022 Toyota RAV4 and 2019 Honda Accord.\n\n| Coverage | Limit | Deductible | Premium |\n|---|---|---|---|\n| Bodily Injury Liability | $300,000 per person | none | $833.00 |\n| Property Damage Liability | $100,000 per occurrence | none | $357.00 |\n| Uninsured Motorist | $300,000 per person | none | $142.80 |\n| Medical Payments | $5,000 per person | none | $95.20 |\n| Collision | Actual cash value | $500 | $666.40 |\n| Comprehensive | Actual cash value | $500 | $285.60 |\n\nIt also has these endorsements: Roadside Assistance (+$36), Rental Reimbursement (+$54), a Multi-Policy Discount (−$190) and a Loss Payable Clause for Great Plains Credit Union on the RAV4."
+  }
+]

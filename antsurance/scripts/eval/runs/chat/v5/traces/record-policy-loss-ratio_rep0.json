@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204585\" open (object Policy__c, Id a00aj00003jfwRFAAY). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat is the loss ratio on this policy?"
+  },
+  {
+    "role": "assistant",
+    "content": "The loss ratio on [ANT-HO-204585](/lightning/r/a00aj00003jfwRFAAY/view) is **2,009%**. Incurred losses are **$45,000** and the annual premium is **$2,240**. All of the losses come from one open claim, [00002566](/lightning/r/500aj00003jfwTqAAI/view), the burst pipe in the basement. On that claim **$5,000** has been paid and **$40,000** is still held in reserve, so the ratio could change once the rebuild estimate comes in."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Loss ratio\",\n      \"value\": \"2,009%\",\n      \"note\": \"incurred vs annual premium\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"label\": \"Incurred losses\",\n      \"value\": \"$45,000\",\n      \"note\": \"$5,000 paid, $40,000 reserved\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"label\": \"Annual premium\",\n      \"value\": \"$2,240\",\n      \"note\": \"renews Jan 17, 2027\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What's the status of the basement claim?\",\n    \"What should change at renewal?\",\n    \"Draft a note to the adjuster\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Loss ratio\",\n        \"value\": \"2,009%\",\n        \"note\": \"incurred vs annual premium\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"label\": \"Incurred losses\",\n        \"value\": \"$45,000\",\n        \"note\": \"$5,000 paid, $40,000 reserved\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"label\": \"Annual premium\",\n        \"value\": \"$2,240\",\n        \"note\": \"renews Jan 17, 2027\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What's the status of the basement claim?\",\n      \"What should change at renewal?\",\n      \"Draft a note to the adjuster\"\n    ]\n  }\n]"
+  }
+]

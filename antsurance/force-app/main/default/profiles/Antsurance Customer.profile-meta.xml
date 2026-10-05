@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>AntsurancePortalClaude</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AntsurancePortalController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AntsurancePortalDocuments</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AntsurancePortalPhotos</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AntsurancePortalQuote</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <custom>true</custom>
+    <description>Customers signed in to the Antsurance portal. It grants the portal's own Apex classes and the right to hand a form over for filing, and no access to any record: the portal reads and writes only through those classes.</description>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Antsurance_Portal_Submission__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <userLicense>Customer Community</userLicense>
+</Profile>

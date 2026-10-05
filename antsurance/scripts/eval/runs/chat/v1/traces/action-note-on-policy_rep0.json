@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204534\" open (object Policy__c, Id a00aj00003jKVNcAAO). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nLog an underwriting note that the roof was replaced in 2024."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_file_note",
+    "content": "{\n  \"body\": \"Roof was replaced in 2024.\",\n  \"note_type\": \"Underwriting\",\n  \"record_id\": \"a00aj00003jKVNcAAO\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"file_note\",\n    \"recordId\": \"a00aj00003jKVNcAAO\",\n    \"noteType\": \"Underwriting\",\n    \"body\": \"Roof was replaced in 2024.\"\n  }\n]"
+  }
+]

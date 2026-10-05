@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>A customer's own policy documents on the portal: the declarations page and auto ID cards, to read a page at a time and to download.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

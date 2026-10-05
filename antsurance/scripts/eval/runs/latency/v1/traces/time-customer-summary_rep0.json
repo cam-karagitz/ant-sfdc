@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000040sVmQAAU). \"This\", \"here\" and \"this household\" refer to that record.]\n\nSummarize this customer"
+  },
+  {
+    "role": "assistant",
+    "content": "The Reyes Household has been a personal lines customer since Oct 2020. They hold **3 active policies** worth **$4,680** a year. Maria is the primary contact and likes a phone call.\n\n**Policies**\n- [ANT-PA-204517](/lightning/r/a00aj00003jKVNbAAO/view): Personal Auto, **$2,380**, current, 77.7% loss ratio, renews 13 May\n- [ANT-HO-204534](/lightning/r/a00aj00003jKVNcAAO/view): Homeowners, $1,890, paid in full, renews 15 Mar\n- [ANT-UM-204551](/lightning/r/a00aj00003jKVNdAAO/view): Umbrella, $410, paid in full, renews 15 Mar\n\n**Open items**\n- [Add Sofia Reyes as a driver](/lightning/r/500aj00003jKuWNAA0/view) (00002163): opened today, status New, handled by Bridget Castillo. We still need Sofia's license number, the date she was licensed and a report card for the good student discount. She'll mostly drive the 2019 Accord.\n- [Parking lot scrape](/lightning/r/500aj00003jKuVmAAK/view) (00002126): a low-severity claim at Payment Issued. $1,850 was paid after the deductible, repairs are done and nothing is outstanding, so it looks ready to close.\n\n**Watch:** Adding Sofia (17) will raise the auto premium. Offer the good student discount."
+  }
+]

@@ -1,0 +1,160 @@
+@import 'c/antsuranceCockpitTokens';
+
+/* A slim bar, not a banner: the greeting on the left, Claude on the right. */
+:host {
+    display: block;
+    container-type: inline-size;
+}
+
+.c-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0.25rem 0.25rem 0;
+}
+
+.c-bar__hello {
+    flex: none;
+}
+
+.c-bar__date {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-bar__greeting {
+    margin: 0.125rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.c-ask {
+    flex: 0 1 44rem;
+    min-width: 0;
+}
+
+.c-ask__field {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    height: 2.75rem;
+    padding: 0 0.375rem 0 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+}
+
+.c-ask__field:focus-within {
+    border-color: var(--ants-clay);
+    box-shadow: 0 0 0 3px var(--ants-clay-tint);
+}
+
+.c-ask__spark {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.c-ask__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--ants-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+}
+
+.c-ask__input::placeholder {
+    color: var(--ants-muted);
+}
+
+.c-ask__send {
+    flex: none;
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2rem;
+    padding: 0 0.875rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ants-clay-deep);
+    color: #fff;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.c-ask__send:hover {
+    background: var(--ants-clay-dark);
+}
+
+.c-ask__send:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-ask__arrow {
+    --slds-c-icon-color-foreground-default: #fff;
+}
+
+.c-ask__ideas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.375rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-idea {
+    height: 1.625rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-idea:hover {
+    border-color: var(--ants-clay);
+    background: #fff;
+}
+
+.c-idea:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+/* Side by side only while the question box has room for its whole prompt beside the greeting.
+   Measured on the bar itself, so it also holds when Home is beside a panel or the page is zoomed. */
+@container (max-width: 54rem) {
+    .c-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .c-ask {
+        flex-basis: auto;
+    }
+
+    .c-ask__ideas {
+        justify-content: flex-start;
+    }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subrogation_Potential__c</fullName>
+    <description>Another party may be liable, so Antsurance may recover what it pays.</description>
+    <label>Subrogation Potential</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002608: Add Sofia Reyes as a driver\" open (object Case, Id 500aj00003jfwUWAAY). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nWhich policy and customer is this request for?"
+  },
+  {
+    "role": "assistant",
+    "content": "This request is for policy [ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view), a Personal Auto policy that is **Active** from May 15, 2026 to May 15, 2027. The customer is [Reyes Household](/lightning/r/001aj000041E8MXAA0/view), and the contact on the request is [Maria Reyes](/lightning/r/003aj00002TKgJ8AAL/view)."
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Who else is a driver on ANT-PA-204517?\",\n    \"Does the policy have a good student discount?\",\n    \"What vehicles are on this policy?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Who else is a driver on ANT-PA-204517?\",\n      \"Does the policy have a good student discount?\",\n      \"What vehicles are on this policy?\"\n    ]\n  }\n]"
+  }
+]

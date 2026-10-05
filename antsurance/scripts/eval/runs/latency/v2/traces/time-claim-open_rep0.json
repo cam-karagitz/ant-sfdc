@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat is open or overdue here?"
+  },
+  {
+    "role": "assistant",
+    "content": "Nothing is overdue on this claim. It's still open, **Under Investigation**, 10 days after it was reported, with **$43,450** of reserve outstanding. Four open tasks are due over the next few days:\n\n| Task | Due | Priority |\n|---|---|---|\n| Review mitigation invoice from drying vendor | 4 Oct | High |\n| Confirm the failed supply line is retained and assess subrogation | 4 Oct | Normal |\n| Approve the rebuild estimate for the Okafor basement | 5 Oct | High |\n| Call Chinedu Okafor about the basement water damage claim | 6 Oct | Normal |\n\nThe last adjuster note (30 Sep) said the claim was waiting on the mitigation invoice and the rebuild estimate. The Northshore rebuild estimate has since come in, and the reserve was raised to $48,450 because of it. Nothing on the file shows the mitigation invoice has arrived."
+  }
+]

@@ -1,0 +1,55 @@
+<template>
+    <template lwc:if={isEmptyAndIdle}>
+        <!-- Nothing written yet: one quiet line that starts the note, not an empty card. A page can ask for nothing at all. -->
+        <template lwc:if={showAdd}>
+            <button type="button" class="c-add" onclick={handleEdit}>
+                <lightning-icon icon-name="utility:add" size="xx-small" class="c-add__icon"></lightning-icon>
+                <span>{addLabel}</span>
+            </button>
+        </template>
+    </template>
+    <template lwc:else>
+    <section class="c-brief" aria-labelledby="brief-heading">
+        <header class="c-brief__header">
+            <span class="c-brief__mark" aria-hidden="true">
+                <lightning-icon icon-name="utility:note" size="x-small" variant="inverse"></lightning-icon>
+            </span>
+            <h2 id="brief-heading" class="c-brief__title">{title}</h2>
+            <template lwc:if={canEdit}>
+                <lightning-button-icon
+                    variant="bare"
+                    icon-name="utility:edit"
+                    alternative-text={editLabel}
+                    title={editLabel}
+                    onclick={handleEdit}
+                ></lightning-button-icon>
+            </template>
+        </header>
+        <div class="c-brief__body">
+        <template lwc:if={errorMessage}>
+            <p class="c-brief__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:if={isEditing}>
+            <label class="slds-assistive-text" for="brief-input">{title}</label>
+            <textarea
+                id="brief-input"
+                class="c-brief__input"
+                rows="10"
+                maxlength="32000"
+                disabled={isSaving}
+                oninput={handleInput}
+                lwc:ref="input"
+            ></textarea>
+            <p class="c-brief__hint">Markdown works here: **bold**, lists, links.</p>
+            <div class="c-brief__buttons">
+                <lightning-button label="Cancel" disabled={isSaving} onclick={handleCancel}></lightning-button>
+                <lightning-button variant="brand" label="Save" disabled={isSaving} onclick={handleSave}></lightning-button>
+            </div>
+        </template>
+        <template lwc:elseif={hasValue}>
+            <c-antsurance-brief value={value}></c-antsurance-brief>
+        </template>
+        </div>
+    </section>
+    </template>
+</template>

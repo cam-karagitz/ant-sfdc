@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>image/jpeg</contentType>
+    <description>Sample damage photo: a pickup with a scraped and dented side. From Wikimedia Commons, CC BY 2.0; credit and source in antsuranceDamageSources/LICENSES.md. Attached to demo claims by AntsuranceClaimsAssistantPhotos.</description>
+</StaticResource>

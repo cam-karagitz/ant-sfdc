@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002572: Apartment burglary, laptop and bike stolen\" open (object Case, Id 500aj00003jfwTwAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nThe payment went out today. Update the status."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_case_status",
+    "content": "{\n  \"new_status\": \"Payment Issued\",\n  \"case_id\": \"500aj00003jfwTwAAI\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"case_status\",\n    \"caseId\": \"500aj00003jfwTwAAI\",\n    \"status\": \"Payment Issued\",\n    \"fromStatus\": \"Approved\"\n  }\n]"
+  }
+]

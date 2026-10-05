@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What commission rate do we pay our agencies?"
+  },
+  {
+    "role": "assistant",
+    "content": "I checked the CRM schema, and it doesn't record what we pay agencies. Agency accounts and the policies they place (through the Producer field) have no commission rate, schedule or payout field, and policy sales don't either.\n\nCommission terms usually live in the agency agreements or the finance system, so the producer management or finance team should be able to tell you the rates.\n\nI can show you how much premium each agency has placed, which is what commission would be calculated on."
+  }
+]

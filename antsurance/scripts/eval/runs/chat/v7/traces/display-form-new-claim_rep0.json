@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204534\" open (object Policy__c, Id a00aj00003jfwRCAAY). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nOpen a new claim on this policy: a tree fell on the garage roof last night."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_form",
+    "content": "{\n  \"say\": \"The new claim form for [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view) is ready for you to review. I set the date of loss to Oct 3, 2026 (last night). Choose a loss type, then press Create to open the claim.\",\n  \"mode\": \"create\",\n  \"object\": \"Case\",\n  \"record_id\": \"\",\n  \"record_type\": \"Claim\",\n  \"fields\": [\n    {\n      \"name\": \"Policy__c\",\n      \"value\": \"a00aj00003jfwRCAAY\"\n    },\n    {\n      \"name\": \"AccountId\",\n      \"value\": \"001aj000041E8MXAA0\"\n    },\n    {\n      \"name\": \"ContactId\",\n      \"value\": \"003aj00002TKgJ8AAL\"\n    },\n    {\n      \"name\": \"Subject\",\n      \"value\": \"Tree fell on garage roof\"\n    },\n    {\n      \"name\": \"Date_of_Loss__c\",\n      \"value\": \"2026-10-03\"\n    },\n    {\n      \"name\": \"Reported_Date__c\",\n      \"value\": \"2026-10-04\"\n    },\n    {\n      \"name\": \"Loss_Location__c\",\n      \"value\": \"524 W Spring Ave, Naperville, IL 60540\"\n    },\n    {\n      \"name\": \"Description\",\n      \"value\": \"A tree fell on the garage roof overnight on Oct 3, 2026.\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as a form with Save and Cancel buttons, filled in with your values. Nothing has been written. The record is saved only if the user presses Save, and they may change any value first. This result is updated to say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"form\",\n    \"mode\": \"create\",\n    \"objectApiName\": \"Case\",\n    \"objectLabel\": \"Claim\",\n    \"recordTypeId\": \"012aj00000Ee8urAAB\",\n    \"title\": \"New claim\",\n    \"fields\": [\n      {\n        \"name\": \"Policy__c\",\n        \"label\": \"Policy\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"a00aj00003jfwRCAAY\"\n      },\n      {\n        \"name\": \"AccountId\",\n        \"label\": \"Customer Name\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"001aj000041E8MXAA0\"\n      },\n      {\n        \"name\": \"ContactId\",\n        \"label\": \"Contact ID\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"003aj00002TKgJ8AAL\"\n      },\n      {\n        \"name\": \"Subject\",\n        \"label\": \"Subject\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Tree fell on garage roof\"\n      },\n      {\n        \"name\": \"Date_of_Loss__c\",\n        \"label\": \"Date of Loss\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"2026-10-03\"\n      },\n      {\n        \"name\": \"Reported_Date__c\",\n        \"label\": \"Received\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"2026-10-04\"\n      },\n      {\n        \"name\": \"Loss_Location__c\",\n        \"label\": \"Loss Location\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"524 W Spring Ave, Naperville, IL 60540\"\n      },\n      {\n        \"name\": \"Description\",\n        \"label\": \"Description\",\n        \"suggested\": true,\n        \"wide\": true,\n        \"value\": \"A tree fell on the garage roof overnight on Oct 3, 2026.\"\n      }\n    ]\n  }\n]"
+  }
+]

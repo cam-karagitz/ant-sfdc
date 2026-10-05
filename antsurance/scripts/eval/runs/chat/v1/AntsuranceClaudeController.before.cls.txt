@@ -1,0 +1,559 @@
+/**
+ * @description Sends the Antsurance chat panel's conversation to the Claude Messages API and lets
+ * Claude look up live CRM records through a read-only SOQL tool that runs as the current user.
+ * Authentication comes from the Anthropic_API named credential, so no key is held in code.
+ *
+ * Each call is one step of the conversation: either Claude's answer, or the record lookups Claude
+ * asked for. The chat panel calls again after a lookup, so it can show progress between steps
+ * and each step gets its own Apex limits.
+ */
+public with sharing class AntsuranceClaudeController {
+    @TestVisible
+    private static final String DEFAULT_MODEL = 'claude-opus-5-5';
+    // Models offered in the chat panel, with what each accepts: Haiku 4.5 rejects the effort
+    // setting, server-side fallbacks only apply to models that run safety classifiers, and
+    // fast mode (quicker output at a higher price) exists only on Opus.
+    private static final List<ModelOption> MODELS = new List<ModelOption>{
+        new ModelOption('claude-opus-5-5', 'Claude Opus 5.5', true, true, true),
+        new ModelOption('claude-sonnet-5-5', 'Claude Sonnet 5.5', true, true, false),
+        new ModelOption('claude-haiku-4-5', 'Claude Haiku 4.5', false, false, false),
+        new ModelOption('claude-fable-5-1', 'Claude Fable 5.1', true, true, false)
+    };
+    private static final String ENDPOINT = 'callout:Anthropic_API/v1/messages';
+    private static final String API_VERSION = '2023-06-01';
+    // Lets the API re-run a request on another model when a safety classifier declines it.
+    private static final String FALLBACK_BETA = 'server-side-fallback-2026-07-01';
+    private static final String FAST_MODE_BETA = 'fast-mode-2026-02-01';
+    private static final String QUERY_TOOL = 'query_salesforce';
+    private static final Integer MAX_TOKENS = 4096;
+    private static final Integer MAX_MESSAGES = 80;
+    private static final Integer MAX_TOOL_ROUNDS = 4;
+    private static final Integer MAX_ROWS = 50;
+    private static final Integer MAX_RESULT_CHARS = 20000;
+    private static final Integer MAX_ERROR_DETAIL = 200;
+    private static final Integer TIMEOUT_MS = 110000;
+    private static final Integer RATE_LIMITED = 429;
+
+    private static final String UNKNOWN_MODEL = 'That model is not available in this chat. Pick another one.';
+    private static final String INVALID_CONVERSATION = 'The conversation could not be read. Start a new chat and try again.';
+    private static final String TOO_LONG = 'This conversation is too long. Start a new chat to continue.';
+    private static final String UNREACHABLE = 'Claude could not be reached. Try again in a moment.';
+    private static final String REFUSED = 'Claude declined to answer that request.';
+    private static final String NO_ANSWER = 'Claude did not return an answer. Try rephrasing the question.';
+
+    private static final String SYSTEM_PROMPT =
+        'You are Claude, the AI assistant built into the Salesforce CRM of Antsurance, a fictional insurance carrier used for demos. ' +
+        'You help Antsurance staff with customers, policies, claims, service requests and the sales pipeline.\n\n' +
+        'You can read live records with the query_salesforce tool. Use it whenever an answer depends on CRM records rather than guessing, ' +
+        'and run every query you need in the same turn, in parallel, so the user waits once. ' +
+        'Base what you say about records only on query results, and say so when the data does not answer the question.\n\n' +
+        'People read these answers in a small chat panel while they work, so be brief: lead with the answer in a sentence or two, ' +
+        'then at most one short list or table, and stay under about 120 words unless they ask for detail. ' +
+        'The panel renders Markdown. Use bold for the few figures that matter, a bullet list for a short set of records, ' +
+        'and a table when comparing several records across the same fields (five columns at most, short cell values). ' +
+        'Use a heading only when an answer has distinct sections. No HTML and no images. ' +
+        'Write dates the way people say them, such as 28 Sep or 28 Sep 2026, and money with a currency symbol and thousands separators.\n\n' +
+        'Link a record by its name whenever you mention it and have its Id, written as [Name](/lightning/r/RECORD_ID/view) with the 18-character Id, ' +
+        'so include Id (and Account.Id and similar for parents you mention) in your queries.\n\n' +
+        'A user message may begin with a bracketed Page context note, added by the app, naming the record the user has open. ' +
+        'When they say this record, this account, here or similar, they mean that record: query what you need using its Id. Do not quote the note.';
+
+    // The custom objects and fields Claude cannot guess. AntsuranceClaudeControllerTest fails to compile
+    // if a field named here is removed, so keep the two in step.
+    @TestVisible
+    private static final String DATA_MODEL =
+        '\n\nData model, with the API names to use in SOQL:\n' +
+        '- Account: RecordType.DeveloperName is Household (personal lines), Business (commercial lines) or Agency (a broker that places policies). ' +
+        'Customer_Segment__c, Customer_Since__c, Active_Policies__c and Premium_in_Force__c (both count policies in force), Customer_Brief__c (a written brief). ' +
+        'A household\'s members are its Contacts: Household_Role__c, Primary_Member__c, Licensed_Driver__c, Preferred_Contact_Method__c.\n' +
+        '- Policy__c: Name is the policy number. Account__c is the policyholder (Account__r.Name), Primary_Insured__c is a Contact, Producer__c is the agency Account. ' +
+        'Line_of_Business__c, Status__c (Quoted, Active, Pending Renewal, Lapsed, Cancelled, Expired; in force means Active or Pending Renewal), ' +
+        'Effective_Date__c, Expiration_Date__c, Days_to_Renewal__c, Annual_Premium__c, Coverage_Limit__c, Deductible__c, Billing_Frequency__c, ' +
+        'Payment_Status__c (Current, Past Due, Paid in Full), Insured_Item__c, Underwriting_Notes__c. Child relationships: ' +
+        'Coverages__r (Policy_Coverage__c: Name, Category__c, Limit_Amount__c, Limit_Type__c, Deductible_Amount__c, Premium_Amount__c, What_Is_Covered__c), ' +
+        'Participants__r (Policy_Participant__c: Name, Contact__c, Role__c such as Named Insured or Driver, Status__c, Relationship_to_Insured__c, and for drivers ' +
+        'License_State__c, Years_Licensed__c, Driver_Rating__c, Violations_Past_3_Years__c, Accidents_Past_3_Years__c), ' +
+        'Assets__r (Policy_Asset__c: Name, Asset_Type__c, Identifier__c which is the VIN for a vehicle, Location__c, Insured_Value__c), ' +
+        'Endorsements__r (Policy_Endorsement__c: Name, Form_Number__c, Type__c of Endorsement, Exclusion, Benefit, Discount or Lienholder or Mortgagee, Premium_Change__c, Description__c), ' +
+        'Cases__r and File_Notes__r.\n' +
+        '- Case: RecordType.DeveloperName is Claim or Policy_Service. Both have Policy__c, Reported_Date__c, Subject, Description, Status, Priority, IsClosed. ' +
+        'A claim has Date_of_Loss__c, Loss_Type__c, Loss_Location__c, Severity__c (Low, Medium, High, Catastrophic), Estimated_Loss__c, Reserve_Amount__c, ' +
+        'Paid_Amount__c, Outstanding_Reserve__c, Coverage_Check__c (whether the policy covered the date of loss), SIU_Referral__c (possible fraud) and Subrogation_Potential__c, and moves through New, Under Investigation, Appraisal, ' +
+        'Approved, Payment Issued, then Closed or Denied. A service request has Request_Type__c (for example Add Driver) and moves through New, In Progress, Waiting on Customer, Closed.\n' +
+        '- File_Note__c: the dated notes handlers write on a file. Case__c, Policy__c and Account__c say whose file; Note_Type__c, Note_Date__c, Author_Name__c, Body__c (long text: select it, but it cannot be filtered on). ' +
+        'Read these when asked what has happened on a claim, policy or customer.\n' +
+        '- Opportunity: a policy sale. Line_of_Business__c, Type (New Business, Renewal, Cross-Sell), Policy__c, and Amount is annual premium. ' +
+        'Stages: Submission Received, Underwriting Review, Quote Issued, Bind Requested, then Bound or Declined.\n' +
+        '- Quote: the priced options under a policy sale (child relationship Quotes on Opportunity). Name is the option, OpportunityId, Status (Draft, Issued, Presented, Accepted, Bound, Declined, Expired), ' +
+        'Annual_Premium__c, Coverage_Limit__c, Deductible__c, Issued_Date__c, Days_Since_Issued__c, ExpirationDate (valid until), Description. ' +
+        'A quote is waiting on the customer while Issued or Presented. ' +
+        'Submission_Channel__c (Phone, Online, Agent, In Person: how the request came in), Needs_Underwriting_Review__c (true when an answer needs an underwriter). ' +
+        'Configuration__c holds the configurator answers as JSON; do not select it unless asked what the customer answered.\n' +
+        '- Lead: Product_Interest__c. Task: OwnerId, Subject, ActivityDate (due date), Status, Priority, IsClosed, WhatId (a claim, request, policy, sale or quote) and WhoId (a contact).';
+
+    private static final String TOOL_DESCRIPTION =
+        'Run one read-only SOQL query against this Salesforce org as the current user and get the matching records back as JSON. ' +
+        'Use it for any question about customers, households, policies, coverages, claims, service requests, leads, opportunities, tasks or other CRM records, ' +
+        'including broad ones such as what is going on with my book of business. Standard and custom objects and fields are available. ' +
+        'Select only the fields you need, use relationship fields such as Account.Name and Owner.Name instead of IDs, ' +
+        'and add ORDER BY and LIMIT; at most 50 rows are returned. Aggregate queries with GROUP BY are supported. ' +
+        'If the query is invalid the error message comes back so you can correct it and try again.';
+
+    /**
+     * @description A Claude model the chat panel can use.
+     */
+    public class ModelOption {
+        @AuraEnabled
+        public String value;
+        @AuraEnabled
+        public String label;
+        @AuraEnabled
+        public Boolean isDefault;
+        public Boolean supportsEffort;
+        public Boolean supportsFallbacks;
+        public Boolean supportsFastMode;
+
+        ModelOption(String value, String label, Boolean supportsEffort, Boolean supportsFallbacks, Boolean supportsFastMode) {
+            this.value = value;
+            this.label = label;
+            this.isDefault = value == DEFAULT_MODEL;
+            this.supportsEffort = supportsEffort;
+            this.supportsFallbacks = supportsFallbacks;
+            this.supportsFastMode = supportsFastMode;
+        }
+    }
+
+    /**
+     * @description The record the user has open, for showing in the chat and telling Claude.
+     */
+    public class RecordContext {
+        @AuraEnabled
+        public Id recordId;
+        @AuraEnabled
+        public String objectApiName;
+        @AuraEnabled
+        public String objectLabel;
+        @AuraEnabled
+        public String name;
+    }
+
+    /**
+     * @description One step of an exchange, returned to the chat panel.
+     */
+    public class ChatReply {
+        /** False when Claude asked for record lookups; the panel sends the conversation again to continue. */
+        @AuraEnabled
+        public Boolean done = true;
+        /** Claude's answer. Set only when done. */
+        @AuraEnabled
+        public String text;
+        /** JSON array of the turns this step produced, to append to the conversation and replay unchanged. */
+        @AuraEnabled
+        public String appendedJson;
+        /** SOQL statements run during this step. */
+        @AuraEnabled
+        public List<String> queries = new List<String>();
+        @AuraEnabled
+        public String model;
+        @AuraEnabled
+        public Boolean refused = false;
+    }
+
+    /**
+     * @description Lists the models the chat panel can choose from.
+     * @return The available models, with the default flagged
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<ModelOption> getModels() {
+        return MODELS;
+    }
+
+    /**
+     * @description Describes a record by its object and name, if the user can see it.
+     * @param recordId The record on screen
+     * @return The record's object and name, or null when there is no record or no access
+     */
+    @AuraEnabled(cacheable=true)
+    public static RecordContext getRecordContext(Id recordId) {
+        if (recordId == null) {
+            return null;
+        }
+        Schema.DescribeSObjectResult describe = recordId.getSObjectType().getDescribe();
+        RecordContext context = new RecordContext();
+        context.recordId = recordId;
+        context.objectApiName = describe.getName();
+        context.objectLabel = describe.getLabel();
+
+        Map<String, Schema.SObjectField> fields = describe.fields.getMap();
+        String nameField;
+        Boolean nameIsNumber = false;
+        for (Schema.SObjectField field : fields.values()) {
+            Schema.DescribeFieldResult fieldDescribe = field.getDescribe();
+            if (fieldDescribe.isNameField()) {
+                nameField = fieldDescribe.getName();
+                nameIsNumber = fieldDescribe.isAutoNumber();
+                break;
+            }
+        }
+        // A record type says more than the object ("claim" rather than "case"), and a numbered
+        // record such as a case is easier to recognize with its subject.
+        Boolean hasRecordType = fields.containsKey('RecordTypeId');
+        Boolean hasSubject = nameIsNumber && fields.containsKey('Subject');
+        List<String> selected = new List<String>{ nameField == null ? 'Id' : nameField };
+        if (hasRecordType) {
+            selected.add('RecordType.Name');
+        }
+        if (hasSubject) {
+            selected.add('Subject');
+        }
+        try {
+            List<SObject> records = Database.queryWithBinds(
+                'SELECT ' + String.join(selected, ', ') + ' FROM ' + describe.getName() + ' WHERE Id = :recordId LIMIT 1',
+                new Map<String, Object>{ 'recordId' => recordId },
+                AccessLevel.USER_MODE
+            );
+            if (records.isEmpty()) {
+                return null;
+            }
+            SObject record = records[0];
+            context.name = nameField == null ? context.objectLabel : String.valueOf(record.get(nameField));
+            if (hasSubject && record.get('Subject') != null) {
+                context.name += ': ' + record.get('Subject');
+            }
+            SObject recordType = hasRecordType ? record.getSObject('RecordType') : null;
+            if (recordType != null) {
+                context.objectLabel = (String) recordType.get('Name');
+            }
+        } catch (QueryException e) {
+            return null;
+        }
+        return context;
+    }
+
+    /**
+     * @description Sends the conversation so far and returns the next step: Claude's answer, or the
+     * results of the record lookups Claude asked for (done = false), after which the panel calls again.
+     * @param messagesJson JSON array of Messages API turns ({role, content}), ending with a user turn
+     * @param model One of the model ids from getModels; blank uses the default
+     * @return The step's outcome and the turns to append to the conversation
+     * @throws AuraHandledException when the input is invalid or the API call fails
+     */
+    @AuraEnabled
+    public static ChatReply sendMessage(String messagesJson, String model) {
+        ModelOption option = findModel(model);
+        List<Object> conversation = parseMessages(messagesJson);
+        Map<String, Object> payload = callClaude(option, conversation, SYSTEM_PROMPT + DATA_MODEL + describeContext());
+        List<Object> content = (List<Object>) payload.get('content');
+        String stopReason = (String) payload.get('stop_reason');
+
+        ChatReply reply = new ChatReply();
+        reply.model = (String) payload.get('model');
+
+        if (stopReason == 'refusal') {
+            reply.refused = true;
+            reply.text = REFUSED;
+        } else if (stopReason == 'tool_use' && lookupRoundsSoFar(conversation) < MAX_TOOL_ROUNDS) {
+            reply.done = false;
+            reply.appendedJson = JSON.serialize(
+                new List<Object>{
+                    new Map<String, Object>{ 'role' => 'assistant', 'content' => content },
+                    new Map<String, Object>{ 'role' => 'user', 'content' => runTools(content, reply.queries) }
+                }
+            );
+        } else {
+            reply.text = collectText(content);
+            if (String.isBlank(reply.text)) {
+                // Nothing to show, so nothing from this step is replayed.
+                reply.text = NO_ANSWER;
+            } else {
+                reply.appendedJson = JSON.serialize(
+                    new List<Object>{ new Map<String, Object>{ 'role' => 'assistant', 'content' => content } }
+                );
+            }
+        }
+        return reply;
+    }
+
+    private static ModelOption findModel(String model) {
+        String wanted = String.isBlank(model) ? DEFAULT_MODEL : model;
+        for (ModelOption option : MODELS) {
+            if (option.value == wanted) {
+                return option;
+            }
+        }
+        throw handled(UNKNOWN_MODEL);
+    }
+
+    private static List<Object> parseMessages(String messagesJson) {
+        List<Object> messages;
+        try {
+            messages = (List<Object>) JSON.deserializeUntyped(messagesJson);
+        } catch (Exception e) {
+            throw handled(INVALID_CONVERSATION);
+        }
+        if (messages == null || messages.isEmpty()) {
+            throw handled(INVALID_CONVERSATION);
+        }
+        if (messages.size() > MAX_MESSAGES) {
+            throw handled(TOO_LONG);
+        }
+        String lastRole;
+        for (Object item : messages) {
+            if (!(item instanceof Map<String, Object>)) {
+                throw handled(INVALID_CONVERSATION);
+            }
+            Map<String, Object> message = (Map<String, Object>) item;
+            lastRole = (String) message.get('role');
+            if ((lastRole != 'user' && lastRole != 'assistant') || message.get('content') == null) {
+                throw handled(INVALID_CONVERSATION);
+            }
+        }
+        if (lastRole != 'user') {
+            throw handled(INVALID_CONVERSATION);
+        }
+        return messages;
+    }
+
+    /** How many lookup rounds have run since the user's last typed message. */
+    private static Integer lookupRoundsSoFar(List<Object> conversation) {
+        Integer rounds = 0;
+        for (Integer index = conversation.size() - 1; index >= 0; index--) {
+            Map<String, Object> message = (Map<String, Object>) conversation[index];
+            if (message.get('role') != 'user') {
+                continue;
+            }
+            // Typed messages are plain strings; lookup results are lists of tool_result blocks.
+            if (message.get('content') instanceof String) {
+                break;
+            }
+            rounds++;
+        }
+        return rounds;
+    }
+
+    private static Map<String, Object> callClaude(ModelOption option, List<Object> conversation, String systemPrompt) {
+        Map<String, Object> body = new Map<String, Object>{
+            'model' => option.value,
+            'max_tokens' => MAX_TOKENS,
+            'system' => systemPrompt,
+            'tools' => new List<Object>{ queryToolDefinition() },
+            'messages' => conversation
+        };
+        List<String> betas = new List<String>();
+        if (option.supportsEffort) {
+            body.put('output_config', new Map<String, Object>{ 'effort' => 'low' });
+        }
+        if (option.supportsFallbacks) {
+            body.put('fallbacks', 'default');
+            betas.add(FALLBACK_BETA);
+        }
+
+        HttpResponse response;
+        if (option.supportsFastMode) {
+            List<String> fastBetas = new List<String>(betas);
+            fastBetas.add(FAST_MODE_BETA);
+            body.put('speed', 'fast');
+            response = post(body, fastBetas);
+            if (response.getStatusCode() == RATE_LIMITED) {
+                // Fast mode has its own rate limit, so fall back to standard speed once.
+                body.remove('speed');
+                response = post(body, betas);
+            }
+        } else {
+            response = post(body, betas);
+        }
+        if (response.getStatusCode() != 200) {
+            throw handled(describeFailure(response));
+        }
+        return (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+    }
+
+    private static HttpResponse post(Map<String, Object> body, List<String> betas) {
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(ENDPOINT);
+        request.setMethod('POST');
+        request.setHeader('content-type', 'application/json');
+        request.setHeader('anthropic-version', API_VERSION);
+        if (!betas.isEmpty()) {
+            request.setHeader('anthropic-beta', String.join(betas, ','));
+        }
+        request.setTimeout(TIMEOUT_MS);
+        request.setBody(JSON.serialize(body));
+        try {
+            return new Http().send(request);
+        } catch (CalloutException e) {
+            throw handled(UNREACHABLE);
+        }
+    }
+
+    private static Map<String, Object> queryToolDefinition() {
+        return new Map<String, Object>{
+            'name' => QUERY_TOOL,
+            'description' => TOOL_DESCRIPTION,
+            'strict' => true,
+            'input_schema' => new Map<String, Object>{
+                'type' => 'object',
+                'properties' => new Map<String, Object>{
+                    'query' => new Map<String, Object>{
+                        'type' => 'string',
+                        'description' => 'A single SOQL SELECT statement, for example: SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Account.Name, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = \'Claim\' AND IsClosed = false ORDER BY Reported_Date__c LIMIT 20'
+                    }
+                },
+                'required' => new List<String>{ 'query' },
+                'additionalProperties' => false
+            }
+        };
+    }
+
+    /** Runs every tool call in an assistant turn and returns one tool_result block per call. */
+    private static List<Object> runTools(List<Object> content, List<String> queries) {
+        List<Object> results = new List<Object>();
+        for (Object item : content) {
+            Map<String, Object> block = (Map<String, Object>) item;
+            if (block.get('type') != 'tool_use') {
+                continue;
+            }
+            Map<String, Object> result = new Map<String, Object>{ 'type' => 'tool_result', 'tool_use_id' => block.get('id') };
+            try {
+                Map<String, Object> input = (Map<String, Object>) block.get('input');
+                String soql = (String) input.get('query');
+                result.put('content', runQuery(soql));
+                queries.add(soql.trim());
+            } catch (Exception e) {
+                result.put('content', 'The query failed: ' + e.getMessage());
+                result.put('is_error', true);
+            }
+            results.add(result);
+        }
+        return results;
+    }
+
+    /**
+     * Runs Claude's SOQL in user mode, so object access, field-level security and sharing all apply
+     * exactly as they do for the person asking. Only a single SELECT statement is accepted.
+     */
+    private static String runQuery(String soql) {
+        String statement = soql == null ? '' : soql.trim();
+        if (!statement.startsWithIgnoreCase('select') || statement.contains(';')) {
+            throw new IllegalArgumentException('Only a single SELECT statement is allowed.');
+        }
+        if (Pattern.compile('(?i)^select\\s+count\\(\\s*\\)').matcher(statement).find()) {
+            Integer total = Database.countQuery(statement, AccessLevel.USER_MODE);
+            return JSON.serialize(new Map<String, Object>{ 'count' => total });
+        }
+        if (!Pattern.compile('(?i)\\blimit\\s+\\d+').matcher(statement).find()) {
+            statement += ' LIMIT ' + MAX_ROWS;
+        }
+
+        List<SObject> records = Database.query(statement, AccessLevel.USER_MODE);
+        List<Object> rows = new List<Object>();
+        for (SObject record : records) {
+            if (rows.size() == MAX_ROWS) {
+                break;
+            }
+            rows.add(toPlainMap(record));
+        }
+        Map<String, Object> result = new Map<String, Object>{
+            'rowCount' => rows.size(),
+            'truncated' => records.size() > rows.size(),
+            'records' => rows
+        };
+        String serialized = JSON.serialize(result);
+        while (serialized.length() > MAX_RESULT_CHARS && rows.size() > 1) {
+            rows.remove(rows.size() - 1);
+            result.put('rowCount', rows.size());
+            result.put('truncated', true);
+            serialized = JSON.serialize(result);
+        }
+        return serialized;
+    }
+
+    /** Field values without the attributes wrapper, following parent and child relationships. */
+    private static Map<String, Object> toPlainMap(SObject record) {
+        Map<String, Object> plain = new Map<String, Object>();
+        Map<String, Object> populated = record.getPopulatedFieldsAsMap();
+        for (String fieldName : populated.keySet()) {
+            Object value = populated.get(fieldName);
+            // Check the list first: in Apex a List<SObject> also reports instanceof SObject.
+            if (value instanceof List<SObject>) {
+                List<Object> children = new List<Object>();
+                for (SObject child : (List<SObject>) value) {
+                    children.add(toPlainMap(child));
+                }
+                plain.put(fieldName, children);
+            } else if (value instanceof SObject) {
+                plain.put(fieldName, toPlainMap((SObject) value));
+            } else {
+                plain.put(fieldName, value);
+            }
+        }
+        return plain;
+    }
+
+    /** Who is asking and the headline CRM numbers, appended to the system prompt. */
+    private static String describeContext() {
+        String context =
+            '\n\nYou are talking with ' + UserInfo.getName() + ' (User Id ' + UserInfo.getUserId() + '). Today is ' +
+            String.valueOf(Date.today()) + '. Treat "my accounts", "my claims", "my policies" and similar as every record this user can see, ' +
+            'and do not comment on who owns them. Filter on OwnerId for that Id only when they ask about ownership, for example records owned by or assigned to them.';
+        try {
+            AntsuranceHomeController.Snapshot snapshot = AntsuranceHomeController.buildSnapshot();
+            context +=
+                '\nCRM snapshot: ' + snapshot.customerCount + ' customers; ' +
+                snapshot.policiesInForce + ' policies in force with $' + snapshot.premiumInForce.setScale(0).format() + ' annual premium; ' +
+                snapshot.openClaimCount + ' open claims; ' +
+                snapshot.openRequestCount + ' open service requests; ' +
+                snapshot.openLeadCount + ' open leads; ' +
+                snapshot.openOpportunityCount + ' open policy sales worth $' + snapshot.openPipelineAmount.setScale(0).format() + ' in premium.';
+        } catch (QueryException e) {
+            context += '\nNo CRM snapshot is available for this user.';
+        }
+        return context;
+    }
+
+    private static String collectText(List<Object> content) {
+        List<String> parts = new List<String>();
+        if (content != null) {
+            for (Object item : content) {
+                Map<String, Object> block = (Map<String, Object>) item;
+                if (block.get('type') == 'text') {
+                    parts.add((String) block.get('text'));
+                }
+            }
+        }
+        return String.join(parts, '').trim();
+    }
+
+    private static String describeFailure(HttpResponse response) {
+        Integer status = response.getStatusCode();
+        String summary;
+        if (status == 401) {
+            summary = 'Claude rejected the API key stored in the Anthropic credential.';
+        } else if (status == RATE_LIMITED) {
+            summary = 'Claude is rate limiting this API key. Wait a moment and try again.';
+        } else if (status >= 500) {
+            summary = 'Claude is temporarily unavailable. Try again in a moment.';
+        } else {
+            summary = 'Claude could not process the request (HTTP ' + status + ').';
+        }
+        String detail = errorDetail(response.getBody());
+        return String.isBlank(detail) ? summary : summary + ' ' + detail;
+    }
+
+    private static String errorDetail(String responseBody) {
+        try {
+            Map<String, Object> payload = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+            Map<String, Object> error = (Map<String, Object>) payload.get('error');
+            String detail = (String) error.get('message');
+            return detail == null ? null : detail.abbreviate(MAX_ERROR_DETAIL);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static AuraHandledException handled(String message) {
+        AuraHandledException error = new AuraHandledException(message);
+        error.setMessage(message);
+        return error;
+    }
+}

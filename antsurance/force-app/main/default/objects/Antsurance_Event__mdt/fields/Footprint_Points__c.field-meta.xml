@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Footprint_Points__c</fullName>
+    <description>Optional outline of the area as corner points, used in place of the center and radius: latitude,longitude pairs separated by semicolons, at least three.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Optional. Pairs like 41.80,-88.20; 41.90,-88.10; 41.75,-88.05</inlineHelpText>
+    <label>Outline Points</label>
+    <length>2000</length>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

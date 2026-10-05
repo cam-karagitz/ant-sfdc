@@ -1,0 +1,2522 @@
+{
+ "table": [
+  {
+   "method": "fraction",
+   "title": "Fractions of the image",
+   "true_boxes": 16,
+   "mean_overlap": 0.59,
+   "mean_overlap_of_pairs": 0.73,
+   "share_at_half": 0.62,
+   "share_center_inside": 0.75,
+   "missed": 3,
+   "false_boxes": 3,
+   "boxes_on_clean_photos": 0,
+   "photos_unread": 0
+  },
+  {
+   "method": "pixel",
+   "title": "Pixels, with the size given",
+   "true_boxes": 16,
+   "mean_overlap": 0.69,
+   "mean_overlap_of_pairs": 0.69,
+   "share_at_half": 0.81,
+   "share_center_inside": 1.0,
+   "missed": 0,
+   "false_boxes": 1,
+   "boxes_on_clean_photos": 0,
+   "photos_unread": 0
+  },
+  {
+   "method": "grid",
+   "title": "Numbered grid over the photo",
+   "true_boxes": 16,
+   "mean_overlap": 0.65,
+   "mean_overlap_of_pairs": 0.74,
+   "share_at_half": 0.75,
+   "share_center_inside": 0.88,
+   "missed": 2,
+   "false_boxes": 2,
+   "boxes_on_clean_photos": 0,
+   "photos_unread": 0
+  },
+  {
+   "method": "refine",
+   "title": "Two passes: pixels, then a crop",
+   "true_boxes": 16,
+   "mean_overlap": 0.74,
+   "mean_overlap_of_pairs": 0.74,
+   "share_at_half": 0.81,
+   "share_center_inside": 1.0,
+   "missed": 0,
+   "false_boxes": 1,
+   "boxes_on_clean_photos": 0,
+   "photos_unread": 0
+  },
+  {
+   "method": "pixel_tight",
+   "title": "Pixels, and a box for each part",
+   "true_boxes": 16,
+   "mean_overlap": 0.71,
+   "mean_overlap_of_pairs": 0.71,
+   "share_at_half": 0.81,
+   "share_center_inside": 1.0,
+   "missed": 0,
+   "false_boxes": 2,
+   "boxes_on_clean_photos": 0,
+   "photos_unread": 0
+  }
+ ],
+ "photos": {
+  "rearQuarter": {
+   "fraction": {
+    "found": [
+     [
+      "right rear corner of rear bumper",
+      [
+       0.06,
+       0.28,
+       0.24,
+       0.48
+      ]
+     ],
+     [
+      "right rear quarter panel",
+      [
+       0.11,
+       0.26,
+       0.27,
+       0.28
+      ]
+     ],
+     [
+      "right rear taillight area",
+      [
+       0.09,
+       0.28,
+       0.06,
+       0.1
+      ]
+     ],
+     [
+      "right rear door",
+      [
+       0.47,
+       0.28,
+       0.33,
+       0.2
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "quarter panel crease",
+      "claude": "right rear quarter panel",
+      "iou": 0.818,
+      "center_inside": true
+     },
+     {
+      "truth": "hanging wheel arch liner",
+      "claude": null,
+      "iou": 0.0,
+      "center_inside": false
+     }
+    ],
+    "false": [
+     "right rear door"
+    ]
+   },
+   "pixel": {
+    "found": [
+     [
+      "right rear quarter panel",
+      [
+       0.10220125786163523,
+       0.21905805038335158,
+       0.3380503144654088,
+       0.3176341730558598
+      ]
+     ],
+     [
+      "rear bumper, right corner",
+      [
+       0.055031446540880505,
+       0.3723986856516977,
+       0.2358490566037736,
+       0.39430449069003287
+      ]
+     ],
+     [
+      "right rear wheel well liner or splash shield",
+      [
+       0.15330188679245282,
+       0.755750273822563,
+       0.12578616352201258,
+       0.13691128148959475
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "quarter panel crease",
+      "claude": "right rear quarter panel",
+      "iou": 0.795,
+      "center_inside": true
+     },
+     {
+      "truth": "hanging wheel arch liner",
+      "claude": "right rear wheel well liner or splash shield",
+      "iou": 0.851,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "right rear quarter panel",
+      [
+       0.1,
+       0.26,
+       0.32,
+       0.27999999999999997
+      ]
+     ],
+     [
+      "rear bumper, right corner",
+      [
+       0.06,
+       0.36,
+       0.24,
+       0.38
+      ]
+     ],
+     [
+      "right taillight",
+      [
+       0.09,
+       0.27999999999999997,
+       0.05,
+       0.09
+      ]
+     ],
+     [
+      "trunk lid, right rear corner",
+      [
+       0.11000000000000001,
+       0.21000000000000002,
+       0.13999999999999999,
+       0.08
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "quarter panel crease",
+      "claude": "right rear quarter panel",
+      "iou": 0.964,
+      "center_inside": true
+     },
+     {
+      "truth": "hanging wheel arch liner",
+      "claude": null,
+      "iou": 0.0,
+      "center_inside": false
+     }
+    ],
+    "false": [
+     "trunk lid, right rear corner"
+    ]
+   },
+   "refine": {
+    "found": [
+     [
+      "right rear quarter panel",
+      [
+       0.10365484145702307,
+       0.2778443318729463,
+       0.29757517688679247,
+       0.26717666119021544
+      ]
+     ],
+     [
+      "rear bumper, right corner",
+      [
+       0.055277122641509434,
+       0.37393893756845564,
+       0.19070607311320756,
+       0.38506297918948523
+      ]
+     ],
+     [
+      "right rear wheel well liner or splash shield",
+      [
+       0.15330188679245282,
+       0.755750273822563,
+       0.12578616352201258,
+       0.13691128148959475
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "quarter panel crease",
+      "claude": "right rear quarter panel",
+      "iou": 0.826,
+      "center_inside": true
+     },
+     {
+      "truth": "hanging wheel arch liner",
+      "claude": "right rear wheel well liner or splash shield",
+      "iou": 0.851,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "right rear quarter panel",
+      [
+       0.10613207547169812,
+       0.2628696604600219,
+       0.31446540880503143,
+       0.2628696604600219
+      ]
+     ],
+     [
+      "rear bumper, right corner",
+      [
+       0.055031446540880505,
+       0.3723986856516977,
+       0.2358490566037736,
+       0.39430449069003287
+      ]
+     ],
+     [
+      "right taillight",
+      [
+       0.09040880503144653,
+       0.28258488499452356,
+       0.04874213836477988,
+       0.09309967141292443
+      ]
+     ],
+     [
+      "rear wheel well liner",
+      [
+       0.15330188679245282,
+       0.755750273822563,
+       0.12578616352201258,
+       0.13691128148959475
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "quarter panel crease",
+      "claude": "right rear quarter panel",
+      "iou": 0.953,
+      "center_inside": true
+     },
+     {
+      "truth": "hanging wheel arch liner",
+      "claude": "rear wheel well liner",
+      "iou": 0.851,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "sideScrape": {
+   "fraction": {
+    "found": [
+     [
+      "left side of the cargo bed, front lower section behind the cab",
+      [
+       0.42,
+       0.36,
+       0.29,
+       0.17
+      ]
+     ],
+     [
+      "front edge of the left bed side next to the cab",
+      [
+       0.41,
+       0.37,
+       0.06,
+       0.16
+      ]
+     ],
+     [
+      "left door, lower half",
+      [
+       0.0,
+       0.38,
+       0.39,
+       0.23
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "bed side scrape",
+      "claude": null,
+      "iou": 0.0,
+      "center_inside": false
+     },
+     {
+      "truth": "lower door dents",
+      "claude": null,
+      "iou": 0.0,
+      "center_inside": false
+     }
+    ],
+    "false": [
+     "left side of the cargo bed, front lower section behind the cab",
+     "front edge of the left bed side next to the cab"
+    ]
+   },
+   "pixel": {
+    "found": [
+     [
+      "front lower corner of the right bed side behind the cab",
+      [
+       0.33576051779935273,
+       0.45392022008253097,
+       0.23867313915857605,
+       0.2544704264099037
+      ]
+     ],
+     [
+      "right door lower section",
+      [
+       0.0040453074433656954,
+       0.4951856946354883,
+       0.31148867313915857,
+       0.32324621733149933
+      ]
+     ],
+     [
+      "rear edge of right door by the cab pillar",
+      [
+       0.2993527508090615,
+       0.4126547455295736,
+       0.04449838187702265,
+       0.343878954607978
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "bed side scrape",
+      "claude": "front lower corner of the right bed side behind the cab",
+      "iou": 0.573,
+      "center_inside": true
+     },
+     {
+      "truth": "lower door dents",
+      "claude": "right door lower section",
+      "iou": 0.601,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "front of the right bed side, just behind the cab",
+      [
+       0.33999999999999997,
+       0.5,
+       0.13,
+       0.2
+      ]
+     ],
+     [
+      "right bed side along the body line",
+      [
+       0.33999999999999997,
+       0.53,
+       0.22999999999999998,
+       0.06
+      ]
+     ],
+     [
+      "rear edge of the right cab door",
+      [
+       0.29,
+       0.42000000000000004,
+       0.05,
+       0.32
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "bed side scrape",
+      "claude": "front of the right bed side, just behind the cab",
+      "iou": 0.443,
+      "center_inside": true
+     },
+     {
+      "truth": "lower door dents",
+      "claude": null,
+      "iou": 0.0,
+      "center_inside": false
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "front lower corner of the right bed side behind the cab",
+      [
+       0.3437615881202805,
+       0.5093169704264099,
+       0.22634232571467097,
+       0.194390116345713
+      ]
+     ],
+     [
+      "right door lower section",
+      [
+       0.010239684466019418,
+       0.6319850412654745,
+       0.30207069174757284,
+       0.1871453748280605
+      ]
+     ],
+     [
+      "rear edge of right door by the cab pillar",
+      [
+       0.3044093851132686,
+       0.4779917469050894,
+       0.050970873786407765,
+       0.28885832187070154
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "bed side scrape",
+      "claude": "front lower corner of the right bed side behind the cab",
+      "iou": 0.714,
+      "center_inside": true
+     },
+     {
+      "truth": "lower door dents",
+      "claude": "right door lower section",
+      "iou": 0.883,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "left side of the cargo bed, front section behind the cab",
+      [
+       0.34385113268608414,
+       0.45392022008253097,
+       0.22653721682847897,
+       0.24759284731774414
+      ]
+     ],
+     [
+      "front edge of the cargo bed side next to the cab",
+      [
+       0.33980582524271846,
+       0.5089408528198074,
+       0.03640776699029126,
+       0.19257221458046767
+      ]
+     ],
+     [
+      "left cab door, lower half",
+      [
+       0.008090614886731391,
+       0.45392022008253097,
+       0.2993527508090615,
+       0.3576341127922971
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "bed side scrape",
+      "claude": "left side of the cargo bed, front section behind the cab",
+      "iou": 0.57,
+      "center_inside": true
+     },
+     {
+      "truth": "lower door dents",
+      "claude": "left cab door, lower half",
+      "iou": 0.504,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "vauxhall": {
+   "fraction": {
+    "found": [
+     [
+      "front door, lower rear section",
+      [
+       0.3,
+       0.57,
+       0.08,
+       0.16
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "door dent",
+      "claude": "front door, lower rear section",
+      "iou": 0.675,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "front door, lower rear section",
+      [
+       0.30859375,
+       0.5989583333333334,
+       0.06640625,
+       0.13541666666666666
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "door dent",
+      "claude": "front door, lower rear section",
+      "iou": 0.646,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "front door on the curb side, near its rear edge",
+      [
+       0.32,
+       0.61,
+       0.06999999999999999,
+       0.1
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "door dent",
+      "claude": "front door on the curb side, near its rear edge",
+      "iou": 0.538,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "front door, lower rear section",
+      [
+       0.3037109375,
+       0.5859375,
+       0.072265625,
+       0.171875
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "door dent",
+      "claude": "front door, lower rear section",
+      "iou": 0.586,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "front left door, lower rear section",
+      [
+       0.30859375,
+       0.6041666666666666,
+       0.0625,
+       0.15104166666666666
+      ]
+     ],
+     [
+      "hood, front right corner area",
+      [
+       0.80859375,
+       0.5885416666666666,
+       0.0703125,
+       0.041666666666666664
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "door dent",
+      "claude": "front left door, lower rear section",
+      "iou": 0.54,
+      "center_inside": true
+     }
+    ],
+    "false": [
+     "hood, front right corner area"
+    ]
+   }
+  },
+  "hailSedan": {
+   "fraction": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.27,
+       0.2,
+       0.48,
+       0.3
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.4,
+       0.38,
+       0.55,
+       0.22
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window broken",
+      "claude": "rear window",
+      "iou": 0.833,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.2265625,
+       0.20833333333333334,
+       0.515625,
+       0.3020833333333333
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.328125,
+       0.3958333333333333,
+       0.625,
+       0.22916666666666666
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.0,
+       0.13541666666666666,
+       0.546875,
+       0.10416666666666667
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window broken",
+      "claude": "rear window",
+      "iou": 0.706,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.29,
+       0.2,
+       0.45,
+       0.32
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.33999999999999997,
+       0.39,
+       0.58,
+       0.22000000000000003
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.02,
+       0.13,
+       0.48,
+       0.09
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window broken",
+      "claude": "rear window",
+      "iou": 0.743,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.24871826171875,
+       0.226806640625,
+       0.488433837890625,
+       0.2685546875
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.3336181640625,
+       0.3816731770833333,
+       0.6038411458333334,
+       0.23003472222222224
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.0,
+       0.13904486762152776,
+       0.6052652994791667,
+       0.12461344401041667
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window broken",
+      "claude": "rear window",
+      "iou": 0.71,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.21875,
+       0.20833333333333334,
+       0.5234375,
+       0.3020833333333333
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.328125,
+       0.3958333333333333,
+       0.625,
+       0.22916666666666666
+      ]
+     ],
+     [
+      "left rear tail light",
+      [
+       0.4296875,
+       0.6302083333333334,
+       0.25,
+       0.23958333333333334
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window broken",
+      "claude": "rear window",
+      "iou": 0.696,
+      "center_inside": true
+     }
+    ],
+    "false": [
+     "left rear tail light"
+    ]
+   }
+  },
+  "hailGlass": {
+   "fraction": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.0,
+       0.21,
+       0.95,
+       0.55
+      ]
+     ],
+     [
+      "rear window trim on the right side",
+      [
+       0.47,
+       0.37,
+       0.21,
+       0.3
+      ]
+     ],
+     [
+      "right rear quarter panel",
+      [
+       0.6,
+       0.38,
+       0.4,
+       0.6
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.0,
+       0.6,
+       0.62,
+       0.4
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.3,
+       0.16,
+       0.7,
+       0.18
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window shattered",
+      "claude": "rear window",
+      "iou": 0.888,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.0,
+       0.21875,
+       0.9930555555555556,
+       0.5833333333333334
+      ]
+     ],
+     [
+      "rear seat and parcel shelf",
+      [
+       0.0,
+       0.3333333333333333,
+       0.8055555555555556,
+       0.40625
+      ]
+     ],
+     [
+      "right rear quarter panel",
+      [
+       0.6111111111111112,
+       0.3958333333333333,
+       0.38888888888888884,
+       0.6041666666666666
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.0,
+       0.6666666666666666,
+       0.6388888888888888,
+       0.3333333333333333
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.3194444444444444,
+       0.16666666666666666,
+       0.6805555555555556,
+       0.1875
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window shattered",
+      "claude": "rear window",
+      "iou": 0.981,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.0,
+       0.22000000000000003,
+       0.99,
+       0.5599999999999999
+      ]
+     ],
+     [
+      "rear window seal and trim on the right side",
+      [
+       0.65,
+       0.37,
+       0.27999999999999997,
+       0.32999999999999996
+      ]
+     ],
+     [
+      "left rear quarter panel",
+      [
+       0.7,
+       0.5,
+       0.3,
+       0.5
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window shattered",
+      "claude": "rear window",
+      "iou": 0.956,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.0,
+       0.22102864583333334,
+       0.9418402777777778,
+       0.5810546875
+      ]
+     ],
+     [
+      "rear seat and parcel shelf",
+      [
+       0.0,
+       0.3391927083333333,
+       0.8072916666666666,
+       0.380859375
+      ]
+     ],
+     [
+      "right rear quarter panel",
+      [
+       0.8154477719907406,
+       0.5201280381944444,
+       0.1845522280092594,
+       0.3245035807291667
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.0,
+       0.6613226996527778,
+       0.5407262731481481,
+       0.3384738498263889
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.4813368055555556,
+       0.3107096354166667,
+       0.365234375,
+       0.07470703125
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window shattered",
+      "claude": "rear window",
+      "iou": 0.956,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "rear window",
+      [
+       0.0,
+       0.21875,
+       0.9930555555555556,
+       0.5833333333333334
+      ]
+     ],
+     [
+      "right rear quarter panel",
+      [
+       0.6111111111111112,
+       0.3958333333333333,
+       0.38888888888888884,
+       0.6041666666666666
+      ]
+     ],
+     [
+      "trunk lid",
+      [
+       0.0,
+       0.5,
+       0.6388888888888888,
+       0.5
+      ]
+     ],
+     [
+      "roof",
+      [
+       0.3611111111111111,
+       0.16666666666666666,
+       0.6388888888888888,
+       0.1875
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "rear window shattered",
+      "claude": "rear window",
+      "iou": 0.981,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "crackedWindshield": {
+   "fraction": {
+    "found": [
+     [
+      "windshield",
+      [
+       0.0,
+       0.0,
+       1.0,
+       0.92
+      ]
+     ],
+     [
+      "windshield impact point",
+      [
+       0.27,
+       0.33,
+       0.22,
+       0.22
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "windshield cracks",
+      "claude": "windshield",
+      "iou": 0.832,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "windshield",
+      [
+       0.0,
+       0.0,
+       1.0,
+       0.9270833333333334
+      ]
+     ],
+     [
+      "windshield impact point",
+      [
+       0.2578125,
+       0.40625,
+       0.1171875,
+       0.15625
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "windshield cracks",
+      "claude": "windshield",
+      "iou": 0.838,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "windshield",
+      [
+       0.0,
+       0.0,
+       0.82,
+       0.9199999999999999
+      ]
+     ],
+     [
+      "windshield impact point",
+      [
+       0.22999999999999998,
+       0.32999999999999996,
+       0.22000000000000003,
+       0.26
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "windshield cracks",
+      "claude": "windshield",
+      "iou": 0.966,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "windshield",
+      [
+       0.0,
+       0.0,
+       0.8203125,
+       0.920138888888889
+      ]
+     ],
+     [
+      "windshield impact point",
+      [
+       0.228515625,
+       0.3671875,
+       0.1765625,
+       0.23541666666666666
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "windshield cracks",
+      "claude": "windshield",
+      "iou": 0.966,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "windshield",
+      [
+       0.0,
+       0.0,
+       0.8203125,
+       0.9270833333333334
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "windshield cracks",
+      "claude": "windshield",
+      "iou": 0.973,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "roofStorm": {
+   "fraction": {
+    "found": [
+     [
+      "roof over the center of the house",
+      [
+       0.31,
+       0.22,
+       0.47,
+       0.32
+      ]
+     ],
+     [
+      "roof on the left side",
+      [
+       0.0,
+       0.22,
+       0.35,
+       0.25
+      ]
+     ],
+     [
+      "roof on the right side near the eave",
+      [
+       0.72,
+       0.31,
+       0.12,
+       0.07
+      ]
+     ],
+     [
+      "front window header panels",
+      [
+       0.26,
+       0.3,
+       0.42,
+       0.06
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "roof torn open",
+      "claude": "roof over the center of the house",
+      "iou": 0.463,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "roof over the center of the house",
+      [
+       0.20228215767634855,
+       0.3343701399688958,
+       0.5757261410788381,
+       0.20217729393468117
+      ]
+     ],
+     [
+      "left side of the roof",
+      [
+       0.0,
+       0.3421461897356143,
+       0.34232365145228216,
+       0.1321928460342146
+      ]
+     ],
+     [
+      "right side roof edge and eave",
+      [
+       0.6742738589211619,
+       0.3499222395023328,
+       0.16597510373443983,
+       0.20217729393468117
+      ]
+     ],
+     [
+      "front yard",
+      [
+       0.8921161825726142,
+       0.6065318818040435,
+       0.07261410788381743,
+       0.09331259720062209
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "roof torn open",
+      "claude": "roof over the center of the house",
+      "iou": 0.681,
+      "center_inside": true
+     }
+    ],
+    "false": [
+     "front yard"
+    ]
+   },
+   "grid": {
+    "found": [
+     [
+      "main roof over the center of the house",
+      [
+       0.01,
+       0.32999999999999996,
+       0.77,
+       0.18
+      ]
+     ],
+     [
+      "roof edge and framing at right of center",
+      [
+       0.6799999999999999,
+       0.35,
+       0.11000000000000001,
+       0.19
+      ]
+     ],
+     [
+      "left side roof near eave",
+      [
+       0.09,
+       0.43,
+       0.1,
+       0.05
+      ]
+     ],
+     [
+      "right side wall near eave",
+      [
+       0.8699999999999999,
+       0.6,
+       0.09,
+       0.09
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "roof torn open",
+      "claude": "main roof over the center of the house",
+      "iou": 0.837,
+      "center_inside": true
+     }
+    ],
+    "false": [
+     "right side wall near eave"
+    ]
+   },
+   "refine": {
+    "found": [
+     [
+      "roof over the center of the house",
+      [
+       0.058350622406639005,
+       0.3344308903576983,
+       0.7482184150242047,
+       0.20242029548989113
+      ]
+     ],
+     [
+      "left side of the roof",
+      [
+       0.0,
+       0.33412713841368585,
+       0.42738589211618255,
+       0.1460034344219803
+      ]
+     ],
+     [
+      "right side roof edge and eave",
+      [
+       0.6327800829875518,
+       0.3499222395023328,
+       0.21006224066390042,
+       0.20217729393468117
+      ]
+     ],
+     [
+      "front yard",
+      [
+       0.8884854771784232,
+       0.6080870917573873,
+       0.07572614107883817,
+       0.08553654743390357
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "roof torn open",
+      "claude": "roof over the center of the house",
+      "iou": 0.841,
+      "center_inside": true
+     }
+    ],
+    "false": [
+     "front yard"
+    ]
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "center roof over the entry",
+      [
+       0.20228215767634855,
+       0.3343701399688958,
+       0.5809128630705395,
+       0.19440124416796267
+      ]
+     ],
+     [
+      "left side of the roof",
+      [
+       0.0,
+       0.3421461897356143,
+       0.34232365145228216,
+       0.1321928460342146
+      ]
+     ],
+     [
+      "right side roof edge and fascia",
+      [
+       0.7105809128630706,
+       0.4510108864696734,
+       0.13485477178423236,
+       0.1166407465007776
+      ]
+     ],
+     [
+      "wood trim above the right front windows",
+      [
+       0.5653526970954357,
+       0.4665629860031104,
+       0.12448132780082988,
+       0.04665629860031104
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "roof torn open",
+      "claude": "center roof over the entry",
+      "iou": 0.698,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "shingles": {
+   "fraction": {
+    "found": [
+     [
+      "shingles at center of roof slope",
+      [
+       0.36,
+       0.3,
+       0.46,
+       0.33
+      ]
+     ],
+     [
+      "shingle tab lower center left",
+      [
+       0.21,
+       0.56,
+       0.1,
+       0.2
+      ]
+     ],
+     [
+      "shingles at right side of slope",
+      [
+       0.63,
+       0.36,
+       0.37,
+       0.26
+      ]
+     ],
+     [
+      "shingles at left side of slope",
+      [
+       0.05,
+       0.27,
+       0.3,
+       0.25
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "lifted and cracked shingles",
+      "claude": "shingles at center of roof slope",
+      "iou": 0.834,
+      "center_inside": true
+     },
+     {
+      "truth": "torn shingle, lower left",
+      "claude": "shingle tab lower center left",
+      "iou": 0.332,
+      "center_inside": false
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "roof shingles near center of slope",
+      [
+       0.3671875,
+       0.5625,
+       0.171875,
+       0.11458333333333333
+      ]
+     ],
+     [
+      "roof shingles in middle row",
+      [
+       0.3671875,
+       0.3125,
+       0.265625,
+       0.17708333333333334
+      ]
+     ],
+     [
+      "roof shingles to right of center",
+      [
+       0.609375,
+       0.3645833333333333,
+       0.1953125,
+       0.1875
+      ]
+     ],
+     [
+      "roof shingle lower left",
+      [
+       0.2109375,
+       0.7291666666666666,
+       0.0859375,
+       0.052083333333333336
+      ]
+     ],
+     [
+      "roof shingles at left side",
+      [
+       0.046875,
+       0.2604166666666667,
+       0.328125,
+       0.2604166666666667
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "lifted and cracked shingles",
+      "claude": "roof shingles in middle row",
+      "iou": 0.269,
+      "center_inside": true
+     },
+     {
+      "truth": "torn shingle, lower left",
+      "claude": "roof shingle lower left",
+      "iou": 0.37,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "Shingles across the center of the slope",
+      [
+       0.39,
+       0.29,
+       0.4,
+       0.33999999999999997
+      ]
+     ],
+     [
+      "Shingles on the right side of the slope",
+      [
+       0.7,
+       0.29,
+       0.3,
+       0.35
+      ]
+     ],
+     [
+      "Shingles on the lower left of the slope",
+      [
+       0.2,
+       0.58,
+       0.1,
+       0.21000000000000002
+      ]
+     ],
+     [
+      "Shingles on the upper left of the slope",
+      [
+       0.0,
+       0.29,
+       0.3,
+       0.22000000000000003
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "lifted and cracked shingles",
+      "claude": "Shingles across the center of the slope",
+      "iou": 0.778,
+      "center_inside": true
+     },
+     {
+      "truth": "torn shingle, lower left",
+      "claude": "Shingles on the lower left of the slope",
+      "iou": 0.498,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "roof shingles near center of slope",
+      [
+       0.32421875,
+       0.5703125,
+       0.2578125,
+       0.09375
+      ]
+     ],
+     [
+      "roof shingles in middle row",
+      [
+       0.36822509765625,
+       0.3097330729166667,
+       0.269775390625,
+       0.17985026041666666
+      ]
+     ],
+     [
+      "roof shingles to right of center",
+      [
+       0.599609375,
+       0.3333333333333333,
+       0.253125,
+       0.21875
+      ]
+     ],
+     [
+      "roof shingle lower left",
+      [
+       0.212890625,
+       0.7369791666666666,
+       0.10625,
+       0.046875
+      ]
+     ],
+     [
+      "roof shingles at left side",
+      [
+       0.0,
+       0.211181640625,
+       0.45703125,
+       0.3173828125
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "lifted and cracked shingles",
+      "claude": "roof shingles in middle row",
+      "iou": 0.278,
+      "center_inside": true
+     },
+     {
+      "truth": "torn shingle, lower left",
+      "claude": "roof shingle lower left",
+      "iou": 0.363,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "shingle tabs near center of slope",
+      [
+       0.3671875,
+       0.5625,
+       0.15625,
+       0.11458333333333333
+      ]
+     ],
+     [
+      "shingle tabs left of center",
+      [
+       0.2109375,
+       0.71875,
+       0.09375,
+       0.0625
+      ]
+     ],
+     [
+      "shingle tabs in center row",
+      [
+       0.390625,
+       0.3229166666666667,
+       0.2421875,
+       0.16666666666666666
+      ]
+     ],
+     [
+      "shingle tabs right of center",
+      [
+       0.609375,
+       0.3020833333333333,
+       0.1953125,
+       0.23958333333333334
+      ]
+     ],
+     [
+      "shingle course in center",
+      [
+       0.5078125,
+       0.59375,
+       0.15625,
+       0.052083333333333336
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "lifted and cracked shingles",
+      "claude": "shingle tabs right of center",
+      "iou": 0.268,
+      "center_inside": true
+     },
+     {
+      "truth": "torn shingle, lower left",
+      "claude": "shingle tabs left of center",
+      "iou": 0.484,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "ceilingStain": {
+   "fraction": {
+    "found": [
+     [
+      "ceiling by the outside wall",
+      [
+       0.17,
+       0.27,
+       0.65,
+       0.27
+      ]
+     ],
+     [
+      "ceiling and wall joint",
+      [
+       0.5,
+       0.43,
+       0.14,
+       0.09
+      ]
+     ],
+     [
+      "upper wall below the ceiling",
+      [
+       0.42,
+       0.49,
+       0.22,
+       0.1
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "water stain on the ceiling",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.461,
+      "center_inside": true
+     },
+     {
+      "truth": "peeling paint at the wall joint",
+      "claude": "ceiling and wall joint",
+      "iou": 0.653,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "ceiling by the outside wall",
+      [
+       0.15625,
+       0.2916666666666667,
+       0.640625,
+       0.2604166666666667
+      ]
+     ],
+     [
+      "ceiling to wall joint",
+      [
+       0.5,
+       0.4479166666666667,
+       0.1171875,
+       0.08333333333333333
+      ]
+     ],
+     [
+      "ceiling to wall joint",
+      [
+       0.0,
+       0.375,
+       0.96875,
+       0.22916666666666666
+      ]
+     ],
+     [
+      "upper wall below the ceiling",
+      [
+       0.4609375,
+       0.5,
+       0.1796875,
+       0.10416666666666667
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "water stain on the ceiling",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.38,
+      "center_inside": true
+     },
+     {
+      "truth": "peeling paint at the wall joint",
+      "claude": "ceiling to wall joint",
+      "iou": 0.591,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "ceiling by the outside wall",
+      [
+       0.5,
+       0.45,
+       0.13999999999999999,
+       0.09
+      ]
+     ],
+     [
+      "ceiling by the outside wall",
+      [
+       0.4,
+       0.3,
+       0.4,
+       0.25
+      ]
+     ],
+     [
+      "ceiling near the wall corner",
+      [
+       0.13999999999999999,
+       0.33999999999999997,
+       0.08,
+       0.04
+      ]
+     ],
+     [
+      "top of wall below the joint",
+      [
+       0.45999999999999996,
+       0.53,
+       0.1,
+       0.04
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "water stain on the ceiling",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.567,
+      "center_inside": true
+     },
+     {
+      "truth": "peeling paint at the wall joint",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.653,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "ceiling by the outside wall",
+      [
+       0.09969075520833334,
+       0.2597927517361111,
+       0.7476806640625,
+       0.29076470269097227
+      ]
+     ],
+     [
+      "ceiling to wall joint",
+      [
+       0.494140625,
+       0.4505208333333333,
+       0.1484375,
+       0.078125
+      ]
+     ],
+     [
+      "ceiling to wall joint",
+      [
+       0.0,
+       0.3697916666666667,
+       1.0,
+       0.24305555555555555
+      ]
+     ],
+     [
+      "upper wall below the ceiling",
+      [
+       0.470703125,
+       0.5208333333333334,
+       0.09765625,
+       0.052083333333333336
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "water stain on the ceiling",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.386,
+      "center_inside": true
+     },
+     {
+      "truth": "peeling paint at the wall joint",
+      "claude": "ceiling to wall joint",
+      "iou": 0.698,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "ceiling by the outside wall",
+      [
+       0.15625,
+       0.2916666666666667,
+       0.640625,
+       0.22916666666666666
+      ]
+     ],
+     [
+      "ceiling to wall joint",
+      [
+       0.5,
+       0.4479166666666667,
+       0.109375,
+       0.08333333333333333
+      ]
+     ],
+     [
+      "upper wall below the ceiling joint",
+      [
+       0.4375,
+       0.5,
+       0.140625,
+       0.07291666666666667
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "water stain on the ceiling",
+      "claude": "ceiling by the outside wall",
+      "iou": 0.427,
+      "center_inside": true
+     },
+     {
+      "truth": "peeling paint at the wall joint",
+      "claude": "ceiling to wall joint",
+      "iou": 0.544,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "floodedRoom": {
+   "fraction": {
+    "found": [
+     [
+      "red leather sofa on the right",
+      [
+       0.6,
+       0.2,
+       0.4,
+       0.8
+      ]
+     ],
+     [
+      "dark red leather loveseat in back",
+      [
+       0.16,
+       0.14,
+       0.36,
+       0.48
+      ]
+     ],
+     [
+      "orange and gray sofa on the left",
+      [
+       0.0,
+       0.38,
+       0.24,
+       0.58
+      ]
+     ],
+     [
+      "floor",
+      [
+       0.0,
+       0.6,
+       0.62,
+       0.4
+      ]
+     ],
+     [
+      "wall on the right",
+      [
+       0.9,
+       0.06,
+       0.09999999999999998,
+       0.3
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "sofa and cushions, right",
+      "claude": "red leather sofa on the right",
+      "iou": 0.769,
+      "center_inside": true
+     },
+     {
+      "truth": "armchairs, back left",
+      "claude": "dark red leather loveseat in back",
+      "iou": 0.934,
+      "center_inside": true
+     },
+     {
+      "truth": "seat or mattress, front left",
+      "claude": "orange and gray sofa on the left",
+      "iou": 0.949,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel": {
+    "found": [
+     [
+      "dark red leather sofa at right",
+      [
+       0.4765625,
+       0.20506634499396864,
+       0.5234375,
+       0.7949336550060313
+      ]
+     ],
+     [
+      "dark red leather loveseat at center",
+      [
+       0.16015625,
+       0.1471652593486128,
+       0.35546875,
+       0.4945717732207479
+      ]
+     ],
+     [
+      "orange and white chair at left",
+      [
+       0.0,
+       0.37997587454764775,
+       0.2359375,
+       0.5729794933655006
+      ]
+     ],
+     [
+      "wall at right",
+      [
+       0.8984375,
+       0.10856453558504221,
+       0.1015625,
+       0.30156815440289503
+      ]
+     ],
+     [
+      "floor",
+      [
+       0.0,
+       0.6151990349819059,
+       0.5,
+       0.3848009650180941
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "sofa and cushions, right",
+      "claude": "dark red leather sofa at right",
+      "iou": 0.987,
+      "center_inside": true
+     },
+     {
+      "truth": "armchairs, back left",
+      "claude": "dark red leather loveseat at center",
+      "iou": 0.907,
+      "center_inside": true
+     },
+     {
+      "truth": "seat or mattress, front left",
+      "claude": "orange and white chair at left",
+      "iou": 0.922,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "grid": {
+    "found": [
+     [
+      "burgundy leather sofa on the right",
+      [
+       0.6900000000000001,
+       0.2,
+       0.30999999999999994,
+       0.8
+      ]
+     ],
+     [
+      "burgundy leather armchair and loveseat in the back",
+      [
+       0.16,
+       0.13999999999999999,
+       0.32999999999999996,
+       0.48
+      ]
+     ],
+     [
+      "orange and white furniture on the left",
+      [
+       0.0,
+       0.38,
+       0.24,
+       0.58
+      ]
+     ],
+     [
+      "leather chair and white pillows in the front",
+      [
+       0.48,
+       0.35,
+       0.26,
+       0.65
+      ]
+     ],
+     [
+      "basement floor",
+      [
+       0.08,
+       0.62,
+       0.42000000000000004,
+       0.38
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "sofa and cushions, right",
+      "claude": "burgundy leather sofa on the right",
+      "iou": 0.596,
+      "center_inside": true
+     },
+     {
+      "truth": "armchairs, back left",
+      "claude": "burgundy leather armchair and loveseat in the back",
+      "iou": 0.856,
+      "center_inside": true
+     },
+     {
+      "truth": "seat or mattress, front left",
+      "claude": "orange and white furniture on the left",
+      "iou": 0.949,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "refine": {
+    "found": [
+     [
+      "dark red leather sofa at right",
+      [
+       0.4778340657552083,
+       0.20376583232810616,
+       0.5221659342447917,
+       0.7962341676718938
+      ]
+     ],
+     [
+      "dark red leather loveseat at center",
+      [
+       0.16161092122395831,
+       0.1468903925412143,
+       0.354339599609375,
+       0.4988361354041013
+      ]
+     ],
+     [
+      "orange and white chair at left",
+      [
+       0.0,
+       0.3808947150180941,
+       0.236962890625,
+       0.5766548552472858
+      ]
+     ],
+     [
+      "wall at right",
+      [
+       0.935546875,
+       0.17189384800965019,
+       0.0640625,
+       0.24125452352231605
+      ]
+     ],
+     [
+      "floor",
+      [
+       0.0,
+       0.6195215118616808,
+       0.625,
+       0.3804784881383192
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "sofa and cushions, right",
+      "claude": "dark red leather sofa at right",
+      "iou": 0.991,
+      "center_inside": true
+     },
+     {
+      "truth": "armchairs, back left",
+      "claude": "dark red leather loveseat at center",
+      "iou": 0.898,
+      "center_inside": true
+     },
+     {
+      "truth": "seat or mattress, front left",
+      "claude": "orange and white chair at left",
+      "iou": 0.935,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [
+     [
+      "burgundy leather sofa on the right",
+      [
+       0.4765625,
+       0.20506634499396864,
+       0.5234375,
+       0.7949336550060313
+      ]
+     ],
+     [
+      "burgundy leather sofa in the back",
+      [
+       0.16015625,
+       0.14475271411338964,
+       0.3515625,
+       0.4945717732207479
+      ]
+     ],
+     [
+      "orange and white chair on the left",
+      [
+       0.0,
+       0.37997587454764775,
+       0.23828125,
+       0.5729794933655006
+      ]
+     ],
+     [
+      "wall on the right",
+      [
+       0.8984375,
+       0.0,
+       0.1015625,
+       0.39806996381182147
+      ]
+     ],
+     [
+      "floor",
+      [
+       0.0,
+       0.6151990349819059,
+       0.5,
+       0.3848009650180941
+      ]
+     ]
+    ],
+    "rows": [
+     {
+      "truth": "sofa and cushions, right",
+      "claude": "burgundy leather sofa on the right",
+      "iou": 0.987,
+      "center_inside": true
+     },
+     {
+      "truth": "armchairs, back left",
+      "claude": "burgundy leather sofa in the back",
+      "iou": 0.906,
+      "center_inside": true
+     },
+     {
+      "truth": "seat or mattress, front left",
+      "claude": "orange and white chair on the left",
+      "iou": 0.931,
+      "center_inside": true
+     }
+    ],
+    "false": []
+   }
+  },
+  "cleanSedan": {
+   "fraction": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "pixel": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "grid": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "refine": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [],
+    "rows": [],
+    "false": []
+   }
+  },
+  "cleanRoom": {
+   "fraction": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "pixel": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "grid": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "refine": {
+    "found": [],
+    "rows": [],
+    "false": []
+   },
+   "pixel_tight": {
+    "found": [],
+    "rows": [],
+    "false": []
+   }
+  }
+ }
+}

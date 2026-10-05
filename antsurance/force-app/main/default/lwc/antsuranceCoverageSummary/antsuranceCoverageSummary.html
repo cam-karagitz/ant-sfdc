@@ -1,0 +1,69 @@
+<template>
+    <article class="c-cover" aria-label="Coverage">
+        <template lwc:if={errorMessage}>
+            <p class="c-cover__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={coverage}>
+            <div class="c-cover__id">
+                <span class={coverage.tileClass}>
+                    <lightning-icon icon-name={coverage.iconName} size="small" alternative-text={coverage.group}></lightning-icon>
+                </span>
+                <div class="c-cover__titles">
+                    <p class="c-cover__eyebrow">{coverage.group}</p>
+                    <p class="c-cover__name">{coverage.name}</p>
+                </div>
+            </div>
+            <div class="c-cover__top">
+                <div class="c-donut">
+                    <svg class="c-donut__svg" viewBox="0 0 120 120" role="img" aria-label={shareLabel}>
+                        <circle class="c-donut__track" cx="60" cy="60" r="52"></circle>
+                        <circle class="c-donut__value" cx="60" cy="60" r="52" style={donutStyle}></circle>
+                    </svg>
+                    <div class="c-donut__center" aria-hidden="true">
+                        <span class="c-donut__share">{sharePercent}</span>
+                        <span class="c-donut__caption">of premium</span>
+                    </div>
+                </div>
+                <dl class="c-cover__facts">
+                    <div>
+                        <dt>Limit</dt>
+                        <dd class="c-cover__limit">{coverage.limit}</dd>
+                        <template lwc:if={coverage.limitType}>
+                            <dd class="c-cover__sub">{coverage.limitType}</dd>
+                        </template>
+                    </div>
+                    <div>
+                        <dt>Deductible</dt>
+                        <dd>{coverage.deductible}</dd>
+                    </div>
+                </dl>
+            </div>
+            <p class="c-cover__premium">{premiumLine}</p>
+            <template lwc:if={coverage.policyId}>
+                <p class="c-cover__policy">
+                    <span class="c-cover__policy-label">On policy</span>
+                    <span class="c-cover__policy-links">
+                        <a class="c-cover__link c-ui-focus" href={policyUrl} data-record-id={coverage.policyId} onclick={handleOpen}>{coverage.policyName}</a>
+                        <template lwc:if={coverage.holderId}>
+                            <span class="c-cover__for">for</span>
+                            <a class="c-cover__link c-ui-focus" href={holderUrl} data-record-id={coverage.holderId} onclick={handleOpen}>{coverage.holderName}</a>
+                        </template>
+                    </span>
+                </p>
+            </template>
+            <template lwc:if={coverage.whatIsCovered}>
+                <div class="c-cover__what">
+                    <p class="c-cover__what-label">What it covers</p>
+                    <c-antsurance-markdown value={coverage.whatIsCovered}></c-antsurance-markdown>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-cover__loading" role="status" aria-label="Loading coverage">
+                <span class="c-ui-bone c-ui-bone_tile"></span>
+                <span class="c-ui-bone c-cover__bone_ring"></span>
+                <span class="c-ui-bone c-ui-bone_line c-cover__bone_line"></span>
+            </div>
+        </template>
+    </article>
+</template>

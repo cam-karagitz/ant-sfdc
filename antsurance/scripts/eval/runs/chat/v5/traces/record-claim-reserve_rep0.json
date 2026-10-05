@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nHow much is still reserved here?"
+  },
+  {
+    "role": "assistant",
+    "content": "The outstanding reserve on this claim is **$40,000**. That is the $45,000 reserve less the $5,000 advance already paid."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$40,000\",\n      \"note\": \"still held on this claim\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Total reserve\",\n      \"value\": \"$45,000\",\n      \"note\": \"set Sep 26\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Paid to date\",\n      \"value\": \"$5,000\",\n      \"note\": \"emergency drying advance\",\n      \"tone\": \"good\"\n    },\n    {\n      \"label\": \"Estimated loss\",\n      \"value\": \"$47,500\",\n      \"note\": \"$2,500 above reserve\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Does the reserve cover the new estimates?\",\n    \"What's left to do on this claim?\",\n    \"Show this claim's timeline\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$40,000\",\n        \"note\": \"still held on this claim\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Total reserve\",\n        \"value\": \"$45,000\",\n        \"note\": \"set Sep 26\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Paid to date\",\n        \"value\": \"$5,000\",\n        \"note\": \"emergency drying advance\",\n        \"tone\": \"good\"\n      },\n      {\n        \"label\": \"Estimated loss\",\n        \"value\": \"$47,500\",\n        \"note\": \"$2,500 above reserve\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Does the reserve cover the new estimates?\",\n      \"What's left to do on this claim?\",\n      \"Show this claim's timeline\"\n    ]\n  }\n]"
+  }
+]

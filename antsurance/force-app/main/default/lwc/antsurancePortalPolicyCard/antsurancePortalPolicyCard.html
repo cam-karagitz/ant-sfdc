@@ -1,0 +1,29 @@
+<template>
+    <template lwc:if={policy}>
+        <button type="button" class={cardClass} onclick={handleOpen} aria-label={label}>
+            <span class="c-policy__top">
+                <span class="c-policy__icon"><lightning-icon icon-name={icon} size="small" alternative-text=""></lightning-icon></span>
+                <span class="c-policy__name">
+                    <span class="c-policy__line">{policy.line}</span>
+                    <span class="c-policy__number">{policy.policyNumber}</span>
+                </span>
+                <span class={statusClass}>{policy.status}</span>
+            </span>
+            <template lwc:if={policy.insured}>
+                <span class="c-policy__insured">{policy.insured}</span>
+            </template>
+            <span class="c-policy__facts">
+                <span class="c-policy__fact">
+                    <span class="c-policy__figure">{policy.premiumText}</span>
+                    <span class="c-policy__caption">a year</span>
+                </span>
+                <span class="c-policy__fact c-policy__fact_end">
+                    <span class="c-policy__when">{renewal}</span>
+                    <template lwc:if={renewalOffer}>
+                        <span class="c-policy__caption">{renewalOffer}</span>
+                    </template>
+                </span>
+            </span>
+        </button>
+    </template>
+</template>

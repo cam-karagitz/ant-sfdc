@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies carry a Water Backup endorsement?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status__c, COUNT(Id) n, COUNT_DISTINCT(Policy__c) p FROM Policy_Endorsement__c WHERE Name LIKE '%Water Backup%' GROUP BY Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":33,\"n\":33,\"Status__c\":\"Active\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Policy__r.Status__c s, COUNT(Id) n FROM Policy_Endorsement__c WHERE Name LIKE '%Water Backup%' GROUP BY Policy__r.Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"n\":30,\"s\":\"Active\"},{\"n\":3,\"s\":\"Pending Renewal\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "assistant",
+    "content": "**33 policies** have a Water Backup endorsement. Every one of these endorsements is active, and every policy is in force:\n\n- **30** have a policy status of Active\n- **3** are Pending Renewal\n\nI found these by searching endorsement names for \"Water Backup\", so any that are named differently aren't included. I can list the policies if that would help."
+  }
+]

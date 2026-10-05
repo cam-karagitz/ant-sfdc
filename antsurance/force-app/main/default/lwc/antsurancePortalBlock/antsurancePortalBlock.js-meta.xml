@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Customer portal: one block of Claude's answer (choices, a policy list, a price breakdown, a claim's status, coverage, a note or formatted text), drawn from what the server built out of the customer's own records.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

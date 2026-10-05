@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which adjuster has the most open claims, and what is their total outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Handled_By__c, COUNT(Id) n, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Handled_By__c ORDER BY COUNT(Id) DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":229250.0,\"n\":13,\"Handled_By__c\":\"Dana Whitaker\"},{\"r\":69600.0,\"n\":11,\"Handled_By__c\":\"Marcus Lindahl\"},{\"r\":446500.0,\"n\":2,\"Handled_By__c\":\"Anjali Venkataraman\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"**Dana Whitaker** has the most open claims, **13** of 26, with **$229,250** in outstanding reserve.\",\n  \"tiles\": [\n    {\n      \"label\": \"Open claims\",\n      \"value\": \"13\",\n      \"note\": \"Dana Whitaker, half of all open claims\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$229,250\",\n      \"note\": \"across Dana's 13 open claims\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Next busiest\",\n      \"value\": \"11\",\n      \"note\": \"Marcus Lindahl, $69,600 reserve\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Largest reserve\",\n      \"value\": \"$446,500\",\n      \"note\": \"Anjali Venkataraman, only 2 claims\",\n      \"tone\": \"alert\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Open claims\",\n        \"value\": \"13\",\n        \"note\": \"Dana Whitaker, half of all open claims\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$229,250\",\n        \"note\": \"across Dana's 13 open claims\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Next busiest\",\n        \"value\": \"11\",\n        \"note\": \"Marcus Lindahl, $69,600 reserve\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Largest reserve\",\n        \"value\": \"$446,500\",\n        \"note\": \"Anjali Venkataraman, only 2 claims\",\n        \"tone\": \"alert\"\n      }\n    ]\n  }\n]"
+  }
+]

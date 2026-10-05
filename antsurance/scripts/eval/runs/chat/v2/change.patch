@@ -1,0 +1,23 @@
+--- antsurance/scripts/eval/runs/chat/v1/AntsuranceClaudeActions.cls.txt	2026-10-02 22:40:16
++++ antsurance/force-app/main/default/classes/AntsuranceClaudeActions.cls	2026-10-02 22:40:16
+@@ -119,7 +119,10 @@
+                     'subject' => text('What to do, as a short imperative line, for example: Call Maria Reyes about the contractor estimate'),
+                     'due_date' => text('The due date as YYYY-MM-DD. Work it out from today\'s date when they say tomorrow, Friday or in three days.'),
+                     'related_record_id' => text('The 18-character Id of the claim, service request, policy, policy sale, quote or customer account the task is about. Use the open record when they say this or here.'),
+-                    'contact_id' => text('The Id of the contact to call or write to, when the task is about reaching a person. Look it up if you do not have it.'),
++                    'contact_id' => text(
++                        'The Id of the contact the task is about. Set it whenever the task is to call, write to, meet or send something to a person, named or not (the customer, him, her): ' +
++                        'take the Id from the open record\'s facts when that person is there, otherwise query for it. Leave it out only when the task involves no person.'
++                    ),
+                     'priority' => choice(PRIORITIES, 'Normal unless they say it is urgent or can wait.'),
+                     'notes' => text('Optional comments for the task: context the user gave that does not fit the subject.')
+                 },
+@@ -215,7 +218,7 @@
+         } catch (IllegalArgumentException e) {
+             throw handled(e.getMessage());
+         } catch (DmlException e) {
+-            throw handled(e.getDmlMessage(0));
++            throw handled('Salesforce did not save this: ' + e.getDmlMessage(0));
+         } catch (QueryException e) {
+             throw handled(NO_ACCESS);
+         } catch (System.NoAccessException e) {

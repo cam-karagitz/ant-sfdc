@@ -1,0 +1,29 @@
+:host {
+    display: block;
+}
+
+/* The surface the page preview sits on. */
+.c-dec__desk {
+    padding: var(--slds-g-spacing-4, 1rem);
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    background: var(--slds-g-color-surface-container-2, #f3f3f3);
+}
+
+/* One US Letter page: as wide as a readable page, with the paper's proportions, so the first page
+   shows whole and the rest scroll inside the viewer. */
+.c-dec__page {
+    position: relative;
+    /* No SLDS size matches a readable page width; this is intentional. */
+    max-width: 54rem;
+    margin: 0 auto;
+    aspect-ratio: 8.5 / 11;
+    background: var(--slds-g-color-surface-1, #fff);
+    box-shadow: var(--slds-g-shadow-2, 0 2px 8px rgb(0 0 0 / 16%));
+}
+
+.c-dec__pdf {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

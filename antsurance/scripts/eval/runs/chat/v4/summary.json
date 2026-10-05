@@ -1,0 +1,5 @@
+{
+  "description": "Dates as Oct 2, 2026 and whole-dollar money; rerun on the 12 cases that answer with dates or money",
+  "target": "system_prompt",
+  "suspicious": "partial pass: 12 of 63 cases"
+}

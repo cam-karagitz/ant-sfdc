@@ -1,0 +1,290 @@
+{
+  "_about": "The one list of what a person can choose to install. scripts/build_kit.py reads it, scans the kit (scripts/kit_scan.py), works out what each choice must bring with it, proves each set stands alone, and writes the result into the kit: kit-manifest.json (capabilities), capabilities/<name>/capability.json and kit-scan.json. Kinds: whole (the phases), layer (a set cut from force-app/ by the scan), slice (a part with its own folder under slices/), phase (an optional phase), step (a script of its own).",
+  "order": [
+    "everything",
+    "data-model",
+    "automation",
+    "components",
+    "pages",
+    "ask-claude",
+    "portal",
+    "look-and-feel",
+    "sample-data",
+    "coverage-agent"
+  ],
+  "followAtRunTime": [
+    "ApexClass",
+    "ApexPage",
+    "StaticResource",
+    "CustomNotificationType",
+    "CustomPermission"
+  ],
+  "permissionSetsFrom": [
+    "Antsurance_CRM",
+    "Antsurance_Claude",
+    "Antsurance_Desk"
+  ],
+  "keptWhole": {
+    "Antsurance_Desk": "Approving what Claude prepared is for leads and managers, so its class access and its manager permission stay in a set of their own. Only its object and field access is folded into the derived sets, because the tests save those fields."
+  },
+  "capabilities": {
+    "everything": {
+      "kind": "whole",
+      "label": "Everything",
+      "option": "The whole app: the data model, automation, components with the Claude features, pages and the app, plus reports, dashboards and the sample data loader.",
+      "summary": "The whole Antsurance app, installed in phases.",
+      "how": [
+        "python3 scripts/setup/deploy_phase.py --target-org <alias> --phase value-sets",
+        "python3 scripts/setup/deploy_phase.py --target-org <alias> --phase core",
+        "python3 scripts/setup/assign_access.py --target-org <alias> --only-me --yes"
+      ],
+      "permissionSets": [
+        "Antsurance_CRM",
+        "Antsurance_Claude",
+        "Antsurance_Desk"
+      ]
+    },
+    "data-model": {
+      "kind": "layer",
+      "label": "Insurance data model",
+      "permissionSet": "Antsurance_Data_Model",
+      "permissionSetLabel": "Antsurance Data Model",
+      "option": "Policies, coverages, people, assets, endorsements and file notes, plus our fields and record types on Account, Contact, Case, Opportunity, Quote and Lead. No code and no screens.",
+      "summary": "Our objects, fields, record types, list views and settings types. Nothing runs and nothing shows until something is built on it.",
+      "seeds": {
+        "types": [
+          "CustomObject",
+          "CustomField",
+          "RecordType",
+          "BusinessProcess",
+          "CompactLayout",
+          "ListView",
+          "ValidationRule",
+          "WebLink",
+          "GlobalValueSet",
+          "Group",
+          "CustomMetadata"
+        ]
+      },
+      "standardObjectAccess": true
+    },
+    "automation": {
+      "kind": "layer",
+      "label": "Automations",
+      "permissionSet": "Antsurance_Automation",
+      "permissionSetLabel": "Antsurance Automation",
+      "option": "The three triggers with their classes, and the five flows (file a claim, record a payment, add a driver, bind a policy, past due follow up).",
+      "summary": "What runs when a record is saved, and the guided flows. Triggers act only on our record types.",
+      "seeds": {
+        "types": [
+          "ApexTrigger",
+          "Flow"
+        ]
+      },
+      "carriedWords": "the quote configurator, the quote advisor and the connection to Claude (a named credential and an external credential). The opportunity trigger fills in a newly bound policy from its quote, and that code reaches the quote advisor, which can ask Claude. Nothing calls Claude until a key is stored."
+    },
+    "components": {
+      "kind": "layer",
+      "label": "Screen components and the Claude features",
+      "permissionSet": "Antsurance_Components",
+      "permissionSetLabel": "Antsurance Components",
+      "option": "Every Lightning web component and the Apex each one calls: record cards, the claims, quote, underwriting and renewal features, the desk, documents, and the Ask Claude chat with the insurance model.",
+      "summary": "The components and their Apex, ready to place on pages of your own. Includes every Claude feature and the connection to Claude.",
+      "seeds": {
+        "types": [
+          "LightningComponentBundle",
+          "AuraDefinitionBundle"
+        ],
+        "also": [
+          "CspTrustedSite:*",
+          "RemoteSiteSetting:*",
+          "PermissionSet:Antsurance_Desk",
+          "ApexClass:AntsuranceClaudeInsurance"
+        ]
+      },
+      "needsKey": true,
+      "carriedWords": "the Apex each component calls, five document pages, and the Antsurance Desk permission set for leads and managers.",
+      "provenNote": "Seen in a scratch org on 2026-10-05: on the data model without the automations, all 213 components compiled, and 8 of 458 tests failed because each asserts what a trigger did. With the automations there, they pass."
+    },
+    "pages": {
+      "kind": "layer",
+      "label": "Page layouts, record pages and the app",
+      "permissionSet": "Antsurance_Pages",
+      "permissionSetLabel": "Antsurance Pages",
+      "option": "The Antsurance app, its tabs, a Lightning record page and a page layout for each kind of record, the buttons and the paths.",
+      "summary": "The app people open: its tabs, record pages, layouts, quick actions and paths.",
+      "seeds": {
+        "types": [
+          "CustomApplication",
+          "CustomTab",
+          "FlexiPage",
+          "Layout",
+          "QuickAction",
+          "PathAssistant"
+        ]
+      }
+    },
+    "ask-claude": {
+      "label": "Ask Claude",
+      "summary": "A chat tab and a utility bar item that answer questions by reading Salesforce as the person asking, and draw the answer as a chart, figures, a list, a draft, a record card or a form.",
+      "needs": [
+        "A Claude API key, stored by the person installing at a hidden prompt",
+        "Lightning Experience",
+        "Nothing else of Antsurance: no custom object, no record type, no picklist value"
+      ],
+      "fromCore": {
+        "classes": [
+          "AntsuranceAiClient",
+          "AntsuranceAiSettings",
+          "AntsuranceClaudeActions",
+          "AntsuranceClaudeAttachments",
+          "AntsuranceClaudeController",
+          "AntsuranceClaudeDisplay",
+          "AntsuranceClaudeModel",
+          "AntsuranceClaudeRecordFacts"
+        ],
+        "testClasses": [
+          "AntsuranceAiClientTest",
+          "AntsuranceAiSettingsTest",
+          "AntsuranceClaudeAttachmentsTest",
+          "AntsuranceClaudeControllerTest",
+          "AntsuranceClaudeDisplayTest",
+          "AntsuranceClaudeModelTest"
+        ],
+        "lwc": [
+          "antsuranceCarousel",
+          "antsuranceClaude",
+          "antsuranceClaudeBlockModal",
+          "antsuranceClaudeBlockStyles",
+          "antsuranceClaudeChart",
+          "antsuranceClaudeClient",
+          "antsuranceClaudeComparison",
+          "antsuranceClaudeDraft",
+          "antsuranceClaudeFileViewer",
+          "antsuranceClaudeForm",
+          "antsuranceClaudeMetrics",
+          "antsuranceClaudePage",
+          "antsuranceClaudeRecord",
+          "antsuranceClaudeTimeline",
+          "antsuranceClaudeUtility",
+          "antsuranceClaudeWorkList",
+          "antsuranceFonts",
+          "antsuranceMarkdown",
+          "antsuranceStepPager",
+          "antsuranceUiStyles"
+        ],
+        "staticresources": [
+          "antsuranceFonts",
+          "claudeSpark"
+        ],
+        "objects": [
+          "Antsurance_AI_Setting__mdt"
+        ],
+        "customMetadata": [
+          "Antsurance_AI_Setting.Default"
+        ],
+        "namedCredentials": [
+          "Anthropic_API"
+        ],
+        "externalCredentials": [
+          "Anthropic"
+        ],
+        "flexipages": [
+          "Antsurance_UtilityBar"
+        ]
+      },
+      "own": "slices/ask-claude",
+      "replaces": [
+        "lwc/antsuranceClaudePageCard",
+        "tabs/Antsurance_Claude.tab-meta.xml"
+      ],
+      "foundAtRunTime": [
+        "AntsuranceClaudeInsurance"
+      ],
+      "app": "Ask_Claude",
+      "permissionSet": "Antsurance_Ask_Claude",
+      "changes": [
+        "Adds the chat's Apex classes and their tests, its screen components, two static resources (a logo and a font), one custom metadata type with one record (the Claude model to use), a named credential and an external credential for api.anthropic.com, one tab, one utility bar, one small app and one permission set.",
+        "Adds nothing to any object of yours: no field, no record type, no picklist value, no trigger, no flow, no validation rule, no page layout.",
+        "Changes no app, page, profile or setting of yours. The tab and the utility bar item sit in an app of their own, Ask Claude.",
+        "Its tests create a few accounts, contacts, leads, opportunities, cases, tasks and one product, which Salesforce rolls back when each test ends."
+      ],
+      "kind": "slice",
+      "option": "Only the chat: a tab and a utility bar item that answer from the org's own objects. Needs nothing else of ours and adds nothing to your objects."
+    },
+    "portal": {
+      "kind": "phase",
+      "phase": "portal",
+      "bucket": "portal",
+      "label": "Customer portal (Experience Cloud site)",
+      "option": "A site where a customer sees their policies and documents, files a claim, asks for a quote and chats with Claude. Switches on Digital Experiences, which cannot be switched off again.",
+      "summary": "The Experience Cloud site, its components and classes, a platform event with its trigger, and a profile for portal users only. It does not need the staff app's pages.",
+      "ownYes": "It switches on Digital Experiences for the whole org, and Salesforce does not let that be switched off again. Ask for a yes to exactly that.",
+      "needsFirst": [
+        "Digital Experiences switched on (the portal phase does it; it cannot be undone)",
+        "A free Customer Community license for each portal user"
+      ],
+      "how": [
+        "python3 scripts/setup/deploy_phase.py --target-org <alias> --only portal"
+      ],
+      "staffSet": {
+        "name": "Antsurance_Portal_Staff",
+        "from": "Antsurance_CRM",
+        "classesStartingWith": "AntsurancePortal",
+        "why": "With the whole app, staff reach the portal's classes through Antsurance CRM, and the portal phase carries that set in full. Without the whole app that set is not there, so the portal carries this small one in its place."
+      }
+    },
+    "look-and-feel": {
+      "kind": "phase",
+      "phase": "look-and-feel",
+      "bucket": "look-and-feel",
+      "label": "Look and feel (theme and branding)",
+      "option": "Our theme made active for everyone, and Accounts, Cases and Opportunities renamed Customers, Claims and Service, and Policy Sales. Everyone in the org sees it.",
+      "summary": "A theme, branding, object renames, search layouts and restyled stock list views.",
+      "ownYes": "It changes what everyone in the org sees. Ask for a yes to exactly that.",
+      "carries": [
+        "ContentAsset:Claude_Spark"
+      ],
+      "how": [
+        "python3 scripts/setup/deploy_phase.py --target-org <alias> --only look-and-feel"
+      ]
+    },
+    "sample-data": {
+      "kind": "step",
+      "label": "Sample records",
+      "option": "About 2,100 invented households, businesses, policies, claims and quotes. Only for an org that holds no real records.",
+      "summary": "Invented records, loaded by AntsuranceDemoData.",
+      "needsNodes": [
+        "ApexClass:AntsuranceDemoData",
+        "ApexClass:AntsuranceDemoPrep"
+      ],
+      "needsFirst": [
+        "An org with no real records",
+        "About 5 MB of data storage"
+      ],
+      "how": [
+        "python3 scripts/setup/load_demo_data.py --target-org <alias> --yes",
+        "python3 scripts/setup/prepare_demo.py --target-org <alias>"
+      ]
+    },
+    "coverage-agent": {
+      "kind": "step",
+      "label": "Coverage agent (Claude Managed Agents)",
+      "option": "A second way to check coverage on a claim: an agent that works the question step by step. Creates an agent, an environment and a skill in your Anthropic workspace and bills each session to your key.",
+      "summary": "An agent on Claude Managed Agents that the coverage card can call. Its code ships with the components and stays hidden until it is set up.",
+      "ownYes": "It creates things in the person's Anthropic workspace and starts billed sessions on their key. Ask for a yes to exactly that.",
+      "needsNodes": [
+        "ApexClass:AntsuranceCoverageAgentSetup",
+        "ApexClass:AntsuranceCoverageAgent",
+        "LightningComponentBundle:antsuranceCoverageAgent"
+      ],
+      "needsFirst": [
+        "A Claude API key stored and answering",
+        "Claude Managed Agents on that key's workspace"
+      ],
+      "how": [
+        "python3 scripts/setup/setup_coverage_agent.py --target-org <alias> --yes"
+      ]
+    }
+  }
+}

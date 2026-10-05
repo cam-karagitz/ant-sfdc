@@ -1,0 +1,348 @@
+@import 'c/antsuranceUiStyles';
+/* The underwriting review sheet. Brand values are fixed on purpose so the card keeps its look under
+   any org theme. Headings and figures in Poppins; body text in the Salesforce system font. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-review {
+    /* The card lays itself out by its own width: a rail column or the page's main column. */
+    container-type: inline-size;
+    border-radius: 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-top: 0.25rem solid var(--ants-clay-deep);
+    background: #fff;
+    color: var(--ants-ink);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.c-review__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+}
+
+.c-review__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-review__status {
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-review__status_waiting {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-review__status_approved {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-review__status_declined {
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+}
+
+.c-review__block {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+/* Narrow: one column, in reading order. The memo's wrapper stands aside so its two parts take their
+   place in that order: reason, recommendation, points, conditions, open questions, decision. */
+.c-review__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.c-review__detail {
+    display: contents;
+}
+
+.c-review__why {
+    order: 1;
+}
+
+.c-review__summary {
+    order: 2;
+}
+
+.c-review__reading {
+    order: 3;
+}
+
+.c-review__conditions {
+    order: 4;
+}
+
+.c-review__open {
+    order: 5;
+}
+
+.c-review__decide {
+    order: 6;
+}
+
+/* Wide, once there is a memo: the reason, the recommendation, the conditions and the decision on the
+   left, and the memo's points and open questions on the right. */
+@container (min-width: 46rem) {
+    .c-review__body_memo {
+        /* The left column is wide enough for the three decision buttons to share one row. */
+        grid-template-columns: minmax(27.5rem, 5fr) minmax(0, 7fr);
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas:
+            'why detail'
+            'summary detail'
+            'conditions detail'
+            'decide detail';
+    }
+
+    .c-review__body_memo .c-review__why {
+        grid-area: why;
+    }
+
+    .c-review__body_memo .c-review__summary {
+        grid-area: summary;
+    }
+
+    .c-review__body_memo .c-review__conditions,
+    .c-review__body_memo .c-review__open_left {
+        grid-area: conditions;
+    }
+
+    .c-review__body_memo .c-review__detail {
+        display: block;
+        grid-area: detail;
+        border-left: 1px solid var(--ants-line);
+    }
+
+    .c-review__body_memo .c-review__decide {
+        grid-area: decide;
+        border-radius: 0 0 0 1.25rem;
+    }
+}
+
+.c-review__eyebrow {
+    margin: 0 0 0.375rem;
+    color: var(--ants-clay-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-review__reasons,
+.c-review__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-review__reason,
+.c-review__list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.125rem 0;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-review__reason span,
+.c-review__list-item span {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.c-review__reason {
+    font-weight: 600;
+}
+
+.c-review__flag {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}
+
+.c-review__tick {
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-review__ask {
+    --slds-c-icon-color-foreground-default: var(--ants-muted);
+}
+
+.c-review__recommendation {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-review__headline {
+    margin: 0.25rem 0 0;
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-review__points {
+    margin: 0;
+}
+
+.c-review__point {
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-review__point:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.c-review__point-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.c-review__point-detail {
+    margin: 0;
+    color: var(--ants-ink);
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-review__muted {
+    margin: 0 0 0.75rem;
+    color: var(--ants-muted);
+    /* Full lines, with the last one never left to a single word. */
+    text-wrap: pretty;
+}
+
+.c-review__meta {
+    margin: 0.75rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-review__link {
+    margin-left: 0.25rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.c-review__link:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-review__skeleton {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.c-review__bar {
+    display: block;
+    width: 80%;
+    height: 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    animation: c-review-pulse 1.2s ease-in-out infinite;
+}
+
+.c-review__bar_wide {
+    width: 95%;
+}
+
+.c-review__bar_short {
+    width: 55%;
+}
+
+@keyframes c-review-pulse {
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-review__bar {
+        animation: none;
+    }
+}
+
+.c-review__error {
+    margin: 0.75rem 0 0;
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-review__decide {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+    border-radius: 0 0 1.25rem 1.25rem;
+    background: var(--ants-ivory);
+}
+
+/* ---------- One column: the parts take a tab each, so the card stays about a screen tall ---------- */
+
+.c-review__tabs {
+    display: block;
+    padding: 0 1.25rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+/* Recommendation: why it was referred, what Claude recommends, the conditions and the decision. */
+.c-review__show_decision .c-review__detail > * {
+    display: none;
+}
+
+/* Memo: the points the recommendation rests on. */
+.c-review__show_points > :not(.c-review__detail),
+.c-review__show_points .c-review__detail > :not(.c-review__reading) {
+    display: none;
+}
+
+/* To find out: the open questions. */
+.c-review__show_questions > :not(.c-review__detail),
+.c-review__show_questions .c-review__detail > :not(.c-review__open) {
+    display: none;
+}
+
+/* Print shows every part, whichever tab was open. */
+@media print {
+    .c-review__body > *,
+    .c-review__detail > * {
+        display: revert !important;
+    }
+}

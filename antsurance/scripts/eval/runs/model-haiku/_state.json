@@ -1,0 +1,99 @@
+{
+  "train_ids": [
+    "count-open-claims",
+    "chip-renewals",
+    "count-severe-open-claims",
+    "count-past-due",
+    "sum-outstanding-reserve",
+    "top-loss-ratio",
+    "sum-auto-premium",
+    "top-adjuster",
+    "list-top3-claims",
+    "lookup-handler",
+    "lookup-expiry",
+    "lookup-deductible",
+    "overdue-tasks",
+    "lookup-vins",
+    "denied-claims",
+    "lookup-missing-policy",
+    "unknown-ssn",
+    "record-policy-coverages",
+    "record-request-policy",
+    "record-contact-policies",
+    "record-claim-status-only",
+    "record-sale-cheaper-quote",
+    "record-claim-reserve",
+    "multi-largest-reserve-policies",
+    "multi-claims-on-renewing",
+    "action-invalid-status",
+    "action-status-by-subject",
+    "action-claim-paid",
+    "action-task-by-name",
+    "action-note-needs-content",
+    "action-note-on-claim",
+    "action-task-on-claim"
+  ],
+  "test_ids": [
+    "count-water-backup",
+    "count-workers-comp-in-force",
+    "count-households",
+    "count-quotes-waiting",
+    "agency-premium",
+    "top-line-open-claims",
+    "avg-home-premium",
+    "sum-paid-this-year",
+    "licensed-drivers",
+    "lookup-top-agency",
+    "lookup-oldest-claim",
+    "drivers-two-violations",
+    "quote-configurator-answer",
+    "lookup-endorsements",
+    "refuse-reserve-change",
+    "refuse-delete",
+    "unknown-commission",
+    "record-customer-open",
+    "record-customer-policies",
+    "record-claim-summary",
+    "record-quote-other-option",
+    "record-policy-loss-ratio",
+    "followup-agency-workers-comp",
+    "multi-household-premium-renewal",
+    "multi-compare-quotes",
+    "action-call-task-has-contact",
+    "action-task-with-contact",
+    "action-close-and-note",
+    "action-note-on-policy",
+    "followup-task-on-found-claim",
+    "action-status-on-request"
+  ],
+  "metrics": [
+    {
+      "id": "pass",
+      "kind": "binary",
+      "label": "Correct"
+    }
+  ],
+  "perf_fields": [
+    {
+      "id": "latency_s",
+      "label": "Time",
+      "unit": "s"
+    },
+    {
+      "id": "rounds",
+      "label": "Lookups"
+    },
+    {
+      "id": "tool_calls",
+      "label": "Queries"
+    }
+  ],
+  "goal": {
+    "target": "pass",
+    "direction": "higher",
+    "hold": [
+      "latency_s",
+      "rounds"
+    ]
+  }
+}

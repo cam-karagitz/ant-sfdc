@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Where the claims coverage agent lives on Claude Managed Agents: the ids of the agent, its environment and its skill, written once by AntsuranceCoverageAgentSetup.run(). The ids are not secrets; the API key stays in the Anthropic external credential. Empty means the agent is not set up, and the claim page hides it.</description>
+    <label>Antsurance Coverage Agent</label>
+    <visibility>Public</visibility>
+</CustomObject>

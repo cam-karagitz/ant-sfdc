@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has been open the longest, and for how many days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Days_Open__c, Reported_Date__c, Handled_By__c, Account.Id, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Days_Open__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Tamarack Outfitters\",\"Id\":\"001aj000040t3d2AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3d2AAA\",\"Handled_By__c\":\"Marcus Lindahl\",\"Reported_Date__c\":\"2026-08-23\",\"Days_Open__c\":40,\"Status\":\"Payment Issued\",\"Subject\":\"Storefront window smashed, merchandise taken\",\"CaseNumber\":\"00002225\",\"Id\":\"500aj00003jLAOlAAO\"},{\"Account\":{\"Name\":\"Cold Harbor Storage & Logistics\",\"Id\":\"001aj000040t3diAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3diAAA\",\"Handled_By__c\":\"Dana Whitaker\",\"Reported_Date__c\":\"2026-08-29\",\"Days_Open__c\":34,\"Status\":\"Payment Issued\",\"Subject\":\"Visitor slipped on ice in the parking lot\",\"CaseNumber\":\"00002242\",\"Id\":\"500aj00003jLAP2AAO\"},{\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040t3d4AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3d4AAA\",\"Handled_By__c\":\"Dana Whitaker\",\"Reported_Date__c\":\"2026-08-30\",\"Days_Open__c\":33,\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002223\",\"Id\":\"500aj00003jLAOjAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The open claim that's been open longest is [00002225](/lightning/r/500aj00003jLAOlAAO/view), at **40 days**. It's for [Tamarack Outfitters](/lightning/r/001aj000040t3d2AAA/view): a storefront window was smashed and merchandise taken. It was reported on 23 Aug, the status is Payment Issued and Marcus Lindahl is handling it.\n\nThe next two longest:\n- [00002242](/lightning/r/500aj00003jLAP2AAO/view), [Cold Harbor Storage & Logistics](/lightning/r/001aj000040t3diAAA/view): **34 days**, Payment Issued\n- [00002223](/lightning/r/500aj00003jLAOjAAO/view), [Sagebrush Freight Lines](/lightning/r/001aj000040t3d4AAA/view): **33 days**, Approved"
+  }
+]

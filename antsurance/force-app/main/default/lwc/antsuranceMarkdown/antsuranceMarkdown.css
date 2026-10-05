@@ -1,0 +1,160 @@
+/* Reading styles for rendered replies. Fonts and brand colors come from the host
+   component's --ants-* properties, with plain fallbacks when used on its own. */
+:host {
+    display: block;
+}
+
+.c-md {
+    white-space: normal;
+    font-family: var(--ants-body, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+    font-size: var(--ants-reply-size, 0.875rem);
+    /* No single word left alone on a last line. */
+    text-wrap: pretty;
+    line-height: 1.65;
+    color: var(--ants-ink, #181818);
+}
+
+/* Even spacing between blocks, with none after the last one. */
+.c-md p,
+.c-md .c-md-list,
+.c-md .c-md-table,
+.c-md .c-md-pre,
+.c-md .c-md-quote {
+    margin: 0 0 0.875rem;
+}
+
+.c-md > :last-child,
+.c-md .c-md-quote > :last-child {
+    margin-bottom: 0;
+}
+
+.c-md strong {
+    font-weight: 600;
+}
+
+/* A bold label that opens a paragraph sits on its own line, with the text under it. */
+.c-md .c-md-lead {
+    display: block;
+    font-weight: 700;
+}
+
+.c-md .c-md-heading {
+    margin: 1.375rem 0 0.5rem;
+    font-family: var(--ants-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+}
+
+.c-md h5.c-md-heading {
+    font-size: 0.875rem;
+}
+
+.c-md > .c-md-heading:first-child {
+    margin-top: 0;
+}
+
+.c-md .c-md-list {
+    padding-left: 1.375rem;
+    list-style: disc;
+}
+
+.c-md ol.c-md-list {
+    list-style: decimal;
+}
+
+.c-md .c-md-list li {
+    margin-bottom: 0.25rem;
+    padding-left: 0.125rem;
+}
+
+.c-md .c-md-list li::marker {
+    color: var(--ants-clay-deep, #ae5f46);
+}
+
+/* A nested list sits tight under its parent item. */
+.c-md .c-md-list .c-md-list {
+    margin: 0.25rem 0 0;
+    list-style: circle;
+}
+
+.c-md a {
+    color: var(--ants-clay-dark, #8a4a35);
+    text-decoration: underline;
+    text-decoration-color: var(--ants-clay, #d97757);
+    text-underline-offset: 0.15em;
+}
+
+.c-md a:hover {
+    color: var(--ants-clay-deep, #ae5f46);
+}
+
+/* Code keeps the reading face and is set apart by its tint: record Ids and field names, not programs. */
+.c-md .c-md-code,
+.c-md .c-md-pre {
+    font-family: inherit;
+    font-size: inherit;
+    background: var(--ants-oat, #f0eee7);
+}
+
+.c-md .c-md-code {
+    padding: 0.0625rem 0.3125rem;
+    border-radius: 0.3125rem;
+}
+
+.c-md .c-md-pre {
+    padding: 0.875rem 1rem;
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    line-height: 1.5;
+    white-space: pre;
+}
+
+/* A table is part of the answer, so its cells keep the body face; only the column
+   headings use the display face. Wide ones scroll sideways inside the reply instead of
+   squeezing their columns. */
+.c-md .c-md-table {
+    overflow-x: auto;
+    border: 1px solid var(--ants-line, #e8e6dc);
+    border-radius: 0.875rem;
+    background: #fff;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.c-md .c-md-table table {
+    border: 0;
+}
+
+.c-md .c-md-table th,
+.c-md .c-md-table td {
+    padding: 0.625rem 0.875rem;
+}
+
+.c-md .c-md-table th {
+    background: var(--ants-oat, #f0eee7);
+    color: var(--ants-muted, #66645e);
+    font-family: var(--ants-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-md .c-md-table td {
+    font-variant-numeric: tabular-nums;
+}
+
+.c-md .c-md-quote {
+    padding-left: 0.875rem;
+    border-left: 3px solid var(--ants-clay, #d97757);
+    color: var(--ants-muted, #66645e);
+    font-style: italic;
+}
+
+.c-md .c-md-rule {
+    margin: 1.25rem 0;
+    border: 0;
+    border-top: 1px solid var(--ants-line, #e8e6dc);
+}

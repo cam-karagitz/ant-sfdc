@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies carry a Water Backup endorsement?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status__c, COUNT_DISTINCT(Policy__c) n, COUNT(Id) c FROM Policy_Endorsement__c WHERE Name LIKE '%Water Backup%' GROUP BY Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":33,\"n\":33,\"Status__c\":\"Active\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"**33 policies** have an active Water Backup endorsement, one endorsement per policy. I matched on endorsement names containing \\\"Water Backup\\\".\\n\\n?> Which policies have Water Backup?\\n?> Water Backup by line of business\\n?> Total premium for Water Backup\",\n  \"tiles\": [\n    {\n      \"label\": \"Policies with Water Backup\",\n      \"value\": \"33\",\n      \"note\": \"all endorsements Active\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Policies with Water Backup\",\n        \"value\": \"33\",\n        \"note\": \"all endorsements Active\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which policies have Water Backup?\",\n      \"Water Backup by line of business\",\n      \"Total premium for Water Backup\"\n    ]\n  }\n]"
+  }
+]

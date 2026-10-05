@@ -1,0 +1,469 @@
+/**
+ * @description The changes Claude can prepare in the chat: a follow-up task, a file note, and a
+ * status change on a claim or service request. Claude only ever proposes one. A proposal is checked
+ * here and shown to the user as a card; nothing is written until they press Confirm, which calls
+ * confirm(), and that write runs as the user.
+ */
+public with sharing class AntsuranceClaudeActions {
+    public static final String TASK_TOOL = 'propose_task';
+    public static final String NOTE_TOOL = 'propose_file_note';
+    public static final String STATUS_TOOL = 'propose_case_status';
+
+    private static final String KIND_TASK = 'task';
+    private static final String KIND_NOTE = 'file_note';
+    private static final String KIND_STATUS = 'case_status';
+    private static final Integer MAX_SUBJECT = 255;
+    private static final Integer MAX_TASK_NOTES = 2000;
+    private static final Integer MAX_NOTE_BODY = 32000;
+    private static final List<String> PRIORITIES = new List<String>{ 'High', 'Normal', 'Low' };
+    @TestVisible
+    private static final List<String> NOTE_TYPES = new List<String>{ 'Contact', 'Investigation', 'Coverage', 'Reserve', 'Payment', 'Underwriting', 'Service', 'General' };
+    // The statuses each kind of case moves through, as the chat's data model note describes them.
+    @TestVisible
+    private static final Map<String, List<String>> STATUSES = new Map<String, List<String>>{
+        'Claim' => new List<String>{ 'New', 'Under Investigation', 'Appraisal', 'Approved', 'Payment Issued', 'Closed', 'Denied' },
+        'Policy_Service' => new List<String>{ 'New', 'In Progress', 'Waiting on Customer', 'Closed' }
+    };
+    // What a task may be related to, and the words the card uses for each.
+    private static final Map<String, String> TASK_PARENTS = new Map<String, String>{
+        'Case' => 'case',
+        'Policy__c' => 'policy',
+        'Opportunity' => 'policy sale',
+        'Quote' => 'quote',
+        'Account' => 'customer'
+    };
+    private static final Map<String, String> NOTE_PARENT_FIELDS = new Map<String, String>{ 'Case' => 'Case__c', 'Policy__c' => 'Policy__c', 'Account' => 'Account__c' };
+
+    private static final String NOT_WRITTEN = 'This only shows the user a card with Confirm and Cancel buttons. Nothing is written unless they press Confirm, so never say it has been done.';
+    private static final String INVALID_ACTION = 'That action could not be read. Ask Claude to propose it again.';
+    private static final String NO_ACCESS = 'You do not have access to make that change.';
+
+    /**
+     * @description A change Claude prepared, ready to show as a card.
+     */
+    public class Proposal {
+        /** The tool call this answers; the chat uses it as the card's key. */
+        @AuraEnabled
+        public String id;
+        @AuraEnabled
+        public String kind;
+        @AuraEnabled
+        public String title;
+        @AuraEnabled
+        public String confirmLabel;
+        @AuraEnabled
+        public List<Detail> details = new List<Detail>();
+        /** The note text, or a task's comments. May use Markdown. */
+        @AuraEnabled
+        public String body;
+        /** What confirm() needs to make the change, kept by the chat and sent back unchanged. */
+        @AuraEnabled
+        public String payloadJson;
+    }
+
+    /**
+     * @description One labelled line on a proposal card. recordId makes the value a link.
+     */
+    public class Detail {
+        @AuraEnabled
+        public String label;
+        @AuraEnabled
+        public String value;
+        @AuraEnabled
+        public Id recordId;
+
+        Detail(String label, String value, Id recordId) {
+            this.label = label;
+            this.value = value;
+            this.recordId = recordId;
+        }
+    }
+
+    /**
+     * @description What a confirmed change did.
+     */
+    public class Outcome {
+        /** The record to open from the result card: the new task, or the file the note or status change is on. */
+        @AuraEnabled
+        public Id recordId;
+        @AuraEnabled
+        public String message;
+        @AuraEnabled
+        public String linkLabel;
+        /** Records whose pages should refresh. */
+        @AuraEnabled
+        public List<Id> touchedIds = new List<Id>();
+    }
+
+    /** A record the proposal points at, as the user sees it. */
+    private class Target {
+        Id recordId;
+        String objectName;
+        String name;
+        String kindLabel;
+        String status;
+        String recordType;
+    }
+
+    /**
+     * @description The tool definitions offered to Claude alongside the query tool.
+     * @return Three client tools, each with a strict input schema
+     */
+    public static List<Object> toolDefinitions() {
+        return new List<Object>{
+            tool(
+                TASK_TOOL,
+                'Propose a follow-up task for the user: a reminder or to-do with a due date, related to a claim, service request, policy, policy sale, quote or customer. ' +
+                'Use it when they ask to be reminded, to follow up, or to add a task. The task is assigned to the user. ' + NOT_WRITTEN,
+                new Map<String, Object>{
+                    'subject' => text('What to do, as a short imperative line, for example: Call Maria Reyes about the contractor estimate'),
+                    'due_date' => text('The due date as YYYY-MM-DD. Work it out from today\'s date when they say tomorrow, Friday or in three days.'),
+                    'related_record_id' => text('The 18-character Id of the claim, service request, policy, policy sale, quote or customer account the task is about. Use the open record when they say this or here.'),
+                    'contact_id' => text(
+                        'The Id of the contact the task is about. Set it whenever the task is to call, write to, meet or send something to a person, named or not (the customer, him, her): ' +
+                        'take the Id from the open record\'s facts when that person is there, otherwise query for it. Leave it out only when the task involves no person.'
+                    ),
+                    'priority' => choice(PRIORITIES, 'Normal unless they say it is urgent or can wait.'),
+                    'notes' => text('Optional comments for the task: context the user gave that does not fit the subject.')
+                },
+                new List<String>{ 'subject', 'due_date', 'related_record_id', 'priority' }
+            ),
+            tool(
+                NOTE_TOOL,
+                'Propose a dated note on the file of a claim, service request, policy or customer. Use it when the user asks to add, log or record a note. ' +
+                'Write the note as the user would, in their words, without adding facts they did not give. ' + NOT_WRITTEN,
+                new Map<String, Object>{
+                    'record_id' => text('The 18-character Id of the claim or service request (Case), policy or customer account the note belongs on.'),
+                    'note_type' => choice(
+                        NOTE_TYPES,
+                        'Contact for a conversation with someone, Investigation for findings on a claim, Coverage for a coverage question, Reserve and Payment for money on a claim, ' +
+                        'Underwriting for risk details on a policy, Service for a policy change, General otherwise.'
+                    ),
+                    'body' => text('The note text. Plain sentences; Markdown is allowed.')
+                },
+                new List<String>{ 'record_id', 'note_type', 'body' }
+            ),
+            tool(
+                STATUS_TOOL,
+                'Propose moving a claim or service request to another status. Use it when the user asks to move, mark, close or reopen one. ' +
+                'A claim moves through New, Under Investigation, Appraisal, Approved, Payment Issued, then Closed or Denied. ' +
+                'A service request moves through New, In Progress, Waiting on Customer, Closed. ' + NOT_WRITTEN,
+                new Map<String, Object>{
+                    'case_id' => text('The 18-character Id of the claim or service request (Case).'),
+                    'new_status' => choice(allStatuses(), 'The status to move it to, valid for that kind of case.')
+                },
+                new List<String>{ 'case_id', 'new_status' }
+            )
+        };
+    }
+
+    /**
+     * @description Whether a tool call is one of the proposals above.
+     * @param toolName The tool Claude called
+     * @return True for the three propose tools
+     */
+    public static Boolean isActionTool(String toolName) {
+        return toolName == TASK_TOOL || toolName == NOTE_TOOL || toolName == STATUS_TOOL;
+    }
+
+    /**
+     * @description Checks a proposal against the org and builds the card for it. Writes nothing.
+     * @param toolName The propose tool Claude called
+     * @param toolUseId The tool call's id
+     * @param input The tool call's input
+     * @return The card to show
+     * @throws IllegalArgumentException with a message for Claude when the proposal cannot be made as given
+     */
+    public static Proposal propose(String toolName, String toolUseId, Map<String, Object> input) {
+        Proposal proposal;
+        if (toolName == TASK_TOOL) {
+            proposal = proposeTask(input);
+        } else if (toolName == NOTE_TOOL) {
+            proposal = proposeNote(input);
+        } else if (toolName == STATUS_TOOL) {
+            proposal = proposeStatus(input);
+        } else {
+            throw new IllegalArgumentException('There is no such tool.');
+        }
+        proposal.id = toolUseId;
+        return proposal;
+    }
+
+    /**
+     * @description Makes a change the user confirmed on a proposal card. Runs as the user, so their
+     * object, field and record access and every validation rule apply.
+     * @param payloadJson The payloadJson of the proposal that was confirmed
+     * @return What was created or changed
+     * @throws AuraHandledException when the payload is not a known action or the write is refused
+     */
+    @AuraEnabled
+    public static Outcome confirm(String payloadJson) {
+        Map<String, Object> payload;
+        try {
+            payload = (Map<String, Object>) JSON.deserializeUntyped(payloadJson);
+        } catch (Exception e) {
+            throw handled(INVALID_ACTION);
+        }
+        String kind = payload == null ? null : (String) payload.get('kind');
+        try {
+            if (kind == KIND_TASK) {
+                return createTask(payload);
+            }
+            if (kind == KIND_NOTE) {
+                return createNote(payload);
+            }
+            if (kind == KIND_STATUS) {
+                return changeStatus(payload);
+            }
+        } catch (IllegalArgumentException e) {
+            throw handled(e.getMessage());
+        } catch (DmlException e) {
+            throw handled('Salesforce did not save this: ' + e.getDmlMessage(0));
+        } catch (QueryException e) {
+            throw handled(NO_ACCESS);
+        } catch (System.NoAccessException e) {
+            throw handled(NO_ACCESS);
+        }
+        throw handled(INVALID_ACTION);
+    }
+
+    private static Proposal proposeTask(Map<String, Object> input) {
+        String subject = required(input, 'subject', MAX_SUBJECT);
+        Date dueDate = parseDate((String) input.get('due_date'));
+        Target parent = findTarget((String) input.get('related_record_id'), TASK_PARENTS.keySet(), 'A task can be related to a claim, service request, policy, policy sale, quote or customer account.');
+        Target contact = String.isBlank((String) input.get('contact_id')) ? null : findTarget((String) input.get('contact_id'), new Set<String>{ 'Contact' }, 'contact_id must be the Id of a Contact.');
+        String priority = PRIORITIES.contains((String) input.get('priority')) ? (String) input.get('priority') : 'Normal';
+        String notes = String.isBlank((String) input.get('notes')) ? null : ((String) input.get('notes')).trim().abbreviate(MAX_TASK_NOTES);
+
+        Proposal proposal = new Proposal();
+        proposal.kind = KIND_TASK;
+        proposal.title = 'Create a follow-up task';
+        proposal.confirmLabel = 'Create task';
+        proposal.details.add(new Detail('Subject', subject, null));
+        proposal.details.add(new Detail('Due', formatDate(dueDate), null));
+        proposal.details.add(new Detail('Related to', parent.name, parent.recordId));
+        if (contact != null) {
+            proposal.details.add(new Detail('Contact', contact.name, contact.recordId));
+        }
+        proposal.details.add(new Detail('Priority', priority, null));
+        proposal.details.add(new Detail('Assigned to', UserInfo.getName(), null));
+        proposal.body = notes;
+        proposal.payloadJson = JSON.serialize(
+            new Map<String, Object>{
+                'kind' => KIND_TASK,
+                'subject' => subject,
+                'dueDate' => String.valueOf(dueDate),
+                'relatedId' => parent.recordId,
+                'contactId' => contact?.recordId,
+                'priority' => priority,
+                'notes' => notes
+            }
+        );
+        return proposal;
+    }
+
+    private static Proposal proposeNote(Map<String, Object> input) {
+        String body = required(input, 'body', MAX_NOTE_BODY);
+        Target parent = findTarget((String) input.get('record_id'), NOTE_PARENT_FIELDS.keySet(), 'A file note can be added to a claim, service request, policy or customer account.');
+        String noteType = NOTE_TYPES.contains((String) input.get('note_type')) ? (String) input.get('note_type') : 'General';
+
+        Proposal proposal = new Proposal();
+        proposal.kind = KIND_NOTE;
+        proposal.title = 'Add a file note';
+        proposal.confirmLabel = 'Add note';
+        proposal.details.add(new Detail('On', parent.name, parent.recordId));
+        proposal.details.add(new Detail('Type', noteType, null));
+        proposal.body = body;
+        proposal.payloadJson = JSON.serialize(new Map<String, Object>{ 'kind' => KIND_NOTE, 'recordId' => parent.recordId, 'noteType' => noteType, 'body' => body });
+        return proposal;
+    }
+
+    private static Proposal proposeStatus(Map<String, Object> input) {
+        Target target = findTarget((String) input.get('case_id'), new Set<String>{ 'Case' }, 'case_id must be the Id of a claim or service request.');
+        String status = (String) input.get('new_status');
+        List<String> allowed = STATUSES.get(target.recordType);
+        if (allowed == null) {
+            throw new IllegalArgumentException('Only claims and service requests can be moved from the chat.');
+        }
+        if (!allowed.contains(status)) {
+            throw new IllegalArgumentException('A ' + target.kindLabel + ' cannot be ' + status + '. Its statuses are: ' + String.join(allowed, ', ') + '.');
+        }
+        if (status == target.status) {
+            throw new IllegalArgumentException('That ' + target.kindLabel + ' is already ' + status + '. Tell the user; there is nothing to change.');
+        }
+
+        Proposal proposal = new Proposal();
+        proposal.kind = KIND_STATUS;
+        proposal.title = 'Change the ' + target.kindLabel + ' status';
+        proposal.confirmLabel = 'Change status';
+        proposal.details.add(new Detail(target.kindLabel.capitalize(), target.name, target.recordId));
+        proposal.details.add(new Detail('From', target.status, null));
+        proposal.details.add(new Detail('To', status, null));
+        proposal.payloadJson = JSON.serialize(new Map<String, Object>{ 'kind' => KIND_STATUS, 'caseId' => target.recordId, 'status' => status, 'fromStatus' => target.status });
+        return proposal;
+    }
+
+    private static Outcome createTask(Map<String, Object> payload) {
+        Target parent = findTarget((String) payload.get('relatedId'), TASK_PARENTS.keySet(), INVALID_ACTION);
+        Task task = new Task(
+            Subject = required(payload, 'subject', MAX_SUBJECT),
+            ActivityDate = parseDate((String) payload.get('dueDate')),
+            WhatId = parent.recordId,
+            Priority = PRIORITIES.contains((String) payload.get('priority')) ? (String) payload.get('priority') : 'Normal',
+            Description = (String) payload.get('notes'),
+            OwnerId = UserInfo.getUserId()
+        );
+        if (!String.isBlank((String) payload.get('contactId'))) {
+            task.WhoId = findTarget((String) payload.get('contactId'), new Set<String>{ 'Contact' }, INVALID_ACTION).recordId;
+        }
+        insert as user task;
+
+        Outcome outcome = new Outcome();
+        outcome.recordId = task.Id;
+        outcome.message = 'Task created: ' + task.Subject + ', due ' + formatDate(task.ActivityDate) + '.';
+        outcome.linkLabel = 'Open task';
+        outcome.touchedIds.add(parent.recordId);
+        return outcome;
+    }
+
+    private static Outcome createNote(Map<String, Object> payload) {
+        Target parent = findTarget((String) payload.get('recordId'), NOTE_PARENT_FIELDS.keySet(), INVALID_ACTION);
+        File_Note__c note = new File_Note__c(
+            Note_Type__c = NOTE_TYPES.contains((String) payload.get('noteType')) ? (String) payload.get('noteType') : 'General',
+            Body__c = required(payload, 'body', MAX_NOTE_BODY),
+            Note_Date__c = Datetime.now()
+        );
+        note.put(NOTE_PARENT_FIELDS.get(parent.objectName), parent.recordId);
+        // A note on a case or policy also belongs to the records above it, as in the file notes timeline.
+        if (parent.objectName == 'Case') {
+            Case parentCase = [SELECT Policy__c, AccountId FROM Case WHERE Id = :parent.recordId WITH USER_MODE];
+            note.Policy__c = parentCase.Policy__c;
+            note.Account__c = parentCase.AccountId;
+        } else if (parent.objectName == 'Policy__c') {
+            note.Account__c = [SELECT Account__c FROM Policy__c WHERE Id = :parent.recordId WITH USER_MODE].Account__c;
+        }
+        insert as user note;
+
+        Outcome outcome = new Outcome();
+        outcome.recordId = parent.recordId;
+        outcome.message = note.Note_Type__c + ' note added to ' + parent.name + '.';
+        outcome.linkLabel = 'Open ' + parent.kindLabel;
+        outcome.touchedIds.add(parent.recordId);
+        return outcome;
+    }
+
+    private static Outcome changeStatus(Map<String, Object> payload) {
+        Target target = findTarget((String) payload.get('caseId'), new Set<String>{ 'Case' }, INVALID_ACTION);
+        String status = (String) payload.get('status');
+        List<String> allowed = STATUSES.get(target.recordType);
+        if (allowed == null || !allowed.contains(status)) {
+            throw new IllegalArgumentException(INVALID_ACTION);
+        }
+        update as user new Case(Id = target.recordId, Status = status);
+
+        Outcome outcome = new Outcome();
+        outcome.recordId = target.recordId;
+        outcome.message = target.name + ' moved from ' + target.status + ' to ' + status + '.';
+        outcome.linkLabel = 'Open ' + target.kindLabel;
+        outcome.touchedIds.add(target.recordId);
+        return outcome;
+    }
+
+    /** Reads the record a proposal points at as the user, or explains why it cannot be used. */
+    private static Target findTarget(String rawId, Set<String> allowedObjects, String wrongKind) {
+        Id recordId;
+        try {
+            recordId = Id.valueOf(rawId);
+        } catch (Exception e) {
+            throw new IllegalArgumentException('"' + rawId + '" is not a record Id. Query for the record and use its Id.');
+        }
+        Target target = new Target();
+        target.recordId = recordId;
+        target.objectName = recordId.getSObjectType().getDescribe().getName();
+        if (!allowedObjects.contains(target.objectName)) {
+            throw new IllegalArgumentException(wrongKind);
+        }
+        String fields = target.objectName == 'Case' ? 'CaseNumber, Subject, Status, RecordType.DeveloperName, RecordType.Name' : 'Name';
+        List<SObject> records;
+        try {
+            records = Database.queryWithBinds('SELECT ' + fields + ' FROM ' + target.objectName + ' WHERE Id = :recordId LIMIT 1', new Map<String, Object>{ 'recordId' => recordId }, AccessLevel.USER_MODE);
+        } catch (QueryException e) {
+            records = new List<SObject>();
+        }
+        if (records.isEmpty()) {
+            throw new IllegalArgumentException('No record with Id ' + recordId + ' is visible to this user. Query for the record and use its Id.');
+        }
+        SObject record = records[0];
+        if (target.objectName == 'Case') {
+            SObject recordType = record.getSObject('RecordType');
+            target.recordType = recordType == null ? null : (String) recordType.get('DeveloperName');
+            target.kindLabel = target.recordType == 'Claim' ? 'claim' : target.recordType == 'Policy_Service' ? 'service request' : 'case';
+            target.status = (String) record.get('Status');
+            target.name = target.kindLabel.capitalize() + ' ' + record.get('CaseNumber') + (record.get('Subject') == null ? '' : ': ' + record.get('Subject'));
+        } else {
+            target.kindLabel = TASK_PARENTS.containsKey(target.objectName) ? TASK_PARENTS.get(target.objectName) : 'contact';
+            target.name = (String) record.get('Name');
+        }
+        return target;
+    }
+
+    private static String required(Map<String, Object> input, String key, Integer maxLength) {
+        String value = (String) input.get(key);
+        if (String.isBlank(value)) {
+            throw new IllegalArgumentException(key + ' is required.');
+        }
+        if (value.length() > maxLength) {
+            throw new IllegalArgumentException(key + ' is too long. Keep it under ' + maxLength + ' characters.');
+        }
+        return value.trim();
+    }
+
+    private static Date parseDate(String value) {
+        try {
+            return Date.valueOf(value);
+        } catch (Exception e) {
+            throw new IllegalArgumentException('The due date must be written as YYYY-MM-DD.');
+        }
+    }
+
+    /** A date the way the card shows it, for example Mon 5 Oct 2026. */
+    private static String formatDate(Date value) {
+        return Datetime.newInstance(value, Time.newInstance(12, 0, 0, 0)).format('EEE d MMM yyyy');
+    }
+
+    private static List<String> allStatuses() {
+        // Apex names ignore case, so this list cannot be called statuses beside STATUSES.
+        List<String> everyStatus = new List<String>();
+        for (String recordType : STATUSES.keySet()) {
+            for (String status : STATUSES.get(recordType)) {
+                if (!everyStatus.contains(status)) {
+                    everyStatus.add(status);
+                }
+            }
+        }
+        return everyStatus;
+    }
+
+    private static Map<String, Object> tool(String name, String description, Map<String, Object> properties, List<String> requiredKeys) {
+        return new Map<String, Object>{
+            'name' => name,
+            'description' => description,
+            'strict' => true,
+            'input_schema' => new Map<String, Object>{ 'type' => 'object', 'properties' => properties, 'required' => requiredKeys, 'additionalProperties' => false }
+        };
+    }
+
+    private static Map<String, Object> text(String description) {
+        return new Map<String, Object>{ 'type' => 'string', 'description' => description };
+    }
+
+    private static Map<String, Object> choice(List<String> options, String description) {
+        return new Map<String, Object>{ 'type' => 'string', 'enum' => options, 'description' => description };
+    }
+
+    private static AuraHandledException handled(String message) {
+        AuraHandledException error = new AuraHandledException(message);
+        error.setMessage(message);
+        return error;
+    }
+}

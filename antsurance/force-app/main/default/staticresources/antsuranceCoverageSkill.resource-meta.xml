@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>text/plain</contentType>
+    <description>The claims coverage agent's skill, as uploaded to Claude Managed Agents by the setup step. A copy of skills/antsurance-coverage/SKILL.md; keep the two the same.</description>
+</StaticResource>

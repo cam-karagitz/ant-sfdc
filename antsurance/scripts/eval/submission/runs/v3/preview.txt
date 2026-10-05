@@ -1,0 +1,11 @@
+On the sale: sale, Workers Compensation for Lakeshore Dental Group, can read true, can quote true, files 0, sample documents 3
+Sample: Broker's email (43 KB)
+Sample: Application (118 KB)
+Sample: Loss run (105 KB)
+On a lead: lead, Workers Compensation for Bright Path Childcare, can read true, can quote false, sample documents 0
+As read: 11 settled, 1 disputed, 1 not found
+Handed to the configurator: {"plan":"guaranteed","employersLiability":"1000000","returnToWork":"false","safetyProgram":"true","experienceMod":"average","ownersIncluded":"true","payroll":1530000,"employees":24,"classGroup":"healthcare","state":"IL","description":"General and pediatric dentistry. Three offices in Chicago, Illinois."}
+Priced by the configurator: $30,529 a year, limit $1,000,000, referrals ()
+After the person settles claims (four or more), drug-free (no) and corrects employees to 25: 13 settled, 0 disputed, 0 not found
+Handed to the configurator: {"plan":"guaranteed","employersLiability":"1000000","drugFree":"false","returnToWork":"false","safetyProgram":"true","priorClaims":"4plus","experienceMod":"average","ownersIncluded":"true","payroll":1530000,"employees":25,"classGroup":"healthcare","state":"IL","description":"General and pediatric dentistry. Three offices in Chicago, Illinois."}
+Priced by the configurator: $38,161 a year, referrals (Four or more claims in three years)

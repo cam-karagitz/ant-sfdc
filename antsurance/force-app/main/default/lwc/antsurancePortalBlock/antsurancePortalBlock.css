@@ -1,0 +1,816 @@
+@import 'c/antsurancePortalStyles';
+
+/* The blocks of an answer. Each has one idea of its own, so no two read as the same card:
+   choices are separate buttons with a ring to fill; the policy list is a ruled ledger; a price is a receipt
+   with a heavy rule over its total; a renewal is a calendar leaf; a claim is a bar and a two-step timeline; coverage is a checked list;
+   a note is an amber slip; text is plain words. A figure never wraps and always sits at the right. */
+:host {
+    display: block;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+}
+
+/* ---------------------------------------------------------------- choices */
+.c-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.c-choice {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #d9d5c8;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--p-fast), border-color var(--p-fast);
+}
+
+.c-choice__ring {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid var(--p-clay);
+    border-radius: 50%;
+    box-sizing: border-box;
+    transition: border-width var(--p-fast);
+}
+
+.c-choice__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-choice__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
+}
+
+.c-choice__label {
+    font-weight: 600;
+    text-wrap: pretty;
+}
+
+.c-choice__tag {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-choice__fact {
+    font-size: 0.875rem;
+    color: var(--p-muted);
+    text-wrap: pretty;
+}
+
+.c-choice:not([disabled]):hover {
+    border-color: var(--p-clay);
+    background: var(--p-clay-tint);
+}
+
+.c-choice:not([disabled]):hover .c-choice__ring {
+    border-width: 0.375rem;
+}
+
+.c-choice:not([disabled]):active {
+    background: #f3ddd5;
+}
+
+.c-choice:focus-visible,
+.c-ledger__row:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+/* Once the conversation has moved on the options stay readable and can no longer be pressed. */
+.c-choice[disabled] {
+    border-color: var(--p-line);
+    background: var(--p-ivory);
+    cursor: default;
+}
+
+.c-choice[disabled] .c-choice__ring {
+    border-color: #cfccc0;
+}
+
+/* ---------------------------------------------------------------- policies: a ledger */
+.c-ledger {
+    border: 1px solid var(--p-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-ledger__rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-ledger__rows > li + li {
+    border-top: 1px solid var(--p-line);
+}
+
+.c-ledger__row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.625rem;
+    border: 0;
+    background: none;
+    color: var(--p-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--p-fast);
+}
+
+.c-ledger__row:hover {
+    background: var(--p-clay-tint);
+}
+
+.c-ledger__row:active {
+    background: #f3ddd5;
+}
+
+.c-ledger__row:focus-visible {
+    outline-offset: -2px;
+}
+
+.c-ledger__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-ledger__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
+}
+
+.c-ledger__label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-ledger__tag,
+.c-ledger__fact,
+.c-ledger__per,
+.c-ledger__duesub {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+/* How it is billed, then when it renews, with a dot between them. Where both do not fit on a line the second
+   goes under the first, whole. Every fact carries its dot in its own left padding, and the row is pulled left
+   by that much inside a box that clips, so whichever fact starts a line shows no dot. */
+.c-ledger__facts {
+    overflow: hidden;
+}
+
+.c-ledger__factrow {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.6875rem;
+}
+
+.c-ledger__fact {
+    position: relative;
+    padding-left: 0.6875rem;
+}
+
+.c-ledger__fact::before {
+    content: '\00B7';
+    position: absolute;
+    left: 0.25rem;
+}
+
+.c-ledger__figure,
+.c-ledger__duefigure {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.c-ledger__amount,
+.c-ledger__sum,
+.c-ledger__dueamount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.c-ledger__total,
+.c-ledger__due {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.5rem 0.625rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-ledger__total {
+    border-top: 2px solid var(--p-ink);
+    font-weight: 600;
+}
+
+/* What is due next closes the ledger, on the page's oat so it reads as the answer to "when". */
+.c-ledger__due {
+    background: var(--p-oat);
+}
+
+.c-ledger__duemain {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-ledger__duelabel {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- price: a receipt */
+.c-bill {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--p-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-bill__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: var(--p-ivory);
+    border-bottom: 1px dashed #cfccc0;
+}
+
+.c-bill__title {
+    font-family: var(--p-display);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-bill__tag {
+    margin-left: auto;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-bill__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.75rem 0.75rem 0.625rem;
+    list-style: none;
+}
+
+.c-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.c-line__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-line__label {
+    text-wrap: pretty;
+}
+
+.c-line__sub {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-line__figure {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* A discount is the one line in olive: money that stays with the customer. */
+.c-line__figure_saving {
+    color: var(--p-olive-ink);
+    font-weight: 600;
+}
+
+.c-bill__total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0 0.75rem;
+    padding: 0.5rem 0 0.625rem;
+    border-top: 2px solid var(--p-ink);
+}
+
+.c-bill__totallabel {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-bill__sum {
+    font-family: var(--p-display);
+    font-weight: 600;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.c-bill__facts,
+.c-renew__facts,
+.c-status__facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0.625rem 0.75rem;
+    background: var(--p-ivory);
+    border-top: 1px solid var(--p-line);
+}
+
+.c-bill__fact,
+.c-renew__fact,
+.c-status__fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.c-bill__fact dt,
+.c-renew__fact dt,
+.c-status__fact dt {
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-bill__fact dd,
+.c-renew__fact dd,
+.c-status__fact dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.c-bill__note {
+    margin: 0;
+    padding: 0.625rem 0.75rem 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    text-wrap: pretty;
+}
+
+.c-bill__open,
+.c-renew__open,
+.c-status__open,
+.c-cover__open,
+.c-slip__open {
+    align-self: flex-start;
+    font-size: 0.875rem;
+}
+
+.c-bill__open {
+    margin: 0.5rem 0.75rem 0.75rem;
+}
+
+/* ---------------------------------------------------------------- renewal: a calendar leaf */
+.c-renew {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--p-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-renew__top {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.75rem;
+}
+
+/* The date as a leaf torn from a calendar: the month on a clay band, the day large, the year under it. */
+.c-renew__leaf {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 3.75rem;
+    border: 1px solid #d9d5c8;
+    border-radius: 0.625rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-renew__month {
+    align-self: stretch;
+    padding: 0.125rem 0;
+    background: var(--p-clay);
+    color: var(--p-ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.c-renew__day {
+    font-family: var(--p-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+
+.c-renew__year {
+    padding-bottom: 0.1875rem;
+    font-size: 0.75rem;
+    color: var(--p-muted);
+    line-height: 1.1;
+}
+
+.c-renew__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-renew__name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    margin: 0;
+}
+
+.c-renew__title {
+    font-family: var(--p-display);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-renew__tag,
+.c-renew__left {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-renew__when,
+.c-renew__left {
+    margin: 0;
+}
+
+.c-renew__when {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-renew__note {
+    margin: 0;
+    padding: 0.625rem 0.75rem 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    text-wrap: pretty;
+}
+
+.c-renew__open {
+    margin: 0.5rem 0.75rem 0.75rem;
+}
+
+/* ---------------------------------------------------------------- claim: a bar and a two-step timeline */
+.c-status {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--p-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.c-status__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0.75rem 0.625rem;
+}
+
+.c-status__name {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-status__tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-clay-dark);
+    white-space: nowrap;
+}
+
+.c-status__title {
+    font-family: var(--p-display);
+    font-weight: 600;
+    text-wrap: balance;
+}
+
+.c-status__head .c-chip {
+    flex: none;
+    margin-top: 0.125rem;
+}
+
+.c-progress {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 0.25rem;
+    margin: 0 0.75rem;
+}
+
+.c-progress__part {
+    height: 0.375rem;
+    border-radius: 999px;
+    background: var(--p-line);
+}
+
+.c-progress__part_done {
+    background: var(--p-olive-ink);
+}
+
+.c-progress__part_current {
+    background: var(--p-clay);
+}
+
+.c-progress__label {
+    margin: 0.25rem 0.75rem 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+/* What happened last, then what happens next: two points on one line down the left. */
+.c-status__events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin: 0.75rem 0.75rem 0.75rem 1.25rem;
+    padding: 0 0 0 1rem;
+    border-left: 2px solid var(--p-line);
+    list-style: none;
+}
+
+.c-status__event {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.c-status__event::before {
+    content: '';
+    position: absolute;
+    top: 0.3125rem;
+    left: calc(-1rem - 1px - 0.3125rem);
+    width: 0.625rem;
+    height: 0.625rem;
+    border: 2px solid var(--p-clay);
+    border-radius: 50%;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.c-status__event_done::before {
+    border-color: var(--p-olive-ink);
+    background: var(--p-olive-ink);
+}
+
+.c-status__when {
+    font-weight: 600;
+}
+
+.c-status__what {
+    color: var(--p-ink);
+    text-wrap: pretty;
+}
+
+.c-status__open {
+    margin: 0.625rem 0.75rem 0.75rem;
+}
+
+/* ---------------------------------------------------------------- coverage: a checked list */
+.c-cover {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.c-cover__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding-bottom: 0.375rem;
+    border-bottom: 2px solid var(--p-ink);
+}
+
+.c-cover__title {
+    font-family: var(--p-display);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-cover__tag {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-cover__rows {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-cover__row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.4375rem 0;
+}
+
+.c-cover__row + .c-cover__row {
+    border-top: 1px solid var(--p-line);
+}
+
+.c-cover__check {
+    flex: none;
+    --slds-c-icon-color-foreground-default: var(--p-olive-ink);
+}
+
+.c-cover__main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-cover__label {
+    font-weight: 600;
+    text-wrap: pretty;
+}
+
+.c-cover__sub,
+.c-cover__per,
+.c-cover__note {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-cover__sub {
+    text-wrap: pretty;
+}
+
+.c-cover__figure {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.c-cover__amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.c-cover__per {
+    white-space: nowrap;
+}
+
+.c-cover__note {
+    margin: 0;
+}
+
+/* ---------------------------------------------------------------- note: an amber slip */
+.c-slip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.625rem 0.75rem 0.75rem 0.875rem;
+    border-left: 3px solid var(--p-amber-ink);
+    border-radius: 0.25rem 0.75rem 0.75rem 0.25rem;
+    background: var(--p-amber-tint);
+}
+
+.c-slip__kind {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-amber-ink);
+}
+
+.c-slip__title {
+    margin: 0;
+    font-weight: 600;
+    text-wrap: pretty;
+}
+
+.c-slip__facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--p-ink);
+}
+
+.c-slip__fact {
+    white-space: nowrap;
+}
+
+.c-slip__facts .c-chip {
+    background: #fff;
+}
+
+.c-slip__open {
+    margin-top: 0.375rem;
+}
+
+/* ---------------------------------------------------------------- text: words of Claude's own */
+.c-words {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Lines fill the measure; the script ties the end of each piece so none finishes on a stranded word or two. */
+.c-words__text,
+.c-words__list li {
+    margin: 0;
+    text-wrap: pretty;
+}
+
+.c-words__strong {
+    font-weight: 600;
+}
+
+.c-words__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0 0 0 1.125rem;
+    list-style: disc;
+}
+
+.c-words__list_numbered {
+    list-style: decimal;
+}
+
+.c-words__list li::marker {
+    color: var(--p-clay-deep);
+}

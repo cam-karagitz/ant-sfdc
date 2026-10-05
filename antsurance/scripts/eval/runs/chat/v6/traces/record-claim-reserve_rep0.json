@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nHow much is still reserved here?"
+  },
+  {
+    "role": "assistant",
+    "content": "**$40,000** is still reserved on this claim. The total reserve is $45,000, and the $5,000 advance for emergency drying has already been paid out of it.\n\nThe mitigation invoice and the rebuild estimate came in today. Once you review them, the reserve may need adjusting.\n\n?> Compare the estimate to the reserve\n?> Summarize the mitigation invoice\n?> Show this claim's history"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Compare the estimate to the reserve\",\n      \"Summarize the mitigation invoice\",\n      \"Show this claim's history\"\n    ]\n  }\n]"
+  }
+]

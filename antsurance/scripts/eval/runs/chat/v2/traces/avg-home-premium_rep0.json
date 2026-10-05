@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What is the average annual premium on Homeowners policies in force?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT AVG(Annual_Premium__c) avgp, COUNT(Id) n, SUM(Annual_Premium__c) total FROM Policy__c WHERE Line_of_Business__c = 'Homeowners' AND Status__c IN ('Active','Pending Renewal')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"total\":80486.0,\"n\":33,\"avgp\":2438.969696969697}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Homeowners policies in force (Active or Pending Renewal) average **$2,439** in annual premium.\n\n- **33** policies in force\n- **$80,486** total annual premium"
+  }
+]

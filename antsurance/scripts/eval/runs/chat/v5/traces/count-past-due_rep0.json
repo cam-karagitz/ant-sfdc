@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies have a past-due payment status?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT COUNT(Id) c, SUM(Annual_Premium__c) p FROM Policy__c WHERE Payment_Status__c = 'Past Due'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":12839.0,\"c\":6}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**6 policies** have a past-due payment status. Together they carry **$12,839** in annual premium."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Past-due policies\",\n      \"value\": \"6\",\n      \"note\": \"payment status Past Due\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"label\": \"Premium at risk\",\n      \"value\": \"$12,839\",\n      \"note\": \"annual premium on those policies\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Which policies are past due?\",\n    \"Are any past-due policies renewing soon?\",\n    \"Who are the past-due customers?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Past-due policies\",\n        \"value\": \"6\",\n        \"note\": \"payment status Past Due\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"label\": \"Premium at risk\",\n        \"value\": \"$12,839\",\n        \"note\": \"annual premium on those policies\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which policies are past due?\",\n      \"Are any past-due policies renewing soon?\",\n      \"Who are the past-due customers?\"\n    ]\n  }\n]"
+  }
+]

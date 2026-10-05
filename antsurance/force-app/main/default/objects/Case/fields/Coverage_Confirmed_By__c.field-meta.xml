@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coverage_Confirmed_By__c</fullName>
+    <description>The adjuster who read the coverage check and confirmed it. Cleared when coverage is checked again.</description>
+    <label>Coverage Confirmed By</label>
+    <length>80</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

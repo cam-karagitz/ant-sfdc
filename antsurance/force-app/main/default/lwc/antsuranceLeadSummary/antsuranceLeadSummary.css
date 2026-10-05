@@ -1,0 +1,175 @@
+@import 'c/antsuranceUiStyles';
+
+/* A lead at a glance: what they asked about leads, on a white card with a clay edge.
+   Brand values are fixed on purpose so the card keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-lead {
+    margin-bottom: 0.75rem;
+    padding: 1.125rem 1.25rem 1rem;
+    border: 1px solid var(--ants-line);
+    border-top: 3px solid var(--ants-clay);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-lead__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.c-lead__eyebrow {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-chip {
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-chip_hot {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-chip_warm {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+/* The coverage they want: the largest thing on the card. */
+.c-lead__want {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.625rem;
+}
+
+.c-lead__want-text {
+    min-width: 0;
+}
+
+.c-lead__interest {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.c-lead__who {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* ---------- Ways to reach them: each row is the action ---------- */
+
+.c-lead__reach {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.875rem 0 0;
+    padding: 0.625rem 0 0;
+    border-top: 1px solid var(--ants-line);
+    list-style: none;
+}
+
+.c-lead__way {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 -0.5rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.625rem;
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-lead__way:hover,
+.c-lead__way:focus-visible {
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-lead__way-value {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+}
+
+.c-lead__way-do {
+    flex: none;
+    font-size: 0.75rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-lead__none {
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-lead__foot {
+    margin: 0.625rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-lead__error {
+    margin: 0;
+    color: var(--ants-clay-dark);
+}
+
+/* ---------- Loading ---------- */
+
+.c-lead__loading {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.c-lead__bone_eyebrow {
+    width: 6rem;
+}
+
+.c-lead__bone-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.c-lead__bone_tile {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.c-lead__bone_title {
+    width: 9rem;
+}

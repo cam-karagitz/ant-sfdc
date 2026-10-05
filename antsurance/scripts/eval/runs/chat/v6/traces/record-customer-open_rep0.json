@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Okafor Household\" open (object Account, Id 001aj000041E8MYAA0). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhat is open here?"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_work_list",
+    "content": "{\n  \"say\": \"The Okafor Household has **2 open items**: a high-severity water damage claim with **$40,000** outstanding reserve, and a new request to lower the collision deductible.\\n?> Summarize the burst pipe claim\\n?> Draft an email to Amara about the deductible\\n?> Remind me to chase the rebuild estimate\",\n  \"title\": \"Open on Okafor Household\",\n  \"items\": [\n    {\n      \"title\": \"Burst pipe flooded finished basement\",\n      \"subtitle\": \"Claim 00002566, Marcus Lindahl\",\n      \"record_id\": \"500aj00003jfwTqAAI\",\n      \"amount\": \"$40,000\",\n      \"chips\": [\n        {\n          \"label\": \"High severity\",\n          \"tone\": \"alert\"\n        },\n        {\n          \"label\": \"Under Investigation\",\n          \"tone\": \"watch\"\n        },\n        {\n          \"label\": \"Reported Sep 22\",\n          \"tone\": \"neutral\"\n        }\n      ]\n    },\n    {\n      \"title\": \"Lower collision deductible to $250\",\n      \"subtitle\": \"Request 00002613, Bridget Castillo\",\n      \"record_id\": \"500aj00003jfwUbAAI\",\n      \"amount\": \"\",\n      \"chips\": [\n        {\n          \"label\": \"New\",\n          \"tone\": \"neutral\"\n        },\n        {\n          \"label\": \"Reported Oct 2\",\n          \"tone\": \"neutral\"\n        },\n        {\n          \"label\": \"Quoted +$86/yr\",\n          \"tone\": \"watch\"\n        }\n      ]\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"work_list\",\n    \"title\": \"Open on Okafor Household\",\n    \"items\": [\n      {\n        \"title\": \"Burst pipe flooded finished basement\",\n        \"subtitle\": \"Claim 00002566, Marcus Lindahl\",\n        \"recordId\": \"500aj00003jfwTqAAI\",\n        \"amount\": \"$40,000\",\n        \"chips\": [\n          {\n            \"label\": \"High severity\",\n            \"tone\": \"alert\"\n          },\n          {\n            \"label\": \"Under Investigation\",\n            \"tone\": \"watch\"\n          },\n          {\n            \"label\": \"Reported Sep 22\",\n            \"tone\": \"neutral\"\n          }\n        ]\n      },\n      {\n        \"title\": \"Lower collision deductible to $250\",\n        \"subtitle\": \"Request 00002613, Bridget Castillo\",\n        \"recordId\": \"500aj00003jfwUbAAI\",\n        \"amount\": null,\n        \"chips\": [\n          {\n            \"label\": \"New\",\n            \"tone\": \"neutral\"\n          },\n          {\n            \"label\": \"Reported Oct 2\",\n            \"tone\": \"neutral\"\n          },\n          {\n            \"label\": \"Quoted +$86/yr\",\n            \"tone\": \"watch\"\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Summarize the burst pipe claim\",\n      \"Draft an email to Amara about the deductible\",\n      \"Remind me to chase the rebuild estimate\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,269 @@
+@import 'c/antsurancePortalStyles';
+
+:host {
+    display: block;
+}
+
+/* The request beside what the customer can do about it. On a phone the actions move below. */
+.c-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.c-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--p-line);
+    border-top: 3px solid var(--p-clay);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.c-head__sent {
+    margin: 0.25rem 0 0;
+    color: var(--p-muted);
+}
+
+/* Three steps joined by a line. */
+.c-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-track__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-track__step::before {
+    content: '';
+    position: absolute;
+    top: 0.6875rem;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: var(--p-line);
+}
+
+.c-track__step:first-child::before {
+    display: none;
+}
+
+.c-track__step_done::before,
+.c-track__step_current::before {
+    background: var(--p-olive-ink);
+}
+
+.c-track__dot {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--p-line);
+    border-radius: 50%;
+    background: #fff;
+}
+
+.c-track__step_done .c-track__dot {
+    border-color: var(--p-olive-ink);
+    background: var(--p-olive-tint);
+    --slds-c-icon-color-foreground-default: var(--p-olive-ink);
+}
+
+.c-track__step_current .c-track__dot {
+    border-color: var(--p-clay);
+    background: var(--p-clay);
+}
+
+.c-track__step_done,
+.c-track__step_current {
+    color: var(--p-ink);
+}
+
+.c-track__step_current .c-track__label {
+    font-weight: 600;
+}
+
+.c-latest {
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    background: var(--p-ivory);
+}
+
+.c-latest__label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-muted);
+}
+
+.c-latest__text {
+    margin: 0.125rem 0 0;
+}
+
+.c-latest__who {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.c-sent {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.75rem 1.5rem;
+    margin: 0;
+}
+
+.c-sent dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-muted);
+}
+
+.c-sent dd {
+    margin: 0.125rem 0 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.c-asked {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.c-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-note {
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.625rem;
+    background: var(--p-oat);
+}
+
+.c-note__text {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.c-note__when {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-side {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-side__label {
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.c-side__area {
+    width: 100%;
+    min-height: 5.5rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid #c9c6ba;
+    border-radius: 0.625rem;
+    color: var(--p-ink);
+    font: inherit;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.c-side__area:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 1px;
+    border-color: var(--p-clay-deep);
+}
+
+.c-side__message {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.625rem;
+    background: var(--p-olive-tint);
+    color: var(--p-olive-ink);
+}
+
+.c-side__failure {
+    margin: 0;
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+.c-side__withdraw {
+    align-self: flex-start;
+    font-weight: 400;
+}
+
+.c-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 0.75rem;
+    border: 1px solid var(--p-line);
+    border-radius: 0.625rem;
+    background: var(--p-ivory);
+}
+
+.c-confirm__text {
+    margin: 0;
+}
+
+.c-confirm__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+@media (max-width: 56rem) {
+    .c-layout {
+        grid-template-columns: 1fr;
+    }
+}

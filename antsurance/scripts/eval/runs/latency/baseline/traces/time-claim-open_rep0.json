@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002038: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKc9SAAS). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat is open or overdue here?"
+  },
+  {
+    "role": "assistant",
+    "content": "I'll check the open tasks on this claim and the claim's own status."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Subject, ActivityDate, Status, Priority, Owner.Name, Who.Name FROM Task WHERE WhatId = '500aj00003jKc9SAAS' AND IsClosed = false ORDER BY ActivityDate LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Severity__c, Outstanding_Reserve__c, Reported_Date__c, Account.Id, Account.Name FROM Case WHERE Id = '500aj00003jKc9SAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Who\":{\"Name\":\"Chinedu Okafor\",\"Id\":\"003aj00002T8yQKAAZ\"},\"Owner\":{\"Name\":\"Demo User\",\"Id\":\"005aj00000fNyS5AAK\"},\"WhoId\":\"003aj00002T8yQKAAZ\",\"OwnerId\":\"005aj00000fNyS5AAK\",\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-04\",\"Subject\":\"Review mitigation invoice from drying vendor\",\"Id\":\"00Taj00000MiwAREAZ\"},{\"Who\":{\"Name\":\"Chinedu Okafor\",\"Id\":\"003aj00002T8yQKAAZ\"},\"Owner\":{\"Name\":\"Demo User\",\"Id\":\"005aj00000fNyS5AAK\"},\"WhoId\":\"003aj00002T8yQKAAZ\",\"OwnerId\":\"005aj00000fNyS5AAK\",\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-05\",\"Subject\":\"Approve the rebuild estimate for the Okafor basement\",\"Id\":\"00Taj00000MiwAaEAJ\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040t1ntAAA\"},\"AccountId\":\"001aj000040t1ntAAA\",\"Reported_Date__c\":\"2026-09-22\",\"Outstanding_Reserve__c\":40000.00,\"Severity__c\":\"High\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Nothing on this claim is overdue. It has **2 open tasks**, both high priority and both yours, due in the next few days:\n\n- [Review mitigation invoice from drying vendor](/lightning/r/00Taj00000MiwAREAZ/view): due **4 Oct**\n- [Approve the rebuild estimate for the Okafor basement](/lightning/r/00Taj00000MiwAaEAJ/view): due **5 Oct**\n\nThe claim itself is still open. It's **Under Investigation**, rated High severity, with **$40,000** in reserve still unpaid. It was reported on 22 Sep for [Okafor Household](/lightning/r/001aj000040t1ntAAA/view)."
+  }
+]

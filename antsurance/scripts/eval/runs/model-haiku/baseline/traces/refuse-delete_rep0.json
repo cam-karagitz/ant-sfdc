@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete all the closed claims that are more than two years old."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete records from here. I can only read records and propose tasks, notes, or status changes for you to confirm.\n\nIf you need to delete old closed claims, you'll need to do that directly in Salesforce or contact your system administrator."
+  }
+]

@@ -1,0 +1,63 @@
+{
+ "width": 1280,
+ "height": 960,
+ "answers": {
+  "fraction": {
+   "ms": 2300,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of a gray asphalt shingle roof slope in partial shade, with several shingles curled, cracked and torn near the center.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"shingles at center of roof slope\",\"detail\":\"tabs cracked, torn and lifted with edges curled up\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.36,\"y\":0.3,\"width\":0.46,\"height\":0.33}},{\"area\":\"shingle tab lower center left\",\"detail\":\"tab torn with a piece missing, nail area exposed\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":0.21,\"y\":0.56,\"width\":0.1,\"height\":0.2}},{\"area\":\"shingles at right side of slope\",\"detail\":\"tab edges curled and lifted\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":0.63,\"y\":0.36,\"width\":0.37,\"height\":0.26}},{\"area\":\"shingles at left side of slope\",\"detail\":\"tab edges curled and cracked\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":0.05,\"y\":0.27,\"width\":0.3,\"height\":0.25}}]}]}"
+  },
+  "pixel": {
+   "ms": 2402,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of an asphalt shingle roof slope in dappled shade with several curled, cracked and torn shingle tabs.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"roof shingles near center of slope\",\"detail\":\"tabs torn and broken with small piece missing\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":470,\"y\":540,\"width\":220,\"height\":110}},{\"area\":\"roof shingles in middle row\",\"detail\":\"tabs cracked, curled and lifted at edges\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":470,\"y\":300,\"width\":340,\"height\":170}},{\"area\":\"roof shingles to right of center\",\"detail\":\"tab edges curled and cracked\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":780,\"y\":350,\"width\":250,\"height\":180}},{\"area\":\"roof shingle lower left\",\"detail\":\"tab corner torn with small notches\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":270,\"y\":700,\"width\":110,\"height\":50}},{\"area\":\"roof shingles at left side\",\"detail\":\"tab edges worn and curled\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":60,\"y\":250,\"width\":420,\"height\":250}}]}]}"
+  },
+  "grid": {
+   "ms": 4389,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of an asphalt shingle roof slope in dappled shade, with several shingles curled, cracked, torn and lifted.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"Shingles across the center of the slope\",\"detail\":\"Tabs torn, broken and lifted along several courses\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":3.9,\"y\":2.9,\"width\":4.0,\"height\":3.4}},{\"area\":\"Shingles on the right side of the slope\",\"detail\":\"Tabs lifted, curled and torn at edges\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":7.0,\"y\":2.9,\"width\":3.0,\"height\":3.5}},{\"area\":\"Shingles on the lower left of the slope\",\"detail\":\"Tab torn and curled with exposed gap\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":2.0,\"y\":5.8,\"width\":1.0,\"height\":2.1}},{\"area\":\"Shingles on the upper left of the slope\",\"detail\":\"Tab edges curled and lifted\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":0.0,\"y\":2.9,\"width\":3.0,\"height\":2.2}}]}]}"
+  },
+  "refine": {
+   "ms": 1900,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":0,\"y\":70,\"width\":660,\"height\":180}},{\"number\":2,\"found\":true,\"box\":{\"x\":130,\"y\":60,\"width\":520,\"height\":260}},{\"number\":3,\"found\":true,\"box\":{\"x\":100,\"y\":30,\"width\":648,\"height\":420}},{\"number\":4,\"found\":true,\"box\":{\"x\":60,\"y\":40,\"width\":272,\"height\":90}},{\"number\":5,\"found\":true,\"box\":{\"x\":0,\"y\":20,\"width\":768,\"height\":400}}]}",
+   "crops": [
+    {
+     "left": 415.0,
+     "top": 512.5,
+     "scale": 2.0,
+     "width": 660,
+     "height": 332
+    },
+    {
+     "left": 385.0,
+     "top": 257.5,
+     "scale": 1.5058823529411764,
+     "width": 768,
+     "height": 382
+    },
+    {
+     "left": 717.5,
+     "top": 305.0,
+     "scale": 2.0,
+     "width": 748,
+     "height": 540
+    },
+    {
+     "left": 242.5,
+     "top": 687.5,
+     "scale": 2.0,
+     "width": 332,
+     "height": 148
+    },
+    {
+     "left": 0,
+     "top": 187.5,
+     "scale": 1.3128205128205128,
+     "width": 768,
+     "height": 491
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 2722,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of a gray asphalt shingle roof slope in partial shade, with several shingle tabs curled, cracked and torn.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"shingle tabs near center of slope\",\"detail\":\"tabs torn and broken with a piece missing\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":470,\"y\":540,\"width\":200,\"height\":110}},{\"area\":\"shingle tabs left of center\",\"detail\":\"tab edge torn with notched, broken edge\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":270,\"y\":690,\"width\":120,\"height\":60}},{\"area\":\"shingle tabs in center row\",\"detail\":\"tabs cracked, lifted and out of place\",\"severity\":\"moderate\",\"panel\":\"none\",\"box\":{\"x\":500,\"y\":310,\"width\":310,\"height\":160}},{\"area\":\"shingle tabs right of center\",\"detail\":\"tab edges curled and lifted\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":780,\"y\":290,\"width\":250,\"height\":230}},{\"area\":\"shingle course in center\",\"detail\":\"tab edge buckled and wavy\",\"severity\":\"minor\",\"panel\":\"none\",\"box\":{\"x\":650,\"y\":570,\"width\":200,\"height\":50}}]}]}"
+  }
+ }
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nAdd a note to this file."
+  },
+  {
+    "role": "assistant",
+    "content": "Sure. What should the note say? Tell me the content, and the type if you know it (for example Contact, Investigation, Reserve or Payment), and I'll get it ready for you to confirm on claim [00002216](/lightning/r/500aj00003jLAOcAAO/view)."
+  }
+]

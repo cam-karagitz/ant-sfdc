@@ -1,0 +1,327 @@
+@import 'c/antsuranceUiStyles';
+
+/* The Tasks tab: one sheet of my open work, grouped by when it is due. Brand values are fixed
+   on purpose so it keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive: #788c5d;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-tasks {
+    margin: 0.75rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-tasks__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+    padding-bottom: 1rem;
+}
+
+/* A button keeps its size and its label on one line. In a row of words and a button, the words give way, and
+   when there is no room left the button drops under them. */
+.c-tasks__head lightning-button,
+.c-empty lightning-button {
+    flex: none;
+    white-space: nowrap;
+}
+
+.c-tasks__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: var(--ants-olive-tint);
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-tasks__titles {
+    flex: 1 1 11rem;
+    min-width: 0;
+}
+
+.c-tasks__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-tasks__sub {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+.c-tasks__all {
+    flex: none;
+    font-size: 0.8125rem;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-tasks__error {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-tasks__more {
+    margin: 0;
+    padding: 1.5rem 0 0.5rem;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+/* ---------- Nothing open: said once, with the one thing to do next ---------- */
+
+.c-empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--ants-line);
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+}
+
+.c-empty__words {
+    flex: 1 1 14rem;
+    min-width: 0;
+}
+
+.c-empty__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-empty__text {
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+/* ---------- Groups: when the work is due, each under a folding header with its count, one open at a time ---------- */
+
+.c-groups {
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.c-group {
+    display: block;
+}
+
+.c-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* A row is padded on both sides, so its hover and focus tint has room around the words. */
+.c-row {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.625rem 0.5rem;
+    border-top: 1px solid var(--ants-line);
+    border-radius: 0.5rem;
+}
+
+.c-rows .c-row:first-child {
+    border-top: 0;
+}
+
+.c-row:focus-within {
+    background-color: var(--ants-ivory);
+}
+
+/* What is late and what is due today are marked on the tick as well as in words, so a glance down the left edge finds them. */
+.c-row_overdue .c-check {
+    border-color: var(--ants-clay-deep);
+}
+
+.c-row_today .c-check {
+    border-color: var(--ants-olive);
+}
+
+.c-rows_waiting .c-row {
+    cursor: default;
+}
+
+.c-bone_check {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+}
+
+.c-bone_title {
+    width: 22rem;
+    max-width: 70%;
+}
+
+.c-bone_about {
+    width: 14rem;
+    max-width: 45%;
+    margin-top: 0.375rem;
+}
+
+.c-bone_due {
+    flex: none;
+    width: 6.5rem;
+    height: 1.25rem;
+    border-radius: 999px;
+}
+
+.c-row__main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* A subject is shown in full: it wraps rather than being cut. */
+.c-row__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ants-ink);
+    text-wrap: pretty;
+}
+
+.c-row__title:hover,
+.c-row__title:focus-visible,
+.c-row__link:hover,
+.c-row__link:focus-visible {
+    color: var(--ants-clay-dark);
+}
+
+.c-row__about {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.375rem;
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-row__kind {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.c-row__link {
+    color: var(--ants-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--ants-line);
+    text-underline-offset: 0.15em;
+}
+
+.c-row__with {
+    white-space: nowrap;
+}
+
+.c-priority {
+    flex: none;
+    width: 6.5rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-priority_high {
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+}
+
+.c-due {
+    flex: none;
+    min-width: 6.5rem;
+    box-sizing: border-box;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.c-due_today {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-due_overdue {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-check {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: 2px solid var(--ants-muted);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+/* Hover and focus draw the ring only. A filled circle would read as a task already done. */
+.c-check:hover,
+.c-check:focus-visible {
+    border-color: var(--ants-olive);
+    box-shadow: inset 0 0 0 1px var(--ants-olive);
+    background: #fff;
+}
+
+.c-check:active {
+    background: var(--ants-olive);
+}
+
+.c-check:disabled {
+    cursor: progress;
+    opacity: 0.5;
+}
+
+@media (max-width: 48em) {
+    .c-priority {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-check {
+        transition: none;
+    }
+}

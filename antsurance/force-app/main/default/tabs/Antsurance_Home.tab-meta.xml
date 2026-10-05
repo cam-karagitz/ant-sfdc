@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Antsurance CRM home: Claude's briefing on the day, the book in six figures and a tabbed workspace.</description>
+    <lwcComponent>antsuranceHome</lwcComponent>
+    <label>Home</label>
+    <motif>Custom60: Umbrella</motif>
+</CustomTab>

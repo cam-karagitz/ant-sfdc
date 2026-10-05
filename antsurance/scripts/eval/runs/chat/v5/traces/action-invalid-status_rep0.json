@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSet this claim to Waiting on Customer."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't set Waiting on Customer here, because that status only applies to service requests. A claim moves through New, Under Investigation, Appraisal, Approved, Payment Issued, then Closed or Denied, and this one is **Under Investigation** right now.\n\nDo you want to move it to another claim status, such as **Appraisal** now that both estimates are in? Or I can set up a follow-up task to chase Chinedu Okafor for whatever you're waiting on."
+  }
+]

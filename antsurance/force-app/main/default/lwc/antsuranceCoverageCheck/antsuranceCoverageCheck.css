@@ -1,0 +1,586 @@
+/* A ledger band: a thin top edge in the verdict's colour, three facts side by side, and the reasoning
+   underneath when asked for. Brand values are fixed on purpose so it keeps its look under any org theme. */
+:host {
+    display: block;
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive: #788c5d;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-amber: #c49a3a;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-grey: #b0aea5;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.c-cov {
+    overflow: hidden;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font-family: var(--ants-body);
+}
+
+/* Once there is a verdict, a thin edge along the top carries its colour. It is drawn inside the
+   border so it follows the card's corners; the border itself stays even all the way round. */
+.c-cov_covered {
+    box-shadow: inset 0 0.1875rem 0 var(--ants-olive);
+}
+
+.c-cov_review {
+    box-shadow: inset 0 0.1875rem 0 var(--ants-amber);
+}
+
+.c-cov_none {
+    box-shadow: inset 0 0.1875rem 0 var(--ants-grey);
+}
+
+/* ---------- head */
+.c-cov__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.c-cov__mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+    background: var(--ants-oat);
+}
+
+.c-cov__mark-icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-cov__titles {
+    flex: 1 1 12rem;
+    min-width: 0;
+}
+
+.c-cov__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-cov__meta {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.c-cov__chip {
+    flex: none;
+    padding: 0.1875rem 0.75rem;
+    border-radius: 999px;
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-cov__chip_covered {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-cov__chip_review {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-cov__chip_none {
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+}
+
+.c-cov__toggle {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-cov__toggle:hover {
+    background: var(--ants-clay-tint);
+}
+
+.c-cov__toggle:focus-visible,
+.c-cov__again:focus-visible,
+.c-cov__value-link:focus-visible,
+.c-cov__source-link:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-cov__toggle-icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-cov__start {
+    flex: none;
+}
+
+.c-cov__pitch {
+    margin: 0.5rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-cov__working {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.625rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+}
+
+.c-cov__pulse {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--ants-clay-deep);
+    animation: c-cov-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes c-cov-pulse {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-cov__pulse {
+        animation: none;
+    }
+}
+
+/* ---------- the three facts */
+.c-cov__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0.75rem 0 0;
+    padding: 0.625rem 0 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-cov__fact {
+    min-width: 0;
+    padding: 0 1rem;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-cov__fact:first-child {
+    padding-left: 0;
+    border-left: 0;
+}
+
+.c-cov__label {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.c-cov__value {
+    margin: 0.125rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+.c-cov__value_figure {
+    font-size: 1.25rem;
+}
+
+.c-cov__value-link {
+    /* A link like every other link on the card. */
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 74, 53, 0.35);
+    text-underline-offset: 0.1875rem;
+}
+
+.c-cov__value-link:hover {
+    color: var(--ants-clay-dark);
+    text-decoration-color: var(--ants-clay-deep);
+}
+
+.c-cov__note {
+    margin: 0.125rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    /* A note that needs two lines breaks into two even ones, at its comma where it has one. */
+    text-wrap: balance;
+}
+
+/* ---------- out of date */
+.c-cov__stale {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.c-cov__stale-icon {
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+.c-cov__stale-text {
+    flex: 1 1 14rem;
+}
+
+.c-cov__again {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ants-amber-ink);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ---------- the reasoning. Its paragraphs run the width of the card: held to 58rem they wrapped
+   beside a quarter of the card left bare. */
+.c-cov__reasoning {
+    margin-top: 0.875rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-cov__summary {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-cov__heading {
+    margin: 1rem 0 0.375rem;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* The reasoning in parts, one in view at a time, so the card stays about a screen tall when open. */
+.c-cov__tabs {
+    margin: 0.75rem 0 0.5rem;
+}
+
+.c-cov__panel {
+    padding-top: 0.25rem;
+}
+
+.c-cov__points {
+    margin: 0;
+}
+
+.c-cov__point {
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-cov__point:first-child {
+    border-top: 0;
+}
+
+.c-cov__point-lead {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.c-cov__point-text {
+    margin: 0.0625rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-cov__why {
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+}
+
+.c-cov lightning-button {
+    flex: none;
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+.c-cov__findings {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: finding;
+}
+
+.c-cov__finding {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr) minmax(0, 17rem);
+    column-gap: 0.75rem;
+    align-items: start;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+    counter-increment: finding;
+}
+
+.c-cov__finding:first-child {
+    border-top: 0;
+}
+
+.c-cov__finding::before {
+    content: counter(finding);
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+.c-cov__finding-text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+/* Where a finding comes from: the kind of record on its own line, its name linked beneath. */
+.c-cov__source {
+    margin: 0;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--ants-line);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.c-cov__source-kind {
+    display: block;
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-cov__source-link {
+    color: var(--ants-clay-dark);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.1875rem;
+}
+
+.c-cov__source-name {
+    font-weight: 600;
+}
+
+.c-cov__asides {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    column-gap: 2rem;
+}
+
+.c-cov__list {
+    margin: 0;
+    padding-left: 1.125rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    list-style: disc;
+}
+
+.c-cov__list li {
+    margin-bottom: 0.25rem;
+    text-wrap: pretty;
+}
+
+.c-cov__list li::marker {
+    color: var(--ants-clay-deep);
+}
+
+.c-cov__extra {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-line;
+    text-wrap: pretty;
+}
+
+.c-cov__basis {
+    margin: 1rem 0 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.c-cov__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+}
+
+.c-cov__written {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-cov__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.c-cov__confirmed {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-cov__confirmed-icon {
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+/* A failure stays in place, with its reason and a way to try again. It is not a toast. */
+.c-cov__error {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.c-cov__error-icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-cov__error-text {
+    flex: 1 1 14rem;
+    text-wrap: pretty;
+}
+
+.c-cov__retry {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.c-cov__retry:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+/* ---------- narrower: each fact takes the room its words need, not a third. In thirds, "Responds"
+   kept room it did not use while the note beside it broke before its amount. */
+@container (max-width: 52rem) {
+    .c-cov__facts {
+        grid-template-columns: repeat(3, minmax(0, auto));
+    }
+}
+
+/* ---------- narrow: the facts stack, and a finding's source drops under it */
+@container (max-width: 40rem) {
+    .c-cov__facts {
+        grid-template-columns: 1fr;
+        row-gap: 0.625rem;
+    }
+
+    .c-cov__fact {
+        padding: 0;
+        border-left: 0;
+    }
+
+    .c-cov__finding {
+        grid-template-columns: 1.5rem minmax(0, 1fr);
+        row-gap: 0.375rem;
+    }
+
+    .c-cov__source {
+        grid-column: 2;
+    }
+}

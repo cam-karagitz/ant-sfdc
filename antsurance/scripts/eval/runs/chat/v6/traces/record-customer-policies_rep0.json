@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000041E8MXAA0). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhich policies does this customer have?"
+  },
+  {
+    "role": "assistant",
+    "content": "The Reyes Household has **3 active policies**, with **$4,680** in annual premium between them:\n\n| Policy | Line | Premium | Renews |\n|---|---|---|---|\n| [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view) | Homeowners | $1,890 | Mar 17, 2027 |\n| [ANT-UM-204551](/lightning/r/a00aj00003jfwRDAAY/view) | Umbrella | $410 | Mar 17, 2027 |\n| [ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view) | Personal Auto | $2,380 | May 15, 2027 |\n\nThe auto policy has a **77.7%** loss ratio because of the recent parking lot scrape claim. The other two have no losses. Payments are current or paid in full on all three.\n\n?> What's covered on the auto policy?\n?> Status of adding Sofia as a driver\n?> Show the parking lot claim history"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What's covered on the auto policy?\",\n      \"Status of adding Sofia as a driver\",\n      \"Show the parking lot claim history\"\n    ]\n  }\n]"
+  }
+]

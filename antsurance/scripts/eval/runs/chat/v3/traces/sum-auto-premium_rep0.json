@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What's the total annual premium in force for Personal Auto?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Annual_Premium__c) total, COUNT(Id) cnt FROM Policy__c WHERE Line_of_Business__c = 'Personal Auto' AND Status__c IN ('Active','Pending Renewal')\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"cnt\":41,\"total\":98004.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Personal Auto has **$98,004** in annual premium in force, spread across **41 policies** that are Active or Pending Renewal."
+  }
+]

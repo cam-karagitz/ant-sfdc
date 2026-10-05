@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Sale record \"Ironwood Machine Works - Workers Comp renewal\" open (object Opportunity, Id 006aj00000elR2XAAU). \"This\", \"here\" and \"this policy sale\" refer to that record.]\n\nWhich quote is cheaper, and by how much?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status, Annual_Premium__c, Coverage_Limit__c, Deductible__c, ExpirationDate FROM Quote WHERE OpportunityId = '006aj00000elR2XAAU' ORDER BY Annual_Premium__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"ExpirationDate\":\"2026-10-20\",\"Deductible__c\":2500.00,\"Coverage_Limit__c\":1000000.00,\"Annual_Premium__c\":139035.00,\"Status\":\"Presented\",\"Name\":\"Small deductible plan\",\"Id\":\"0Q0aj000003aVtDCAU\"},{\"ExpirationDate\":\"2026-10-20\",\"Deductible__c\":0.00,\"Coverage_Limit__c\":1000000.00,\"Annual_Premium__c\":149500.00,\"Status\":\"Presented\",\"Name\":\"Guaranteed cost\",\"Id\":\"0Q0aj000003aVtCCAU\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "assistant",
+    "content": "The [Small deductible plan](/lightning/r/0Q0aj000003aVtDCAU/view) costs **$10,465 a year less** than [Guaranteed cost](/lightning/r/0Q0aj000003aVtCCAU/view), about 7% cheaper. In return, the customer takes on a $2,500 deductible.\n\n| Quote | Premium | Deductible | Limit |\n|---|---|---|---|\n| Small deductible plan | **$139,035** | $2,500 | $1,000,000 |\n| Guaranteed cost | $149,500 | $0 | $1,000,000 |\n\nThe customer has seen both quotes. Both are valid until 20 Oct."
+  }
+]

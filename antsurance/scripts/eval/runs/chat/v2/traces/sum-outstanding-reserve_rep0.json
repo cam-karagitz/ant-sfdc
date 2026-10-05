@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What is the total outstanding reserve across open claims?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Outstanding_Reserve__c) total, COUNT(Id) cnt FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"cnt\":26,\"total\":1009180.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "The **26 open claims** have **$1,009,180** in outstanding reserve between them."
+  }
+]

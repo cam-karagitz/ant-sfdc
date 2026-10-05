@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contact__c</fullName>
+    <description>The person holding this role.</description>
+    <label>Person</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Policy Roles</relationshipLabel>
+    <relationshipName>Policy_Roles</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

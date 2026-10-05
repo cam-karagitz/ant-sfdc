@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The Tasks tab: my open tasks grouped by when they are due, each named in full with who and what it is about, and a tick to complete it.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Tasks</masterLabel>
+    <targets>
+        <target>lightning__Tab</target>
+    </targets>
+</LightningComponentBundle>

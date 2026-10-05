@@ -1,0 +1,329 @@
+@import 'c/antsuranceUiStyles';
+
+/* Brand values are fixed on purpose so the component keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-stone: #b0aea5;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-tint: #faefeb;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-docs {
+    padding: 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-docs__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.c-docs__title {
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-docs__sub {
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-docs__empty {
+    padding: 1.5rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+    color: var(--ants-muted);
+    text-align: center;
+}
+
+.c-docs__waiting {
+    position: relative;
+    min-height: 6rem;
+}
+
+/* One row: the documents to pick from on the left, what can be done with the one shown on the right.
+   When the row is too narrow for both, the actions drop under the picker, left aligned, at full size. */
+.c-docs__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.c-docs__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem 1rem;
+}
+
+/* The tabs are a size container, which has no width of its own: the row must hand it the room
+   the actions leave, or the picker collapses to a sliver and its names are clipped. */
+.c-docs__picker {
+    flex: 1 1 14rem;
+    min-width: 0;
+}
+
+/* What the chosen document is, said once above its preview. */
+.c-docs__caption {
+    margin: 0 0 0.625rem;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-docs__holder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.c-docs__holder lightning-button {
+    flex: none;
+    white-space: nowrap;
+}
+
+.c-docs__field {
+    flex: 1 1 11rem;
+}
+
+.c-docs__field_wide {
+    flex: 2 1 15rem;
+}
+
+.c-docs__actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-docs__actions lightning-button-menu {
+    flex: none;
+    white-space: nowrap;
+}
+
+.c-docs__saved,
+.c-docs__problem {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.c-docs__saved {
+    background: #e3e9d8;
+    color: #33401f;
+}
+
+.c-docs__problem {
+    background: var(--ants-clay-tint);
+    color: #8a4a35;
+}
+
+.c-docs__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* The surface the page preview sits on. */
+.c-docs__desk {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: var(--ants-oat);
+}
+
+/* The window the document shows through: the full width of the tab and as tall as the whole document,
+   so it is read by scrolling the page. The component sets its height from what the document reports. */
+.c-docs__page {
+    position: relative;
+    max-width: 64rem;
+    min-height: 12rem;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    background: #fff;
+}
+
+/* The document, drawn at a US Letter page's width and scaled by the component to fit the window exactly,
+   so its right margin always equals its left. */
+.c-docs__pdf {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border: 0;
+    background: #fff;
+    transform-origin: 0 0;
+}
+
+/* Kept out of sight until the document is drawn. */
+.c-docs__pdf_loading {
+    visibility: hidden;
+}
+
+/* Under the window: the button that shows the rest of the sheet, and what the window is showing. */
+.c-docs__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    max-width: 64rem;
+    margin: 0.625rem auto 0;
+}
+
+.c-docs__fold {
+    flex: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #8a4a35;
+    cursor: pointer;
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+.c-docs__fold:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-docs__more {
+    min-width: 0;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted, #66645e);
+    text-wrap: pretty;
+}
+
+/* ---------- Saved on this record: the files already kept, each with what it is, its size and its date ---------- */
+
+.c-files {
+    display: block;
+    margin-top: 1rem;
+}
+
+.c-files__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-file {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.625rem;
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-file:hover,
+.c-file:focus {
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-file_waiting {
+    cursor: default;
+}
+
+.c-file__words {
+    flex: 1;
+    min-width: 0;
+    display: block;
+}
+
+.c-files__none .c-file__words {
+    flex: 1 1 14rem;
+}
+
+/* A button keeps its size and its label on one line. In a row of words and a button, the words give way, and
+   when there is no room left the button drops under them. */
+.c-files__none lightning-button,
+.c-docs__actions lightning-button {
+    flex: none;
+    white-space: nowrap;
+}
+
+.c-file__name {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.c-file__meta {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-bone_name {
+    width: 16rem;
+    max-width: 60%;
+}
+
+.c-bone_meta {
+    width: 11rem;
+    max-width: 40%;
+    margin-top: 0.375rem;
+}
+
+.c-files__none {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem 0.75rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px dashed var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-files__none-title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-files__none-text {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}

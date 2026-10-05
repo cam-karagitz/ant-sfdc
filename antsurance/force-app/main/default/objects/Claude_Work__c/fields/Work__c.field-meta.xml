@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Work__c</fullName>
+    <description>The work itself, as JSON the desk renders: the brief, the memo, the email, the reserve change or the follow-up.</description>
+    <label>Work</label>
+    <length>32768</length>
+    <visibleLines>10</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

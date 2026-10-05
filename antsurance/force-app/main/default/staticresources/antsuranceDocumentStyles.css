@@ -1,0 +1,85 @@
+/*
+    Shared print styles for the Antsurance document PDFs (declarations, ID cards, certificate, proposal).
+
+    The PDF engine understands CSS 2.1 only: no flexbox, grid, SVG or web fonts. Layout is fixed-width
+    tables measured in points. The page is 525pt wide inside its margins and 694pt tall, and a cell's
+    width excludes its padding, so each row's widths plus padding add up to 525pt. Controllers hand
+    every value over already formatted and short enough for its column, so nothing wraps on its own.
+*/
+@page {
+    size: 8.5in 11in;
+    margin: 0.55in 0.6in 0.8in 0.6in;
+    @bottom-center { content: element(footer); }
+}
+body { margin: 0; font-family: Helvetica, sans-serif; font-size: 8.5pt; line-height: 1.35; color: #141413; }
+table { width: 525pt; border-collapse: collapse; table-layout: fixed; }
+td, th { padding: 0; vertical-align: top; text-align: left; font-weight: normal; }
+.nowrap { white-space: nowrap; }
+.right { text-align: right; }
+.muted { color: #66645e; }
+.strong { font-weight: bold; }
+
+/* Running footer, repeated on every page. */
+.footer { position: running(footer); }
+.footer td { padding-top: 6pt; border-top: 0.75pt solid #e8e6dc; font-size: 7pt; color: #66645e; white-space: nowrap; }
+.page-number:before { content: counter(page); }
+.page-count:before { content: counter(pages); }
+
+/* Letterhead: the logo and the document's name on white, closed by the clay rule under it. No dark fill. */
+.band { background-color: #ffffff; }
+.band td { padding: 15pt 16pt 14pt 16pt; vertical-align: middle; }
+.band-title { font-size: 13pt; font-weight: bold; letter-spacing: 1.6pt; color: #141413; white-space: nowrap; }
+.band-line { padding-top: 3pt; font-size: 9pt; font-weight: bold; letter-spacing: 0.4pt; color: #8a4a35; white-space: nowrap; }
+.rule { height: 3pt; background-color: #d97757; font-size: 1pt; line-height: 1pt; }
+
+/* Fact boxes: ruled top and bottom with a divider between cells, and open at the sides, so no outer rule can be clipped at the page edge. */
+.facts { margin-top: 12pt; }
+.facts td { padding: 9pt 12pt 10pt 12pt; border-top: 0.75pt solid #e8e6dc; border-bottom: 0.75pt solid #e8e6dc; }
+td.divide { border-left: 0.75pt solid #e8e6dc; }
+.label { padding-bottom: 3pt; font-size: 6.5pt; font-weight: bold; letter-spacing: 0.8pt; text-transform: uppercase; color: #66645e; white-space: nowrap; }
+.value { font-size: 11pt; font-weight: bold; white-space: nowrap; }
+.value-line { font-size: 8.5pt; white-space: nowrap; }
+.strip td { padding: 7pt 12pt 8pt 12pt; background-color: #f0eee7; border-bottom: 0.75pt solid #e8e6dc; }
+.strip .value { font-size: 9pt; }
+
+/* Sections. Each one is sized by its controller to fit the page it lands on, and stays whole. */
+.section { margin-top: 15pt; page-break-inside: avoid; }
+.new-page { page-break-before: always; }
+.section-title { padding-bottom: 4pt; border-bottom: 1.25pt solid #141413; font-size: 9pt; font-weight: bold; letter-spacing: 0.9pt; text-transform: uppercase; white-space: nowrap; }
+.continued { font-weight: normal; letter-spacing: 0.4pt; text-transform: none; color: #66645e; }
+.grid th { padding: 6pt 8pt 5pt 8pt; border-bottom: 0.75pt solid #e8e6dc; font-size: 6.5pt; font-weight: bold; letter-spacing: 0.8pt; text-transform: uppercase; color: #66645e; white-space: nowrap; }
+.grid td { padding: 6pt 8pt 6pt 8pt; border-bottom: 0.75pt solid #e8e6dc; white-space: nowrap; }
+.grid th.right, .grid td.right { text-align: right; }
+.grid td.detail { padding-top: 0; font-size: 7.5pt; color: #66645e; white-space: normal; }
+.grid td.open { border-bottom: 0; padding-bottom: 2pt; }
+.note { font-size: 7pt; color: #66645e; }
+.total td { border-bottom: 0; border-top: 1.25pt solid #141413; font-weight: bold; background-color: #f0eee7; }
+
+/* A light panel, for contact details and the like. */
+.panel td { padding: 9pt 12pt 10pt 12pt; background-color: #f0eee7; }
+.panel td.divide { border-left: 0.75pt solid #faf9f5; }
+.panel .value { font-size: 10pt; }
+
+/* The figure a document leads with: light, with a clay edge. */
+.lead { background-color: #f0eee7; border-left: 3pt solid #d97757; }
+
+.closing { margin-top: 14pt; font-size: 7.5pt; color: #66645e; page-break-inside: avoid; }
+.closing div { white-space: nowrap; }
+.missing { margin-top: 40pt; font-size: 12pt; font-weight: bold; }
+
+/*
+    On-screen preview. The Documents tab shows a page with ?preview=1, which draws this same markup as
+    HTML instead of a PDF: one continuous sheet as wide as a US Letter page (525pt of content plus the
+    page margins), which the tab scales to fit. A browser's own PDF viewer cannot be trusted to fit a
+    frame, because it enlarges the page with the browser's zoom. The PDF engine never sees these rules.
+*/
+html.preview { background-color: #ffffff; }
+html.preview body { width: 525pt; padding: 40pt 43pt 34pt 43pt; font-family: Helvetica, Arial, sans-serif; }
+/* The running footer belongs to the printed page. */
+html.preview .footer { display: none; }
+/* Where the printed document starts a new page. */
+html.preview .new-page { margin-top: 24pt; padding-top: 20pt; border-top: 1pt dashed #b0aea5; }
+/* A table the printed pages split in two reads as one table on screen: its second part drops the
+   repeated heading and column heads and follows straight on. */
+html.preview .carried { margin-top: 0; padding-top: 0; border-top: 0; }
+html.preview .carried .section-title, html.preview .carried tr.heads { display: none; }

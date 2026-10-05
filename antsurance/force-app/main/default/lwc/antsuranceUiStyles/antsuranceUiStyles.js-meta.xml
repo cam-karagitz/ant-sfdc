@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Shared pieces for the record pages: icon tiles and their tints, the hover, focus and pressed states of a row or card that opens, and skeletons. Imported into a component's stylesheet.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

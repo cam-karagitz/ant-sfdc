@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "Which line of business has the most open claims, and how many?"
+  },
+  {
+    "role": "assistant",
+    "content": "Claims link to a line of business through their policy, so I'll group open claims by Policy__r.Line_of_Business__c."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Policy__r.Line_of_Business__c lob, COUNT(Id) cnt FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Policy__r.Line_of_Business__c ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"cnt\":7,\"lob\":\"Commercial Property\"},{\"cnt\":6,\"lob\":\"Personal Auto\"},{\"cnt\":3,\"lob\":\"Commercial Auto\"},{\"cnt\":3,\"lob\":\"General Liability\"},{\"cnt\":3,\"lob\":\"Workers Compensation\"},{\"cnt\":2,\"lob\":\"Homeowners\"},{\"cnt\":2,\"lob\":\"Renters\"}],\"truncated\":false,\"rowCount\":7}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Commercial Property** has the most open claims, with **7** of the 26 open. Personal Auto is close behind with 6.\n\n| Line of business | Open claims |\n|---|---|\n| Commercial Property | **7** |\n| Personal Auto | 6 |\n| Commercial Auto | 3 |\n| General Liability | 3 |\n| Workers Compensation | 3 |\n| Homeowners | 2 |\n| Renters | 2 |"
+  }
+]

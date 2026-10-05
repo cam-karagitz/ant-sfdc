@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "This is a **water damage claim** from the [Okafor Household](/lightning/r/001aj000040t3cpAAA/view) on policy [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view), reported 22 Sep and now **10 days open**.\n\n**Loss:** A braided supply line burst on 21 Sep, flooding the basement and damaging flooring, drywall, furnace and stored items. Coverage is confirmed and the $2,500 deductible applies.\n\n**Reserve and payments:** $48,450 reserved (mitigation $9,500, rebuild $27,450, furnace $5,500, contents $6,000); $5,000 advance paid for emergency drying on 26 Sep.\n\n**Status:** Under Investigation. Drying complete as of 30 Sep. Waiting on the mitigation vendor invoice and contractor rebuild estimate. Four tasks are due through 6 Oct to review the mitigation invoice, assess subrogation, approve the rebuild estimate, and call [Chinedu Okafor](/lightning/r/003aj00002T9O6GAAV/view) about the claim."
+  }
+]

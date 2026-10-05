@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case__c</fullName>
+    <description>The claim or service request this note is about.</description>
+    <label>Claim or Request</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>Case</referenceTo>
+    <relationshipLabel>File Notes</relationshipLabel>
+    <relationshipName>File_Notes</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

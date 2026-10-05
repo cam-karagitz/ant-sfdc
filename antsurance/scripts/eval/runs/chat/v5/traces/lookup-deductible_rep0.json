@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "What is the deductible on policy ANT-PA-204517?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Deductible__c, Line_of_Business__c, Status__c, Account__r.Name, Account__r.Id FROM Policy__c WHERE Name = 'ANT-PA-204517' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Deductible__c\":500,\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jfwRBAAY\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-PA-204517](/lightning/r/a00aj00003jfwRBAAY/view) has a **$500** deductible. It's an active Personal Auto policy for [Reyes Household](/lightning/r/001aj000041E8MXAA0/view)."
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Show the coverages on ANT-PA-204517\",\n    \"Any open claims on this policy?\",\n    \"Who are the drivers on this policy?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show the coverages on ANT-PA-204517\",\n      \"Any open claims on this policy?\",\n      \"Who are the drivers on this policy?\"\n    ]\n  }\n]"
+  }
+]

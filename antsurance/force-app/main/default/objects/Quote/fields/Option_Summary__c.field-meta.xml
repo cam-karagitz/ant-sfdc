@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Option_Summary__c</fullName>
+    <description>The option name and its annual premium on one line, for pickers in flows.</description>
+    <label>Option Summary</label>
+    <formula><![CDATA[IF(ISBLANK(Annual_Premium__c), Name, Name & ", $" & IF(Annual_Premium__c >= 1000, TEXT(FLOOR(Annual_Premium__c / 1000)) & "," & LPAD(TEXT(MOD(FLOOR(Annual_Premium__c), 1000)), 3, "0"), TEXT(FLOOR(Annual_Premium__c))) & " a year")]]></formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

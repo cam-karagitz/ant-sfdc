@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nAdd a file note: spoke with the insured today, contractor estimate arrives Monday."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_file_note",
+    "content": "{\n  \"body\": \"Spoke with the insured today. Contractor estimate arrives Monday.\",\n  \"note_type\": \"Contact\",\n  \"record_id\": \"500aj00003jLAOcAAO\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"file_note\",\n    \"recordId\": \"500aj00003jLAOcAAO\",\n    \"noteType\": \"Contact\",\n    \"body\": \"Spoke with the insured today. Contractor estimate arrives Monday.\"\n  }\n]"
+  }
+]

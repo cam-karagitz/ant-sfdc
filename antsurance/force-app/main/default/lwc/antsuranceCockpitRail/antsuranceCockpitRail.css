@@ -1,0 +1,181 @@
+@import 'c/antsuranceCockpitTokens';
+
+/* Two cards stacked to the height of the briefing beside them: what to watch, then where to start something. */
+.c-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+}
+
+/* What to watch belongs to the briefing, so it is on the same cream stock, under an amber edge instead of a clay one. */
+.c-watching {
+    flex: 1 1 auto;
+    padding: 0.875rem 1rem 0.5rem;
+    border: 1px solid var(--ants-line);
+    border-top: 4px solid #e0c98f;
+    border-radius: 1.25rem;
+    background: var(--ants-ivory);
+}
+
+.c-rail__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-rail__sub {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-watchlist {
+    margin: 0.625rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-watch {
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-watch__label {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-amber-ink);
+}
+
+.c-watch__detail {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-watch__ref {
+    margin: 0.25rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    /* A record's name is one line, always. One too long for the rail ends in an ellipsis and gives its
+       whole name on hover: split over two lines it read as two links. */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Four tiles to start something. Alone in the rail, before a briefing exists, they take its full height. */
+.c-starts {
+    display: flex;
+    flex-direction: column;
+    padding: 0.875rem 1rem 1rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+}
+
+.c-starts:first-child {
+    flex: 1 1 auto;
+}
+
+.c-actions {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-actions li {
+    display: flex;
+}
+
+.c-action {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 4.25rem;
+    padding: 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-action:hover {
+    border-color: var(--ants-clay);
+    background: #fff;
+}
+
+.c-action:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+/* Under the tiles: the setting for how far Claude goes on its own. */
+.c-may {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-may:hover {
+    border-color: var(--ants-clay);
+}
+
+.c-may:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-may__icon {
+    flex: none;
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}
+
+.c-may__words {
+    display: grid;
+    min-width: 0;
+}
+
+/* The button's two lines each stay on one line: the rail is never narrower than they are. */
+.c-may__lead {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-may__sub {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-action__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete all the closed claims that are more than two years old."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete claims or any other records from here. I can only read records and prepare tasks, file notes and status changes for you to confirm.\n\nIf you need old claims purged, a Salesforce admin can do it, subject to Antsurance's record retention rules. Claim files usually have to be kept for regulatory reasons. I can list the closed claims over two years old for you to pass on if that would help."
+  }
+]

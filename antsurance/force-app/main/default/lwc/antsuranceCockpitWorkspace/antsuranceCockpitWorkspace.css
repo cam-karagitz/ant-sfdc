@@ -1,0 +1,636 @@
+@import 'c/antsuranceCockpitTokens';
+@import 'c/antsuranceUiStyles';
+
+/* The workspace: a white sheet with a tab strip, one list showing at a time. */
+:host {
+    container-type: inline-size;
+}
+
+.c-work {
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* ---- tabs ---- */
+
+.c-tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+}
+
+.c-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding: 0 0.875rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--ants-muted);
+    font: inherit;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-tab:hover {
+    color: var(--ants-ink);
+}
+
+.c-tab:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-tab_selected {
+    border-bottom-color: var(--ants-clay);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-weight: 600;
+}
+
+.c-tab__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.5rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: inherit;
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+.c-tab_selected .c-tab__count {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+/* ---- a panel ---- */
+
+.c-panel {
+    padding: 0.875rem 1.25rem 1.25rem;
+}
+
+/* A panel kept alive off screen: Claude's desk, while another tab shows. */
+.c-panel_away {
+    display: none;
+}
+
+.c-panel__head,
+.c-group__bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.c-panel__summary {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-panel__all {
+    flex: none;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.c-panel__empty {
+    margin: 0.75rem 0 0;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+.c-panel__empty_loading {
+    margin: 1.25rem;
+}
+
+.c-work__error {
+    margin: 0;
+    padding: 0.75rem 1.25rem 0;
+    font-size: 0.8125rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-group {
+    margin-top: 1rem;
+}
+
+/* A small row of tabs inside a panel: task groups on My day, the two lists on Pipeline. */
+.c-subtabs {
+    margin-top: 0.875rem;
+}
+
+.c-subtabs + .c-group {
+    margin-top: 0.625rem;
+}
+
+.c-group__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ants-ink);
+}
+
+.c-group__label_alert {
+    color: var(--ants-clay-dark);
+}
+
+.c-group__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.25rem;
+    height: 1.125rem;
+    padding: 0 0.3125rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: inherit;
+    font-size: 0.6875rem;
+}
+
+/* ---- rows that open in place ---- */
+
+.c-rows {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-row {
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-row_open {
+    background: var(--ants-ivory);
+    box-shadow: inset 3px 0 0 var(--ants-clay);
+}
+
+.c-row__head {
+    display: flex;
+    align-items: center;
+}
+
+.c-row__toggle {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+    min-height: 3.25rem;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-row__toggle:hover {
+    background: rgba(20, 20, 19, 0.03);
+}
+
+.c-row__toggle:focus-visible,
+.c-tick:focus-visible,
+.c-stage:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-row__main {
+    flex: 1 1 auto;
+    display: grid;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.c-row__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: pretty;
+}
+
+.c-row__sub {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-row__kind {
+    margin-right: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-row__meta {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-row__amount {
+    display: grid;
+    justify-items: end;
+    min-width: 6.5rem;
+}
+
+.c-row__figure {
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-row__unit {
+    font-size: 0.6875rem;
+    color: var(--ants-muted);
+}
+
+.c-row__chevron {
+    flex: none;
+    --slds-c-icon-color-foreground-default: var(--ants-muted);
+    transition: transform 0.15s ease;
+}
+
+.c-row_open .c-row__chevron {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-row__chevron {
+        transition: none;
+    }
+}
+
+/* Tick to complete, on a task row. */
+.c-tick {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin-left: 0.75rem;
+    padding: 0;
+    border: 1.5px solid var(--ants-muted);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+}
+
+.c-tick__mark {
+    opacity: 0;
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-tick:hover {
+    border-color: var(--ants-olive-ink);
+    background: var(--ants-olive-tint);
+}
+
+.c-tick:hover .c-tick__mark {
+    opacity: 1;
+}
+
+.c-tick:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ---- the detail under an open row ---- */
+
+.c-row__detail {
+    display: grid;
+    gap: 1.5rem;
+    align-items: start;
+    padding: 0.5rem 0.75rem 1rem 0.75rem;
+}
+
+.c-row__detail_task {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-left: 2.875rem;
+}
+
+.c-row__detail_claim,
+.c-row__detail_referral {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) auto;
+}
+
+.c-row__detail_renewal {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) auto;
+    padding-left: 5rem;
+}
+
+.c-row__detail_quote {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.c-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-facts {
+    /* Columns of one width, so facts that do not fit on a line wrap as a group and none is left alone on a row. */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 0.75rem 2rem;
+    margin: 0;
+}
+
+.c-facts_tight {
+    margin-top: 0.75rem;
+}
+
+.c-fact {
+    min-width: 0;
+}
+
+.c-fact_wide {
+    flex-basis: 100%;
+}
+
+.c-fact dd {
+    margin: 0.125rem 0 0;
+}
+
+.c-fact__value {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.c-fact__figure {
+    font-family: var(--ants-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-facts_figures .c-fact__value {
+    font-family: var(--ants-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-fact__value_alert {
+    color: var(--ants-clay-dark);
+}
+
+.c-fact__value_good {
+    color: var(--ants-olive-ink);
+}
+
+/* A claim: paid against reserve as one bar. */
+.c-meter {
+    height: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 999px;
+    background: #f1cfc4;
+    overflow: hidden;
+}
+
+.c-meter__fill {
+    display: block;
+    height: 100%;
+    background: var(--ants-clay-deep);
+}
+
+.c-claim__brief {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-brief__headline {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.c-brief__none {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ants-muted);
+}
+
+.c-memo__recommends {
+    margin: 0.25rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.c-reasons {
+    margin: 0.375rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-reason {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.c-reason__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}
+
+/* A renewal: days left, as a small square the eye can run down. */
+.c-countdown {
+    flex: none;
+    display: grid;
+    justify-items: center;
+    width: 3.25rem;
+    padding: 0.25rem 0;
+    border-radius: 0.5rem;
+    background: var(--ants-oat);
+    line-height: 1.1;
+}
+
+.c-countdown__days {
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-countdown__unit {
+    font-size: 0.6875rem;
+    color: var(--ants-muted);
+}
+
+.c-countdown_urgent {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-countdown_urgent .c-countdown__unit {
+    color: var(--ants-clay-dark);
+}
+
+.c-countdown_soon {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-countdown_soon .c-countdown__unit {
+    color: var(--ants-amber-ink);
+}
+
+/* ---- the pipeline's stage bar ---- */
+
+.c-stages {
+    display: flex;
+    gap: 0.25rem;
+    margin: 0.875rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-stages__item {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.c-stage {
+    display: grid;
+    gap: 0.0625rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid transparent;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.c-stages__item:first-child .c-stage {
+    border-radius: 0.75rem 0 0 0.75rem;
+}
+
+.c-stages__item:last-child .c-stage {
+    border-radius: 0 0.75rem 0.75rem 0;
+}
+
+.c-stage:hover {
+    border-color: var(--ants-clay);
+}
+
+.c-stage_selected {
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-tint);
+    box-shadow: inset 0 -3px 0 var(--ants-clay-deep);
+}
+
+.c-stage__step {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-stage__name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-stage__figure {
+    margin-top: 0.25rem;
+    font-family: var(--ants-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-stage__count {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+/* Six tabs need about 62rem at full size. Below that they tighten so every one stays in view. */
+@container (max-width: 64rem) {
+    .c-tabs {
+        gap: 0;
+        padding: 0 0.5rem;
+    }
+
+    .c-tab {
+        gap: 0.375rem;
+        padding: 0 0.5625rem;
+        font-size: 0.8125rem;
+    }
+}
+
+/* Narrow: the detail's columns stack, and a row's chips drop under its title. */
+@container (max-width: 56rem) {
+    .c-row__detail_claim,
+    .c-row__detail_referral,
+    .c-row__detail_renewal,
+    .c-row__detail_task,
+    .c-row__detail_quote {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-claim__brief {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .c-row__actions {
+        justify-content: flex-start;
+    }
+}
+
+@container (max-width: 44rem) {
+    .c-row__toggle {
+        flex-wrap: wrap;
+    }
+
+    .c-tabs {
+        overflow-x: auto;
+    }
+
+    .c-stages {
+        flex-wrap: wrap;
+    }
+
+    .c-stages__item {
+        flex-basis: 45%;
+    }
+}

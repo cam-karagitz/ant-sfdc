@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 0.6in 0.65in; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; color: #1c2430; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0f5d7a; padding-bottom: 14px; }
+.brand { display: flex; gap: 12px; align-items: center; }
+.logo { width: 46px; height: 46px; border-radius: 10px; background: #0f5d7a; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 17pt; letter-spacing: -1px; }
+.brand h1 { margin: 0; font-size: 15pt; color: #0f5d7a; }
+.brand p { margin: 2px 0 0; font-size: 8.5pt; color: #55606e; line-height: 1.35; }
+.doc { text-align: right; }
+.doc h2 { margin: 0; font-size: 22pt; letter-spacing: 2px; color: #0f5d7a; font-weight: 300; }
+.doc table { margin-left: auto; margin-top: 6px; font-size: 9pt; border-collapse: collapse; }
+.doc td { padding: 1px 0 1px 14px; }
+.doc td:first-child { color: #55606e; }
+.parties { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin: 18px 0 16px; }
+.parties h3 { margin: 0 0 4px; font-size: 7.5pt; letter-spacing: 1px; text-transform: uppercase; color: #0f5d7a; }
+.parties p { margin: 0; line-height: 1.45; }
+table.items { width: 100%; border-collapse: collapse; }
+table.items th { background: #0f5d7a; color: #fff; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.6px; text-align: left; padding: 6px 8px; }
+table.items td { padding: 6px 8px; border-bottom: 1px solid #dfe5ea; vertical-align: top; }
+table.items tr:nth-child(even) td { background: #f5f8fa; }
+.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+.sub { color: #55606e; font-size: 8.5pt; }
+.totals { display: flex; justify-content: space-between; gap: 30px; margin-top: 14px; }
+.log { flex: 1; border: 1px solid #dfe5ea; border-radius: 6px; padding: 10px 12px; font-size: 8.5pt; }
+.log h3 { margin: 0 0 6px; font-size: 7.5pt; letter-spacing: 1px; text-transform: uppercase; color: #0f5d7a; }
+.log table { width: 100%; border-collapse: collapse; }
+.log td, .log th { padding: 2px 4px; text-align: right; font-variant-numeric: tabular-nums; }
+.log th { font-weight: 600; color: #55606e; border-bottom: 1px solid #dfe5ea; }
+.log td:first-child, .log th:first-child { text-align: left; }
+.sum { width: 250px; }
+.sum table { width: 100%; border-collapse: collapse; }
+.sum td { padding: 4px 8px; }
+.sum tr.due td { background: #0f5d7a; color: #fff; font-weight: 700; font-size: 12pt; }
+.foot { margin-top: 18px; padding-top: 10px; border-top: 1px solid #dfe5ea; font-size: 8.5pt; color: #55606e; line-height: 1.5; }
+.foot b { color: #1c2430; }
+</style></head><body>
+<div class="top">
+  <div class="brand"><div class="logo">LR</div><div><h1>Lakeshore Restoration &amp; Drying</h1>
+  <p>1418 Dempster St, Evanston, IL 60202<br>(847) 555-0142 &nbsp;|&nbsp; billing@lakeshorerestoration.example<br>IICRC Certified Firm #216640 &nbsp;|&nbsp; IL Roofing/Restoration Lic. 104.018822</p></div></div>
+  <div class="doc"><h2>INVOICE</h2><table>
+    <tr><td>Invoice no.</td><td><b>LR-26-04417</b></td></tr>
+    <tr><td>Invoice date</td><td>September 28, 2026</td></tr>
+    <tr><td>Job no.</td><td>W-2609-331</td></tr>
+    <tr><td>Terms</td><td>Net 30</td></tr></table></div>
+</div>
+<div class="parties">
+  <div><h3>Bill to</h3><p><b>Chinedu Okafor</b><br>2620 Central Park Ave<br>Evanston, IL 60201</p></div>
+  <div><h3>Loss location</h3><p>Same as billing address<br>Finished basement, 1,150 sq ft<br>Category 2 water, Class 2</p></div>
+  <div><h3>Insurance</h3><p>Carrier: Antsurance<br>Date of loss: September 21, 2026<br>Cause: failed supply line</p></div>
+</div>
+<table class="items">
+  <tr><th style="width:52%">Description</th><th class="num">Qty</th><th>Unit</th><th class="num">Rate</th><th class="num">Amount</th></tr>
+  <tr><td>Emergency service call, same day<div class="sub">Sep 22, crew on site 11:20 am</div></td><td class="num">1</td><td>ea</td><td class="num">385.00</td><td class="num">385.00</td></tr>
+  <tr><td>Water extraction from floor, Category 2</td><td class="num">1,150</td><td>sq ft</td><td class="num">1.10</td><td class="num">1,265.00</td></tr>
+  <tr><td>Remove and dispose of wet carpet and pad</td><td class="num">620</td><td>sq ft</td><td class="num">1.35</td><td class="num">837.00</td></tr>
+  <tr><td>Flood cut drywall at 4 ft, bag and remove</td><td class="num">148</td><td>lin ft</td><td class="num">4.25</td><td class="num">629.00</td></tr>
+  <tr><td>Remove wet batt insulation</td><td class="num">296</td><td>sq ft</td><td class="num">0.95</td><td class="num">281.20</td></tr>
+  <tr><td>Antimicrobial application to floor and framing</td><td class="num">1,150</td><td>sq ft</td><td class="num">0.42</td><td class="num">483.00</td></tr>
+  <tr><td>LGR dehumidifier<div class="sub">4 units x 5 days, Sep 22 to Sep 27</div></td><td class="num">20</td><td>unit days</td><td class="num">98.00</td><td class="num">1,960.00</td></tr>
+  <tr><td>Air mover<div class="sub">14 units x 5 days</div></td><td class="num">70</td><td>unit days</td><td class="num">32.00</td><td class="num">2,240.00</td></tr>
+  <tr><td>HEPA air scrubber<div class="sub">1 unit x 5 days</div></td><td class="num">5</td><td>unit days</td><td class="num">85.00</td><td class="num">425.00</td></tr>
+  <tr><td>Daily moisture monitoring and equipment check</td><td class="num">5</td><td>visits</td><td class="num">95.00</td><td class="num">475.00</td></tr>
+  <tr><td>Contents manipulation and pack-out, labor</td><td class="num">12</td><td>hours</td><td class="num">58.00</td><td class="num">696.00</td></tr>
+  <tr><td>Debris haul-off and disposal</td><td class="num">1</td><td>load</td><td class="num">295.00</td><td class="num">295.00</td></tr>
+</table>
+<div class="totals">
+  <div class="log"><h3>Drying log summary (wood framing, % moisture content)</h3>
+    <table><tr><th>Location</th><th>Sep 22</th><th>Sep 24</th><th>Sep 26</th><th>Sep 27</th></tr>
+    <tr><td>North wall plate</td><td>31</td><td>22</td><td>15</td><td>12</td></tr>
+    <tr><td>Bath wall plate</td><td>38</td><td>27</td><td>17</td><td>13</td></tr>
+    <tr><td>Stair stringer</td><td>26</td><td>19</td><td>14</td><td>12</td></tr>
+    <tr><td>Dry standard</td><td colspan="4">12 to 14, reached Sep 27. Equipment removed.</td></tr></table></div>
+  <div class="sum"><table>
+    <tr><td>Subtotal</td><td class="num">$9,971.20</td></tr>
+    <tr><td>Sales tax (exempt)</td><td class="num">$0.00</td></tr>
+    <tr><td>Payments received</td><td class="num">$0.00</td></tr>
+    <tr class="due"><td>Balance due</td><td class="num">$9,971.20</td></tr></table></div>
+</div>
+<div class="foot"><b>Work authorization</b> signed by Chinedu Okafor on September 22, 2026. Emergency mitigation only: this invoice does not include rebuild, the furnace or damaged contents.
+Please remit to Lakeshore Restoration &amp; Drying, Inc. A direct payment from the carrier is accepted with the policyholder's written direction to pay, which is on file.<br>Sample document created for a software demonstration. Not a real record.</div>
+</body></html>

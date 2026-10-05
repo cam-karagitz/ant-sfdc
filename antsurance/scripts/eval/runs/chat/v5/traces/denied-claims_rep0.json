@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which claims were denied?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Account.Name, Policy__r.Name, Loss_Type__c, Estimated_Loss__c, Date_of_Loss__c, Handled_By__c, Coverage_Check__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Status = 'Denied' ORDER BY Reported_Date__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-PA-206438\",\"Id\":\"a00aj00003jfwT0AAI\"},\"Account\":{\"Name\":\"Lombardi Household\",\"Id\":\"001aj000041E8NKAA0\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Handled_By__c\":\"Dana Whitaker\",\"Date_of_Loss__c\":\"2026-08-21\",\"Estimated_Loss__c\":1800,\"Loss_Type__c\":\"Glass\",\"Policy__c\":\"a00aj00003jfwT0AAI\",\"AccountId\":\"001aj000041E8NKAA0\",\"Subject\":\"Windshield cracked by highway debris\",\"CaseNumber\":\"00002585\",\"Id\":\"500aj00003jfwU9AAI\"},{\"Policy__r\":{\"Name\":\"ANT-CP-207033\",\"Id\":\"a00aj00003jfwTZAAY\"},\"Account\":{\"Name\":\"Lincoln Square Books & Paper\",\"Id\":\"001aj000041E8NVAA0\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Handled_By__c\":\"Marcus Lindahl\",\"Date_of_Loss__c\":\"2026-08-20\",\"Estimated_Loss__c\":12050,\"Loss_Type__c\":\"Fire\",\"Policy__c\":\"a00aj00003jfwTZAAY\",\"AccountId\":\"001aj000041E8NVAA0\",\"Subject\":\"Small electrical fire in the back office\",\"CaseNumber\":\"00002600\",\"Id\":\"500aj00003jfwUOAAY\"},{\"Policy__r\":{\"Name\":\"ANT-GL-205248\",\"Id\":\"a00aj00003jfwRsAAI\"},\"Account\":{\"Name\":\"Marigold Cafe & Catering\",\"Id\":\"001aj000041E8MoAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Handled_By__c\":\"Dana Whitaker\",\"Date_of_Loss__c\":\"2026-07-30\",\"Estimated_Loss__c\":5000,\"Loss_Type__c\":\"Liability\",\"Policy__c\":\"a00aj00003jfwRsAAI\",\"AccountId\":\"001aj000041E8MoAAK\",\"Subject\":\"Guest alleges food poisoning after wedding\",\"CaseNumber\":\"00002578\",\"Id\":\"500aj00003jfwU2AAI\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Why was the fire claim denied?\",\n    \"Show file notes on the denied claims\",\n    \"Which claims are still open?\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Why was the fire claim denied?\",\n      \"Show file notes on the denied claims\",\n      \"Which claims are still open?\"\n    ]\n  }\n]"
+  }
+]

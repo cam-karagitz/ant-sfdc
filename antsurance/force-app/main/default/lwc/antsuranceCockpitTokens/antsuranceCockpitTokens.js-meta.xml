@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Brand values and the small shared pieces (chips, links, eyebrows) for the Home cockpit.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

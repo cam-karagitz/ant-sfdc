@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Issue the policy on this option, or roll the renewal, and close its sale as Bound.</description>
+    <flowDefinition>Bind_Policy</flowDefinition>
+    <label>Bind This Quote</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

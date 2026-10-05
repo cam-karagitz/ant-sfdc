@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Kind__c</fullName>
+    <description>What kind of work this is.</description>
+    <label>Kind</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Claim brief</fullName>
+                <default>false</default>
+                <label>Claim brief</label>
+            </value>
+            <value>
+                <fullName>Underwriting memo</fullName>
+                <default>false</default>
+                <label>Underwriting memo</label>
+            </value>
+            <value>
+                <fullName>Renewal outreach</fullName>
+                <default>false</default>
+                <label>Renewal outreach</label>
+            </value>
+            <value>
+                <fullName>Reserve review</fullName>
+                <default>false</default>
+                <label>Reserve review</label>
+            </value>
+            <value>
+                <fullName>Quote follow-up</fullName>
+                <default>false</default>
+                <label>Quote follow-up</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

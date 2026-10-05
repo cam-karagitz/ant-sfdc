@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Household</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Household_Compact</compactLayoutAssignment>
+    <description>A family or individual who holds personal lines policies. Its contacts are the household members.</description>
+    <label>Household</label>
+    <picklistValues>
+        <picklist>Customer_Segment__c</picklist>
+        <values>
+            <fullName>Personal Lines</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

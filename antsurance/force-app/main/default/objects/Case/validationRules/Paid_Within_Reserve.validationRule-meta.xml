@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Paid_Within_Reserve</fullName>
+    <active>true</active>
+    <description>A claim cannot be paid beyond what is reserved for it. The reserve has to be raised first.</description>
+    <errorConditionFormula><![CDATA[AND(RecordType.DeveloperName = "Claim", BLANKVALUE(Paid_Amount__c, 0) > BLANKVALUE(Reserve_Amount__c, 0))]]></errorConditionFormula>
+    <errorDisplayField>Paid_Amount__c</errorDisplayField>
+    <errorMessage>Paid to date cannot be more than the reserve. Raise the reserve first.</errorMessage>
+</ValidationRule>

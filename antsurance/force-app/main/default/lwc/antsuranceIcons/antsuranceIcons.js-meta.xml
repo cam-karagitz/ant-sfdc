@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The one mapping from a line of business, a coverage, an asset type, a role on a policy, a claim or request, a task and a file to its icon and tint. Every component that shows one of these imports it from here.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

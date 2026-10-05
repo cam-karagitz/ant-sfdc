@@ -1,0 +1,406 @@
+/* The price panel beside the quote questions. Brand values are fixed on purpose so it keeps
+   its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-ink: #4c5c35;
+    --ants-clay: #d97757;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-price {
+    padding: 1.125rem 1.25rem 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+}
+
+.c-price__label,
+.c-price__heading {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-price__premium {
+    margin: 0.25rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    transition: opacity 0.15s ease;
+}
+
+.c-price__premium_busy {
+    opacity: 0.45;
+}
+
+.c-price__per {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-price__terms {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0.875rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--ants-line);
+}
+
+.c-price__terms dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-price__terms dd {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-price__review {
+    margin-top: 0.875rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-price__review-title {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0 0 0.25rem;
+    font-family: var(--ants-display);
+    font-weight: 600;
+}
+
+.c-price__review ul {
+    margin: 0;
+    padding-left: 1.125rem;
+    list-style: disc;
+    text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------- Claude suggests
+   A slim strip between the terms and the build-up. Each suggestion is a short note with a clay
+   edge; one that warns against a choice carries an amber edge and says "Avoid". */
+
+.c-advice {
+    margin-top: 0.875rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--ants-line);
+}
+
+.c-advice__head {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-advice__spark {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.c-advice__quiet {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-advice__quiet_busy::after {
+    content: '...';
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .c-advice__quiet_busy {
+        animation: c-advice-breathe 1.6s ease-in-out infinite;
+    }
+}
+
+@keyframes c-advice-breathe {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+}
+
+.c-advice__retry-row {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0;
+}
+
+.c-advice__retry {
+    flex: none;
+    padding: 0;
+    white-space: nowrap;
+    border: 0;
+    background: none;
+    color: var(--ants-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.c-advice__retry:hover {
+    color: var(--ants-ink);
+}
+
+.c-advice__retry:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-advice__list {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-advice__item {
+    padding: 0.5rem 0.625rem 0.5rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-left: 3px solid var(--ants-clay);
+    border-radius: 0.25rem 0.75rem 0.75rem 0.25rem;
+    background: #fff;
+    font-size: 0.8125rem;
+}
+
+.c-advice__item_avoid {
+    border-left-color: var(--ants-amber-ink);
+}
+
+.c-advice__tag {
+    display: inline-block;
+    margin: 0 0 0.25rem;
+    padding: 0.0625rem 0.4375rem;
+    border-radius: 999px;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+.c-advice__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+.c-advice__move {
+    margin: 0.125rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-advice__why {
+    margin: 0.25rem 0 0;
+    text-wrap: pretty;
+}
+
+.c-advice__warning {
+    margin: 0.25rem 0 0;
+    color: var(--ants-amber-ink);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+.c-advice__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 0.5rem;
+    margin-top: 0.375rem;
+}
+
+.c-advice__effect {
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.c-advice__effect_saving {
+    color: var(--ants-olive-ink);
+}
+
+.c-advice__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.c-advice__apply,
+.c-advice__dismiss {
+    flex: none;
+    border: 0;
+    white-space: nowrap;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.c-advice__apply {
+    padding: 0.1875rem 0.75rem;
+    border-radius: 999px;
+    background: var(--ants-clay-deep);
+    color: #fff;
+}
+
+.c-advice__apply:hover {
+    background: var(--ants-clay-dark);
+}
+
+.c-advice__dismiss {
+    padding: 0.1875rem 0;
+    background: none;
+    color: var(--ants-muted);
+    text-decoration: underline;
+}
+
+.c-advice__dismiss:hover {
+    color: var(--ants-ink);
+}
+
+.c-advice__apply:focus-visible,
+.c-advice__dismiss:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-price__heading {
+    margin-top: 1.125rem;
+    color: var(--ants-muted);
+}
+
+.c-price__heading_first {
+    margin-top: 0;
+}
+
+.c-price__lines {
+    margin: 0.375rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* The question and its amount share the first line; the answer and its effect share the second. With
+   the effect beside the question, a name such as "Work given to subcontractors" broke in two. */
+.c-price__line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    padding: 0.3125rem 0;
+    border-bottom: 1px solid var(--ants-line);
+    font-size: 0.8125rem;
+}
+
+/* A long question wraps onto a second line; it is never cut short. */
+.c-price__line-title {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+}
+
+.c-price__line-effect {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+/* The answer sits under its question. */
+.c-price__line-detail {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-price__more {
+    display: block;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.c-price__more:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-price__line-amount {
+    grid-column: 2;
+    grid-row: 1;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.c-price__line-amount_credit {
+    color: var(--ants-olive-ink);
+}
+
+.c-price__total {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0 0;
+    font-family: var(--ants-display);
+    font-weight: 600;
+}

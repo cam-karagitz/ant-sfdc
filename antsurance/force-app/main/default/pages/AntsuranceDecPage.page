@@ -1,0 +1,322 @@
+<apex:page controller="AntsuranceDecPageController" renderAs="{!IF($CurrentPage.parameters.preview == '1', null, 'pdf')}" applyHtmlTag="false" applyBodyTag="false" showHeader="false"
+    sidebar="false" standardStylesheets="false" docType="html-5.0" readOnly="true">
+<!--
+    Antsurance policy declarations, printed as a US Letter PDF: /apex/AntsuranceDecPage?id=<Policy__c Id>
+    (add &download=1 to save it instead of viewing it).
+
+    This is the customer's document: it declares who and what is insured, the coverages, limits, deductibles,
+    premium and term. It does not print the insurer's own view of the customer: the policy's status, whether
+    payments are up to date, or how a driver is rated and what is on their record.
+
+    The shared print styles, and the rules they follow, are in the antsuranceDocumentStyles static resource.
+    The controller decides where the page breaks go: a section that starts a new page carries the
+    "new-page" class, and a table that runs on is handed over as parts, each printed with its heading
+    and column heads.
+-->
+<html class="{!IF($CurrentPage.parameters.preview == '1', 'preview', 'print')}">
+<head>
+<apex:stylesheet value="{!$Resource.antsuranceDocumentStyles}"/>
+<style type="text/css">
+    /* Premium summary. */
+    .premium td { padding: 10pt 12pt 11pt 12pt; border-top: 0.75pt solid #e8e6dc; border-bottom: 0.75pt solid #e8e6dc; }
+    .premium .value { font-size: 10pt; }
+    .premium .lead .value { font-size: 15pt; }
+
+    /* Who to call. */
+    .help { margin-top: 15pt; }
+
+    /* The premium summary, contacts and closing note always share a page. */
+    .ending { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+    <div class="footer">
+        <table>
+            <tr>
+                <td style="width: 255pt;">Antsurance Insurance Company, a fictional insurer used for demonstrations</td>
+                <td style="width: 150pt; text-align: center;"><apex:outputText value="{!documentLabel}"/></td>
+                <td style="width: 120pt; text-align: right;"><apex:outputText value="{!printedLine}"/><span class="page-number"></span> of <span class="page-count"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="band">
+        <tr>
+            <td style="width: 180pt;"><apex:image url="{!$Resource.antsuranceLockupOnWhite}" width="162" height="24" alt="Antsurance"/></td>
+            <td style="width: 281pt; text-align: right;">
+                <div class="band-title">POLICY DECLARATIONS</div>
+                <apex:outputPanel layout="none" rendered="{!found}">
+                    <div class="band-line"><apex:outputText value="{!lineOfBusiness}"/></div>
+                </apex:outputPanel>
+            </td>
+        </tr>
+    </table>
+    <table><tr><td class="rule">&#160;</td></tr></table>
+
+    <apex:outputPanel layout="none" rendered="{!NOT(found)}">
+        <div class="missing">This policy could not be found.</div>
+        <div class="muted">Open the declarations page from a policy record, or check that you have access to the policy.</div>
+    </apex:outputPanel>
+
+    <apex:outputPanel layout="none" rendered="{!found}">
+        <table class="facts">
+            <tr>
+                <td style="width: 238pt;">
+                    <div class="label">Policy number</div>
+                    <div class="value"><apex:outputText value="{!policyNumber}"/></div>
+                </td>
+                <td class="divide" style="width: 239pt;">
+                    <div class="label">Policy period</div>
+                    <div class="value"><apex:outputText value="{!policyPeriod}"/></div>
+                    <div class="note nowrap">12:01 AM standard time at the insured's address</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="label">Named insured and mailing address</div>
+                    <div class="value"><apex:outputText value="{!namedInsured}"/></div>
+                    <apex:outputPanel layout="none" rendered="{!hasInsuredNote}">
+                        <div class="value-line"><apex:outputText value="{!insuredNote}"/></div>
+                    </apex:outputPanel>
+                    <apex:repeat value="{!addressLines}" var="line">
+                        <div class="value-line"><apex:outputText value="{!line}"/></div>
+                    </apex:repeat>
+                </td>
+                <td class="divide">
+                    <div class="label">Agent</div>
+                    <div class="value"><apex:outputText value="{!agentName}"/></div>
+                    <div class="value-line"><apex:outputText value="{!agentDetail}"/></div>
+                </td>
+            </tr>
+        </table>
+        <table class="strip">
+            <tr>
+                <td style="width: 107pt;"><div class="label">Policy term</div><div class="value"><apex:outputText value="{!term}"/></div></td>
+                <td class="divide" style="width: 107pt;"><div class="label">Policy limit</div><div class="value"><apex:outputText value="{!policyLimit}"/></div></td>
+                <td class="divide" style="width: 107pt;"><div class="label">Policy deductible</div><div class="value"><apex:outputText value="{!policyDeductible}"/></div></td>
+                <td class="divide" style="width: 108pt;"><div class="label">Issued</div><div class="value"><apex:outputText value="{!issueDate}"/></div></td>
+            </tr>
+        </table>
+
+        <apex:outputPanel layout="none" rendered="{!hasAssets}">
+            <div class="{!assetsClass}">
+                <div class="section-title"><apex:outputText value="{!assetHeading}"/></div>
+                <table class="grid">
+                    <tr>
+                        <th style="width: {!assetWidths[0]};"><apex:outputText value="{!assetColumns[0]}"/></th>
+                        <th style="width: {!assetWidths[1]};"><apex:outputText value="{!assetColumns[1]}"/></th>
+                        <th style="width: {!assetWidths[2]};"><apex:outputText value="{!assetColumns[2]}"/></th>
+                        <!-- A repeat over one or no items, because a hidden outputPanel leaves a span behind that breaks the row. -->
+                        <apex:repeat value="{!assetFourthColumn}" var="heading">
+                            <th style="width: {!assetFourthWidth}; text-align: {!assetFourthAlign};"><apex:outputText value="{!heading}"/></th>
+                        </apex:repeat>
+                    </tr>
+                    <apex:repeat value="{!assets}" var="asset">
+                        <tr>
+                            <td class="strong {!IF(asset.hasDetail, 'open', '')}"><apex:outputText value="{!asset.title}"/></td>
+                            <td class="{!IF(asset.hasDetail, 'open', '')}"><apex:outputText value="{!asset.second}"/></td>
+                            <td class="{!IF(asset.hasDetail, 'open', '')}"><apex:outputText value="{!asset.third}"/></td>
+                            <apex:repeat value="{!asset.fourthCell}" var="value">
+                                <td class="{!IF(asset.hasDetail, 'open', '')}" style="text-align: {!assetFourthAlign};"><apex:outputText value="{!value}"/></td>
+                            </apex:repeat>
+                        </tr>
+                        <apex:outputPanel layout="none" rendered="{!asset.hasDetail}">
+                            <tr>
+                                <td class="detail" colspan="{!assetColumnCount}">
+                                    <apex:repeat value="{!asset.details}" var="line"><div><apex:outputText value="{!line}"/></div></apex:repeat>
+                                </td>
+                            </tr>
+                        </apex:outputPanel>
+                    </apex:repeat>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="none" rendered="{!hasInsuredItemOnly}">
+            <div class="{!assetsClass}">
+                <div class="section-title"><apex:outputText value="{!assetHeading}"/></div>
+                <table class="grid">
+                    <tr><td class="strong" style="width: 509pt;"><apex:outputText value="{!insuredItem}"/></td></tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="none" rendered="{!hasDrivers}">
+            <div class="{!driversClass}">
+                <div class="section-title">Drivers</div>
+                <table class="grid">
+                    <tr>
+                        <th style="width: 160pt;">Driver</th>
+                        <th style="width: 110pt;">Relationship</th>
+                        <th style="width: 80pt;">Licensed in</th>
+                        <th style="width: 95pt;">On this policy</th>
+                    </tr>
+                    <apex:repeat value="{!drivers}" var="driver">
+                        <tr>
+                            <td class="strong"><apex:outputText value="{!driver.name}"/></td>
+                            <td><apex:outputText value="{!driver.relationship}"/></td>
+                            <td><apex:outputText value="{!driver.licensed}"/></td>
+                            <td><apex:outputText value="{!driver.standing}"/></td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="none" rendered="{!hasCoverages}">
+            <apex:repeat value="{!coverageGroups}" var="group">
+                <div class="{!group.sectionClass}{!IF(group.isContinued, ' carried', '')}">
+                    <div class="section-title">
+                        Coverages and limits<apex:outputPanel layout="none" rendered="{!group.isContinued}"><span class="continued">, continued</span></apex:outputPanel>
+                    </div>
+                    <table class="grid">
+                        <tr class="heads">
+                            <th style="width: 196pt;">Coverage</th>
+                            <th class="right" style="width: 115pt;">Limit</th>
+                            <th class="right" style="width: 70pt;">Deductible</th>
+                            <th class="right" style="width: 80pt;">Annual premium</th>
+                        </tr>
+                        <apex:repeat value="{!group.coverages}" var="coverage">
+                            <tr>
+                                <td class="strong" style="width: 196pt;"><apex:outputText value="{!coverage.name}"/></td>
+                                <td class="right" style="width: 115pt;">
+                                    <apex:outputText value="{!coverage.limitText}"/>
+                                    <apex:outputPanel layout="none" rendered="{!coverage.hasLimitNote}">
+                                        <span class="note">&#160;<apex:outputText value="{!coverage.limitNote}"/></span>
+                                    </apex:outputPanel>
+                                </td>
+                                <td class="right" style="width: 70pt;"><apex:outputText value="{!coverage.deductible}"/></td>
+                                <td class="right" style="width: 80pt;"><apex:outputText value="{!coverage.premium}"/></td>
+                            </tr>
+                        </apex:repeat>
+                        <apex:outputPanel layout="none" rendered="{!group.isLast}">
+                            <tr class="total">
+                                <td colspan="3">Total coverage premium</td>
+                                <td class="right"><apex:outputText value="{!coverageTotal}"/></td>
+                            </tr>
+                        </apex:outputPanel>
+                    </table>
+                </div>
+            </apex:repeat>
+        </apex:outputPanel>
+
+        <apex:outputPanel layout="none" rendered="{!hasForms}">
+            <apex:repeat value="{!formGroups}" var="group">
+                <div class="{!group.sectionClass}{!IF(group.isContinued, ' carried', '')}">
+                    <div class="section-title">
+                        Forms, endorsements, benefits and discounts<apex:outputPanel layout="none" rendered="{!group.isContinued}"><span class="continued">, continued</span></apex:outputPanel>
+                    </div>
+                    <table class="grid">
+                        <tr class="heads">
+                            <th style="width: 70pt;">Form</th>
+                            <th style="width: 170pt;">Title</th>
+                            <th style="width: 95pt;">Type</th>
+                            <th class="right" style="width: 52pt;">Limit</th>
+                            <th class="right" style="width: 58pt;">Premium</th>
+                        </tr>
+                        <apex:repeat value="{!group.forms}" var="form">
+                            <tr>
+                                <td style="width: 70pt;"><apex:outputText value="{!form.formNumber}"/></td>
+                                <td class="strong" style="width: 170pt;">
+                                    <apex:repeat value="{!form.titleLines}" var="line"><div><apex:outputText value="{!line}"/></div></apex:repeat>
+                                </td>
+                                <td style="width: 95pt;"><apex:outputText value="{!form.type}"/></td>
+                                <td class="right" style="width: 52pt;"><apex:outputText value="{!form.limitText}"/></td>
+                                <td class="right" style="width: 58pt;"><apex:outputText value="{!form.premiumEffect}"/></td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                    <apex:outputPanel layout="none" rendered="{!group.isLast}">
+                        <div class="note" style="padding-top: 4pt;">Premiums for forms are part of the coverage premiums shown above. A minus sign marks a discount.</div>
+                    </apex:outputPanel>
+                </div>
+            </apex:repeat>
+        </apex:outputPanel>
+
+        <div class="{!endingClass}">
+        <div class="section">
+            <div class="section-title">Premium summary</div>
+            <table class="premium" style="margin-top: 6pt;">
+                <tr>
+                    <td class="lead" style="width: 150pt;"><div class="label">Total annual premium</div><div class="value"><apex:outputText value="{!annualPremium}"/></div></td>
+                    <td style="width: 110pt;"><div class="label">Billing plan</div><div class="value"><apex:outputText value="{!billingPlan}"/></div></td>
+                    <td class="divide" style="width: 166pt;"><div class="label">Installments</div><div class="value"><apex:outputText value="{!installments}"/></div></td>
+                </tr>
+            </table>
+        </div>
+
+        <table class="help panel">
+            <tr>
+                <td style="width: 238pt;">
+                    <div class="label">To report a claim, any time</div>
+                    <div class="value">1-800-555-0199</div>
+                    <div class="value-line">Have this policy number and the date of loss to hand</div>
+                </td>
+                <td class="divide" style="width: 239pt;">
+                    <div class="label">Questions about this policy</div>
+                    <div class="value"><apex:outputText value="{!agentName}"/></div>
+                    <div class="value-line"><apex:outputText value="{!agentDetail}"/></div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="closing">
+            <div>These declarations, with the policy form and the forms and endorsements listed above, make up the policy. This is not a bill.</div>
+            <div>Coverage applies only where a limit or premium is shown. Keep this page with your policy documents.</div>
+        </div>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!$CurrentPage.parameters.preview == '1'}">
+    <!-- On-screen preview only: tells the Documents tab how tall the sheet is, so it can show all of it, and
+         where the sheet can be cut for a first look without slicing a row: the bottom of each table row
+         that no line of text crosses. Written without less-than signs and ampersands, which this page's markup would take for its own. -->
+    <script type="text/javascript">
+        (function () {
+            function folds() {
+                var all = document.body.getElementsByTagName('*');
+                var rows = document.body.getElementsByTagName('tr');
+                var lines = [];
+                var cuts = [];
+                var index, other, box, cut, crossed;
+                for (index = 0; all.length > index; index++) {
+                    if (all[index].children.length === 0) {
+                        if (all[index].textContent.replace(/\s/g, '') !== '') {
+                            box = all[index].getBoundingClientRect();
+                            if (box.height > 0) {
+                                lines.push([box.top + window.pageYOffset, box.bottom + window.pageYOffset]);
+                            }
+                        }
+                    }
+                }
+                for (index = 0; rows.length > index; index++) {
+                    cut = Math.ceil(rows[index].getBoundingClientRect().bottom + window.pageYOffset);
+                    crossed = false;
+                    for (other = 0; lines.length > other; other++) {
+                        if (cut - 1 > lines[other][0]) {
+                            if (lines[other][1] > cut + 1) {
+                                crossed = true;
+                            }
+                        }
+                    }
+                    if (crossed === false) {
+                        if (cuts.indexOf(cut) === -1) {
+                            if (60 > cuts.length) {
+                                cuts.push(cut);
+                            }
+                        }
+                    }
+                }
+                return cuts;
+            }
+            function report() {
+                window.parent.postMessage({ source: 'antsurance-document', token: '{!JSENCODE($CurrentPage.parameters.previewToken)}', height: document.body.offsetHeight, folds: folds() }, '*');
+            }
+            window.addEventListener('load', report);
+            window.setTimeout(report, 400);
+            window.setTimeout(report, 1500);
+        })();
+    </script>
+    </apex:outputPanel>
+</body>
+</html>
+</apex:page>

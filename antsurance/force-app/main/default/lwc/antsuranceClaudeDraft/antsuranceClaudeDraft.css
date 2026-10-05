@@ -1,0 +1,201 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+/* A sheet of paper: white, squarer than the cards, lifted a little off the chat. */
+.c-draft {
+    container-type: inline-size;
+    max-width: 40rem;
+    border: 1px solid var(--ants-line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    box-shadow: 0 6px 18px rgb(20 20 19 / 7%);
+}
+
+.c-draft__head {
+    padding: 0.875rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-draft__kind {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0 0 0.625rem;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.c-draft__lines {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.25rem 0.875rem;
+    margin: 0;
+    font-size: 0.8125rem;
+}
+
+.c-draft__line {
+    display: contents;
+}
+
+.c-draft__line dt {
+    color: var(--ants-muted);
+    font-weight: 400;
+}
+
+.c-draft__line dd {
+    margin: 0;
+    color: var(--ants-ink);
+    text-wrap: pretty;
+}
+
+.c-draft__name {
+    font-weight: 500;
+}
+
+.c-draft__address {
+    margin-left: 0.5rem;
+    color: var(--ants-muted);
+    overflow-wrap: anywhere;
+}
+
+.c-draft__subject {
+    font-weight: 600;
+}
+
+.c-draft__body {
+    padding: 1rem 1.25rem 0.25rem;
+    color: var(--ants-ink);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+.c-draft__body p {
+    margin: 0 0 0.75rem;
+    white-space: pre-line;
+}
+
+.c-draft__foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+@container (max-width: 24rem) {
+    .c-draft__head,
+    .c-draft__body {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .c-draft__address {
+        display: block;
+        margin-left: 0;
+    }
+}
+
+/* ---------- Compact, for the utility panel: the subject and the opening lines ---------- */
+
+.c-draft__head_mini {
+    padding: 0.5rem 0.625rem 0.5rem 0.75rem;
+}
+
+.c-draft__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.c-draft__top .c-draft__kind {
+    margin: 0;
+}
+
+.c-draft__to {
+    margin: 0.25rem 0 0;
+    color: var(--ants-ink);
+    font-size: 0.75rem;
+}
+
+.c-draft__to-label {
+    margin-right: 0.375rem;
+    color: var(--ants-muted);
+}
+
+.c-draft__subject_mini {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+}
+
+.c-draft__body_mini {
+    padding: 0.625rem 0.75rem 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.c-draft__body_mini p {
+    margin-bottom: 0.5rem;
+}
+
+/* Three lines, fading out, until the user asks for the rest. */
+.c-draft__body_preview {
+    max-height: calc(0.625rem + 3 * 1.5 * 0.8125rem);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+    mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+
+.c-draft__foot_mini {
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4375rem 0.625rem 0.4375rem 0.75rem;
+}
+
+.c-draft__toggle {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.c-draft__toggle:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-draft__toggle:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-draft__tools {
+    display: flex;
+    gap: 0.375rem;
+}
+
+/* Open as email is the draft's main action. */
+.c-expand_primary {
+    --slds-c-icon-color-foreground-default: #fff;
+
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-deep);
+}
+
+.c-expand_primary:hover {
+    border-color: var(--ants-clay-dark);
+    background: var(--ants-clay-dark);
+}

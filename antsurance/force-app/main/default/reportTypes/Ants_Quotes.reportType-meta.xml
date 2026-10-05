@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>Quote</baseObject>
+    <category>quotes</category>
+    <deployed>true</deployed>
+    <description>Every quote with its premium, terms, status, age and the policy sale it belongs to. Use for quote follow-up and underwriter workload.</description>
+    <label>Quotes on Policy Sales</label>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>QuoteNumber</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Status</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Annual_Premium__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Coverage_Limit__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Deductible__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Issued_Date__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Days_Since_Issued__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ExpirationDate</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Underwriter__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CreatedDate</field>
+            <table>Quote</table>
+        </columns>
+        <masterLabel>Quote</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Policy Sale</displayNameOverride>
+            <field>Opportunity</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Line of Business</displayNameOverride>
+            <field>Opportunity.Line_of_Business__c</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Sale Stage</displayNameOverride>
+            <field>Opportunity.StageName</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Sale Type</displayNameOverride>
+            <field>Opportunity.Type</field>
+            <table>Quote</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Opportunity.CloseDate</field>
+            <table>Quote</table>
+        </columns>
+        <masterLabel>Policy sale</masterLabel>
+    </sections>
+</ReportType>

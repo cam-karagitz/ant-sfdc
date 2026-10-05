@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Shared client for talking to Claude from any component: runs the lookup rounds and builds the page-context note.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

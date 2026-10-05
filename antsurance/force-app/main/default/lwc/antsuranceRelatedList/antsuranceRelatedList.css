@@ -1,0 +1,302 @@
+@import 'c/antsuranceUiStyles';
+
+/* A related list as a quiet table on a white card. Brand values are fixed on purpose so it
+   keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-dark: #8a4a35;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-list {
+    /* The card measures itself, so it can drop columns when a page puts it in a narrow column. */
+    container-type: inline-size;
+    margin-bottom: 0.75rem;
+    padding: 1rem 1.25rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-list__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    padding-bottom: 0.5rem;
+}
+
+.c-list__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-list__count {
+    padding: 0 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.c-list__spacer {
+    flex: 1;
+}
+
+.c-list__all {
+    flex: none;
+    margin-right: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+/* How to read the list, said once under its title. */
+.c-list__hint {
+    margin: -0.375rem 0 0.5rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-list__note {
+    margin: 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--ants-line);
+    font-size: 0.875rem;
+    color: var(--ants-muted);
+}
+
+.c-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.c-list__cell {
+    padding: 0.5625rem 0.75rem 0.5625rem 0;
+    border-top: 1px solid var(--ants-line);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    text-align: left;
+    vertical-align: top;
+    /* Text wraps rather than being cut; figures and dates below stay on one line. */
+    overflow-wrap: anywhere;
+}
+
+.c-list__cell:last-child {
+    padding-right: 0;
+}
+
+/* The row's edges get a little room so its hover tint does not stop at the text. */
+.c-list__row > .c-list__cell:first-child {
+    padding-left: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+th.c-list__cell:first-child {
+    padding-left: 0.5rem;
+}
+
+.c-list__cell_go {
+    width: 1.5rem;
+    padding-right: 0.5rem;
+    text-align: right;
+    vertical-align: middle;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* An icon and the row's name sit on one line, the icon held at the top when the name wraps. */
+.c-list__lead {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.c-list__icon {
+    margin-top: -0.1875rem;
+    margin-bottom: -0.1875rem;
+}
+
+.c-list__add {
+    margin-left: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+.c-list__add:hover {
+    color: var(--ants-ink);
+}
+
+th.c-list__cell {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+.c-list__cell_amount {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+.c-list__cell_date,
+.c-list__cell_chip {
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+.c-list__link {
+    color: var(--ants-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--ants-line);
+    text-underline-offset: 0.15em;
+}
+
+.c-list__link_main {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.c-list__link:hover,
+.c-list__link:focus-visible {
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+}
+
+.c-chip {
+    display: inline-block;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.c-chip_good {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-chip_watch {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_ended {
+    background: var(--ants-line);
+    color: var(--ants-ink);
+}
+
+/* ---------- Loading: three rows the shape of what is coming ---------- */
+
+.c-skeleton {
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-skeleton__row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* The height of a drawn row, so the card does not jump when the records arrive. */
+    height: 2.3125rem;
+    padding: 0 0.5rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-skeleton__row:last-child {
+    border-bottom: 0;
+}
+
+.c-skeleton__tile {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.c-skeleton__line {
+    flex: none;
+    width: 34%;
+}
+
+.c-skeleton__line_2 {
+    width: 26%;
+}
+
+.c-skeleton__line_3 {
+    width: 30%;
+}
+
+.c-skeleton__end {
+    width: 4.5rem;
+    margin-left: auto;
+}
+
+/* ---------- Narrow: the columns that matter least give way ---------- */
+
+@container (max-width: 34rem) {
+    .c-list__cell_extra {
+        display: none;
+    }
+}
+
+@container (max-width: 22rem) {
+    .c-list__cell_third {
+        display: none;
+    }
+}
+
+/* The tint belongs to the cells, so it follows their rounded ends. */
+.c-list__row.c-ui-open:hover,
+.c-list__row.c-ui-open:active {
+    background-color: transparent;
+}
+
+.c-list__row.c-ui-open:hover > .c-list__cell {
+    background-color: #faf9f5;
+}
+
+.c-list__row.c-ui-open:active > .c-list__cell {
+    background-color: var(--ants-oat);
+}
+
+/* Reached by keyboard, a row answers the same way, and its link carries a clear ring. */
+.c-list__row.c-ui-open:focus-within > .c-list__cell {
+    background-color: #faf9f5;
+}
+
+.c-list__link:focus-visible,
+.c-list__all:focus-visible {
+    outline: 2px solid #ae5f46;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}

@@ -1,0 +1,251 @@
+/* Shared pieces for the record pages. Import with: @import 'c/antsuranceUiStyles';
+   Colors are the brand values, fixed on purpose so components keep their look under any org theme. */
+
+/* ---------- Icon tiles: an icon on a soft tint. The tint only helps find it; a label carries the meaning. ---------- */
+
+.c-ui-tile {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+    background: #f0eee7;
+    --slds-c-icon-color-foreground-default: #66645e;
+    --sds-c-icon-color-foreground-default: #66645e;
+}
+
+.c-ui-tile_small {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.c-ui-tile_large {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+}
+
+.c-ui-tile_clay {
+    background: #faefeb;
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+.c-ui-tile_olive {
+    background: #e3e9d8;
+    --slds-c-icon-color-foreground-default: #4c5c35;
+    --sds-c-icon-color-foreground-default: #4c5c35;
+}
+
+.c-ui-tile_amber {
+    background: #f6ecd6;
+    --slds-c-icon-color-foreground-default: #7a5a17;
+    --sds-c-icon-color-foreground-default: #7a5a17;
+}
+
+.c-ui-tile_sand {
+    background: #f0eee7;
+    --slds-c-icon-color-foreground-default: #66645e;
+    --sds-c-icon-color-foreground-default: #66645e;
+}
+
+/* ---------- Something that opens: a row, a tile or a card. It answers the pointer, the keyboard and a press. ---------- */
+
+.c-ui-open {
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease,
+        box-shadow 120ms ease;
+}
+
+.c-ui-open:hover {
+    background-color: #faf9f5;
+}
+
+.c-ui-open:active {
+    background-color: #f0eee7;
+}
+
+.c-ui-open:focus-visible,
+.c-ui-focus:focus-visible {
+    outline: 2px solid #ae5f46;
+    outline-offset: 2px;
+}
+
+/* A card that opens lifts a little instead of tinting. A soft warm shadow, not a glow. */
+.c-ui-open_card:hover {
+    background-color: #fff;
+    border-color: #d97757;
+    box-shadow: 0 6px 18px rgba(138, 74, 53, 0.1);
+}
+
+.c-ui-open_card:active {
+    box-shadow: none;
+}
+
+/* The chevron on something that opens: quiet until its row is pointed at or focused. */
+.c-ui-chevron {
+    flex: none;
+    opacity: 0.45;
+    transition:
+        opacity 120ms ease,
+        transform 120ms ease;
+    --slds-c-icon-color-foreground-default: #66645e;
+    --sds-c-icon-color-foreground-default: #66645e;
+}
+
+.c-ui-open:hover .c-ui-chevron,
+.c-ui-open:focus-within .c-ui-chevron {
+    opacity: 1;
+    transform: translateX(2px);
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+/* ---------- Buttons: a label never wraps and a button never changes shape. ----------
+   In a row of text and an action, the button keeps its size and the text beside it gives way.
+   Give the text `min-width: 0`, and drop the action under it where the row gets too narrow. */
+
+lightning-button,
+lightning-button-menu,
+lightning-button-icon,
+.c-ui-button {
+    flex: none;
+    /* Lightning sets the label to wrap inside the button, so the button itself is held at the width of its label. */
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+/* ---------- Skeletons: the shape of what is coming, breathing slowly. ---------- */
+
+.c-ui-bone {
+    display: block;
+    border-radius: 0.375rem;
+    background: #f0eee7;
+    animation: c-ui-pulse 1.4s ease-in-out infinite;
+}
+
+.c-ui-bone_tile {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+}
+
+.c-ui-bone_line {
+    height: 0.75rem;
+}
+
+.c-ui-bone_title {
+    height: 1.25rem;
+}
+
+.c-ui-bone_figure {
+    height: 2rem;
+}
+
+@keyframes c-ui-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.55;
+    }
+}
+
+/* What arrives fades in once, briefly, so loading does not end with a jolt. */
+.c-ui-arrive {
+    animation: c-ui-arrive 180ms ease-out both;
+}
+
+@keyframes c-ui-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-ui-open,
+    .c-ui-chevron {
+        transition: none;
+    }
+
+    .c-ui-open:hover .c-ui-chevron,
+    .c-ui-open:focus-within .c-ui-chevron {
+        transform: none;
+    }
+
+    .c-ui-bone,
+    .c-ui-arrive {
+        animation: none;
+    }
+}
+
+/* ---------- Chips: one look for one idea, wherever it shows ---------- */
+
+/* A claim's severity. The words are always "Severity: High" (never "High severity"), so the chip reads
+   the same on Home, on the claim and in a list. Low and Medium are outlined; High and Catastrophic are
+   filled, and the word carries the meaning either way. */
+.c-ui-severity {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid #e8e6dc;
+    border-radius: 999px;
+    background: #fff;
+    color: #141413;
+    font-family: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-ui-severity_serious {
+    border-color: #8a4a35;
+    background: #8a4a35;
+    color: #faf9f5;
+}
+
+/* Whether Claude has read a piece of evidence: "Read by Claude" filled olive, "Not read yet" outlined. */
+.c-ui-read {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid #c9d4b6;
+    border-radius: 999px;
+    background: #e3e9d8;
+    color: #3d4b2a;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-ui-read_not {
+    border-color: #e8e6dc;
+    background: #fff;
+    color: #66645e;
+}
+
+/* A plainly good status, such as Active, dark enough to read on white, ivory or a tinted row. */
+.c-ui-status_good {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: #a9bd8b;
+    color: #141413;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}

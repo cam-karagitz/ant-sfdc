@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Kind__c</fullName>
+    <description>Whether this is a claim or a service request, in words, for lists that show both.</description>
+    <label>Kind</label>
+    <formula><![CDATA[IF(RecordType.DeveloperName = "Claim", "Claim", "Service request")]]></formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <type>Text</type>
+</CustomField>

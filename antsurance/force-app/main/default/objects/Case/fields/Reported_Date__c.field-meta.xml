@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reported_Date__c</fullName>
+    <description>When the claim or request was first reported to Antsurance. Defaults to today.</description>
+    <label>Received</label>
+    <defaultValue>TODAY()</defaultValue>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

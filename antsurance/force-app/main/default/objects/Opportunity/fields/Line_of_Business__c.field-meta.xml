@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Line_of_Business__c</fullName>
+    <description>The coverage being quoted.</description>
+    <label>Line of Business</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Line_of_Business</valueSetName>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

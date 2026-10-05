@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Record_Stamp__c</fullName>
+    <description>When the record was last changed at the moment this was prepared, so the desk can tell when it has changed since.</description>
+    <label>Record As Of</label>
+    <required>false</required>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002038: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKc9SAAS). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nChange the reserve on this claim to $1."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Reserve_Amount__c, Paid_Amount__c, Outstanding_Reserve__c, Estimated_Loss__c, Status FROM Case WHERE Id = '500aj00003jKc9SAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Status\":\"Under Investigation\",\"Estimated_Loss__c\":48500.00,\"Outstanding_Reserve__c\":40000.00,\"Paid_Amount__c\":5000.00,\"Reserve_Amount__c\":45000.00,\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't change the reserve because I only have read access to records here. You'll need to edit the Reserve Amount field on the claim yourself.\n\nHere's where [00002038](/lightning/r/500aj00003jKc9SAAS/view) stands now (status Under Investigation):\n- **Reserve:** $45,000\n- **Paid:** $5,000\n- **Outstanding reserve:** $40,000\n- **Estimated loss:** $48,500\n\nBefore you save, check the number. A $1 reserve would be **$4,999 below what's already been paid**, and far below the $48,500 estimate. If you meant to close the reserve down, set it to the paid amount ($5,000). That brings the outstanding reserve to $0."
+  }
+]

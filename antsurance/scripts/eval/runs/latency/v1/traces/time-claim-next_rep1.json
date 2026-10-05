@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat should I do next on this claim?"
+  },
+  {
+    "role": "assistant",
+    "content": "Drying is finished and moisture readings are normal (Marcus Lindahl's note from 30 Sep). The claim is now waiting on two documents: the drying vendor's invoice and the contractor's rebuild estimate. Your next steps:\n\n1. **Review the mitigation invoice.** Your open task is due **Sun 4 Oct**. Check it against the $9,500 set aside for drying.\n2. **Approve the rebuild estimate.** Your open task is due **Mon 5 Oct**. Check it against the $24,000 set aside for the rebuild. If either document hasn't come in, chase the vendor or contractor.\n3. **Look again at the reserve.** The estimated loss is **$48,500**, but the reserve is **$45,000**, with $5,000 already paid and **$40,000** still outstanding. If the invoice or estimate comes in high, the reserve may need to go up. I can't change reserves from here.\n4. **Move the claim forward.** Once both documents are approved, the claim can move on from Under Investigation.\n\nThe $2,500 deductible applies."
+  }
+]

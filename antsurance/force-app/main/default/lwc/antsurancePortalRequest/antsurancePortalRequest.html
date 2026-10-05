@@ -1,0 +1,99 @@
+<template>
+    <template lwc:if={request}>
+        <div class="c-layout">
+            <article class="c-main">
+                <header class="c-head">
+                    <div class="c-head__title">
+                        <p class="c-eyebrow">Request {request.requestNumber}</p>
+                        <h1 class="c-h1">{request.title}</h1>
+                        <p class="c-head__sent">{sentLine}</p>
+                    </div>
+                    <span class={statusClass}>{request.statusWord}</span>
+                </header>
+
+                <ol class="c-track" aria-label="Request progress">
+                    <template for:each={steps} for:item="step">
+                        <li key={step.key} class={step.className} aria-current={step.current}>
+                            <span class="c-track__dot">
+                                <template lwc:if={step.isDone}>
+                                    <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="Done"></lightning-icon>
+                                </template>
+                            </span>
+                            <span class="c-track__label">{step.label}</span>
+                        </li>
+                    </template>
+                </ol>
+
+                <div class="c-latest">
+                    <p class="c-latest__label">Latest</p>
+                    <p class="c-latest__text">{request.lastUpdate}</p>
+                    <template lwc:if={showHandler}><p class="c-latest__who">{handledBy}</p></template>
+                    <template lwc:if={request.closedText}><p class="c-latest__who">Closed {request.closedText}.</p></template>
+                </div>
+
+                <template lwc:if={hasFacts}>
+                    <section class="c-block">
+                        <h2 class="c-h2">What you sent</h2>
+                        <dl class="c-sent">
+                            <template for:each={facts} for:item="fact">
+                                <div key={fact.key} class="c-sent__item"><dt>{fact.label}</dt><dd>{fact.value}</dd></div>
+                            </template>
+                        </dl>
+                    </section>
+                </template>
+                <template lwc:if={request.asked}>
+                    <section class="c-block">
+                        <h2 class="c-h2">{askedTitle}</h2>
+                        <p class="c-asked">{request.asked}</p>
+                    </section>
+                </template>
+                <template lwc:if={request.takenForYou}>
+                    <section class="c-block">
+                        <h2 class="c-h2">How this was opened</h2>
+                        <p class="c-asked">Our team opened this request for you. If anything about it is not right, add a note and we will put it right.</p>
+                    </section>
+                </template>
+
+                <template lwc:if={hasNotes}>
+                    <section class="c-block">
+                        <h2 class="c-h2">Your notes to the team</h2>
+                        <ul class="c-notes">
+                            <template for:each={notes} for:item="entry">
+                                <li key={entry.key} class="c-note"><p class="c-note__text">{entry.text}</p><p class="c-note__when">{entry.whenText}</p></li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+            </article>
+
+            <aside class="c-side">
+                <h2 class="c-h2">What you can do</h2>
+                <template lwc:if={message}><p class="c-side__message" role="status">{message}</p></template>
+                <template lwc:if={failure}><p class="c-side__failure" role="alert">{failure}</p></template>
+                <template lwc:if={request.isOpen}>
+                    <label class="c-side__label" for="note">Add a note for the team</label>
+                    <textarea id="note" class="c-side__area" rows="3" placeholder="For example, a license number or a better time to call" oninput={handleNote}></textarea>
+                    <button type="button" class="c-button c-button_primary" disabled={sendDisabled} onclick={handleAddNote}>Send note</button>
+                </template>
+                <button type="button" class="c-button" onclick={handleAsk}>Ask Claude about this request</button>
+                <template lwc:if={request.policyId}>
+                    <button type="button" class="c-button" onclick={handlePolicy}>Open the policy</button>
+                </template>
+                <template lwc:if={request.canWithdraw}>
+                    <template lwc:if={isConfirming}>
+                        <div class="c-confirm" role="group" aria-label="Withdraw this request">
+                            <p class="c-confirm__text">Withdraw this request? The team will not act on it.</p>
+                            <div class="c-confirm__buttons">
+                                <button type="button" class="c-button c-button_primary" disabled={isSending} onclick={handleConfirmWithdraw}>Yes, withdraw it</button>
+                                <button type="button" class="c-button" onclick={handleKeep}>Keep it</button>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <button type="button" class="c-link c-side__withdraw" onclick={handleWithdraw}>Withdraw this request</button>
+                    </template>
+                </template>
+            </aside>
+        </div>
+    </template>
+</template>

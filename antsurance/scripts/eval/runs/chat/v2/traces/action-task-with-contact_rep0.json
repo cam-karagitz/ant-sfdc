@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000040t3coAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nAdd a task to send Maria Reyes her updated ID cards tomorrow."
+  },
+  {
+    "role": "assistant",
+    "content": "Tomorrow is Saturday 3 Oct."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"priority\": \"Normal\",\n  \"contact_id\": \"003aj00002T9O6DAAV\",\n  \"related_record_id\": \"001aj000040t3coAAA\",\n  \"due_date\": \"2026-10-03\",\n  \"subject\": \"Send Maria Reyes her updated ID cards\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Send Maria Reyes her updated ID cards\",\n    \"dueDate\": \"2026-10-03\",\n    \"relatedId\": \"001aj000040t3coAAA\",\n    \"contactId\": \"003aj00002T9O6DAAV\",\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

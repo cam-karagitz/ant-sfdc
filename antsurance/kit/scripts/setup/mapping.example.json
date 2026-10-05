@@ -1,0 +1,27 @@
+{
+  "_about": "A mapping says, for everything of ours that a part names, what it is in your org. Copy this file, run describe_capability.py for the list to fill in, and give it to adapt_capability.py. Keys that start with an underscore are notes and are ignored. This example is the one in examples/acme/: our policy trigger fitted to an invented Acme_Policy__c.",
+  "capability": "automation",
+  "_only": "Optional. Narrow the work to these components and the code they need (Type:Name, as describe_capability.py prints them). Leave it out to adapt the whole part.",
+  "only": ["ApexTrigger:AntsurancePolicyTrigger"],
+  "_prefix": "Optional. What the copies are called in place of Antsurance. Left out, the adapter takes the prefix your org's classes share from org-conventions.json, when the preflight was sure of one.",
+  "prefix": "Acme",
+  "_testNames": "Optional: 'Test at the end' (AcmeThingTest), '_Test at the end' (AcmeThing_Test) or 'Test at the start' (TestAcmeThing). Left out, org-conventions.json decides.",
+  "_objects": "Each of our objects the part names needs one of: {\"to\": \"Your_Object__c\"}, {\"createOurs\": true} to install our object beside yours, or {\"leaveOut\": true}. A standard object (Account, Case) is yours already and needs no line.",
+  "objects": {
+    "Policy__c": {"to": "Acme_Policy__c"}
+  },
+  "_fields": "Each of our fields the part names, as Object.Field, needs one of: {\"to\": \"Your_Object__c.Your_Field__c\"}, {\"createOurs\": true} to add our field to your object, or {\"leaveOut\": true}. Beside \"to\" you may give \"type\" (your field's type, when no pulled metadata is at hand) and \"childRelationship\" (the name your lookup gives the list of children, such as Acme_Policies__r). A field of an object that is created or left out goes the same way without a line.",
+  "fields": {
+    "Policy__c.Account__c": {"to": "Acme_Policy__c.Customer__c", "type": "Lookup"},
+    "Policy__c.Policyholder_Name__c": {"to": "Acme_Policy__c.Customer_Name__c"},
+    "Policy__c.Status__c": {"to": "Acme_Policy__c.Policy_Status__c"},
+    "Policy__c.Effective_Date__c": {"to": "Acme_Policy__c.Start_Date__c"},
+    "Policy__c.Expiration_Date__c": {"to": "Acme_Policy__c.End_Date__c"}
+  },
+  "_recordTypes": "Each record type of ours the part names, as Object.Name, needs one of: {\"to\": \"Object.Your_Record_Type\"}, {\"toFieldValue\": {\"field\": \"Object.Field\", \"value\": \"...\"}} when you tell such records apart by a field and not a record type, or {\"leaveOut\": true}. The policy trigger names none.",
+  "recordTypes": {},
+  "_picklistValues": "For each picklist the part names values of: our value, then yours. null means you have no such value, and the adapter marks every line that uses it for a decision.",
+  "picklistValues": {
+    "Policy__c.Status__c": {"Active": "In Force"}
+  }
+}

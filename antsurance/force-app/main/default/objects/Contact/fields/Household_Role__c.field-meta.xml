@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Household_Role__c</fullName>
+    <description>This person's place in their household. Blank for business contacts.</description>
+    <label>Household Role</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Head of Household</fullName>
+                <default>false</default>
+                <label>Head of Household</label>
+            </value>
+            <value>
+                <fullName>Spouse or Partner</fullName>
+                <default>false</default>
+                <label>Spouse or Partner</label>
+            </value>
+            <value>
+                <fullName>Dependent</fullName>
+                <default>false</default>
+                <label>Dependent</label>
+            </value>
+            <value>
+                <fullName>Other Household Member</fullName>
+                <default>false</default>
+                <label>Other Household Member</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

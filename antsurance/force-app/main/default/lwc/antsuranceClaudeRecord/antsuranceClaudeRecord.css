@@ -1,0 +1,296 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+.c-open {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--ants-clay-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.c-open:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-open:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+/* ---------- A record's own page card, under a bar saying what it is ---------- */
+
+.c-frame {
+    max-width: 54rem;
+}
+
+.c-frame__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.625rem;
+}
+
+.c-frame__head .c-open {
+    margin-top: 0.25rem;
+}
+
+/* Who and what the record belongs to, on one line under its name. */
+.c-frame__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.125rem 1rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    list-style: none;
+}
+
+.c-frame__label {
+    color: var(--ants-muted);
+}
+
+/* ---------- The compact card ---------- */
+
+.c-record {
+    --c-record-edge: var(--ants-line-strong);
+
+    container-type: inline-size;
+    max-width: 34rem;
+    border: 1px solid var(--ants-line);
+    border-top: 0.25rem solid var(--c-record-edge);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-record_good {
+    --c-record-edge: var(--ants-olive);
+}
+
+.c-record_watch {
+    --c-record-edge: var(--ants-clay);
+}
+
+.c-record_alert {
+    --c-record-edge: var(--ants-clay-deep);
+}
+
+.c-record__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem 0;
+}
+
+.c-record__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-record__titles {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-record__eyebrow {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-record__head .c-chip {
+    flex: none;
+    margin-top: 0.125rem;
+}
+
+.c-record__main {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.75rem 1.5rem;
+    align-items: start;
+    padding: 0.875rem 1rem 0;
+}
+
+.c-record__figure {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-right: 1.5rem;
+    border-right: 1px solid var(--ants-line);
+}
+
+.c-record__amount {
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+}
+
+.c-record__amount-label {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* The facts take both columns when the record has no headline figure. */
+.c-record__facts {
+    display: grid;
+    grid-column: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+    margin: 0;
+}
+
+.c-record__facts:first-child {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.c-record__fact {
+    min-width: 0;
+}
+
+.c-record__fact dt {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.c-record__fact dd {
+    margin: 0;
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+}
+
+.c-record__body {
+    margin: 0.875rem 1rem 0;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+    white-space: pre-line;
+}
+
+.c-record__foot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.875rem;
+    padding: 0.625rem 1rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+/* In the panel the headline figure takes its own row, so nothing is left empty beside the facts. */
+@container (max-width: 32rem) {
+    .c-record__main {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-record__figure {
+        padding-right: 0;
+        border-right: 0;
+    }
+
+    .c-record__facts,
+    .c-record__facts:first-child {
+        grid-column: 1;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ---------- The utility panel: name, status and three facts ---------- */
+
+.c-mini-record {
+    --c-record-edge: var(--ants-line-strong);
+
+    box-shadow: inset 0 0.1875rem 0 var(--c-record-edge);
+}
+
+.c-mini-record_good {
+    --c-record-edge: var(--ants-olive);
+}
+
+.c-mini-record_watch {
+    --c-record-edge: var(--ants-amber);
+}
+
+.c-mini-record_alert {
+    --c-record-edge: var(--ants-clay);
+}
+
+.c-mini-record .c-mini__head {
+    padding-top: 0.75rem;
+}
+
+.c-record__icon_mini {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.c-mini-record .c-chip {
+    margin-top: 0.25rem;
+}
+
+.c-keyfacts {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+}
+
+.c-keyfact {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.c-keyfact dt {
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    text-wrap: balance;
+}
+
+.c-keyfact dd {
+    margin: 0;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+}
+
+.c-mini-record__foot {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.4375rem 0.75rem;
+    border-top: 1px solid var(--ants-line);
+}

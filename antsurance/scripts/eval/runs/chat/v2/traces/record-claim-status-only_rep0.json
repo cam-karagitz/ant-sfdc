@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat's the status of this claim? Don't change anything."
+  },
+  {
+    "role": "assistant",
+    "content": "Claim [00002216](/lightning/r/500aj00003jLAOcAAO/view) is **Under Investigation**. It's 10 days old and Marcus Lindahl is handling it. Drying is finished and moisture readings are normal (30 Sep note). Next, he's waiting on the drying company's invoice and the contractor's estimate to rebuild the basement.\n\n- **Loss:** a burst supply line flooded the finished basement on 21 Sep. Severity is High.\n- **Coverage:** the policy was in force on that date and covers sudden water leaks. A **$2,500** deductible applies.\n- **Money:** a **$45,000** reserve, with **$5,000** already paid as an advance, leaves **$40,000** outstanding. The estimated loss is $48,500.\n- **Your open tasks:**\n  - Review the drying company's invoice by 4 Oct\n  - Approve the rebuild estimate by 5 Oct\n\nBoth tasks are High priority. Nothing was changed."
+  }
+]

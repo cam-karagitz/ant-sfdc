@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Category__c</fullName>
+    <description>The kind of protection this coverage gives.</description>
+    <label>Category</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Liability</fullName>
+                <default>false</default>
+                <label>Liability</label>
+            </value>
+            <value>
+                <fullName>Collision</fullName>
+                <default>false</default>
+                <label>Collision</label>
+            </value>
+            <value>
+                <fullName>Comprehensive</fullName>
+                <default>false</default>
+                <label>Comprehensive</label>
+            </value>
+            <value>
+                <fullName>Medical Payments</fullName>
+                <default>false</default>
+                <label>Medical Payments</label>
+            </value>
+            <value>
+                <fullName>Uninsured Motorist</fullName>
+                <default>false</default>
+                <label>Uninsured Motorist</label>
+            </value>
+            <value>
+                <fullName>Dwelling</fullName>
+                <default>false</default>
+                <label>Dwelling</label>
+            </value>
+            <value>
+                <fullName>Personal Property</fullName>
+                <default>false</default>
+                <label>Personal Property</label>
+            </value>
+            <value>
+                <fullName>Loss of Use</fullName>
+                <default>false</default>
+                <label>Loss of Use</label>
+            </value>
+            <value>
+                <fullName>Business Property</fullName>
+                <default>false</default>
+                <label>Business Property</label>
+            </value>
+            <value>
+                <fullName>Business Income</fullName>
+                <default>false</default>
+                <label>Business Income</label>
+            </value>
+            <value>
+                <fullName>Workers Compensation</fullName>
+                <default>false</default>
+                <label>Workers Compensation</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

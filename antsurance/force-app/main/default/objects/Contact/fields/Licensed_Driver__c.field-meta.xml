@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Licensed_Driver__c</fullName>
+    <description>Holds a driver license, so can be rated as a driver on an auto policy.</description>
+    <label>Licensed Driver</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

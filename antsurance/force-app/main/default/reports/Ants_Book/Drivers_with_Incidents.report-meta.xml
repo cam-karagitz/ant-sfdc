@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Policy__c.Participants__r$Name</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Name</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Account__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.Participants__r$Driver_Rating__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.Participants__r$Violations_Past_3_Years__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.Participants__r$Accidents_Past_3_Years__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.Participants__r$Years_Licensed__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Expiration_Date__c</field>
+    </columns>
+    <description>Violations or accidents, 3 years.</description>
+    <filter>
+        <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+        <criteriaItems>
+            <column>Policy__c.Participants__r$Role__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Driver</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.Participants__r$Violations_Past_3_Years__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.Participants__r$Accidents_Past_3_Years__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>Drivers with Violations or Accidents</name>
+    <reportType>Ants_Policy_Participants__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Policy__c.Participants__r$Violations_Past_3_Years__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Policy__c$Effective_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

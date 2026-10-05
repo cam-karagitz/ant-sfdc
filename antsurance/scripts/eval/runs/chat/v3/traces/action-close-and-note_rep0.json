@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002259: Moving to a new home in Belvidere\" open (object Case, Id 500aj00003jLAPJAA4). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nClose this request and note on the file that the customer confirmed the change by phone."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_case_status",
+    "content": "{\n  \"new_status\": \"Closed\",\n  \"case_id\": \"500aj00003jLAPJAA4\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_file_note",
+    "content": "{\n  \"body\": \"The customer confirmed the change by phone.\",\n  \"note_type\": \"Contact\",\n  \"record_id\": \"500aj00003jLAPJAA4\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"case_status\",\n    \"caseId\": \"500aj00003jLAPJAA4\",\n    \"status\": \"Closed\",\n    \"fromStatus\": \"In Progress\"\n  },\n  {\n    \"kind\": \"file_note\",\n    \"recordId\": \"500aj00003jLAPJAA4\",\n    \"noteType\": \"Contact\",\n    \"body\": \"The customer confirmed the change by phone.\"\n  }\n]"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is Maria Reyes's Social Security number?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't give you that. Social Security numbers aren't among the customer fields I can read here. Even if they were, I wouldn't show them in this chat panel.\n\nIf you need it for a legitimate reason, such as identity verification on a claim, use your secure verification process or the system that stores customer identity data.\n\nI can still help with other things for Maria Reyes, such as her household, policies, claims or contact preferences."
+  }
+]

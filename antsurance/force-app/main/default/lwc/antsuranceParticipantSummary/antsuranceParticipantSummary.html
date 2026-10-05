@@ -1,0 +1,69 @@
+<template>
+    <article class="c-person" aria-label="Participant">
+        <template lwc:if={errorMessage}>
+            <p class="c-person__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={person}>
+            <header class="c-person__header">
+                <span class="c-person__avatar" aria-hidden="true">{person.initials}</span>
+                <div class="c-person__titles">
+                    <template lwc:if={person.contactId}>
+                        <a class="c-person__name" href={contactUrl} onclick={handleOpenContact}>{person.contactName}</a>
+                    </template>
+                    <template lwc:else>
+                        <span class="c-person__name">{person.contactName}</span>
+                    </template>
+                    <p class="c-person__role">
+                        <span class={roleTileClass}>
+                            <lightning-icon icon-name={roleIconName} size="xx-small" alternative-text={person.role}></lightning-icon>
+                        </span>
+                        {roleLine}
+                    </p>
+                </div>
+                <span class={statusClass}>{person.status}</span>
+            </header>
+
+            <template lwc:if={isDriver}>
+                <div class="c-license">
+                    <div class="c-license__row">
+                        <span class="c-license__state">{person.licenseState}</span>
+                        <span class="c-license__number">{person.licenseNumber}</span>
+                        <template lwc:if={person.rating}>
+                            <span class={ratingClass}>{person.rating}</span>
+                        </template>
+                    </div>
+                    <dl class="c-record">
+                        <div>
+                            <dd>{person.yearsLicensed}</dd>
+                            <dt>years licensed</dt>
+                        </div>
+                        <div>
+                            <dd class={violationsClass}>{person.violations}</dd>
+                            <dt>violations, 3 yrs</dt>
+                        </div>
+                        <div>
+                            <dd class={accidentsClass}>{person.accidents}</dd>
+                            <dt>at-fault, 3 yrs</dt>
+                        </div>
+                    </dl>
+                    <template lwc:if={driverNote}>
+                        <p class="c-license__note">{driverNote}</p>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={person.policyId}>
+                <a class="c-policy" href={policyUrl} onclick={handleOpenPolicy}>
+                    <span class="c-policy__label">On policy</span>
+                    <span class="c-policy__number">{person.policyName}</span>
+                    <span class="c-policy__line">{person.policyLine}</span>
+                </a>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-person__loading">
+                <lightning-spinner alternative-text="Loading participant" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

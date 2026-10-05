@@ -1,0 +1,199 @@
+@import 'c/antsurancePortalStyles';
+
+:host {
+    display: block;
+}
+
+.c-docs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-docs__quiet {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+/* The picker and the actions share one row. When there is not room for both, the actions drop under the
+   picker at full size; neither is squeezed. */
+.c-docs__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem 1rem;
+}
+
+.c-docs__tabs {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+    background: var(--p-oat);
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.c-docs__tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.c-docs__tab {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0 0.875rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    color: var(--p-muted);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    --slds-c-icon-color-foreground-default: var(--p-muted);
+    transition: background-color var(--p-fast), color var(--p-fast);
+}
+
+.c-docs__tab:hover {
+    color: var(--p-clay-dark);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+}
+
+.c-docs__tab:active {
+    background: #f3ddd5;
+}
+
+.c-docs__tab:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 1px;
+}
+
+.c-docs__tab_selected,
+.c-docs__tab_selected:hover {
+    background: #fff;
+    color: var(--p-ink);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+    box-shadow: 0 1px 2px rgba(20, 20, 19, 0.08);
+}
+
+.c-docs__one {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin: 0;
+}
+
+.c-docs__name {
+    font-weight: 600;
+}
+
+.c-docs__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* The download is a link that looks like the page's filled button. The site's theme styles bare links, so
+   every state is spelled out here, more specifically than the theme does. */
+.c-docs__actions a.c-docs__download,
+.c-docs__actions a.c-docs__download:visited {
+    border-color: var(--p-clay);
+    background: var(--p-clay);
+    color: var(--p-ink);
+    text-decoration: none;
+    --slds-c-icon-color-foreground-default: var(--p-ink);
+}
+
+.c-docs__actions a.c-docs__download:hover,
+.c-docs__actions a.c-docs__download:focus-visible {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-deep);
+    color: var(--p-ivory);
+    box-shadow: 0 4px 12px rgba(174, 95, 70, 0.28);
+    --slds-c-icon-color-foreground-default: var(--p-ivory);
+}
+
+.c-docs__actions a.c-docs__download:active {
+    border-color: var(--p-clay-dark);
+    background: var(--p-clay-dark);
+    color: var(--p-ivory);
+    box-shadow: none;
+    --slds-c-icon-color-foreground-default: var(--p-ivory);
+}
+
+.c-docs__about {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--p-muted);
+}
+
+.c-docs__failure {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.625rem;
+    background: var(--p-amber-tint);
+    color: var(--p-amber-ink);
+}
+
+.c-docs__failure p {
+    margin: 0;
+}
+
+.c-docs__making {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--p-oat);
+}
+
+/* One page of the document, on a soft mat, no taller than the window. */
+.c-docs__preview {
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: var(--p-oat);
+    min-height: 12rem;
+}
+
+.c-docs__page {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 34rem;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(20, 20, 19, 0.12);
+}
+
+.c-docs__page_large {
+    width: 100%;
+    max-height: none;
+}
+
+.c-docs__pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.c-docs__count {
+    font-size: 0.9375rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}

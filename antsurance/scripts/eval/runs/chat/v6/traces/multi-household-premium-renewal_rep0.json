@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "What is the Reyes Household paying in total annual premium across its in-force policies, and which policy renews first?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c, Days_to_Renewal__c, Account__r.Id, Account__r.Name FROM Policy__c WHERE Account__r.Name LIKE '%Reyes%' AND Status__c IN ('Active','Pending Renewal') ORDER BY Expiration_Date__c LIMIT 20\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-17\",\"Annual_Premium__c\":1890,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jfwRCAAY\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-17\",\"Annual_Premium__c\":410,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jfwRDAAY\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Days_to_Renewal__c\":223,\"Expiration_Date__c\":\"2027-05-15\",\"Annual_Premium__c\":2380,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jfwRBAAY\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"[Reyes Household](/lightning/r/001aj000041E8MXAA0/view) pays **$4,680** a year across 3 in-force policies. First to renew is a tie: [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view) (Homeowners) and [ANT-UM-204551](/lightning/r/a00aj00003jfwRDAAY/view) (Umbrella) both expire **Mar 17, 2027**, 164 days from now.\\n\\n?> Show the Reyes Homeowners coverages\\n?> Any open claims for the Reyes Household?\\n?> Remind me to review the renewal in February\",\n  \"tiles\": [\n    {\n      \"label\": \"Total annual premium\",\n      \"value\": \"$4,680\",\n      \"note\": \"across 3 in-force policies\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Next renewal\",\n      \"value\": \"Mar 17, 2027\",\n      \"note\": \"Homeowners and Umbrella, 164 days\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Personal Auto\",\n      \"value\": \"$2,380\",\n      \"note\": \"renews May 15, 2027\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Total annual premium\",\n        \"value\": \"$4,680\",\n        \"note\": \"across 3 in-force policies\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Next renewal\",\n        \"value\": \"Mar 17, 2027\",\n        \"note\": \"Homeowners and Umbrella, 164 days\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Personal Auto\",\n        \"value\": \"$2,380\",\n        \"note\": \"renews May 15, 2027\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show the Reyes Homeowners coverages\",\n      \"Any open claims for the Reyes Household?\",\n      \"Remind me to review the renewal in February\"\n    ]\n  }\n]"
+  }
+]

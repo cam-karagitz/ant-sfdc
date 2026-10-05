@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The Claude at Work tab: the Claude work in this org as one job per row, with how each really runs, what each reads and prepares, what it may do alone, what it did from the records, and how it scored when tested.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Claude at Work</masterLabel>
+    <targets>
+        <target>lightning__Tab</target>
+    </targets>
+</LightningComponentBundle>

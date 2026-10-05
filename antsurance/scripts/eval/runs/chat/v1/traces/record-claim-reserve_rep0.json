@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nHow much is still reserved here?"
+  },
+  {
+    "role": "assistant",
+    "content": "The outstanding reserve on [00002118](/lightning/r/500aj00003jKuVeAAK/view) is **$40,000**. The total reserve was set at **$45,000**, and the **$5,000** emergency advance has already been paid.\n\nThe reserve set on 24 Sep was split like this:\n- Mitigation and drying: $9,500\n- Rebuild: $24,000\n- Furnace: $5,500\n- Contents: $6,000\n\nThe estimated loss is **$48,500**, which is $3,500 more than the reserve. The mitigation invoice and the rebuild estimate are still to come."
+  }
+]

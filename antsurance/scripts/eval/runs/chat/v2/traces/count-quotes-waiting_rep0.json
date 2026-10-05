@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many quotes are waiting on the customer?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status, COUNT(Id) n, SUM(Annual_Premium__c) p FROM Quote WHERE Status IN ('Issued','Presented') GROUP BY Status\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"p\":303485.0,\"n\":12,\"Status\":\"Presented\"},{\"p\":39863.0,\"n\":15,\"Status\":\"Issued\"}],\"truncated\":false,\"rowCount\":2}"
+  },
+  {
+    "role": "assistant",
+    "content": "**27 quotes** are waiting on the customer. Together they come to **$343,348** in annual premium.\n\n| Status | Quotes | Annual premium |\n|---|---|---|\n| Issued | 15 | $39,863 |\n| Presented | 12 | $303,485 |\n\nShould I list the oldest ones, or the ones about to expire?"
+  }
+]

@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Declarations page" icon-name="doctype:pdf">
+        <lightning-button-group slot="actions">
+            <lightning-button
+                label="Open in new tab"
+                icon-name="utility:new_window"
+                disabled={isUnavailable}
+                onclick={handleOpen}
+            ></lightning-button>
+            <lightning-button
+                label="Download"
+                icon-name="utility:download"
+                disabled={isUnavailable}
+                onclick={handleDownload}
+            ></lightning-button>
+        </lightning-button-group>
+        <div class="slds-p-horizontal_medium">
+            <template lwc:if={policyId}>
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">{caption}</p>
+                <div class="c-dec__desk">
+                    <div class="c-dec__page">
+                        <template lwc:if={isLoading}>
+                            <lightning-spinner alternative-text="Preparing the declarations page" size="medium"></lightning-spinner>
+                        </template>
+                        <iframe class="c-dec__pdf" src={embedUrl} title={frameTitle} onload={handleLoaded}></iframe>
+                    </div>
+                </div>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-color_weak">Open this from a policy to see its declarations page.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

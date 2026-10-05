@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Insurance ID cards for an auto policy, as a PDF: two wallet-size cards per vehicle with cut lines.</description>
+    <label>Antsurance ID Cards</label>
+</ApexPage>

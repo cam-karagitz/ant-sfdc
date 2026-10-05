@@ -1,0 +1,128 @@
+<template>
+    <article class="c-meter" aria-label={cardTitle}>
+        <template lwc:if={errorMessage}>
+            <p class="c-meter__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={isClaim}>
+            <template lwc:if={hasBanner}>
+                <p class={coverageClass}>
+                    <lightning-icon icon-name={coverageIcon} size="xx-small" variant={coverageIconVariant}></lightning-icon>
+                    <span>{coverageLabel}</span>
+                </p>
+            </template>
+            <div class="c-meter__body">
+                <div class="c-meter__head">
+                    <h2 class="c-meter__eyebrow">Claim financials</h2>
+                    <div class="c-meter__flags">
+                        <template lwc:if={record.severity}>
+                            <span class={severityClass} title={severityRule} aria-label={severityRule}>{severityLabel}</span>
+                        </template>
+                        <template lwc:if={record.siuReferral}>
+                            <span class="c-flag c-flag_alert">SIU</span>
+                        </template>
+                        <template lwc:if={record.subrogation}>
+                            <span class="c-flag">Subrogation</span>
+                        </template>
+                    </div>
+                </div>
+                <template lwc:if={severityReason}>
+                    <p class="c-meter__why" title={severityRule}>{severityReason}</p>
+                </template>
+
+                <p class="c-meter__figure">{figure}</p>
+                <p class="c-meter__caption">{figureCaption}</p>
+
+                <div class="c-bar" role="img" aria-label={barLabel}>
+                    <span class="c-bar__paid" style={paidStyle}></span>
+                    <span class="c-bar__open" style={openStyle}></span>
+                    <span class="c-bar__gap" style={gapStyle}></span>
+                </div>
+                <dl class="c-legend">
+                    <div>
+                        <dt><span class="c-dot c-dot_paid"></span>Paid</dt>
+                        <dd>{paid}</dd>
+                    </div>
+                    <div>
+                        <dt><span class="c-dot c-dot_open"></span>Reserved</dt>
+                        <dd>{reserve}</dd>
+                    </div>
+                    <div>
+                        <dt><span class="c-dot c-dot_gap"></span>Estimate</dt>
+                        <dd>{estimate}</dd>
+                    </div>
+                </dl>
+                <template lwc:if={reserveLine}>
+                    <p class="c-meter__reserve">{reserveLine}</p>
+                </template>
+            </div>
+            <dl class="c-clock">
+                <div>
+                    <dd>{daysSinceLoss}</dd>
+                    <dt>days since loss</dt>
+                </div>
+                <div>
+                    <dd>{daysOpen}</dd>
+                    <dt>{openCaption}</dt>
+                </div>
+                <div>
+                    <dd>{deductible}</dd>
+                    <dt>deductible</dt>
+                </div>
+            </dl>
+            <template lwc:if={record.customerName}>
+                <p class="c-who">
+                    <span class="c-who__label">Customer</span>
+                    <a class="c-who__name c-ui-focus" href={customerUrl} onclick={handleOpenCustomer}>{record.customerName}</a>
+                </p>
+            </template>
+        </template>
+        <template lwc:elseif={record}>
+            <div class="c-meter__body">
+                <h2 class="c-meter__eyebrow">Service request</h2>
+                <p class="c-meter__figure c-meter__figure_text">{record.requestType}</p>
+                <div class={requestStateClass}>
+                    <span class="c-next__label">{requestState}</span>
+                    <p class="c-next__text">{requestCaption}</p>
+                </div>
+                <template lwc:if={record.policyName}>
+                    <a class="c-policy" href={policyUrl} onclick={handleOpenPolicy}>
+                        <span class="c-policy__label">Policy</span>
+                        <span class="c-policy__number">{record.policyName}</span>
+                        <span class="c-policy__line">{record.policyLine}</span>
+                    </a>
+                </template>
+                <template lwc:if={canAddDriver}>
+                    <lightning-button class="c-meter__action" variant="brand" label="Add the driver" stretch onclick={handleAddDriver}></lightning-button>
+                </template>
+                <template lwc:elseif={showOpenPolicy}>
+                    <lightning-button class="c-meter__action" label="Open the policy" stretch onclick={handleOpenPolicy}></lightning-button>
+                </template>
+            </div>
+            <dl class="c-clock">
+                <div>
+                    <dd>{daysOpen}</dd>
+                    <dt>{openCaption}</dt>
+                </div>
+                <div>
+                    <dd>{record.priority}</dd>
+                    <dt>priority</dt>
+                </div>
+                <div>
+                    <dd>{record.origin}</dd>
+                    <dt>channel</dt>
+                </div>
+            </dl>
+            <template lwc:if={record.customerName}>
+                <p class="c-who">
+                    <span class="c-who__label">Customer</span>
+                    <a class="c-who__name c-ui-focus" href={customerUrl} onclick={handleOpenCustomer}>{record.customerName}</a>
+                </p>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-meter__loading">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204534\" open (object Policy__c, Id a00aj00003jKc7KAAS). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nLog an underwriting note that the roof was replaced in 2024."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't log that note because I only have read access to the CRM. I can look up records, but I can't create or edit them.\n\nTo add it yourself on [ANT-HO-204534](/lightning/r/a00aj00003jKc7KAAS/view), you could do either of these:\n- **File note:** create a new File Note on the policy with an underwriting note type. Suggested text: *\"Roof replaced in 2024, per [source, e.g. insured / inspection / invoice].\"*\n- **Underwriting Notes field:** edit the policy and add the same line to **Underwriting Notes**.\n\nIf you want, I can pull the policy's current underwriting notes or file notes first so you can see what's already recorded."
+  }
+]

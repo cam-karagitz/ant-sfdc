@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204585\" open (object Policy__c, Id a00aj00003jfwRFAAY). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat is the loss ratio on this policy?"
+  },
+  {
+    "role": "assistant",
+    "content": "The loss ratio on ANT-HO-204585 is **2,008.9%**. Incurred losses are **$45,000** against an annual premium of **$2,240**.\n\nAll of it comes from one open claim, [00002566](/lightning/r/500aj00003jfwTqAAI/view), for a burst pipe that flooded the finished basement. That's $5,000 paid plus a $40,000 outstanding reserve, and the claim is still Under Investigation. The underwriting notes already mark this supply line failure as something to review when the policy renews on Jan 17, 2027.\n\n?> Summarize claim 00002566\n?> What's recommended at renewal?\n?> Show other policies with high loss ratios"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Summarize claim 00002566\",\n      \"What's recommended at renewal?\",\n      \"Show other policies with high loss ratios\"\n    ]\n  }\n]"
+  }
+]

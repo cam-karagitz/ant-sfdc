@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many policies have a past-due payment status?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Account__r.Name, Account__c, Status__c, Annual_Premium__c, Line_of_Business__c FROM Policy__c WHERE Payment_Status__c = 'Past Due' ORDER BY Annual_Premium__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Wolf Road Auto Body\",\"Id\":\"001aj000040t1oYAAQ\"},\"Line_of_Business__c\":\"General Liability\",\"Annual_Premium__c\":4920.00,\"Status__c\":\"Active\",\"Account__c\":\"001aj000040t1oYAAQ\",\"Name\":\"ANT-GL-206302\",\"Id\":\"a00aj00003jKc90AAC\"},{\"Account__r\":{\"Name\":\"Tamarack Outfitters\",\"Id\":\"001aj000040t1o6AAA\"},\"Line_of_Business__c\":\"General Liability\",\"Annual_Premium__c\":3100.00,\"Status__c\":\"Active\",\"Account__c\":\"001aj000040t1o6AAA\",\"Name\":\"ANT-GL-205129\",\"Id\":\"a00aj00003jKc7tAAC\"},{\"Account__r\":{\"Name\":\"Hosseini Household\",\"Id\":\"001aj000040t1oHAAQ\"},\"Line_of_Business__c\":\"Personal Auto\",\"Annual_Premium__c\":2397.00,\"Status__c\":\"Lapsed\",\"Account__c\":\"001aj000040t1oHAAQ\",\"Name\":\"ANT-PA-205554\",\"Id\":\"a00aj00003jKc8IAAS\"},{\"Account__r\":{\"Name\":\"Castellano Household\",\"Id\":\"001aj000040t1nwAAA\"},\"Line_of_Business__c\":\"Personal Auto\",\"Annual_Premium__c\":1490.00,\"Status__c\":\"Lapsed\",\"Account__c\":\"001aj000040t1nwAAA\",\"Name\":\"ANT-PA-204670\",\"Id\":\"a00aj00003jKc7SAAS\"},{\"Account__r\":{\"Name\":\"Castellano Household\",\"Id\":\"001aj000040t1nwAAA\"},\"Line_of_Business__c\":\"Renters\",\"Annual_Premium__c\":204.00,\"Status__c\":\"Active\",\"Account__c\":\"001aj000040t1nwAAA\",\"Name\":\"ANT-RN-204687\",\"Id\":\"a00aj00003jKc7TAAS\"},{\"Account__r\":{\"Name\":\"Ortiz Household\",\"Id\":\"001aj000040t1oOAAQ\"},\"Line_of_Business__c\":\"Renters\",\"Annual_Premium__c\":170.00,\"Status__c\":\"Active\",\"Account__c\":\"001aj000040t1oOAAQ\",\"Name\":\"ANT-RN-205826\",\"Id\":\"a00aj00003jKc8YAAS\"}],\"truncated\":false,\"rowCount\":6}"
+  },
+  {
+    "role": "assistant",
+    "content": "**6 policies** are past due, totaling **$12,281** in annual premium. Four are still active and two have already lapsed.\n\n| Policy | Policyholder | Line | Status | Premium |\n|---|---|---|---|---|\n| [ANT-GL-206302](/lightning/r/a00aj00003jKc90AAC/view) | [Wolf Road Auto Body](/lightning/r/001aj000040t1oYAAQ/view) | General Liability | Active | $4,920 |\n| [ANT-GL-205129](/lightning/r/a00aj00003jKc7tAAC/view) | [Tamarack Outfitters](/lightning/r/001aj000040t1o6AAA/view) | General Liability | Active | $3,100 |\n| [ANT-PA-205554](/lightning/r/a00aj00003jKc8IAAS/view) | [Hosseini Household](/lightning/r/001aj000040t1oHAAQ/view) | Personal Auto | Lapsed | $2,397 |\n| [ANT-PA-204670](/lightning/r/a00aj00003jKc7SAAS/view) | [Castellano Household](/lightning/r/001aj000040t1nwAAA/view) | Personal Auto | Lapsed | $1,490 |\n| [ANT-RN-204687](/lightning/r/a00aj00003jKc7TAAS/view) | [Castellano Household](/lightning/r/001aj000040t1nwAAA/view) | Renters | Active | $204 |\n| [ANT-RN-205826](/lightning/r/a00aj00003jKc8YAAS/view) | [Ortiz Household](/lightning/r/001aj000040t1oOAAQ/view) | Renters | Active | $170 |\n\nCastellano Household has two of them: one lapsed and one still active."
+  }
+]

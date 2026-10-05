@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>One folding section: a line with a count and a summary that is always in view, and the detail under it on a press. Stack several for an accordion. The detail always prints.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

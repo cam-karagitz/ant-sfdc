@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Carries the answers read from a broker's submission to the quote configurator, and keeps a reading for the browser tab so it is not done twice. No screen of its own.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

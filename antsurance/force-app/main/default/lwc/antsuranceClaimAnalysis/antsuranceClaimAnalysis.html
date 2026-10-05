@@ -1,0 +1,195 @@
+<template>
+    <section class="c-analysis" aria-label="Claim analysis">
+        <template lwc:if={errorMessage}>
+            <p class="c-error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={hasDocket}>
+            <header class={headClass}>
+                <div class="c-head__text">
+                    <p class="c-eyebrow">Evidence on this claim</p>
+                    <h2 class="c-head__title">{summary}</h2>
+                    <template lwc:if={intro}>
+                        <p class="c-head__intro">{intro}</p>
+                    </template>
+                </div>
+                <div class="c-head__actions">
+                    <button type="button" class="c-link c-head__toggle" aria-expanded={docketPressed} onclick={handleToggleDocket}>
+                        {docketToggleLabel}
+                        <lightning-icon icon-name={docketToggleIcon} size="xx-small" class="c-link__icon" alternative-text=""></lightning-icon>
+                    </button>
+                    <lightning-button label="Add evidence" icon-name="utility:add" aria-expanded={addPressed} disabled={isRunning} onclick={handleToggleAdd} class="c-head__add"></lightning-button>
+                    <lightning-button label={runLabel} variant={runVariant} icon-name="utility:sparkles" disabled={runDisabled} onclick={handleRun} class="c-head__run"></lightning-button>
+                </div>
+            </header>
+
+            <template lwc:if={noFiles}>
+                <!-- Said in plain view, whether or not the panel under it is open: a report written without a photo should not look like one that had them. -->
+                <div class="c-missing">
+                    <span class="c-missing__icon"><lightning-icon icon-name="utility:image" size="x-small" alternative-text=""></lightning-icon></span>
+                    <div class="c-missing__text">
+                        <p class="c-missing__lead">No photos, videos or documents on this claim yet</p>
+                        <p class="c-missing__sub">{missingLine}</p>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={addOpen}>
+                <!-- One place to add to the file: files go to the claim's Salesforce Files, a note to its file notes. -->
+                <div class="c-add">
+                    <div class="c-add__ways">
+                        <section class="c-add__way" aria-label="Add files">
+                            <lightning-file-upload
+                                class="c-add__upload"
+                                label="Photos, videos and documents"
+                                name="claimEvidence"
+                                record-id={recordId}
+                                accept={acceptedFormats}
+                                multiple
+                                onuploadfinished={handleUploadFinished}
+                            ></lightning-file-upload>
+                            <p class="c-add__sub">Saved to this claim's Files. Claude looks at images and video and reads PDFs.</p>
+                        </section>
+                        <section class="c-add__way" aria-label="Add a file note">
+                            <label class="c-add__label" for="evidence-note">A file note</label>
+                            <textarea
+                                id="evidence-note"
+                                class="c-add__input"
+                                rows="2"
+                                maxlength="32000"
+                                placeholder="What was said, seen or decided"
+                                disabled={isSavingNote}
+                                oninput={handleNoteInput}
+                                lwc:ref="note"
+                            ></textarea>
+                            <div class="c-add__row">
+                                <lightning-combobox
+                                    class="c-add__type"
+                                    label="Note type"
+                                    variant="label-hidden"
+                                    value={noteType}
+                                    options={noteTypes}
+                                    disabled={isSavingNote}
+                                    onchange={handleNoteType}
+                                ></lightning-combobox>
+                                <lightning-button label="Save note" disabled={noteDisabled} onclick={handleSaveNote}></lightning-button>
+                            </div>
+                            <template lwc:if={noteError}>
+                                <p class="c-add__error" role="alert">{noteError}</p>
+                            </template>
+                        </section>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={showSteps}>
+                <!-- Open while it runs or has stopped part way. Once it has finished it folds to one line. -->
+                <c-antsurance-accordion class="c-run" variant="card" label={runHeading} count={stepCount} summary={runSummary} open={runOpen}>
+                    <ol class="c-steps" aria-live="polite">
+                        <template for:each={stepRows} for:item="step">
+                            <li key={step.id} class={step.className}>
+                                <span class="c-step__mark" aria-hidden="true">
+                                    <template lwc:if={step.isWorking}><span class="c-spinner"></span></template>
+                                    <template lwc:elseif={step.isDone}><lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon></template>
+                                    <template lwc:elseif={step.isFailed}><lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon></template>
+                                    <template lwc:elseif={step.isSkipped}><lightning-icon icon-name="utility:dash" size="xx-small"></lightning-icon></template>
+                                    <template lwc:else>{step.number}</template>
+                                </span>
+                                <div class="c-step__body">
+                                    <p class="c-step__label">
+                                        {step.label}
+                                        <span class="slds-assistive-text">: {step.stateWord}</span>
+                                        <template lwc:if={step.reused}><span class="c-step__note">Already done</span></template>
+                                        <template lwc:if={step.canRedo}>
+                                            <button type="button" class="c-link c-step__redo" data-index={step.index} onclick={handleRedo}>Do this again</button>
+                                        </template>
+                                    </p>
+                                    <template lwc:if={step.line}>
+                                        <p class="c-step__line">{step.line}</p>
+                                    </template>
+                                    <template lwc:if={step.isFailed}>
+                                        <div class="c-step__failure" role="alert">
+                                            <p class="c-step__error">{step.error}</p>
+                                            <p class="c-step__kept">Everything before this step is kept.</p>
+                                            <div class="c-step__actions">
+                                                <lightning-button label={step.retryLabel} variant="brand" onclick={handleRetry}></lightning-button>
+                                                <template lwc:if={step.canSkip}>
+                                                    <lightning-button label="Skip this step" onclick={handleSkip}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </li>
+                        </template>
+                    </ol>
+                </c-antsurance-accordion>
+            </template>
+
+            <!-- The docket: one kind of evidence at a time. Photos and videos are tiles that step sideways;
+                 documents, notes and statements are sentences, so each gets a full-width row. -->
+            <div class="c-docket" lwc:if={docketOpen}>
+                <template lwc:if={hasSeveralKinds}>
+                    <c-antsurance-tabs class="c-docket__kinds" variant="pill" label="Kinds of evidence" tabs={kindTabs} value={kind} onselect={handleKind}></c-antsurance-tabs>
+                </template>
+                <template lwc:if={group}>
+                    <div class="c-group" role="tabpanel" aria-label={group.title}>
+                        <template lwc:if={group.isVisual}>
+                            <c-antsurance-carousel label={group.title} per-view="3" item-min-width="300">
+                                <template for:each={group.tiles} for:item="tile">
+                                    <div key={tile.key} class="c-tile">
+                                        <template lwc:if={tile.isPhoto}>
+                                            <img class="c-tile__thumb" src={tile.url} alt="" loading="lazy" />
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="c-tile__icon"><lightning-icon icon-name={tile.icon} size="small"></lightning-icon></span>
+                                        </template>
+                                        <div class="c-tile__text">
+                                            <button type="button" class="c-item__title c-item__title_link" data-key={tile.key} title={tile.openLabel} onclick={handleOpen}>{tile.title}</button>
+                                            <p class="c-item__meta">{tile.meta}</p>
+                                            <template lwc:if={tile.line}>
+                                                <p class="c-tile__line">{tile.line}</p>
+                                            </template>
+                                            <span class={tile.tileStatusClass}>{tile.status}</span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </c-antsurance-carousel>
+                        </template>
+                        <template lwc:else>
+                            <ul class="c-rows">
+                                <template for:each={pageRows} for:item="row">
+                                    <li key={row.key} class="c-row">
+                                        <span class="c-row__icon"><lightning-icon icon-name={row.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                                        <div class="c-row__name">
+                                            <template lwc:if={row.canOpen}>
+                                                <button type="button" class="c-item__title c-item__title_link" data-key={row.key} title={row.openLabel} onclick={handleOpen}>{row.title}</button>
+                                            </template>
+                                            <template lwc:else>
+                                                <p class="c-item__title">{row.title}</p>
+                                            </template>
+                                            <p class="c-item__meta">{row.meta}</p>
+                                        </div>
+                                        <p class="c-row__line">{row.line}</p>
+                                        <span class={row.statusClass}>{row.status}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                            <c-antsurance-step-pager class="c-rows__pager" total={group.count} page-size={rowsPerPage} page={rowPage} label={group.pagerLabel} onpagechange={handleRowPage}></c-antsurance-step-pager>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <template lwc:if={hasReport}>
+                <c-antsurance-claim-analysis-report lwc:ref="report" record-id={recordId} report={report} docket={docket} onreportchanged={handleReportChanged}></c-antsurance-claim-analysis-report>
+            </template>
+        </template>
+
+        <!-- Out of sight: a video is played here and its frames drawn here, to send Claude stills. -->
+        <div class="c-offstage" aria-hidden="true">
+            <video lwc:ref="video" muted playsinline preload="auto"></video>
+            <canvas lwc:ref="canvas"></canvas>
+        </div>
+    </section>
+</template>

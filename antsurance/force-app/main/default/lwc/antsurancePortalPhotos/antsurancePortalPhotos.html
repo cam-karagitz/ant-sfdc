@@ -1,0 +1,82 @@
+<template>
+    <section class="c-photos" aria-label="Photos of the damage">
+        <div class="c-photos__head">
+            <div class="c-photos__title">
+                <h2 class="c-photos__name">Photos of the damage</h2>
+                <template lwc:if={hasPhotos}><span class="c-chip">{photos.length}</span></template>
+            </div>
+            <template lwc:if={showAdd}>
+                <button type="button" class="c-button" onclick={handleChoose}>
+                    <lightning-icon icon-name="utility:photo" size="x-small" alternative-text=""></lightning-icon>
+                    {addLabel}
+                </button>
+                <input class="c-photos__file" type="file" accept="image/*" multiple tabindex="-1" aria-hidden="true" onchange={handleFiles} />
+            </template>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <p class="c-photos__quiet">Loading the photos</p>
+        </template>
+
+        <template lwc:if={hasPhotos}>
+            <div class="c-photos__viewer" tabindex="0" role="group" aria-label="Photo viewer. Use the left and right arrow keys to move between photos." onkeydown={handleKey}>
+                <div class="c-photos__frame">
+                    <template lwc:if={shown.src}>
+                        <img class="c-photos__image" src={shown.src} alt={shown.alt} />
+                    </template>
+                    <template lwc:else>
+                        <p class="c-photos__quiet">Getting the photo</p>
+                    </template>
+                </div>
+                <div class="c-photos__about">
+                    <template lwc:if={shown.isChecking}>
+                        <p class="c-photos__line"><img class="c-photos__spark" src={spark} alt="" />Claude is looking at this photo</p>
+                    </template>
+                    <template lwc:if={shown.line}>
+                        <p class={shown.lineClass}><img class="c-photos__spark" src={spark} alt="" />{shown.line}</p>
+                    </template>
+                    <template lwc:if={shown.status}><p class="c-photos__quiet">{shown.status}</p></template>
+                    <template lwc:if={shown.failure}><p class="c-photos__failure" role="alert">{shown.failure}</p></template>
+                    <div class="c-photos__controls">
+                        <template lwc:if={hasSeveral}>
+                            <button type="button" class="c-button c-photos__step" disabled={prevDisabled} aria-label="Previous photo" onclick={handlePrev}>
+                                <lightning-icon icon-name="utility:chevronleft" size="x-small" alternative-text=""></lightning-icon>
+                            </button>
+                            <span class="c-photos__count">{count}</span>
+                            <button type="button" class="c-button c-photos__step" disabled={nextDisabled} aria-label="Next photo" onclick={handleNext}>
+                                <lightning-icon icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                            </button>
+                        </template>
+                        <template lwc:if={shown.canRemove}>
+                            <button type="button" class="c-link" onclick={handleRemove}>Remove this photo</button>
+                        </template>
+                    </div>
+                    <template lwc:if={hasSeveral}>
+                        <div class="c-photos__thumbs">
+                            <template for:each={thumbs} for:item="thumb">
+                                <button key={thumb.key} type="button" class={thumb.className} data-index={thumb.index} aria-label={thumb.label} aria-current={thumb.current} onclick={handleThumb}>
+                                    <template lwc:if={thumb.src}><img src={thumb.src} alt="" /></template>
+                                    <template lwc:else><span>{thumb.number}</span></template>
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <template lwc:if={latestNeed}>
+                <p class="c-photos__need"><span class="c-photos__lead">Still worth adding</span>{latestNeed}</p>
+            </template>
+        </template>
+        <template lwc:else>
+            <template lwc:if={showAdd}>
+                <p class="c-photos__quiet">{intro}</p>
+            </template>
+            <template lwc:elseif={showNone}>
+                <p class="c-photos__quiet">No photos were added from here.</p>
+            </template>
+        </template>
+
+        <template lwc:if={notice}><p class="c-photos__failure" role="alert">{notice}</p></template>
+        <template lwc:if={showAdd}><p class="c-photos__limit">{roomLeft}</p></template>
+    </section>
+</template>

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims are on policies that expire in the next 90 days?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Severity__c, Outstanding_Reserve__c, Policy__r.Id, Policy__r.Name, Policy__r.Expiration_Date__c, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Policy__r.Expiration_Date__c >= TODAY AND Policy__r.Expiration_Date__c <= NEXT_N_DAYS:90 ORDER BY Policy__r.Expiration_Date__c LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Northpoint Physical Therapy\",\"Id\":\"001aj000040t3dhAAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-10-31\",\"Name\":\"ANT-CP-206727\",\"Id\":\"a00aj00003jLAO3AAO\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3dhAAA\",\"Policy__c\":\"a00aj00003jLAO3AAO\",\"Outstanding_Reserve__c\":14050.00,\"Severity__c\":\"Medium\",\"Status\":\"Appraisal\",\"CaseNumber\":\"00002241\",\"Id\":\"500aj00003jLAP1AAO\"},{\"Account\":{\"Name\":\"Nakamura Household\",\"Id\":\"001aj000040t3crAAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-01\",\"Name\":\"ANT-PA-204636\",\"Id\":\"a00aj00003jKdy0AAC\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3crAAA\",\"Policy__c\":\"a00aj00003jKdy0AAC\",\"Outstanding_Reserve__c\":0.00,\"Severity__c\":\"Medium\",\"Status\":\"New\",\"CaseNumber\":\"00002212\",\"Id\":\"500aj00003jLAOYAA4\"},{\"Account\":{\"Name\":\"Marigold Cafe & Catering\",\"Id\":\"001aj000040t3d5AAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-06\",\"Name\":\"ANT-CP-205265\",\"Id\":\"a00aj00003jKdybAAC\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3d5AAA\",\"Policy__c\":\"a00aj00003jKdybAAC\",\"Outstanding_Reserve__c\":0.00,\"Severity__c\":\"Low\",\"Status\":\"New\",\"CaseNumber\":\"00002214\",\"Id\":\"500aj00003jLAOaAAO\"},{\"Account\":{\"Name\":\"Riverbend Veterinary Clinic\",\"Id\":\"001aj000040t3doAAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-07\",\"Name\":\"ANT-GL-207101\",\"Id\":\"a00aj00003jLAOPAA4\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3doAAA\",\"Policy__c\":\"a00aj00003jLAOPAA4\",\"Outstanding_Reserve__c\":2700.00,\"Severity__c\":\"Low\",\"Status\":\"Approved\",\"CaseNumber\":\"00002252\",\"Id\":\"500aj00003jLAPCAA4\"},{\"Account\":{\"Name\":\"Haddad Household\",\"Id\":\"001aj000040t3cxAAA\"},\"Policy__r\":{\"Expiration_Date__c\":\"2026-12-16\",\"Name\":\"ANT-PA-204857\",\"Id\":\"a00aj00003jKdyDAAS\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3cxAAA\",\"Policy__c\":\"a00aj00003jKdyDAAS\",\"Outstanding_Reserve__c\":58000.00,\"Severity__c\":\"High\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002217\",\"Id\":\"500aj00003jLAOdAAO\"}],\"truncated\":false,\"rowCount\":5}"
+  },
+  {
+    "role": "assistant",
+    "content": "**5 open claims** are on policies that expire in the next 90 days, with **$74,750** in outstanding reserve between them.\n\n| Claim | Customer | Policy expires | Status | Outstanding reserve |\n|---|---|---|---|---|\n| [00002241](/lightning/r/500aj00003jLAP1AAO/view) | Northpoint Physical Therapy | 31 Oct | Appraisal | $14,050 |\n| [00002212](/lightning/r/500aj00003jLAOYAA4/view) | Nakamura Household | 1 Dec | New | $0 |\n| [00002214](/lightning/r/500aj00003jLAOaAAO/view) | Marigold Cafe & Catering | 6 Dec | New | $0 |\n| [00002252](/lightning/r/500aj00003jLAPCAA4/view) | Riverbend Veterinary Clinic | 7 Dec | Approved | $2,700 |\n| [00002217](/lightning/r/500aj00003jLAOdAAO/view) | Haddad Household | 16 Dec | Under Investigation | **$58,000** |\n\nThe Haddad claim (high severity) and the Northpoint claim, whose policy expires in 29 days, are the ones to watch before renewal."
+  }
+]

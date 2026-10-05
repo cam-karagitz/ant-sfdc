@@ -1,0 +1,121 @@
+<template>
+    <section class="c-trend" aria-labelledby="trend-title" aria-busy={isLoading}>
+        <header class="c-trend__head">
+            <div class="c-trend__words">
+                <h2 id="trend-title" class="c-trend__title">How the loss ratio built</h2>
+                <p class="c-trend__basis">{basis}</p>
+            </div>
+            <div class="c-trend__tools">
+                <div class="c-range" role="group" aria-label="Period shown">
+                    <template for:each={ranges} for:item="option">
+                        <button
+                            key={option.key}
+                            type="button"
+                            class={option.className}
+                            title={option.title}
+                            aria-label={option.title}
+                            aria-pressed={option.pressed}
+                            data-key={option.key}
+                            onclick={handleRange}
+                        >
+                            {option.label}
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </header>
+        <div class="c-chart">
+            <template lwc:if={hasLine}>
+                <ol class="c-chart__scale" aria-hidden="true">
+                    <template for:each={view.ticks} for:item="tick">
+                        <li key={tick.key} class="c-chart__tick" style={tick.style}>{tick.label}</li>
+                    </template>
+                </ol>
+            </template>
+            <div
+                class={plotClass}
+                role="slider"
+                tabindex={plotTabIndex}
+                aria-label="Loss ratio by day. Use the arrow keys to move a day at a time."
+                aria-valuemin="0"
+                aria-valuemax={lastIndex}
+                aria-valuenow={sliderNow}
+                aria-valuetext={spoken}
+                onpointermove={handlePointer}
+                onpointerdown={handlePointer}
+                onpointerleave={handleLeave}
+                onfocus={handleFocus}
+                onblur={handleBlur}
+                onkeydown={handleKey}
+            >
+                <template lwc:if={hasLine}>
+                    <template for:each={view.ticks} for:item="tick">
+                        <span key={tick.key} class="c-plot__rule" style={tick.style}></span>
+                    </template>
+                    <span class="c-plot__mark" style={view.markStyle}>
+                        <span class={markLabelClass}>Healthy, under 70%</span>
+                    </span>
+                    <svg class="c-plot__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <polygon class="c-plot__area" points={view.area}></polygon>
+                        <polyline class="c-plot__line" points={view.line}></polyline>
+                    </svg>
+                    <span class="c-plot__end" style={view.endStyle}></span>
+                    <template lwc:if={active}>
+                        <span class="c-plot__hair" style={active.hairStyle}></span>
+                        <template lwc:if={active.hasDot}>
+                            <span class="c-plot__dot" style={active.dotStyle}></span>
+                        </template>
+                        <div class={active.tipClass} style={active.tipStyle} aria-hidden="true">
+                            <p class="c-tip__date">{active.date}</p>
+                            <p class="c-tip__lead">
+                                <span class="c-tip__value">{active.ratio}</span>
+                                <span class="c-tip__unit">loss ratio to date</span>
+                            </p>
+                            <p class="c-tip__fact">{active.soFar}</p>
+                            <p class="c-tip__fact c-tip__fact_day">{active.thatDay}</p>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:if={isEmpty}>
+                    <p class="c-plot__none">There is no premium in force yet, so there is no loss ratio to draw.</p>
+                </template>
+            </div>
+            <template lwc:if={hasLine}>
+                <!-- Today's value, beside the dot that ends the line: in the gutter kept for it, so it is inside the chart's own box at any width. -->
+                <div class="c-chart__gutter" aria-hidden="true">
+                    <span class="c-chart__end-label" style={view.endLabelStyle}>{view.endLabel}</span>
+                </div>
+                <ol class={view.monthsClass} aria-hidden="true">
+                    <template for:each={view.months} for:item="month">
+                        <li key={month.key} class="c-chart__month" style={month.style}>{month.label}</li>
+                    </template>
+                </ol>
+            </template>
+        </div>
+        <template lwc:if={hasLine}>
+            <table class="slds-assistive-text">
+                <caption>
+                    Loss ratio to date at each month end and today
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Day</th>
+                        <th scope="col">Loss ratio</th>
+                        <th scope="col">Incurred to date</th>
+                        <th scope="col">Claims to date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={view.rows} for:item="row">
+                        <tr key={row.key}>
+                            <th scope="row">{row.date}</th>
+                            <td>{row.ratio}</td>
+                            <td>{row.incurred}</td>
+                            <td>{row.claims}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+    </section>
+</template>

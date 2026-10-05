@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "In plain words, what does a loss ratio tell me?"
+  },
+  {
+    "role": "assistant",
+    "content": "A loss ratio tells you how much a policy (or a group of policies) has cost in claims compared with what the customer pays for it.\n\nIn Antsurance records it's **incurred losses divided by annual premium**, shown as a percentage. Incurred losses means claims already paid plus money still held in reserve for open claims.\n\n- **Below 100%:** claims cost less than the premium. For example, 40% means $40 in claims for every $100 of premium.\n- **About 100%:** claims use up all of the premium, which leaves nothing for expenses or profit.\n- **Above 100%:** claims cost more than the premium. 150% means $150 paid out for every $100 taken in.\n\nA high ratio suggests the policy may be underpriced or high risk. That's worth flagging at renewal or to underwriting. One large claim can push a single policy's ratio way up, so the ratio across a whole line of business tells you more.\n\n?> Which policies have a loss ratio over 100%?\n?> Loss ratio by line of business\n?> What's my overall loss ratio?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which policies have a loss ratio over 100%?\",\n      \"Loss ratio by line of business\",\n      \"What's my overall loss ratio?\"\n    ]\n  }\n]"
+  }
+]

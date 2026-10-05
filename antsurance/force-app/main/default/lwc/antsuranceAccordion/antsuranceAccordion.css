@@ -1,0 +1,128 @@
+@import 'c/antsuranceUiStyles';
+
+:host {
+    display: block;
+}
+
+.c-acc {
+    border-top: 1px solid #e8e6dc;
+}
+
+.c-acc_card {
+    border: 1px solid #e8e6dc;
+    border-radius: 0.75rem;
+    background: #fff;
+}
+
+.c-acc__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0;
+    padding: 0.625rem 0.25rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    color: #141413;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+}
+
+.c-acc_card .c-acc__head {
+    padding: 0.625rem 0.75rem;
+}
+
+.c-acc__head:hover {
+    background: #faf9f5;
+}
+
+.c-acc__head:active {
+    background: #f0eee7;
+}
+
+.c-acc__head:focus-visible {
+    outline-offset: -2px;
+}
+
+.c-acc__chevron {
+    flex: none;
+    transition: transform 120ms ease;
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+.c-acc_open .c-acc__chevron {
+    transform: rotate(90deg);
+}
+
+.c-acc__icon {
+    flex: none;
+    --slds-c-icon-color-foreground-default: #66645e;
+    --sds-c-icon-color-foreground-default: #66645e;
+}
+
+.c-acc__label {
+    flex: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+}
+
+.c-acc__count {
+    flex: none;
+    min-width: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 0.625rem;
+    background: #f0eee7;
+    color: #66645e;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.125rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.c-acc__summary {
+    /* Takes the room left on the line and wraps on whole words; it is never cut short. */
+    flex: 1 1 8rem;
+    min-width: 0;
+    color: #66645e;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    text-wrap: pretty;
+}
+
+.c-acc__body {
+    display: none;
+    padding: 0.25rem 0.25rem 0.875rem 1.5rem;
+}
+
+.c-acc_card .c-acc__body {
+    padding: 0.25rem 0.75rem 0.875rem 2rem;
+}
+
+.c-acc_open .c-acc__body {
+    display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-acc__head,
+    .c-acc__chevron {
+        transition: none;
+    }
+}
+
+/* Paper has no button to press: the detail prints whether or not it was open. */
+@media print {
+    .c-acc__body {
+        display: block;
+    }
+
+    .c-acc__chevron,
+    .c-acc__summary {
+        display: none;
+    }
+}

@@ -1,0 +1,64 @@
+/* Colours and fonts come from the host component's --ants-* properties, with plain fallbacks. */
+:host {
+    display: block;
+}
+
+.c-answers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ants-answers-gap, 0.625rem);
+}
+
+.c-answers__section {
+    border: 1px solid var(--ants-line, #e8e6dc);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-answers__summary {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    list-style-position: inside;
+}
+
+.c-answers__title {
+    font-family: var(--ants-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.c-answers__count {
+    font-size: 0.75rem;
+    color: var(--ants-muted, #66645e);
+}
+
+.c-answers__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding: 0.25rem 1rem 1rem;
+}
+
+.c-answers__item dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted, #66645e);
+}
+
+/* An answer wraps inside its cell; a long one, such as what the business does, is never cut short. */
+.c-answers__item dd {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-wrap: pretty;
+}
+
+/* A sentence-length answer takes the full row. */
+.c-answers__item_wide {
+    grid-column: 1 / -1;
+}

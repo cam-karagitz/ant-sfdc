@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What commission rate do we pay our agencies?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't answer that from the CRM. Agency accounts and policies don't have a commission rate field that I can see, so rates are probably kept in agency contracts or a separate compensation system. Your distribution or finance team should have them.\n\nWhat I can pull for you:\n- **Premium in force by agency** (from each policy's producer)\n- **Policy counts or loss ratios by agency**, if you're reviewing how each agency performs"
+  }
+]

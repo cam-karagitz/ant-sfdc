@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>One test of one of the jobs Claude does here: what was measured, the result, when it ran and the caveat that goes with it. The Claude at Work page shows these. Add a record when an eval is run again; the page never invents a score.</description>
+    <label>Antsurance Agent Eval</label>
+    <pluralLabel>Antsurance Agent Evals</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

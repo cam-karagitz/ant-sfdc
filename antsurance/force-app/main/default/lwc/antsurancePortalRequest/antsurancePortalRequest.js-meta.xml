@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Customer portal: a service request's own page. What was asked, where it stands, and what the customer can do: add a note, withdraw it, or ask Claude.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

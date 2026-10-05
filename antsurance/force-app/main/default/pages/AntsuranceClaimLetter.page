@@ -1,0 +1,112 @@
+<apex:page controller="AntsuranceClaimLetterController" renderAs="pdf" applyHtmlTag="false" applyBodyTag="false" showHeader="false"
+    sidebar="false" standardStylesheets="false" docType="html-5.0" readOnly="true">
+<!--
+    An approved claim letter, printed as a US Letter PDF: /apex/AntsuranceClaimLetter?id=<File_Note__c Id>
+
+    The letter is read from the file note written when the adjuster approved it. The controller hands
+    every line over already broken, so nothing wraps on its own and the page matches the preview the
+    adjuster saw. The last paragraph, the closing and the signature are one block that is never split,
+    so a second page never holds a signature on its own.
+
+    The shared print styles, and the rules they follow, are in the antsuranceDocumentStyles static resource.
+-->
+<html>
+<head>
+<apex:stylesheet value="{!$Resource.antsuranceDocumentStyles}"/>
+<style type="text/css">
+    /* The letterhead's right side: who is writing and how to reach them. */
+    .from-name { font-size: 9pt; font-weight: bold; letter-spacing: 0.4pt; color: #141413; white-space: nowrap; }
+    .from-line { padding-top: 2pt; font-size: 8pt; color: #66645e; white-space: nowrap; }
+
+    /* The letter itself: one column, each line printed as written. */
+    /* The heights here are the ones AntsuranceClaimLetters counts pages with: change one and change the other. */
+    .letter { margin: 0 16pt; font-size: 10pt; line-height: 14pt; color: #141413; }
+    .letter div.line { white-space: nowrap; }
+    .to { margin-top: 20pt; }
+    .date { margin-top: 14pt; }
+    .ref { margin-top: 14pt; font-weight: bold; }
+    .greeting { margin-top: 14pt; }
+    .para { margin-top: 9pt; }
+    .ending { page-break-inside: avoid; }
+    .closing-line { margin-top: 14pt; }
+    .signature-space { height: 26pt; font-size: 1pt; line-height: 1pt; }
+    .signer-name { font-weight: bold; }
+</style>
+</head>
+<body>
+    <div class="footer">
+        <table>
+            <tr>
+                <td style="width: 255pt;">Antsurance Insurance Company, a fictional insurer used for demonstrations</td>
+                <td style="width: 190pt; text-align: center;"><apex:outputText value="{!documentLabel}"/></td>
+                <td style="width: 80pt; text-align: right;"><apex:outputText value="{!pageLead}"/><span class="page-number"></span> of <span class="page-count"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="band">
+        <tr>
+            <td style="width: 180pt;"><apex:image url="{!$Resource.antsuranceLockupOnWhite}" width="162" height="24" alt="Antsurance"/></td>
+            <td style="width: 281pt; text-align: right;">
+                <div class="from-name">Antsurance Insurance Company</div>
+                <div class="from-line">Claims Department, 1-800-555-0199</div>
+            </td>
+        </tr>
+    </table>
+    <table><tr><td class="rule">&#160;</td></tr></table>
+
+    <apex:outputPanel layout="none" rendered="{!NOT(found)}">
+        <div class="missing">This letter could not be found.</div>
+        <div class="muted">Open it from the Letters section of a claim, or check that you have access to the claim.</div>
+    </apex:outputPanel>
+
+    <apex:outputPanel layout="none" rendered="{!found}">
+        <div class="letter">
+            <div class="to">
+                <apex:repeat value="{!addressee}" var="line">
+                    <div class="line"><apex:outputText value="{!line}"/></div>
+                </apex:repeat>
+            </div>
+            <!-- A part the approved letter does not have prints nothing, not an empty gap. -->
+            <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(dateLine))}">
+                <div class="date line"><apex:outputText value="{!dateLine}"/></div>
+            </apex:outputPanel>
+            <apex:outputPanel layout="none" rendered="{!hasReference}">
+                <div class="ref">
+                    <apex:repeat value="{!reference}" var="line">
+                        <div class="line"><apex:outputText value="{!line}"/></div>
+                    </apex:repeat>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(salutation))}">
+                <div class="greeting line"><apex:outputText value="{!salutation}"/></div>
+            </apex:outputPanel>
+            <apex:repeat value="{!opening}" var="paragraph">
+                <div class="para">
+                    <apex:repeat value="{!paragraph.lines}" var="line">
+                        <div class="line"><apex:outputText value="{!line}"/></div>
+                    </apex:repeat>
+                </div>
+            </apex:repeat>
+            <div class="ending">
+                <apex:repeat value="{!ending}" var="paragraph">
+                    <div class="para">
+                        <apex:repeat value="{!paragraph.lines}" var="line">
+                            <div class="line"><apex:outputText value="{!line}"/></div>
+                        </apex:repeat>
+                    </div>
+                </apex:repeat>
+                <div class="closing-line line"><apex:outputText value="{!closing}"/></div>
+                <div class="signature-space">&#160;</div>
+                <apex:repeat value="{!signer}" var="line" first="0" rows="1">
+                    <div class="line signer-name"><apex:outputText value="{!line}"/></div>
+                </apex:repeat>
+                <apex:repeat value="{!signer}" var="line" first="1">
+                    <div class="line"><apex:outputText value="{!line}"/></div>
+                </apex:repeat>
+            </div>
+        </div>
+    </apex:outputPanel>
+</body>
+</html>
+</apex:page>

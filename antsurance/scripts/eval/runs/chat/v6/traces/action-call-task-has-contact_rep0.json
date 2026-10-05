@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002609: Moving to a new home in Belvidere\" open (object Case, Id 500aj00003jfwUXAAY). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nRemind me to phone the customer about this request tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": \"003aj00002TKgJKAA1\",\n  \"related_record_id\": \"500aj00003jfwUXAAY\",\n  \"due_date\": \"2026-10-05\",\n  \"subject\": \"Call Marcus Whitfield about the Belvidere address change\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Call Marcus Whitfield about the Belvidere address change\",\n    \"dueDate\": \"2026-10-05\",\n    \"relatedId\": \"500aj00003jfwUXAAY\",\n    \"contactId\": \"003aj00002TKgJKAA1\",\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

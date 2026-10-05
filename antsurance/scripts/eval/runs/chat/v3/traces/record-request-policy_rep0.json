@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002258: Add Sofia Reyes as a driver\" open (object Case, Id 500aj00003jLAPIAA4). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nWhich policy and customer is this request for?"
+  },
+  {
+    "role": "assistant",
+    "content": "This request is for the Personal Auto policy [ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view), held by the [Reyes Household](/lightning/r/001aj000040t3coAAA/view). The contact on the request is **Maria Reyes**.\n\n- **Policy:** Active, 13 May 2026 to 13 May 2027, payments current\n- **Limit / deductible:** **$300,000** / **$500**\n- **Request:** add Sofia Reyes as a driver on the 2019 Honda Accord, and check whether she qualifies for a good student discount"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat is open or overdue here?"
+  },
+  {
+    "role": "assistant",
+    "content": "Nothing is overdue on [00002118](/lightning/r/500aj00003jKuVeAAK/view). You have **2 open tasks**, both High priority and both due in the next few days:\n\n- **Review mitigation invoice from drying vendor**, due **4 Oct**\n- **Approve the rebuild estimate for the Okafor basement**, due **5 Oct**\n\nThe claim is **Under Investigation** with **$40,000** in outstanding reserve. Marcus Lindahl's 30 Sep note says drying is done and moisture readings are normal. He's still waiting on the mitigation invoice and the contractor's rebuild estimate, so both tasks depend on those coming in."
+  }
+]

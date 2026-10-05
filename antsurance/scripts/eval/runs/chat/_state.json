@@ -1,0 +1,120 @@
+{
+  "train_ids": [
+    "count-open-claims",
+    "count-quotes-waiting",
+    "count-households",
+    "top-line-open-claims",
+    "top-adjuster",
+    "top-loss-ratio",
+    "avg-home-premium",
+    "lookup-top-agency",
+    "lookup-oldest-claim",
+    "lookup-endorsements",
+    "lookup-missing-policy",
+    "unknown-ssn",
+    "refuse-reserve-change",
+    "record-claim-summary",
+    "record-customer-policies",
+    "record-claim-reserve",
+    "record-customer-open",
+    "multi-household-premium-renewal",
+    "multi-largest-reserve-policies",
+    "action-note-on-policy",
+    "action-status-by-subject",
+    "action-status-on-request",
+    "action-task-with-contact",
+    "agency-premium",
+    "count-water-backup",
+    "drivers-two-violations",
+    "licensed-drivers",
+    "record-quote-other-option",
+    "followup-agency-workers-comp",
+    "followup-task-on-found-claim",
+    "action-close-and-note",
+    "action-call-task-has-contact",
+    "display-none-explain",
+    "display-metrics-book",
+    "display-chart-claims-by-adjuster",
+    "display-list-past-due",
+    "display-none-decline",
+    "display-chart-claims-by-month",
+    "display-chart-premium-by-line",
+    "display-comparison-quotes",
+    "display-metrics-claims-rundown",
+    "display-draft-claim-update"
+  ],
+  "test_ids": [
+    "count-workers-comp-in-force",
+    "count-past-due",
+    "count-severe-open-claims",
+    "sum-auto-premium",
+    "sum-outstanding-reserve",
+    "sum-paid-this-year",
+    "lookup-handler",
+    "lookup-expiry",
+    "lookup-deductible",
+    "lookup-vins",
+    "refuse-delete",
+    "unknown-commission",
+    "record-sale-cheaper-quote",
+    "record-request-policy",
+    "record-policy-loss-ratio",
+    "record-claim-status-only",
+    "record-policy-coverages",
+    "multi-compare-quotes",
+    "multi-claims-on-renewing",
+    "action-task-by-name",
+    "action-task-on-claim",
+    "action-note-on-claim",
+    "list-top3-claims",
+    "chip-renewals",
+    "quote-configurator-answer",
+    "overdue-tasks",
+    "denied-claims",
+    "record-contact-policies",
+    "action-invalid-status",
+    "action-claim-paid",
+    "action-note-needs-content",
+    "display-form-edit-policy",
+    "display-none-thanks",
+    "display-record-largest-claim",
+    "display-form-new-claim",
+    "display-record-not-the-open-one",
+    "display-form-new-lead",
+    "display-task-stays-a-card",
+    "display-chart-claims-by-status",
+    "display-timeline-claim",
+    "display-record-policy-by-number",
+    "display-list-overdue-tasks"
+  ],
+  "metrics": [
+    {
+      "id": "pass",
+      "kind": "binary",
+      "label": "Correct"
+    }
+  ],
+  "perf_fields": [
+    {
+      "id": "latency_s",
+      "label": "Time",
+      "unit": "s"
+    },
+    {
+      "id": "rounds",
+      "label": "Lookups"
+    },
+    {
+      "id": "tool_calls",
+      "label": "Queries"
+    }
+  ],
+  "goal": {
+    "target": "pass",
+    "direction": "higher",
+    "hold": [
+      "latency_s",
+      "rounds"
+    ]
+  }
+}

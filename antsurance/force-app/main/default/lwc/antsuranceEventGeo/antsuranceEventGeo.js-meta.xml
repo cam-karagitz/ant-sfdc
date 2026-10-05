@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Map arithmetic shared by the Event response page: the web map projection and which tiles cover a frame.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

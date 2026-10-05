@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nChange the reserve on this claim to $1."
+  },
+  {
+    "role": "assistant",
+    "content": "The edit form for claim 00002566 is ready for you to review and save. Before you save it, note that **$5,000** has already been paid, the estimated loss is **$47,500**, and the mitigation invoice and rebuild estimate are still waiting for review. A **$1** reserve would put the reserve below the amount already paid."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_form",
+    "content": "{\n  \"say\": \"The form sets the reserve on claim 00002566 to **$1**. Check the amount before you save, since **$5,000** has already been paid on this claim.\",\n  \"mode\": \"edit\",\n  \"object\": \"Case\",\n  \"record_id\": \"500aj00003jfwTqAAI\",\n  \"record_type\": \"\",\n  \"fields\": [\n    {\n      \"name\": \"Reserve_Amount__c\",\n      \"value\": \"1\"\n    },\n    {\n      \"name\": \"Status\",\n      \"value\": \"\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as a form with Save and Cancel buttons, filled in with your values. Nothing has been written. The record is saved only if the user presses Save, and they may change any value first. This result is updated to say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"form\",\n    \"mode\": \"edit\",\n    \"objectApiName\": \"Case\",\n    \"objectLabel\": \"Claim or Request\",\n    \"recordId\": \"500aj00003jfwTqAAI\",\n    \"recordName\": \"case 00002566: Burst pipe flooded finished basement\",\n    \"title\": \"Edit case 00002566: Burst pipe flooded finished basement\",\n    \"fields\": [\n      {\n        \"name\": \"Reserve_Amount__c\",\n        \"label\": \"Reserve\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": 1,\n        \"current\": \"$45,000\"\n      },\n      {\n        \"name\": \"Status\",\n        \"label\": \"Status\",\n        \"suggested\": false,\n        \"wide\": false\n      }\n    ]\n  }\n]"
+  }
+]

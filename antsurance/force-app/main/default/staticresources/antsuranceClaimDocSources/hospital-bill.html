@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 0.6in 0.65in; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; color: #1c2430; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #2f5d50; padding-bottom: 14px; }
+.brand { display: flex; gap: 12px; align-items: center; }
+.logo { width: 46px; height: 46px; border-radius: 50%; background: #2f5d50; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 15pt; letter-spacing: -1px; }
+.brand h1 { margin: 0; font-size: 15pt; color: #2f5d50; }
+.brand p { margin: 2px 0 0; font-size: 8.5pt; color: #55606e; line-height: 1.35; }
+.doc { text-align: right; }
+.doc h2 { margin: 0; font-size: 17pt; letter-spacing: 1px; color: #2f5d50; font-weight: 300; }
+.doc table { margin-left: auto; margin-top: 6px; font-size: 9pt; border-collapse: collapse; }
+.doc td { padding: 1px 0 1px 14px; }
+.doc td:first-child { color: #55606e; }
+.parties { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin: 18px 0 16px; }
+.parties h3 { margin: 0 0 4px; font-size: 7.5pt; letter-spacing: 1px; text-transform: uppercase; color: #2f5d50; }
+.parties p { margin: 0; line-height: 1.45; }
+table.items { width: 100%; border-collapse: collapse; }
+table.items th { background: #2f5d50; color: #fff; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.6px; text-align: left; padding: 6px 8px; }
+table.items td { padding: 6px 8px; border-bottom: 1px solid #dfe5ea; vertical-align: top; }
+table.items tr:nth-child(even) td { background: #f5f8f7; }
+.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+.sub { color: #55606e; font-size: 8.5pt; }
+.totals { display: flex; justify-content: space-between; gap: 30px; margin-top: 14px; }
+.log { flex: 1; border: 1px solid #dfe5ea; border-radius: 6px; padding: 10px 12px; font-size: 8.5pt; line-height: 1.5; }
+.log h3 { margin: 0 0 6px; font-size: 7.5pt; letter-spacing: 1px; text-transform: uppercase; color: #2f5d50; }
+.sum { width: 290px; }
+.sum table { width: 100%; border-collapse: collapse; }
+.sum td { padding: 4px 8px; }
+.sum tr.due td { background: #2f5d50; color: #fff; font-weight: 700; font-size: 12pt; }
+.foot { margin-top: 18px; padding-top: 10px; border-top: 1px solid #dfe5ea; font-size: 8.5pt; color: #55606e; line-height: 1.5; }
+.foot b { color: #1c2430; }
+</style></head><body>
+<div class="top">
+  <div class="brand"><div class="logo">PP</div><div><h1>Prairie Path Medical Center</h1>
+  <p>2200 Meridian Pkwy, Lombard, IL 60148<br>Patient Financial Services &nbsp;|&nbsp; (630) 555-0177<br>workerscomp@prairiepathmedical.example</p></div></div>
+  <div class="doc"><h2>INTERIM HOSPITAL BILL</h2><table>
+    <tr><td>Statement no.</td><td><b>PPMC-2609-71840-1</b></td></tr>
+    <tr><td>Statement date</td><td>September 28, 2026</td></tr>
+    <tr><td>Services</td><td>Sep 26 to Sep 28, 2026</td></tr>
+    <tr><td>Bill type</td><td>Interim, first claim</td></tr></table></div>
+</div>
+<div class="parties">
+  <div><h3>Patient</h3><p><b>Tomas Varga</b><br>Admitted September 26, 2026<br>through the emergency department<br>Still admitted on the statement date</p></div>
+  <div><h3>Workers' compensation</h3><p>Employer: Ridgeline Roofing &amp; Solar<br>Date of injury: September 26, 2026<br>Fall from a roof at work</p></div>
+  <div><h3>Bill to</h3><p><b>Antsurance</b><br>Workers' compensation claims<br>Not billed to the patient</p></div>
+</div>
+<table class="items">
+  <tr><th style="width:15%">Date</th><th style="width:47%">Service</th><th class="num">Billed charge</th><th class="num">Fee schedule</th></tr>
+  <tr><td>Sep 26</td><td>Emergency department, trauma team activation<div class="sub">Arrived by ambulance 11:18 am</div></td><td class="num">9,850.00</td><td class="num">3,640.00</td></tr>
+  <tr><td>Sep 26</td><td>CT, pelvis and lumbar spine, with X-ray series<div class="sub">Pelvic ring fracture; fractures of L2 and L3</div></td><td class="num">6,420.00</td><td class="num">1,980.00</td></tr>
+  <tr><td>Sep 26</td><td>Operating room, external fixation of the pelvis<div class="sub">First surgery. Facility charge, 2 hours 10 minutes</div></td><td class="num">21,300.00</td><td class="num">7,150.00</td></tr>
+  <tr><td>Sep 26</td><td>Anesthesia and recovery room</td><td class="num">4,180.00</td><td class="num">1,460.00</td></tr>
+  <tr><td>Sep 26 to 28</td><td>Surgical intensive care, room and nursing<div class="sub">2 days</div></td><td class="num">9,600.00</td><td class="num">3,400.00</td></tr>
+  <tr><td>Sep 26 to 28</td><td>Pharmacy, laboratory and blood bank</td><td class="num">2,890.00</td><td class="num">870.00</td></tr>
+</table>
+<div class="totals">
+  <div class="log"><h3>What comes next</h3>
+    The patient remains admitted. A second surgery to stabilize the lumbar spine is planned for the week of September 28.
+    Surgeons' and other professional fees are billed separately by their practices. Later hospital days and the second surgery will follow on the next bill.</div>
+  <div class="sum"><table>
+    <tr><td>Billed charges</td><td class="num">$54,240.00</td></tr>
+    <tr><td>Illinois fee schedule amount</td><td class="num">$18,500.00</td></tr>
+    <tr><td>Payments received</td><td class="num">$0.00</td></tr>
+    <tr class="due"><td>Amount due</td><td class="num">$18,500.00</td></tr></table></div>
+</div>
+<div class="foot"><b>Workers' compensation bill.</b> The amount due is the Illinois workers' compensation fee schedule amount for the services listed, not the billed charges. The patient may not be billed for the difference.
+Please send payment with the statement number to Patient Financial Services.<br>Sample document created for a software demonstration. Not a real record.</div>
+</body></html>

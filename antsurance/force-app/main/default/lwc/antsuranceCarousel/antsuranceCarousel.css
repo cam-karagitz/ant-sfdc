@@ -1,0 +1,125 @@
+@import 'c/antsuranceUiStyles';
+
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.c-car__track {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    /* Each slide keeps its own height: a short one is not stretched to match a tall one. */
+    align-items: flex-start;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0.25rem;
+    scrollbar-width: none;
+    border-radius: 0.5rem;
+    /* Room for a slide's own focus ring and hover shadow, which the scroll box would otherwise clip. */
+    padding: 0.25rem;
+    margin: -0.25rem;
+}
+
+.c-car__track::-webkit-scrollbar {
+    display: none;
+}
+
+/* The slot is not a box of its own, so the slides are the row's items. */
+slot {
+    display: contents;
+}
+
+.c-car__bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.375rem;
+    padding-top: 0.5rem;
+}
+
+.c-car__dots {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-right: auto;
+}
+
+.c-car__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #e8e6dc;
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        width 120ms ease;
+}
+
+.c-car__dot:hover {
+    background: #d97757;
+}
+
+.c-car__dot_on {
+    width: 1.125rem;
+    border-radius: 0.25rem;
+    background: #ae5f46;
+}
+
+.c-car__count {
+    margin-right: 0.375rem;
+    font-size: 0.75rem;
+    color: #66645e;
+    font-variant-numeric: tabular-nums;
+}
+
+.c-car__step {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 1px solid #e8e6dc;
+    border-radius: 0.5rem;
+    background: #fff;
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease;
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+.c-car__step:hover:not(:disabled) {
+    border-color: #d97757;
+    background: #faf9f5;
+}
+
+.c-car__step:active:not(:disabled) {
+    background: #f0eee7;
+}
+
+.c-car__step:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-car__dot,
+    .c-car__step {
+        transition: none;
+    }
+}
+
+/* On paper nothing can be stepped through, so the slides wrap and all of them show. */
+@media print {
+    .c-car__track {
+        flex-wrap: wrap;
+        overflow: visible;
+    }
+
+    .c-car__bar {
+        display: none;
+    }
+}

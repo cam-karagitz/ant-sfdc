@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204585\" open (object Policy__c, Id a00aj00003jKc7NAAS). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nWhat is the loss ratio on this policy?"
+  },
+  {
+    "role": "assistant",
+    "content": "Loss ratio = claims incurred / premium. Let me pull the policy and its claims."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Annual_Premium__c, Effective_Date__c, Expiration_Date__c, Status__c, Account__r.Name, Account__r.Id, (SELECT Id, CaseNumber, Status, Date_of_Loss__c, Loss_Type__c, Reserve_Amount__c, Paid_Amount__c, Outstanding_Reserve__c, Estimated_Loss__c FROM Cases__r WHERE RecordType.DeveloperName = 'Claim') FROM Policy__c WHERE Id = 'a00aj00003jKc7NAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040t1ntAAA\"},\"Cases__r\":[{\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Estimated_Loss__c\":48500.00,\"Outstanding_Reserve__c\":40000.00,\"Paid_Amount__c\":5000.00,\"Reserve_Amount__c\":45000.00,\"Loss_Type__c\":\"Water Damage\",\"Date_of_Loss__c\":\"2026-09-21\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\",\"Policy__c\":\"a00aj00003jKc7NAAS\"}],\"Account__c\":\"001aj000040t1ntAAA\",\"Status__c\":\"Active\",\"Expiration_Date__c\":\"2027-01-15\",\"Effective_Date__c\":\"2026-01-15\",\"Annual_Premium__c\":2240.00,\"Name\":\"ANT-HO-204585\",\"Id\":\"a00aj00003jKc7NAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-HO-204585](/lightning/r/a00aj00003jKc7NAAS/view) has an incurred loss ratio of about **2,009%**. That's **$45,000** in incurred losses against **$2,240** in annual premium.\n\n- **Claim:** [00002038](/lightning/r/500aj00003jKc9SAAS/view), water damage on 21 Sep 2026, still Under Investigation\n- **Incurred:** $5,000 paid plus $40,000 still held in reserve\n- **Estimated loss:** $48,500. If the claim settles at that amount, the ratio rises to about **2,165%**.\n\nI calculated this from the full annual premium. The policy term runs 15 Jan 2026 to 15 Jan 2027, so only about $1,596 of the premium has been earned so far (my estimate). Measured against that, the ratio is about **2,820%**. The figure isn't final while the claim is still open."
+  }
+]

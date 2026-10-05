@@ -1,0 +1,824 @@
+@import 'c/antsurancePortalStyles';
+
+/* The quote lays itself out by the room it has, not the window's: beside the docked conversation it is as
+   narrow as on a tablet, and the price then moves above the questions. The component measures its own width
+   and sets c-quote_medium or c-quote_small. */
+:host {
+    display: block;
+}
+
+.c-state {
+    color: var(--p-muted);
+}
+
+.c-state_card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.c-quiet {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+/* ---------------------------------------------------------------- the page that offers quotes */
+/* The same width and left edge as every other page. */
+.c-choose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.c-choose__intro {
+    margin: 0.5rem 0 0;
+    max-width: 44rem;
+    color: var(--p-muted);
+}
+
+/* A row's name and its chip share a line, and the chip drops under the name as a whole when there is no room. */
+.c-row__named {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.625rem;
+}
+
+/* A price over a status, right aligned, so a row needs one narrow column for both. */
+.c-row__figures {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.c-choose__ask {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+/* ---------------------------------------------------------------- the quote */
+.c-quote {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.c-quote__head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.c-quote__title {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.c-quote__progress {
+    flex: none;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+/* The steps stay on one row. Where they do not fit they scroll sideways; they never wrap. */
+/* The steps stay at the top of the page as it scrolls, so which step this is can always be seen. */
+.c-steps__bar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--p-line);
+    background: var(--p-ivory);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.c-steps__bar::-webkit-scrollbar {
+    display: none;
+}
+
+.c-steps__tab {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: -1px;
+    padding: 0.625rem 0.75rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background: none;
+    color: var(--p-muted);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--p-fast), color var(--p-fast), border-color var(--p-fast);
+}
+
+.c-steps__tab:hover {
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+.c-steps__tab:active {
+    background: #f3ddd5;
+}
+
+.c-steps__tab:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-steps__tab_selected,
+.c-steps__tab_selected:hover {
+    border-bottom-color: var(--p-clay);
+    background: none;
+    color: var(--p-ink);
+}
+
+.c-steps__number {
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    background: var(--p-oat);
+    color: var(--p-muted);
+    font-size: 0.75rem;
+}
+
+.c-steps__tab_selected .c-steps__number {
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+.c-steps__tab_done .c-steps__number {
+    background: var(--p-olive-tint);
+    color: var(--p-olive-ink);
+}
+
+.c-quote__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.c-quote__main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    padding: 1.5rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-quote__intro {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+/* ---------------------------------------------------------------- one question */
+.c-asks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.c-ask {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    margin: 0 -0.875rem;
+    border-radius: 0.75rem;
+    transition: background-color 0.3s ease;
+}
+
+.c-ask + .c-ask {
+    border-top: 1px solid var(--p-line);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* The question on the left, the way to have it explained on the right, on one line where there is room. */
+/* The question takes the line; the small "?" stays at its end and never drops under it. */
+.c-ask__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.125rem 0.75rem;
+}
+
+.c-ask__head > label {
+    min-width: 0;
+}
+
+.c-ask__question {
+    flex: 1 1 16rem;
+    min-width: 0;
+    font-weight: 600;
+}
+
+/* The choices are whole buttons. They wrap as whole buttons and never squeeze. */
+.c-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.c-pick {
+    flex: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid #cfccc0;
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--p-fast), border-color var(--p-fast), color var(--p-fast);
+}
+
+.c-pick:hover {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-tint);
+}
+
+.c-pick:active {
+    background: #f3ddd5;
+}
+
+.c-pick:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-pick__label {
+    font-weight: 600;
+}
+
+.c-pick__effect {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-pick_chosen,
+.c-pick_chosen:hover {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+    box-shadow: inset 0 0 0 1px var(--p-clay-deep);
+}
+
+.c-pick_chosen .c-pick__effect {
+    color: var(--p-clay-dark);
+}
+
+.c-ask__input {
+    display: block;
+    width: 100%;
+    max-width: 32rem;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    border: 1px solid #c9c6ba;
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--p-ink);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.c-ask__input_short {
+    max-width: 6rem;
+}
+
+.c-ask__money {
+    position: relative;
+    display: block;
+    max-width: 14rem;
+}
+
+.c-ask__dollar {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--p-muted);
+}
+
+.c-ask__input_money {
+    padding-left: 1.75rem;
+}
+
+.c-ask__input:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 1px;
+    border-color: var(--p-clay-deep);
+}
+
+.c-ask__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    font-size: 0.8125rem;
+}
+
+.c-ask__foot:empty {
+    display: none;
+}
+
+.c-ask__mark {
+    color: var(--p-olive-ink);
+    font-weight: 600;
+}
+
+.c-ask__mark_claude {
+    color: var(--p-clay-dark);
+}
+
+.c-ask__needed {
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+/* Moving to a step brings its panel to the top, clear of the steps that stay in view above it. */
+.c-quote__main {
+    scroll-margin-top: 4rem;
+}
+
+.c-ask__why {
+    font-size: 0.8125rem;
+}
+
+/* "What does this mean?" as one small round button beside the question. */
+.c-ask__help {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 1px solid var(--p-line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--p-clay-dark);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--p-fast), border-color var(--p-fast);
+}
+
+.c-ask__help:hover {
+    border-color: var(--p-clay);
+    background: var(--p-clay-tint);
+}
+
+.c-ask__help:active {
+    background: #f3ddd5;
+}
+
+.c-ask__help:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+/* An answer Claude filled in: a clay edge until the customer changes it. */
+.c-ask_claude .c-pick_chosen,
+.c-ask_claude .c-ask__input {
+    border-color: var(--p-clay);
+    background-color: var(--p-clay-tint);
+}
+
+/* A question Claude is pointing at. */
+.c-ask_pointed {
+    background: var(--p-amber-tint);
+    box-shadow: 0 0 0 2px var(--p-amber-ink);
+}
+
+.c-ask_blank .c-ask__input {
+    border-color: var(--p-clay-dark);
+}
+
+/* Claude's words about a question, under it. */
+.c-explain {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.625rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid #f0d9d0;
+    border-radius: 0.75rem;
+    background: var(--p-clay-tint);
+}
+
+.c-explain__spark {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.125rem;
+}
+
+.c-explain__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.c-explain__text {
+    margin: 0;
+    max-width: 40rem;
+}
+
+.c-explain__why {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-explain__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+}
+
+.c-quote__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.25rem;
+    padding-top: 1.125rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-quote__failure {
+    flex: 1 0 100%;
+    margin: 0;
+    color: var(--p-clay-dark);
+    font-weight: 600;
+}
+
+.c-quote__part {
+    flex: 1 0 100%;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+.c-quote__promise {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-muted);
+}
+
+/* ---------------------------------------------------------------- the price, beside the questions */
+.c-price {
+    position: sticky;
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--p-line);
+    border-top: 3px solid var(--p-clay);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-price__figure {
+    margin: 0;
+    font-family: var(--p-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.1;
+    white-space: nowrap;
+    transition: opacity var(--p-fast);
+}
+
+.c-price__figure_busy {
+    opacity: 0.55;
+}
+
+.c-price__per {
+    font-family: var(--p-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--p-muted);
+}
+
+.c-price__month {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+.c-price__delta {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--p-clay-dark);
+}
+
+.c-price__terms {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0.25rem 0 0;
+}
+
+.c-price__terms:empty {
+    display: none;
+}
+
+.c-price__terms > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9375rem;
+}
+
+.c-price__terms dt {
+    color: var(--p-muted);
+}
+
+.c-price__terms dd {
+    margin: 0;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-price__note {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-price__note_watch {
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.5rem;
+    background: var(--p-amber-tint);
+    color: var(--p-amber-ink);
+}
+
+.c-price__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0.25rem 0 0;
+    list-style: none;
+    font-size: 0.8125rem;
+}
+
+.c-price__line {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.c-price__what {
+    min-width: 0;
+}
+
+.c-price__effect {
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-price__amount {
+    flex: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- a section that folds */
+.c-folds {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--p-line);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.c-fold + .c-fold {
+    border-top: 1px solid var(--p-line);
+}
+
+.c-fold__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    transition: background-color var(--p-fast);
+}
+
+.c-fold__head::-webkit-details-marker {
+    display: none;
+}
+
+.c-fold__head::before {
+    content: '';
+    flex: none;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-right: 2px solid var(--p-muted);
+    border-bottom: 2px solid var(--p-muted);
+    transform: rotate(-45deg);
+    transition: transform var(--p-fast);
+}
+
+.c-fold[open] > .c-fold__head::before {
+    transform: rotate(45deg);
+}
+
+.c-fold__head:hover {
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+.c-fold__head:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: -2px;
+}
+
+.c-fold__title {
+    flex: 1 1 auto;
+}
+
+.c-fold__count {
+    min-width: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 999px;
+    background: var(--p-oat);
+    color: var(--p-muted);
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    text-align: center;
+}
+
+.c-fold_plain {
+    margin-top: 0.25rem;
+    border-top: 1px solid var(--p-line);
+}
+
+.c-fold_plain > .c-fold__head {
+    padding: 0.625rem 0;
+    font-size: 0.875rem;
+}
+
+.c-fold__edit {
+    margin: 0 1rem 0.875rem;
+    font-size: 0.875rem;
+}
+
+.c-answers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: 0.625rem 1.5rem;
+    margin: 0;
+    padding: 0.25rem 1rem 0.875rem;
+}
+
+.c-answer dt {
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}
+
+.c-answer dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+.c-answer_blank dd {
+    color: var(--p-clay-dark);
+}
+
+.c-blanks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--p-amber-tint);
+    color: var(--p-amber-ink);
+}
+
+.c-blanks__lead {
+    margin: 0;
+    font-weight: 600;
+}
+
+.c-blanks__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+}
+
+/* ---------------------------------------------------------------- sent */
+.c-sent__update {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--p-oat);
+}
+
+.c-receipt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    border-top: 3px solid var(--p-clay);
+}
+
+.c-receipt__tick {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--p-olive-tint);
+    --slds-c-icon-color-foreground-default: var(--p-olive-ink);
+}
+
+.c-receipt__price {
+    margin: 0;
+    font-weight: 600;
+}
+
+.c-receipt__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* ---------------------------------------------------------------- when there is less room: the price goes above */
+.c-quote_medium .c-quote__body,
+.c-quote_small .c-quote__body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.c-quote_medium .c-price,
+.c-quote_small .c-price {
+    position: static;
+    order: -1;
+    padding: 0.875rem 1rem;
+}
+
+.c-quote_medium .c-price__figure,
+.c-quote_small .c-price__figure {
+    font-size: 1.625rem;
+}
+
+.c-quote_medium .c-price__terms,
+.c-quote_small .c-price__terms {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.125rem 1.5rem;
+}
+
+.c-quote_medium .c-price__terms > div,
+.c-quote_small .c-price__terms > div {
+    justify-content: flex-start;
+    gap: 0.375rem;
+}
+
+.c-quote_medium .c-quote__main {
+    padding: 1.125rem;
+}
+
+.c-quote_small .c-quote__main {
+    padding: 1rem;
+}
+
+.c-quote_small .c-quote__progress {
+    display: none;
+}
+
+.c-quote_small .c-quote__foot .c-button {
+    flex: 1 1 auto;
+}

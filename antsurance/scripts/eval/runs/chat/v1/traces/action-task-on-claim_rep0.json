@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nRemind me to call the customer about this claim in three days."
+  },
+  {
+    "role": "assistant",
+    "content": "Three days from today is Monday 5 Oct."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"priority\": \"Normal\",\n  \"related_record_id\": \"500aj00003jKuVeAAK\",\n  \"due_date\": \"2026-10-05\",\n  \"subject\": \"Call Chinedu Okafor about the basement water damage claim\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Call Chinedu Okafor about the basement water damage claim\",\n    \"dueDate\": \"2026-10-05\",\n    \"relatedId\": \"500aj00003jKuVeAAK\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

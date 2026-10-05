@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <compactLayoutAssignment>Endorsement_Compact</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>A form attached to a policy that changes it: an endorsement that adds or alters coverage, an exclusion, a benefit the policyholder is entitled to such as roadside assistance, a discount, or a lienholder interest. It carries the form number and any premium change.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Policy Endorsement</label>
+    <nameField>
+        <label>Form Title</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Policy Endorsements</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

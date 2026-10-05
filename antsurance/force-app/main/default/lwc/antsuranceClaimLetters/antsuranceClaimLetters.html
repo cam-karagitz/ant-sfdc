@@ -1,0 +1,305 @@
+<template>
+    <article class="c-letters" aria-busy={busy}>
+        <!-- At rest: the letters this claim could use, and the ones on file. -->
+        <template lwc:if={isList}>
+            <header class="c-letters__head">
+                <h2 class="c-letters__title">Letters</h2>
+                <p class="c-letters__meta">{metaLine}</p>
+            </header>
+
+            <template lwc:if={errorMessage}>
+                <p class="c-letters__error" role="alert">{errorMessage}</p>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <div class="c-skeleton" aria-hidden="true">
+                    <span class="c-skeleton__row"></span>
+                    <span class="c-skeleton__row"></span>
+                </div>
+            </template>
+
+            <template lwc:if={hasOptions}>
+                <ul class="c-list">
+                    <template for:each={options} for:item="option">
+                        <li key={option.kind} class="c-row c-row_offer">
+                            <span class={option.tileClass}>
+                                <lightning-icon icon-name={option.icon} size="x-small" alternative-text=""></lightning-icon>
+                            </span>
+                            <div class="c-row__main">
+                                <p class="c-row__title">
+                                    <span class="c-row__name">{option.title}</span>
+                                    <span class="c-row__to">{option.toWhom}</span>
+                                </p>
+                                <p class="c-row__why">{option.why}</p>
+                            </div>
+                            <lightning-button
+                                class="c-row__action c-row__trail"
+                                label="Draft with Claude"
+                                title={option.buttonTitle}
+                                icon-name="utility:sparkles"
+                                data-kind={option.kind}
+                                onclick={handleDraft}
+                            ></lightning-button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={hasNoOptions}>
+                <div class="c-empty">
+                    <p class="c-empty__title">No letter is due on this claim now</p>
+                    <p class="c-empty__text">A letter is offered when the claim calls for one: a new claim, a coverage check, a question still open, a payment, or a recovery.</p>
+                </div>
+            </template>
+
+            <template lwc:if={notNow}>
+                <p class="c-letters__note">{notNow}</p>
+            </template>
+
+            <template lwc:if={hasOnFile}>
+                <section class="c-filed" aria-label="Letters on file">
+                    <h3 class="c-filed__title">
+                        On file
+                        <span class="c-count">{onFileCount}</span>
+                    </h3>
+                    <ul class="c-list">
+                        <template for:each={onFileRows} for:item="row">
+                            <li key={row.noteId} class="c-row c-row_filed">
+                                <lightning-icon class="c-row__doc" icon-name="doctype:pdf" size="small" alternative-text="PDF"></lightning-icon>
+                                <div class="c-row__main">
+                                    <template lwc:if={row.hasPdf}>
+                                        <button type="button" class="c-row__open c-ui-focus" data-id={row.documentId} title={row.openTitle} onclick={handleOpenFile}>
+                                            {row.title}
+                                        </button>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="c-row__name">{row.title}</p>
+                                    </template>
+                                    <p class="c-row__why c-row__parts">
+                                        <template for:each={row.metaParts} for:item="part">
+                                            <span key={part.key} class="c-row__part">{part.text}</span>
+                                        </template>
+                                    </p>
+                                </div>
+                                <template lwc:if={row.hasPdf}>
+                                    <span class="c-ui-read c-row__trail">Approved</span>
+                                </template>
+                                <template lwc:else>
+                                    <span class="c-row__missing c-row__trail">The PDF was not saved</span>
+                                    <lightning-button
+                                        class="c-row__action c-row__trail"
+                                        label="Save the PDF"
+                                        data-id={row.noteId}
+                                        disabled={row.isSaving}
+                                        onclick={handleSaveMissingPdf}
+                                    ></lightning-button>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                    <c-antsurance-step-pager
+                        total={onFileCount}
+                        page-size={onFilePageSize}
+                        page={onFilePage}
+                        label="letters on file"
+                        onpagechange={handleOnFilePage}
+                    ></c-antsurance-step-pager>
+                </section>
+            </template>
+        </template>
+
+        <!-- A letter open: the editor beside the page as it will print. -->
+        <template lwc:else>
+            <header class="c-work__head">
+                <button type="button" class="c-back c-ui-focus" lwc:ref="back" onclick={handleBack} disabled={isSaving}>
+                    <lightning-icon icon-name="utility:chevronleft" size="xx-small" alternative-text=""></lightning-icon>
+                    <span>{backLabel}</span>
+                </button>
+                <div class="c-work__titles">
+                    <h2 class="c-letters__title">{workTitle}</h2>
+                    <p class="c-letters__meta">{workMeta}</p>
+                </div>
+            </header>
+
+            <template lwc:if={isDrafting}>
+                <div class="c-status" role="status">
+                    <span class="c-status__pulse" aria-hidden="true"></span>
+                    <span>{caption}</span>
+                </div>
+                <div class="c-skeleton c-skeleton_page" aria-hidden="true">
+                    <span class="c-skeleton__row"></span>
+                    <span class="c-skeleton__row c-skeleton__row_tall"></span>
+                </div>
+            </template>
+
+            <template lwc:if={workError}>
+                <div class="c-work__error" role="alert">
+                    <p class="c-work__error-text">{workError}</p>
+                    <template lwc:if={isFailed}>
+                        <lightning-button label="Try again" onclick={handleRetryDraft}></lightning-button>
+                    </template>
+                    <template lwc:if={isPdfFailed}>
+                        <lightning-button label="Save the PDF again" onclick={handleRetryPdf}></lightning-button>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={showEditor}>
+                <div class="c-work">
+                    <c-antsurance-tabs class="c-work__tabs" label="The letter" variant="pill" tabs={workTabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+                    <div class="c-work__panes">
+                        <section class={editClass} aria-label="Edit the letter">
+                            <c-antsurance-accordion
+                                label="Address and reference"
+                                count={headerGapCount}
+                                summary={headerSummary}
+                                open={showHeader}
+                                ontoggle={handleHeaderToggle}
+                            >
+                                <!-- The three text boxes are filled from the script: a textarea takes its text through its value property, not from the template. -->
+                                <div class="c-fields">
+                                    <label class="c-field">
+                                        <span class="c-field__label">To</span>
+                                        <textarea class="c-field__input c-field__input_block" rows="4" data-field="addressee" lwc:ref="toBox" disabled={fieldsLocked} oninput={handleField}></textarea>
+                                    </label>
+                                    <label class="c-field">
+                                        <span class="c-field__label">Reference</span>
+                                        <textarea class="c-field__input c-field__input_block" rows="5" data-field="reference" lwc:ref="referenceBox" disabled={fieldsLocked} oninput={handleField}></textarea>
+                                    </label>
+                                    <label class="c-field">
+                                        <span class="c-field__label">Salutation</span>
+                                        <input type="text" class="c-field__input" data-field="salutation" value={salutation} disabled={fieldsLocked} oninput={handleField} />
+                                    </label>
+                                </div>
+                            </c-antsurance-accordion>
+                            <label class="c-field c-field_grow">
+                                <span class="c-field__label">Letter</span>
+                                <textarea class="c-field__input c-field__input_body" data-field="body" lwc:ref="bodyBox" disabled={fieldsLocked} oninput={handleField}></textarea>
+                            </label>
+
+                            <template lwc:if={isRevising}>
+                                <div class="c-status" role="status">
+                                    <span class="c-status__pulse" aria-hidden="true"></span>
+                                    <span>{caption}</span>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="c-ask">
+                                    <label class="c-ask__field">
+                                        <span class="c-field__label">Ask Claude for a change</span>
+                                        <input
+                                            type="text"
+                                            class="c-field__input"
+                                            placeholder="Shorter, or add the deductible"
+                                            value={request}
+                                            disabled={fieldsLocked}
+                                            oninput={handleRequestInput}
+                                            onkeydown={handleRequestKey}
+                                        />
+                                    </label>
+                                    <lightning-button label="Change it" icon-name="utility:sparkles" disabled={cannotRevise} onclick={handleRevise}></lightning-button>
+                                </div>
+                            </template>
+
+                            <template lwc:if={hasBasis}>
+                                <c-antsurance-accordion
+                                    label="What the draft rests on"
+                                    count={basisCount}
+                                    summary="Check before approving"
+                                    open={showBasis}
+                                    ontoggle={handleBasisToggle}
+                                >
+                                    <ul class="c-basis">
+                                        <template for:each={basis} for:item="line">
+                                            <li key={line.key} class="c-basis__line">{line.text}</li>
+                                        </template>
+                                    </ul>
+                                </c-antsurance-accordion>
+                            </template>
+                        </section>
+
+                        <section class={previewClass} aria-label={sheetLabel}>
+                            <div class="c-frame">
+                                <div class="c-sheet">
+                                    <div class="c-sheet__head">
+                                        <img class="c-sheet__logo" src={lockup} alt="Antsurance" />
+                                        <span class="c-sheet__from">
+                                            <span class="c-sheet__from-name">Antsurance Insurance Company</span>
+                                            <span class="c-sheet__from-line">Claims Department, 1-800-555-0199</span>
+                                        </span>
+                                    </div>
+                                    <div class="c-sheet__rule"></div>
+                                    <div class="c-sheet__letter">
+                                        <div class="c-sheet__block c-sheet__block_to">
+                                            <template for:each={sheetAddressee} for:item="line">
+                                                <p key={line.key} class="c-sheet__line">
+                                                    <template for:each={line.parts} for:item="part">
+                                                        <span key={part.key} class={part.className}>{part.text}</span>
+                                                    </template>
+                                                </p>
+                                            </template>
+                                        </div>
+                                        <p class="c-sheet__line c-sheet__block">{sheetDate}</p>
+                                        <div class="c-sheet__block c-sheet__block_ref">
+                                            <template for:each={sheetReference} for:item="line">
+                                                <p key={line.key} class="c-sheet__line">
+                                                    <template for:each={line.parts} for:item="part">
+                                                        <span key={part.key} class={part.className}>{part.text}</span>
+                                                    </template>
+                                                </p>
+                                            </template>
+                                        </div>
+                                        <p class="c-sheet__line c-sheet__block">
+                                            <template for:each={sheetSalutation} for:item="part">
+                                                <span key={part.key} class={part.className}>{part.text}</span>
+                                            </template>
+                                        </p>
+                                        <template for:each={sheetParagraphs} for:item="paragraph">
+                                            <div key={paragraph.key} class="c-sheet__paragraph">
+                                                <template for:each={paragraph.lines} for:item="line">
+                                                    <p key={line.key} class="c-sheet__line">
+                                                        <template for:each={line.parts} for:item="part">
+                                                            <span key={part.key} class={part.className}>{part.text}</span>
+                                                        </template>
+                                                    </p>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <p class="c-sheet__line c-sheet__block">{sheetClosing}</p>
+                                        <div class="c-sheet__signing"></div>
+                                        <template for:each={sheetSigner} for:item="line">
+                                            <p key={line.key} class={line.className}>{line.text}</p>
+                                        </template>
+                                    </div>
+                                    <p class="c-sheet__foot">Antsurance Insurance Company, a fictional insurer used for demonstrations</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <footer class="c-foot">
+                        <template lwc:if={isConfirming}>
+                            <p class="c-foot__hint">This saves the letter as a PDF on this claim and adds a file note in your name. Nothing is sent to anyone.</p>
+                            <div class="c-foot__actions">
+                                <lightning-button label="Cancel" onclick={handleCancelApprove}></lightning-button>
+                                <lightning-button variant="brand" label="Confirm" onclick={handleConfirm}></lightning-button>
+                            </div>
+                        </template>
+                        <template lwc:if={isSaving}>
+                            <div class="c-status" role="status">
+                                <span class="c-status__pulse" aria-hidden="true"></span>
+                                <span>Saving the letter to this claim</span>
+                            </div>
+                        </template>
+                        <template lwc:if={showFootActions}>
+                            <p class={hintClass}>{approveHint}</p>
+                            <div class="c-foot__actions">
+                                <lightning-button variant="brand" label="Approve and save" icon-name="utility:check" disabled={cannotApprove} onclick={handleApprove}></lightning-button>
+                            </div>
+                        </template>
+                    </footer>
+                </div>
+            </template>
+        </template>
+    </article>
+</template>

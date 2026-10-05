@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "Show me the open claim with the largest outstanding reserve"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Outstanding_Reserve__c, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000041E8MiAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MiAAK\",\"Outstanding_Reserve__c\":266500,\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002569\",\"Id\":\"500aj00003jfwTtAAI\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_record",
+    "content": "{\n  \"record_id\": \"500aj00003jfwTtAAI\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What has happened on this claim so far?\",\n    \"Show the top 5 open claims by reserve\",\n    \"Total outstanding reserve on open claims\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown: the summary card for Installer fell from second-story roof."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"record\",\n    \"recordId\": \"500aj00003jfwTtAAI\",\n    \"objectApiName\": \"Case\",\n    \"card\": \"case\",\n    \"eyebrow\": \"Claim 00002569\",\n    \"name\": \"Installer fell from second-story roof\",\n    \"tone\": \"alert\",\n    \"status\": \"Under Investigation\",\n    \"figure\": \"$266,500\",\n    \"figureLabel\": \"Outstanding reserve\",\n    \"facts\": [\n      {\n        \"label\": \"Customer\",\n        \"value\": \"Ridgeline Roofing & Solar\"\n      },\n      {\n        \"label\": \"Policy\",\n        \"value\": \"ANT-WC-204993\"\n      },\n      {\n        \"label\": \"Loss type\",\n        \"value\": \"Bodily Injury\"\n      },\n      {\n        \"label\": \"Severity\",\n        \"value\": \"Catastrophic\"\n      },\n      {\n        \"label\": \"Reported\",\n        \"value\": \"Sep 26, 2026\"\n      },\n      {\n        \"label\": \"Handled by\",\n        \"value\": \"Anjali Venkataraman\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What has happened on this claim so far?\",\n      \"Show the top 5 open claims by reserve\",\n      \"Total outstanding reserve on open claims\"\n    ]\n  }\n]"
+  }
+]

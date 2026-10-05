@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims do we have right now?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status, COUNT(Id) n FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Status\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"n\":4,\"Status\":\"Approved\"},{\"n\":6,\"Status\":\"New\"},{\"n\":6,\"Status\":\"Payment Issued\"},{\"n\":6,\"Status\":\"Under Investigation\"},{\"n\":4,\"Status\":\"Appraisal\"}],\"truncated\":false,\"rowCount\":5}"
+  },
+  {
+    "role": "assistant",
+    "content": "There are **26 open claims** right now. Here's how they break down by status:\n\n- New: **6**\n- Under Investigation: **6**\n- Appraisal: **4**\n- Approved: **4**\n- Payment Issued: **6**"
+  }
+]

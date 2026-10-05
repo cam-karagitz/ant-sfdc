@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How much have we paid out on claims with a date of loss this year?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Paid_Amount__c) paid, COUNT(Id) n, SUM(Outstanding_Reserve__c) os FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Date_of_Loss__c = THIS_YEAR\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"os\":1012630.0,\"n\":46,\"paid\":507380.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "We've paid out **$507,380** on the **46 claims** with a date of loss in 2026. Another **$1,012,630** is still held in outstanding reserves on those claims, so total incurred so far is **$1,520,010**."
+  }
+]

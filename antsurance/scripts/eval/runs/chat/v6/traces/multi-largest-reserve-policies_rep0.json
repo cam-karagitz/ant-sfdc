@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "For the customer with the largest outstanding reserve on a single open claim, which policies do they hold?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Outstanding_Reserve__c, Account.Id, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Outstanding_Reserve__c != null ORDER BY Outstanding_Reserve__c DESC LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000041E8MiAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MiAAK\",\"Outstanding_Reserve__c\":266500,\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002569\",\"Id\":\"500aj00003jfwTtAAI\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c, Loss_Ratio__c FROM Policy__c WHERE Account__c = '001aj000041E8MiAAK' ORDER BY Annual_Premium__c DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Loss_Ratio__c\":295.6,\"Expiration_Date__c\":\"2027-02-25\",\"Annual_Premium__c\":96400,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Workers Compensation\",\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jfwRdAAI\"},{\"Loss_Ratio__c\":0.0,\"Expiration_Date__c\":\"2027-02-25\",\"Annual_Premium__c\":38500,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"General Liability\",\"Name\":\"ANT-GL-204976\",\"Id\":\"a00aj00003jfwRcAAI\"},{\"Loss_Ratio__c\":0.0,\"Expiration_Date__c\":\"2027-02-25\",\"Annual_Premium__c\":27800,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Commercial Auto\",\"Name\":\"ANT-CA-205010\",\"Id\":\"a00aj00003jfwReAAI\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The customer is [Ridgeline Roofing & Solar](/lightning/r/001aj000041E8MiAAK/view). Their claim [00002569](/lightning/r/500aj00003jfwTtAAI/view), \"Installer fell from second-story roof\", has the largest outstanding reserve on any open claim at **$266,500**. They hold 3 active policies worth **$162,700** a year in total, all expiring Feb 25, 2027:\n\n| Policy | Line | Annual premium | Loss ratio |\n|---|---|---|---|\n| [ANT-WC-204993](/lightning/r/a00aj00003jfwRdAAI/view) | Workers Compensation | $96,400 | **296%** |\n| [ANT-GL-204976](/lightning/r/a00aj00003jfwRcAAI/view) | General Liability | $38,500 | 0% |\n| [ANT-CA-205010](/lightning/r/a00aj00003jfwReAAI/view) | Commercial Auto | $27,800 | 0% |\n\nThe workers comp loss ratio is worth watching before the February renewal.\n\n?> Show claim 00002569's timeline\n?> Who is handling claim 00002569?\n?> Other open claims for Ridgeline?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show claim 00002569's timeline\",\n      \"Who is handling claim 00002569?\",\n      \"Other open claims for Ridgeline?\"\n    ]\n  }\n]"
+  }
+]

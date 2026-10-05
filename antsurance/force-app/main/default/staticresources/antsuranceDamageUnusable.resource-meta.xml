@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>image/jpeg</contentType>
+    <description>The rear quarter sample photo made dark and blurred on purpose, to check that the photo assessment calls an unusable photo unusable. Used only by scripts/eval/photos.</description>
+</StaticResource>

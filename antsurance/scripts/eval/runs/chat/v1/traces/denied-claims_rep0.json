@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which claims were denied?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Account.Id, Account.Name, Loss_Type__c, Date_of_Loss__c, Estimated_Loss__c, Coverage_Check__c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Status = 'Denied' ORDER BY Date_of_Loss__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Prairie Wind Hotels\",\"Id\":\"001aj000040sVnbAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Estimated_Loss__c\":38750.00,\"Date_of_Loss__c\":\"2026-08-23\",\"Loss_Type__c\":\"Bodily Injury\",\"AccountId\":\"001aj000040sVnbAAE\",\"Subject\":\"Employee fell from a step ladder\",\"CaseNumber\":\"00002152\",\"Id\":\"500aj00003jKuWCAA0\"},{\"Account\":{\"Name\":\"Engel Household\",\"Id\":\"001aj000040sVnDAAU\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Estimated_Loss__c\":650.00,\"Date_of_Loss__c\":\"2026-08-19\",\"Loss_Type__c\":\"Glass\",\"AccountId\":\"001aj000040sVnDAAU\",\"Subject\":\"Windshield cracked by highway debris\",\"CaseNumber\":\"00002137\",\"Id\":\"500aj00003jKuVxAAK\"},{\"Account\":{\"Name\":\"Marigold Cafe & Catering\",\"Id\":\"001aj000040sVmhAAE\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Coverage_Check__c\":\"In force on date of loss\",\"Estimated_Loss__c\":5000.00,\"Date_of_Loss__c\":\"2026-07-28\",\"Loss_Type__c\":\"Liability\",\"AccountId\":\"001aj000040sVmhAAE\",\"Subject\":\"Guest alleges food poisoning after wedding\",\"CaseNumber\":\"00002130\",\"Id\":\"500aj00003jKuVqAAK\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "**3 claims** are in Denied status:\n\n| Claim | Customer | Loss | Date of loss | Est. loss |\n|---|---|---|---|---|\n| [00002152](/lightning/r/500aj00003jKuWCAA0/view) Employee fell from step ladder | [Prairie Wind Hotels](/lightning/r/001aj000040sVnbAAE/view) | Bodily Injury | 23 Aug | **$38,750** |\n| [00002137](/lightning/r/500aj00003jKuVxAAK/view) Windshield cracked by debris | [Engel Household](/lightning/r/001aj000040sVnDAAU/view) | Glass | 19 Aug | $650 |\n| [00002130](/lightning/r/500aj00003jKuVqAAK/view) Food poisoning allegation | [Marigold Cafe & Catering](/lightning/r/001aj000040sVmhAAE/view) | Liability | 28 Jul | $5,000 |\n\nThe policy was in force on the date of loss for all three, so none of them was denied because coverage had lapsed. I can check the file notes to find out why each one was denied."
+  }
+]

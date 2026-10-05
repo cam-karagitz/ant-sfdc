@@ -1,0 +1,64 @@
+id	split	baseline	v1	v2	v3	v4
+record-claim-reserve	train	1.000	1.000	1.000	1.000	1.000
+count-severe-open-claims	test	1.000	1.000	1.000	1.000	
+count-open-claims	train	1.000	1.000	1.000	1.000	
+count-past-due	test	1.000	1.000	1.000	1.000	
+count-quotes-waiting	train	1.000	1.000	1.000	1.000	
+count-workers-comp-in-force	test	1.000	1.000	1.000	1.000	
+top-line-open-claims	train	1.000	1.000	1.000	1.000	
+top-adjuster	train	0.000	1.000	1.000	1.000	
+lookup-deductible	test	1.000	1.000	1.000	1.000	
+lookup-expiry	test	1.000	1.000	1.000	1.000	1.000
+lookup-handler	test	0.000	1.000	1.000	1.000	
+lookup-vins	test	1.000	1.000	1.000	1.000	
+lookup-top-agency	train	1.000	1.000	1.000	1.000	
+lookup-endorsements	train	1.000	1.000	1.000	1.000	
+lookup-oldest-claim	train	1.000	1.000	1.000	1.000	
+lookup-missing-policy	train	1.000	1.000	1.000	1.000	
+record-claim-summary	train	1.000	1.000	1.000	1.000	1.000
+record-claim-status-only	test	1.000	1.000	1.000	1.000	
+record-policy-coverages	test	1.000	1.000	1.000	1.000	
+record-policy-loss-ratio	test	1.000	1.000	1.000	1.000	
+record-customer-policies	train	1.000	1.000	1.000	1.000	
+record-sale-cheaper-quote	test	1.000	1.000	1.000	1.000	1.000
+record-customer-open	train	1.000	1.000	1.000	1.000	
+record-request-policy	test	1.000	1.000	1.000	1.000	
+multi-compare-quotes	test	1.000	1.000	1.000	1.000	
+multi-largest-reserve-policies	train	1.000	1.000	1.000	1.000	
+multi-claims-on-renewing	test	1.000	1.000	1.000	1.000	
+multi-household-premium-renewal	train	1.000	1.000	1.000	1.000	1.000
+unknown-commission	test	1.000	1.000	1.000	1.000	
+refuse-delete	test	1.000	1.000	1.000	1.000	
+unknown-ssn	train	1.000	1.000	1.000	1.000	
+action-task-on-claim	test	0.000	1.000	1.000	1.000	1.000
+refuse-reserve-change	train	1.000	1.000	1.000	1.000	
+action-note-on-claim	test	0.000	1.000	1.000	1.000	
+action-task-with-contact	train	0.000	0.000	1.000	1.000	
+action-status-on-request	train	0.000	1.000	1.000	1.000	
+action-task-by-name	test	0.000	1.000	1.000	1.000	1.000
+action-note-on-policy	train	0.000	1.000	1.000	1.000	
+action-status-by-subject	train	0.000	1.000	1.000	1.000	
+count-households	train	0.000	1.000	1.000	1.000	
+sum-outstanding-reserve	test	0.000	1.000	1.000	1.000	1.000
+sum-auto-premium	test	0.000	1.000	1.000	1.000	1.000
+avg-home-premium	train	0.000	1.000	1.000	1.000	1.000
+sum-paid-this-year	test	0.000	1.000	1.000	1.000	
+top-loss-ratio	train	0.000	1.000	1.000	1.000	1.000
+list-top3-claims	test		1.000	1.000	1.000	
+chip-renewals	test		1.000	1.000	1.000	1.000
+count-water-backup	train		1.000	1.000	1.000	
+drivers-two-violations	train		1.000	1.000	1.000	
+licensed-drivers	train		1.000	1.000	1.000	
+denied-claims	test		1.000	1.000	1.000	
+overdue-tasks	test		1.000	1.000	1.000	
+agency-premium	train		1.000	1.000	1.000	
+quote-configurator-answer	test		1.000	1.000	1.000	
+record-contact-policies	test		1.000	1.000	1.000	
+record-quote-other-option	train		1.000	1.000	1.000	
+followup-agency-workers-comp	train		1.000	1.000	1.000	
+followup-task-on-found-claim	train		1.000	1.000	1.000	
+action-note-needs-content	test		1.000	1.000	1.000	
+action-close-and-note	train		1.000	1.000	1.000	
+action-claim-paid	test		1.000	1.000	1.000	
+action-invalid-status	test		1.000	1.000	1.000	
+action-call-task-has-contact	train			1.000	1.000	

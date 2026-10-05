@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The Antsurance cockpit, for the Home page the Antsurance app assigns as its Home.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Home (cockpit)</masterLabel>
+    <targets>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>

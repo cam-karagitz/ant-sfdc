@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Quote record \"Standard deductible\" open (object Quote, Id 0Q0aj000003bR9JCAU). \"This\", \"here\" and \"this quote\" refer to that record.]\n\nHow much cheaper is the other option on this sale?"
+  },
+  {
+    "role": "assistant",
+    "content": "The other option, [Higher deductible, lower premium](/lightning/r/0Q0aj000003bR9KCAU/view), costs **$125 a year less**: $1,435 against $1,560 for this quote, about 8% cheaper. To get that saving the customer takes on a **$2,000 deductible** instead of $1,000. The coverage limit is $100,000 on both."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_comparison",
+    "content": "{\n  \"title\": \"Quote options for the Dubois auto sale\",\n  \"columns\": [\n    {\n      \"name\": \"Standard deductible\",\n      \"record_id\": \"0Q0aj000003bR9JCAU\",\n      \"recommended\": false\n    },\n    {\n      \"name\": \"Higher deductible\",\n      \"record_id\": \"0Q0aj000003bR9KCAU\",\n      \"recommended\": false\n    }\n  ],\n  \"rows\": [\n    {\n      \"label\": \"Annual premium\",\n      \"values\": [\n        \"$1,560\",\n        \"$1,435\"\n      ]\n    },\n    {\n      \"label\": \"Deductible\",\n      \"values\": [\n        \"$1,000\",\n        \"$2,000\"\n      ]\n    },\n    {\n      \"label\": \"Coverage limit\",\n      \"values\": [\n        \"$100,000\",\n        \"$100,000\"\n      ]\n    },\n    {\n      \"label\": \"Status\",\n      \"values\": [\n        \"Presented\",\n        \"Presented\"\n      ]\n    }\n  ],\n  \"reason\": \"\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Draft a follow-up email to the Duboises\",\n    \"When does this quote expire?\",\n    \"Remind me to follow up on this sale\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"comparison\",\n    \"title\": \"Quote options for the Dubois auto sale\",\n    \"columns\": [\n      {\n        \"name\": \"Standard deductible\",\n        \"recordId\": \"0Q0aj000003bR9JCAU\",\n        \"recommended\": false\n      },\n      {\n        \"name\": \"Higher deductible\",\n        \"recordId\": \"0Q0aj000003bR9KCAU\",\n        \"recommended\": false\n      }\n    ],\n    \"rows\": [\n      {\n        \"label\": \"Annual premium\",\n        \"values\": [\n          \"$1,560\",\n          \"$1,435\"\n        ]\n      },\n      {\n        \"label\": \"Deductible\",\n        \"values\": [\n          \"$1,000\",\n          \"$2,000\"\n        ]\n      },\n      {\n        \"label\": \"Coverage limit\",\n        \"values\": [\n          \"$100,000\",\n          \"$100,000\"\n        ]\n      },\n      {\n        \"label\": \"Status\",\n        \"values\": [\n          \"Presented\",\n          \"Presented\"\n        ]\n      }\n    ],\n    \"reason\": null\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Draft a follow-up email to the Duboises\",\n      \"When does this quote expire?\",\n      \"Remind me to follow up on this sale\"\n    ]\n  }\n]"
+  }
+]

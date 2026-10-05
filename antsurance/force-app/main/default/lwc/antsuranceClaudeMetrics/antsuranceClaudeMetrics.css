@@ -1,0 +1,194 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+.c-frame {
+    container-type: inline-size;
+}
+
+/* Tiles keep a reading width instead of stretching across the chat. */
+.c-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 13rem));
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-tiles_1 {
+    grid-template-columns: minmax(0, 16rem);
+}
+
+.c-tiles_2 {
+    grid-template-columns: repeat(2, minmax(0, 15rem));
+}
+
+.c-tiles_3 {
+    grid-template-columns: repeat(3, minmax(0, 14rem));
+}
+
+.c-tile {
+    --c-tile-edge: var(--ants-line-strong);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+    padding: 0.75rem 1rem 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-top: 0.1875rem solid var(--c-tile-edge);
+    border-radius: 0.875rem;
+    background: #fff;
+}
+
+.c-tile_good {
+    --c-tile-edge: var(--ants-olive);
+}
+
+.c-tile_watch {
+    --c-tile-edge: var(--ants-amber);
+}
+
+.c-tile_alert {
+    --c-tile-edge: var(--ants-clay);
+}
+
+.c-tile__label {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-wrap: balance;
+}
+
+.c-tile__value {
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.c-tile__note {
+    margin-top: 0.125rem;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+/* In the narrow panel: two to a row, and an odd last tile takes the full row. */
+@container (max-width: 34rem) {
+    .c-tiles_2,
+    .c-tiles_3,
+    .c-tiles_4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-tiles_3 > :last-child {
+        grid-column: span 2;
+    }
+
+    .c-tile__value {
+        font-size: 1.25rem;
+    }
+}
+
+/* ---------- Compact: rows of label and value, or a two-by-two grid for four ---------- */
+
+.c-figures {
+    margin: 0;
+    padding: 0 0.75rem 0.625rem;
+    list-style: none;
+}
+
+.c-figure {
+    --c-figure-edge: var(--ants-line-strong);
+
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4375rem 0 0.4375rem 0.625rem;
+    border-top: 1px solid var(--ants-line);
+    box-shadow: inset 0.1875rem 0 0 var(--c-figure-edge);
+}
+
+.c-figure_good {
+    --c-figure-edge: var(--ants-olive);
+}
+
+.c-figure_watch {
+    --c-figure-edge: var(--ants-amber);
+}
+
+.c-figure_alert {
+    --c-figure-edge: var(--ants-clay);
+}
+
+.c-figure__words {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.c-figure__label {
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-wrap: balance;
+}
+
+.c-figure__note {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+.c-figure__value {
+    flex: none;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Four figures: two to a row, the value under its label. */
+.c-figures_grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.c-figures_grid .c-figure {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.125rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.625rem;
+    box-shadow: inset 0 0.1875rem 0 var(--c-figure-edge);
+}
+
+/* Label, then the value, then the note, as on a tile. */
+.c-figures_grid .c-figure__words {
+    display: contents;
+}
+
+.c-figures_grid .c-figure__label {
+    order: 1;
+}
+
+.c-figures_grid .c-figure__value {
+    order: 2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.c-figures_grid .c-figure__note {
+    order: 3;
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "List the three largest open claims by outstanding reserve."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Account.Id, Account.Name, Policy__r.Id, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKdyPAAS\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040t3d1AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyPAAS\",\"AccountId\":\"001aj000040t3d1AAA\",\"Outstanding_Reserve__c\":490000.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002221\",\"Id\":\"500aj00003jLAOhAAO\"},{\"Policy__r\":{\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jKdyLAAS\"},\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000040t3czAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyLAAS\",\"AccountId\":\"001aj000040t3czAAA\",\"Outstanding_Reserve__c\":206500.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002219\",\"Id\":\"500aj00003jLAOfAAO\"},{\"Policy__r\":{\"Name\":\"ANT-CA-205197\",\"Id\":\"a00aj00003jKdyXAAS\"},\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040t3d4AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyXAAS\",\"AccountId\":\"001aj000040t3d4AAA\",\"Outstanding_Reserve__c\":81000.00,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002223\",\"Id\":\"500aj00003jLAOjAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "These are the three biggest open claims by outstanding reserve. Together they hold **$777,500**.\n\n| Claim | Customer | Status | Severity | Outstanding |\n|---|---|---|---|---|\n| [00002221](/lightning/r/500aj00003jLAOhAAO/view): Kitchen fire spread to three apartments | [Copperfield Property Management](/lightning/r/001aj000040t3d1AAA/view) | Appraisal | Catastrophic | **$490,000** |\n| [00002219](/lightning/r/500aj00003jLAOfAAO/view): Installer fell from second-story roof | [Ridgeline Roofing & Solar](/lightning/r/001aj000040t3czAAA/view) | Under Investigation | Catastrophic | **$206,500** |\n| [00002223](/lightning/r/500aj00003jLAOjAAO/view): Tractor-trailer jackknifed on I-80 | [Sagebrush Freight Lines](/lightning/r/001aj000040t3d4AAA/view) | Approved | High | **$81,000** |"
+  }
+]

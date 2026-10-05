@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "What is the total outstanding reserve across open claims?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Outstanding_Reserve__c) total, COUNT(Id) cnt FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"cnt\":26,\"total\":745350.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Open claims carry **$745,350** in outstanding reserve across 26 claims."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"across 26 open claims\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Average per claim\",\n      \"value\": \"$28,667\",\n      \"note\": \"outstanding reserve per open claim\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Which open claims have the largest reserves?\",\n    \"Break down the reserve by severity\",\n    \"Show the reserve by adjuster\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$745,350\",\n        \"note\": \"across 26 open claims\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Average per claim\",\n        \"value\": \"$28,667\",\n        \"note\": \"outstanding reserve per open claim\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which open claims have the largest reserves?\",\n      \"Break down the reserve by severity\",\n      \"Show the reserve by adjuster\"\n    ]\n  }\n]"
+  }
+]

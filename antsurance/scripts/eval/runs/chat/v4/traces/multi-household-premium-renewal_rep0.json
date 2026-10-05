@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What is the Reyes Household paying in total annual premium across its in-force policies, and which policy renews first?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Account__r.Name, Account__c, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c, Days_to_Renewal__c FROM Policy__c WHERE Account__r.Name LIKE '%Reyes%' AND Status__c IN ('Active','Pending Renewal') ORDER BY Expiration_Date__c LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"},\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-15\",\"Annual_Premium__c\":1890.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Account__c\":\"001aj000040t3coAAA\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKdxuAAC\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"},\"Days_to_Renewal__c\":164,\"Expiration_Date__c\":\"2027-03-15\",\"Annual_Premium__c\":410.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Account__c\":\"001aj000040t3coAAA\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jKdxvAAC\"},{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"},\"Days_to_Renewal__c\":223,\"Expiration_Date__c\":\"2027-05-13\",\"Annual_Premium__c\":2380.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Account__c\":\"001aj000040t3coAAA\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKdxtAAC\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "[Reyes Household](/lightning/r/001aj000040t3coAAA/view) pays **$4,680** a year in total across its 3 in-force policies. Two policies tie for the first renewal: they both renew on **Mar 15, 2027**, 164 days from today.\n\n| Policy | Line | Premium | Expires |\n|---|---|---|---|\n| [ANT-HO-204534](/lightning/r/a00aj00003jKdxuAAC/view) | Homeowners | $1,890 | Mar 15, 2027 |\n| [ANT-UM-204551](/lightning/r/a00aj00003jKdxvAAC/view) | Umbrella | $410 | Mar 15, 2027 |\n| [ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view) | Personal Auto | $2,380 | May 13, 2027 |"
+  }
+]

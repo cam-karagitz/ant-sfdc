@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Claude_Brief__c</fullName>
+    <description>Claude's written read of the claim: where it stands, coverage, the money, anything to watch and what to do next. Markdown. Written by the claim brief component; regenerate it there rather than editing here.</description>
+    <label>Claude Brief</label>
+    <length>32768</length>
+    <visibleLines>8</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

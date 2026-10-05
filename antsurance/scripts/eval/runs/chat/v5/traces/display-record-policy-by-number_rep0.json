@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "Pull up policy ANT-HO-204534"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status__c, Account__r.Name FROM Policy__c WHERE Name = 'ANT-HO-204534' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000041E8MXAA0\"},\"Account__c\":\"001aj000041E8MXAA0\",\"Status__c\":\"Active\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jfwRCAAY\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "Here's [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view). It's an active homeowners policy for the [Reyes Household](/lightning/r/001aj000041E8MXAA0/view)."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_record",
+    "content": "{\n  \"record_id\": \"a00aj00003jfwRCAAY\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What coverages are on this policy?\",\n    \"Any open claims on ANT-HO-204534?\",\n    \"Show the file notes for this policy\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown: the summary card for ANT-HO-204534."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"record\",\n    \"recordId\": \"a00aj00003jfwRCAAY\",\n    \"objectApiName\": \"Policy__c\",\n    \"card\": \"policy\",\n    \"eyebrow\": \"Policy\",\n    \"name\": \"ANT-HO-204534\",\n    \"tone\": \"good\",\n    \"status\": \"Active\",\n    \"figure\": \"$1,890\",\n    \"figureLabel\": \"Annual premium\",\n    \"facts\": [\n      {\n        \"label\": \"Customer\",\n        \"value\": \"Reyes Household\"\n      },\n      {\n        \"label\": \"Line\",\n        \"value\": \"Homeowners\"\n      },\n      {\n        \"label\": \"Effective\",\n        \"value\": \"Mar 17, 2026\"\n      },\n      {\n        \"label\": \"Expires\",\n        \"value\": \"Mar 17, 2027\"\n      },\n      {\n        \"label\": \"Coverage limit\",\n        \"value\": \"$485,000\"\n      },\n      {\n        \"label\": \"Deductible\",\n        \"value\": \"$1,500\"\n      },\n      {\n        \"label\": \"Payment\",\n        \"value\": \"Paid in Full\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What coverages are on this policy?\",\n      \"Any open claims on ANT-HO-204534?\",\n      \"Show the file notes for this policy\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nShow me this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "Claim 00002566 is **Under Investigation**. Drying is finished, moisture readings are normal, and the claim is now waiting for the mitigation invoice and the rebuild estimate. Both arrived today as attachments.\n\n- **Loss:** a basement bathroom supply line burst on Sep 21. Coverage is confirmed as sudden and accidental discharge, with a **$2,500** deductible.\n- **Money:** the reserve is **$45,000**. A **$5,000** advance has been paid, leaving **$40,000** outstanding against an estimated loss of $47,500.\n- **Next:** review the mitigation invoice by Oct 6, then approve the rebuild estimate by Oct 7. Both tasks are High priority.\n\nNo SIU referral and no subrogation potential.\n\n?> Show the claim timeline\n?> Draft an update to Chinedu Okafor\n?> Should the reserve change?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show the claim timeline\",\n      \"Draft an update to Chinedu Okafor\",\n      \"Should the reserve change?\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,976 @@
+diff --git a/antsurance/force-app/main/default/classes/AntsuranceClaudeController.cls b/antsurance/force-app/main/default/classes/AntsuranceClaudeController.cls
+index a598512..f23ac0a 100644
+--- a/antsurance/force-app/main/default/classes/AntsuranceClaudeController.cls
++++ b/antsurance/force-app/main/default/classes/AntsuranceClaudeController.cls
+@@ -3,9 +3,11 @@
+  * Claude look up live CRM records through a read-only SOQL tool that runs as the current user.
+  * Authentication comes from the Anthropic_API named credential, so no key is held in code.
+  *
+- * Each call is one step of the conversation: either Claude's answer, or the record lookups Claude
+- * asked for. The chat panel calls again after a lookup, so it can show progress between steps
+- * and each step gets its own Apex limits.
++ * Each call is one step of the conversation: Claude's answer, the record lookups Claude asked for,
++ * or changes Claude proposes. The chat panel calls again after a lookup, so it can show progress
++ * between steps and each step gets its own Apex limits. This class never writes a record: a
++ * proposed change is only described here, and AntsuranceClaudeActions.confirm makes it when the
++ * user presses Confirm on its card.
+  */
+ public with sharing class AntsuranceClaudeController {
+     @TestVisible
+@@ -40,6 +42,10 @@ public with sharing class AntsuranceClaudeController {
+     private static final String UNREACHABLE = 'Claude could not be reached. Try again in a moment.';
+     private static final String REFUSED = 'Claude declined to answer that request.';
+     private static final String NO_ANSWER = 'Claude did not return an answer. Try rephrasing the question.';
++    // What Claude is told when a proposal becomes a card.
++    private static final String PROPOSAL_SHOWN =
++        'Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. ' +
++        'It is saved only if they press Confirm; an App note in a later message will say what they did.';
+ 
+     private static final String SYSTEM_PROMPT =
+         'You are Claude, the AI assistant built into the Salesforce CRM of Antsurance, a fictional insurance carrier used for demos. ' +
+@@ -56,7 +62,21 @@ public with sharing class AntsuranceClaudeController {
+         'Link a record by its name whenever you mention it and have its Id, written as [Name](/lightning/r/RECORD_ID/view) with the 18-character Id, ' +
+         'so include Id (and Account.Id and similar for parents you mention) in your queries.\n\n' +
+         'A user message may begin with a bracketed Page context note, added by the app, naming the record the user has open. ' +
+-        'When they say this record, this account, here or similar, they mean that record: query what you need using its Id. Do not quote the note.';
++        'When they say this record, this account, here or similar, they mean that record. ' +
++        'When facts about the open record are given at the end of these instructions, answer from them and query only for what they do not cover; ' +
++        'otherwise query what you need using its Id. Do not quote the note or the facts block.';
++
++    // Added for the chat panel, which can show a proposal as a card. Other callers get the query tool only.
++    private static final String ACTIONS_PROMPT =
++        '\n\nYou can prepare three kinds of change for the user to approve: a follow-up task (propose_task), a file note (propose_file_note) ' +
++        'and a status change on a claim or service request (propose_case_status). Calling one of these tools writes nothing. ' +
++        'It shows the user a card with Confirm and Cancel buttons, and the record is created or changed only if they press Confirm. ' +
++        'So never say a task, note or status change has been made; say it is ready for them to confirm. ' +
++        'A later user message may begin with a bracketed App note saying which cards they confirmed or cancelled: only then is it done. ' +
++        'Propose a change only when the user asks for one, propose exactly what they asked for, and look up any Id you need first. ' +
++        'When you propose, the card shows the details, so add at most one short sentence. ' +
++        'You cannot make any other change: no deleting, no editing reserves, premiums or other fields, no creating other records. ' +
++        'When asked for one, say plainly that you cannot do it from here, and do not propose something else in its place unless they ask.';
+ 
+     // The custom objects and fields Claude cannot guess. AntsuranceClaudeControllerTest fails to compile
+     // if a field named here is removed, so keep the two in step.
+@@ -69,23 +89,28 @@ public with sharing class AntsuranceClaudeController {
+         '- Policy__c: Name is the policy number. Account__c is the policyholder (Account__r.Name), Primary_Insured__c is a Contact, Producer__c is the agency Account. ' +
+         'Line_of_Business__c, Status__c (Quoted, Active, Pending Renewal, Lapsed, Cancelled, Expired; in force means Active or Pending Renewal), ' +
+         'Effective_Date__c, Expiration_Date__c, Days_to_Renewal__c, Annual_Premium__c, Coverage_Limit__c, Deductible__c, Billing_Frequency__c, ' +
+-        'Payment_Status__c (Current, Past Due, Paid in Full), Insured_Item__c, Underwriting_Notes__c. Child relationships: ' +
++        'Payment_Status__c (Current, Past Due, Paid in Full), Insured_Item__c, Underwriting_Notes__c, ' +
++        'Incurred_Losses__c (paid plus outstanding reserve on its claims) and Loss_Ratio__c (incurred losses as a percentage of annual premium; 150 means 150%). Child relationships: ' +
+         'Coverages__r (Policy_Coverage__c: Name, Category__c, Limit_Amount__c, Limit_Type__c, Deductible_Amount__c, Premium_Amount__c, What_Is_Covered__c), ' +
+         'Participants__r (Policy_Participant__c: Name, Contact__c, Role__c such as Named Insured or Driver, Status__c, Relationship_to_Insured__c, and for drivers ' +
+         'License_State__c, Years_Licensed__c, Driver_Rating__c, Violations_Past_3_Years__c, Accidents_Past_3_Years__c), ' +
+-        'Assets__r (Policy_Asset__c: Name, Asset_Type__c, Identifier__c which is the VIN for a vehicle, Location__c, Insured_Value__c), ' +
+-        'Endorsements__r (Policy_Endorsement__c: Name, Form_Number__c, Type__c of Endorsement, Exclusion, Benefit, Discount or Lienholder or Mortgagee, Premium_Change__c, Description__c), ' +
++        'Assets__r (Policy_Asset__c, what the policy insures: Name, Asset_Type__c of Vehicle, Dwelling, Rented Residence, Commercial Building, Business Property, Fleet or Operations, ' +
++        'Identifier__c which is the VIN for a vehicle, Model_Year__c, Location__c, Use__c, Details__c, Insured_Value__c, Lienholder__c), ' +
++        'Endorsements__r (Policy_Endorsement__c, the forms attached to the policy: Name, Form_Number__c, Type__c of Endorsement, Exclusion, Benefit, Discount or Lienholder or Mortgagee, ' +
++        'Status__c, Effective_Date__c, Premium_Change__c, Limit_Amount__c, Description__c), ' +
+         'Cases__r and File_Notes__r.\n' +
+-        '- Case: RecordType.DeveloperName is Claim or Policy_Service. Both have Policy__c, Reported_Date__c, Subject, Description, Status, Priority, IsClosed. ' +
++        '- Case: RecordType.DeveloperName is Claim or Policy_Service. Both have Policy__c, Reported_Date__c, Subject, Description, Status, Priority, IsClosed, ' +
++        'Handled_By__c (the name of the adjuster or service rep working it; use this, not Owner, for who is handling it) and Days_Open__c (days since it was reported, or until it closed). ' +
+         'A claim has Date_of_Loss__c, Loss_Type__c, Loss_Location__c, Severity__c (Low, Medium, High, Catastrophic), Estimated_Loss__c, Reserve_Amount__c, ' +
+-        'Paid_Amount__c, Outstanding_Reserve__c, Coverage_Check__c (whether the policy covered the date of loss), SIU_Referral__c (possible fraud) and Subrogation_Potential__c, and moves through New, Under Investigation, Appraisal, ' +
++        'Paid_Amount__c, Outstanding_Reserve__c, Coverage_Check__c (whether the policy covered the date of loss), SIU_Referral__c (possible fraud), Subrogation_Potential__c, ' +
++        'and Claude_Brief__c with Claude_Brief_At__c (a stored written brief of the claim and when it was written; long text, so select it but do not filter on it), and moves through New, Under Investigation, Appraisal, ' +
+         'Approved, Payment Issued, then Closed or Denied. A service request has Request_Type__c (for example Add Driver) and moves through New, In Progress, Waiting on Customer, Closed.\n' +
+         '- File_Note__c: the dated notes handlers write on a file. Case__c, Policy__c and Account__c say whose file; Note_Type__c, Note_Date__c, Author_Name__c, Body__c (long text: select it, but it cannot be filtered on). ' +
+         'Read these when asked what has happened on a claim, policy or customer.\n' +
+         '- Opportunity: a policy sale. Line_of_Business__c, Type (New Business, Renewal, Cross-Sell), Policy__c, and Amount is annual premium. ' +
+         'Stages: Submission Received, Underwriting Review, Quote Issued, Bind Requested, then Bound or Declined.\n' +
+         '- Quote: the priced options under a policy sale (child relationship Quotes on Opportunity). Name is the option, OpportunityId, Status (Draft, Issued, Presented, Accepted, Bound, Declined, Expired), ' +
+-        'Annual_Premium__c, Coverage_Limit__c, Deductible__c, Issued_Date__c, Days_Since_Issued__c, ExpirationDate (valid until), Description. ' +
++        'Annual_Premium__c, Coverage_Limit__c, Deductible__c, Issued_Date__c, Days_Since_Issued__c, ExpirationDate (valid until), Underwriter__c (a name), Description. ' +
+         'A quote is waiting on the customer while Issued or Presented. ' +
+         'Submission_Channel__c (Phone, Online, Agent, In Person: how the request came in), Needs_Underwriting_Review__c (true when an answer needs an underwriter). ' +
+         'Configuration__c holds the configurator answers as JSON; do not select it unless asked what the customer answered.\n' +
+@@ -96,7 +121,9 @@ public with sharing class AntsuranceClaudeController {
+         'Use it for any question about customers, households, policies, coverages, claims, service requests, leads, opportunities, tasks or other CRM records, ' +
+         'including broad ones such as what is going on with my book of business. Standard and custom objects and fields are available. ' +
+         'Select only the fields you need, use relationship fields such as Account.Name and Owner.Name instead of IDs, ' +
+-        'and add ORDER BY and LIMIT; at most 50 rows are returned. Aggregate queries with GROUP BY are supported. ' +
++        'and add ORDER BY and LIMIT; at most 50 rows are returned. For a count, a total or an average use COUNT(Id), SUM() or AVG(), ' +
++        'with GROUP BY to break it down by a picklist, text, date or lookup field (currency, number, percent and formula fields cannot be grouped), ' +
++        'rather than adding up rows yourself; a total without GROUP BY returns one row and takes no LIMIT. ' +
+         'If the query is invalid the error message comes back so you can correct it and try again.';
+ 
+     /**
+@@ -157,6 +184,11 @@ public with sharing class AntsuranceClaudeController {
+         public String model;
+         @AuraEnabled
+         public Boolean refused = false;
++        /** Changes Claude proposed in this step, each shown as a card. Nothing is written until one is confirmed. */
++        @AuraEnabled
++        public List<AntsuranceClaudeActions.Proposal> proposals = new List<AntsuranceClaudeActions.Proposal>();
++        /** Token counts the API reported for this step, for the eval in scripts/eval. */
++        public Map<String, Object> usage;
+     }
+ 
+     /**
+@@ -240,26 +272,60 @@ public with sharing class AntsuranceClaudeController {
+      */
+     @AuraEnabled
+     public static ChatReply sendMessage(String messagesJson, String model) {
++        return step(messagesJson, model, null, false);
++    }
++
++    /**
++     * @description The chat panel's version of sendMessage. It also gives Claude the facts of the record
++     * the user has open, so questions about it need no lookup, and lets Claude propose a task, a file
++     * note or a case status change. A proposal comes back in the reply's proposals and writes nothing.
++     * @param messagesJson JSON array of Messages API turns ({role, content}), ending with a user turn
++     * @param model One of the model ids from getModels; blank uses the default
++     * @param recordId The record on screen, or null
++     * @return The step's outcome and the turns to append to the conversation
++     * @throws AuraHandledException when the input is invalid or the API call fails
++     */
++    @AuraEnabled
++    public static ChatReply sendChatStep(String messagesJson, String model, Id recordId) {
++        return step(messagesJson, model, recordId, true);
++    }
++
++    private static ChatReply step(String messagesJson, String model, Id recordId, Boolean withActions) {
+         ModelOption option = findModel(model);
+         List<Object> conversation = parseMessages(messagesJson);
+-        Map<String, Object> payload = callClaude(option, conversation, SYSTEM_PROMPT + DATA_MODEL + describeContext());
++        String recordFacts = AntsuranceClaudeRecordFacts.describe(recordId);
++        Map<String, Object> payload = callClaude(
++            option,
++            conversation,
++            SYSTEM_PROMPT + (withActions ? ACTIONS_PROMPT : '') + DATA_MODEL,
++            describeContext() + (recordFacts == null ? '' : '\n\n' + recordFacts),
++            withActions
++        );
+         List<Object> content = (List<Object>) payload.get('content');
+         String stopReason = (String) payload.get('stop_reason');
+ 
+         ChatReply reply = new ChatReply();
+         reply.model = (String) payload.get('model');
++        reply.usage = (Map<String, Object>) payload.get('usage');
+ 
+         if (stopReason == 'refusal') {
+             reply.refused = true;
+             reply.text = REFUSED;
+         } else if (stopReason == 'tool_use' && lookupRoundsSoFar(conversation) < MAX_TOOL_ROUNDS) {
+-            reply.done = false;
++            List<Object> results = runTools(content, reply);
+             reply.appendedJson = JSON.serialize(
+                 new List<Object>{
+                     new Map<String, Object>{ 'role' => 'assistant', 'content' => content },
+-                    new Map<String, Object>{ 'role' => 'user', 'content' => runTools(content, reply.queries) }
++                    new Map<String, Object>{ 'role' => 'user', 'content' => results }
+                 }
+             );
++            // A step that only proposed changes ends the exchange: the cards are the answer.
++            // After a lookup, or a proposal Claude has to correct, the panel calls again.
++            reply.done = reply.proposals.size() == results.size();
++            if (reply.done) {
++                String lead = collectText(content);
++                reply.text = String.isBlank(lead) ? null : lead;
++            }
+         } else {
+             reply.text = collectText(content);
+             if (String.isBlank(reply.text)) {
+@@ -322,8 +388,9 @@ public with sharing class AntsuranceClaudeController {
+             if (message.get('role') != 'user') {
+                 continue;
+             }
+-            // Typed messages are plain strings; lookup results are lists of tool_result blocks.
+-            if (message.get('content') instanceof String) {
++            // Typed messages are plain strings, or carry a text block when they follow a proposal's
++            // results in the same turn; lookup results are lists of tool_result blocks only.
++            if (isTyped(message.get('content'))) {
+                 break;
+             }
+             rounds++;
+@@ -331,12 +398,35 @@ public with sharing class AntsuranceClaudeController {
+         return rounds;
+     }
+ 
+-    private static Map<String, Object> callClaude(ModelOption option, List<Object> conversation, String systemPrompt) {
++    private static Boolean isTyped(Object content) {
++        if (content instanceof String) {
++            return true;
++        }
++        for (Object item : (List<Object>) content) {
++            if (((Map<String, Object>) item).get('type') == 'text') {
++                return true;
++            }
++        }
++        return false;
++    }
++
++    /**
++     * The instructions go in two blocks. The first is the same for every user and request, so it is
++     * cached along with the tools; the second (who is asking, today's numbers, the open record) changes.
++     */
++    private static Map<String, Object> callClaude(ModelOption option, List<Object> conversation, String fixedPrompt, String changingPrompt, Boolean withActions) {
++        List<Object> tools = new List<Object>{ queryToolDefinition() };
++        if (withActions) {
++            tools.addAll(AntsuranceClaudeActions.toolDefinitions());
++        }
+         Map<String, Object> body = new Map<String, Object>{
+             'model' => option.value,
+             'max_tokens' => MAX_TOKENS,
+-            'system' => systemPrompt,
+-            'tools' => new List<Object>{ queryToolDefinition() },
++            'system' => new List<Object>{
++                new Map<String, Object>{ 'type' => 'text', 'text' => fixedPrompt, 'cache_control' => new Map<String, Object>{ 'type' => 'ephemeral' } },
++                new Map<String, Object>{ 'type' => 'text', 'text' => changingPrompt.trim() }
++            },
++            'tools' => tools,
+             'messages' => conversation
+         };
+         List<String> betas = new List<String>();
+@@ -405,8 +495,11 @@ public with sharing class AntsuranceClaudeController {
+         };
+     }
+ 
+-    /** Runs every tool call in an assistant turn and returns one tool_result block per call. */
+-    private static List<Object> runTools(List<Object> content, List<String> queries) {
++    /**
++     * Handles every tool call in an assistant turn and returns one tool_result block per call.
++     * A query runs; a proposal is checked and added to the reply as a card, and nothing is written.
++     */
++    private static List<Object> runTools(List<Object> content, ChatReply reply) {
+         List<Object> results = new List<Object>();
+         for (Object item : content) {
+             Map<String, Object> block = (Map<String, Object>) item;
+@@ -414,13 +507,19 @@ public with sharing class AntsuranceClaudeController {
+                 continue;
+             }
+             Map<String, Object> result = new Map<String, Object>{ 'type' => 'tool_result', 'tool_use_id' => block.get('id') };
++            Map<String, Object> input = (Map<String, Object>) block.get('input');
++            String toolName = (String) block.get('name');
+             try {
+-                Map<String, Object> input = (Map<String, Object>) block.get('input');
+-                String soql = (String) input.get('query');
+-                result.put('content', runQuery(soql));
+-                queries.add(soql.trim());
++                if (AntsuranceClaudeActions.isActionTool(toolName)) {
++                    reply.proposals.add(AntsuranceClaudeActions.propose(toolName, (String) block.get('id'), input));
++                    result.put('content', PROPOSAL_SHOWN);
++                } else {
++                    String soql = (String) input.get('query');
++                    result.put('content', runQuery(soql));
++                    reply.queries.add(soql.trim());
++                }
+             } catch (Exception e) {
+-                result.put('content', 'The query failed: ' + e.getMessage());
++                result.put('content', (AntsuranceClaudeActions.isActionTool(toolName) ? 'The proposal was not shown: ' : 'The query failed: ') + e.getMessage());
+                 result.put('is_error', true);
+             }
+             results.add(result);
+@@ -441,9 +540,19 @@ public with sharing class AntsuranceClaudeController {
+             Integer total = Database.countQuery(statement, AccessLevel.USER_MODE);
+             return JSON.serialize(new Map<String, Object>{ 'count' => total });
+         }
+-        if (!Pattern.compile('(?i)\\blimit\\s+\\d+').matcher(statement).find()) {
++        // Subqueries aside, what the statement selects, groups and limits.
++        String topLevel = statement.replaceAll('(?is)\\(\\s*select\\b[^()]*\\)', '');
++        Boolean grouped = Pattern.compile('(?i)\\bgroup\\s+by\\b').matcher(topLevel).find();
++        Boolean totalsOnly = !grouped && Pattern.compile('(?is)^select\\b.*?\\b(count|count_distinct|sum|avg|min|max)\\s*\\(.*?\\bfrom\\b').matcher(topLevel).find();
++        if (totalsOnly) {
++            // One row of totals. A LIMIT here raises an error Apex cannot catch, so it is dropped.
++            statement = statement.replaceAll('(?i)\\s+limit\\s+\\d+(\\s+offset\\s+\\d+)?\\s*$', '');
++        } else if (!Pattern.compile('(?i)\\blimit\\s+\\d+').matcher(topLevel).find()) {
+             statement += ' LIMIT ' + MAX_ROWS;
+         }
++        if (grouped) {
++            checkGroupable(topLevel);
++        }
+ 
+         List<SObject> records = Database.query(statement, AccessLevel.USER_MODE);
+         List<Object> rows = new List<Object>();
+@@ -468,6 +577,64 @@ public with sharing class AntsuranceClaudeController {
+         return serialized;
+     }
+ 
++    /**
++     * Grouping by a field that cannot be grouped (a currency, number or formula field, say) raises
++     * an error Apex cannot catch, which would end the chat step. This finds it first and tells Claude.
++     */
++    private static void checkGroupable(String topLevel) {
++        Matcher fromClause = Pattern.compile('(?i)\\bfrom\\s+(\\w+)').matcher(topLevel);
++        Matcher groupClause = Pattern.compile('(?is)\\bgroup\\s+by\\s+(.+?)(?:\\bhaving\\b|\\border\\s+by\\b|\\blimit\\b|\\boffset\\b|$)').matcher(topLevel);
++        if (!fromClause.find() || !groupClause.find()) {
++            return;
++        }
++        Schema.SObjectType root;
++        try {
++            root = Schema.describeSObjects(new List<String>{ fromClause.group(1) })[0].getSObjectType();
++        } catch (Exception e) {
++            // Not an object this user can describe: the query itself will say so.
++            return;
++        }
++        for (String part : groupClause.group(1).split(',')) {
++            String path = part.trim();
++            // Date functions and ROLLUP are left to the query engine.
++            if (path.contains('(')) {
++                continue;
++            }
++            Schema.DescribeFieldResult field = describeField(root, path);
++            if (field != null && !field.isGroupable()) {
++                throw new IllegalArgumentException(
++                    path + ' cannot be used in GROUP BY: currency, number, percent, formula and long text fields cannot be grouped. ' +
++                    'Group by another field, or select the rows and work it out from them.'
++                );
++            }
++        }
++    }
++
++    /** Follows a path such as Policy__r.Line_of_Business__c from an object to the field it ends on. */
++    private static Schema.DescribeFieldResult describeField(Schema.SObjectType root, String path) {
++        Schema.SObjectType current = root;
++        List<String> segments = path.split('\\.');
++        for (Integer index = 0; index < segments.size(); index++) {
++            Map<String, Schema.SObjectField> fields = current.getDescribe().fields.getMap();
++            Boolean last = index == segments.size() - 1;
++            String segment = segments[index].trim();
++            String fieldName = last ? segment : segment.endsWithIgnoreCase('__r') ? segment.removeEndIgnoreCase('__r') + '__c' : segment + 'Id';
++            Schema.SObjectField field = fields.get(fieldName);
++            if (field == null) {
++                return null;
++            }
++            Schema.DescribeFieldResult described = field.getDescribe();
++            if (last) {
++                return described;
++            }
++            if (described.getReferenceTo().isEmpty()) {
++                return null;
++            }
++            current = described.getReferenceTo()[0];
++        }
++        return null;
++    }
++
+     /** Field values without the attributes wrapper, following parent and child relationships. */
+     private static Map<String, Object> toPlainMap(SObject record) {
+         Map<String, Object> plain = new Map<String, Object>();
+@@ -493,8 +660,8 @@ public with sharing class AntsuranceClaudeController {
+     /** Who is asking and the headline CRM numbers, appended to the system prompt. */
+     private static String describeContext() {
+         String context =
+-            '\n\nYou are talking with ' + UserInfo.getName() + ' (User Id ' + UserInfo.getUserId() + '). Today is ' +
+-            String.valueOf(Date.today()) + '. Treat "my accounts", "my claims", "my policies" and similar as every record this user can see, ' +
++            'You are talking with ' + UserInfo.getName() + ' (User Id ' + UserInfo.getUserId() + '). Today is ' +
++            Datetime.now().format('EEEE d MMMM yyyy') + ' (' + String.valueOf(Date.today()) + '). Treat "my accounts", "my claims", "my policies" and similar as every record this user can see, ' +
+             'and do not comment on who owns them. Filter on OwnerId for that Id only when they ask about ownership, for example records owned by or assigned to them.';
+         try {
+             AntsuranceHomeController.Snapshot snapshot = AntsuranceHomeController.buildSnapshot();
+diff --git a/antsurance/force-app/main/default/classes/AntsuranceClaudeActions.cls b/antsurance/force-app/main/default/classes/AntsuranceClaudeActions.cls
+new file mode 100644
+index 0000000..b304343
+--- /dev/null
++++ b/antsurance/force-app/main/default/classes/AntsuranceClaudeActions.cls
+@@ -0,0 +1,466 @@
++/**
++ * @description The changes Claude can prepare in the chat: a follow-up task, a file note, and a
++ * status change on a claim or service request. Claude only ever proposes one. A proposal is checked
++ * here and shown to the user as a card; nothing is written until they press Confirm, which calls
++ * confirm(), and that write runs as the user.
++ */
++public with sharing class AntsuranceClaudeActions {
++    public static final String TASK_TOOL = 'propose_task';
++    public static final String NOTE_TOOL = 'propose_file_note';
++    public static final String STATUS_TOOL = 'propose_case_status';
++
++    private static final String KIND_TASK = 'task';
++    private static final String KIND_NOTE = 'file_note';
++    private static final String KIND_STATUS = 'case_status';
++    private static final Integer MAX_SUBJECT = 255;
++    private static final Integer MAX_TASK_NOTES = 2000;
++    private static final Integer MAX_NOTE_BODY = 32000;
++    private static final List<String> PRIORITIES = new List<String>{ 'High', 'Normal', 'Low' };
++    @TestVisible
++    private static final List<String> NOTE_TYPES = new List<String>{ 'Contact', 'Investigation', 'Coverage', 'Reserve', 'Payment', 'Underwriting', 'Service', 'General' };
++    // The statuses each kind of case moves through, as the chat's data model note describes them.
++    @TestVisible
++    private static final Map<String, List<String>> STATUSES = new Map<String, List<String>>{
++        'Claim' => new List<String>{ 'New', 'Under Investigation', 'Appraisal', 'Approved', 'Payment Issued', 'Closed', 'Denied' },
++        'Policy_Service' => new List<String>{ 'New', 'In Progress', 'Waiting on Customer', 'Closed' }
++    };
++    // What a task may be related to, and the words the card uses for each.
++    private static final Map<String, String> TASK_PARENTS = new Map<String, String>{
++        'Case' => 'case',
++        'Policy__c' => 'policy',
++        'Opportunity' => 'policy sale',
++        'Quote' => 'quote',
++        'Account' => 'customer'
++    };
++    private static final Map<String, String> NOTE_PARENT_FIELDS = new Map<String, String>{ 'Case' => 'Case__c', 'Policy__c' => 'Policy__c', 'Account' => 'Account__c' };
++
++    private static final String NOT_WRITTEN = 'This only shows the user a card with Confirm and Cancel buttons. Nothing is written unless they press Confirm, so never say it has been done.';
++    private static final String INVALID_ACTION = 'That action could not be read. Ask Claude to propose it again.';
++    private static final String NO_ACCESS = 'You do not have access to make that change.';
++
++    /**
++     * @description A change Claude prepared, ready to show as a card.
++     */
++    public class Proposal {
++        /** The tool call this answers; the chat uses it as the card's key. */
++        @AuraEnabled
++        public String id;
++        @AuraEnabled
++        public String kind;
++        @AuraEnabled
++        public String title;
++        @AuraEnabled
++        public String confirmLabel;
++        @AuraEnabled
++        public List<Detail> details = new List<Detail>();
++        /** The note text, or a task's comments. May use Markdown. */
++        @AuraEnabled
++        public String body;
++        /** What confirm() needs to make the change, kept by the chat and sent back unchanged. */
++        @AuraEnabled
++        public String payloadJson;
++    }
++
++    /**
++     * @description One labelled line on a proposal card. recordId makes the value a link.
++     */
++    public class Detail {
++        @AuraEnabled
++        public String label;
++        @AuraEnabled
++        public String value;
++        @AuraEnabled
++        public Id recordId;
++
++        Detail(String label, String value, Id recordId) {
++            this.label = label;
++            this.value = value;
++            this.recordId = recordId;
++        }
++    }
++
++    /**
++     * @description What a confirmed change did.
++     */
++    public class Outcome {
++        /** The record to open from the result card: the new task, or the file the note or status change is on. */
++        @AuraEnabled
++        public Id recordId;
++        @AuraEnabled
++        public String message;
++        @AuraEnabled
++        public String linkLabel;
++        /** Records whose pages should refresh. */
++        @AuraEnabled
++        public List<Id> touchedIds = new List<Id>();
++    }
++
++    /** A record the proposal points at, as the user sees it. */
++    private class Target {
++        Id recordId;
++        String objectName;
++        String name;
++        String kindLabel;
++        String status;
++        String recordType;
++    }
++
++    /**
++     * @description The tool definitions offered to Claude alongside the query tool.
++     * @return Three client tools, each with a strict input schema
++     */
++    public static List<Object> toolDefinitions() {
++        return new List<Object>{
++            tool(
++                TASK_TOOL,
++                'Propose a follow-up task for the user: a reminder or to-do with a due date, related to a claim, service request, policy, policy sale, quote or customer. ' +
++                'Use it when they ask to be reminded, to follow up, or to add a task. The task is assigned to the user. ' + NOT_WRITTEN,
++                new Map<String, Object>{
++                    'subject' => text('What to do, as a short imperative line, for example: Call Maria Reyes about the contractor estimate'),
++                    'due_date' => text('The due date as YYYY-MM-DD. Work it out from today\'s date when they say tomorrow, Friday or in three days.'),
++                    'related_record_id' => text('The 18-character Id of the claim, service request, policy, policy sale, quote or customer account the task is about. Use the open record when they say this or here.'),
++                    'contact_id' => text('The Id of the contact to call or write to, when the task is about reaching a person. Look it up if you do not have it.'),
++                    'priority' => choice(PRIORITIES, 'Normal unless they say it is urgent or can wait.'),
++                    'notes' => text('Optional comments for the task: context the user gave that does not fit the subject.')
++                },
++                new List<String>{ 'subject', 'due_date', 'related_record_id', 'priority' }
++            ),
++            tool(
++                NOTE_TOOL,
++                'Propose a dated note on the file of a claim, service request, policy or customer. Use it when the user asks to add, log or record a note. ' +
++                'Write the note as the user would, in their words, without adding facts they did not give. ' + NOT_WRITTEN,
++                new Map<String, Object>{
++                    'record_id' => text('The 18-character Id of the claim or service request (Case), policy or customer account the note belongs on.'),
++                    'note_type' => choice(
++                        NOTE_TYPES,
++                        'Contact for a conversation with someone, Investigation for findings on a claim, Coverage for a coverage question, Reserve and Payment for money on a claim, ' +
++                        'Underwriting for risk details on a policy, Service for a policy change, General otherwise.'
++                    ),
++                    'body' => text('The note text. Plain sentences; Markdown is allowed.')
++                },
++                new List<String>{ 'record_id', 'note_type', 'body' }
++            ),
++            tool(
++                STATUS_TOOL,
++                'Propose moving a claim or service request to another status. Use it when the user asks to move, mark, close or reopen one. ' +
++                'A claim moves through New, Under Investigation, Appraisal, Approved, Payment Issued, then Closed or Denied. ' +
++                'A service request moves through New, In Progress, Waiting on Customer, Closed. ' + NOT_WRITTEN,
++                new Map<String, Object>{
++                    'case_id' => text('The 18-character Id of the claim or service request (Case).'),
++                    'new_status' => choice(allStatuses(), 'The status to move it to, valid for that kind of case.')
++                },
++                new List<String>{ 'case_id', 'new_status' }
++            )
++        };
++    }
++
++    /**
++     * @description Whether a tool call is one of the proposals above.
++     * @param toolName The tool Claude called
++     * @return True for the three propose tools
++     */
++    public static Boolean isActionTool(String toolName) {
++        return toolName == TASK_TOOL || toolName == NOTE_TOOL || toolName == STATUS_TOOL;
++    }
++
++    /**
++     * @description Checks a proposal against the org and builds the card for it. Writes nothing.
++     * @param toolName The propose tool Claude called
++     * @param toolUseId The tool call's id
++     * @param input The tool call's input
++     * @return The card to show
++     * @throws IllegalArgumentException with a message for Claude when the proposal cannot be made as given
++     */
++    public static Proposal propose(String toolName, String toolUseId, Map<String, Object> input) {
++        Proposal proposal;
++        if (toolName == TASK_TOOL) {
++            proposal = proposeTask(input);
++        } else if (toolName == NOTE_TOOL) {
++            proposal = proposeNote(input);
++        } else if (toolName == STATUS_TOOL) {
++            proposal = proposeStatus(input);
++        } else {
++            throw new IllegalArgumentException('There is no such tool.');
++        }
++        proposal.id = toolUseId;
++        return proposal;
++    }
++
++    /**
++     * @description Makes a change the user confirmed on a proposal card. Runs as the user, so their
++     * object, field and record access and every validation rule apply.
++     * @param payloadJson The payloadJson of the proposal that was confirmed
++     * @return What was created or changed
++     * @throws AuraHandledException when the payload is not a known action or the write is refused
++     */
++    @AuraEnabled
++    public static Outcome confirm(String payloadJson) {
++        Map<String, Object> payload;
++        try {
++            payload = (Map<String, Object>) JSON.deserializeUntyped(payloadJson);
++        } catch (Exception e) {
++            throw handled(INVALID_ACTION);
++        }
++        String kind = payload == null ? null : (String) payload.get('kind');
++        try {
++            if (kind == KIND_TASK) {
++                return createTask(payload);
++            }
++            if (kind == KIND_NOTE) {
++                return createNote(payload);
++            }
++            if (kind == KIND_STATUS) {
++                return changeStatus(payload);
++            }
++        } catch (IllegalArgumentException e) {
++            throw handled(e.getMessage());
++        } catch (DmlException e) {
++            throw handled(e.getDmlMessage(0));
++        } catch (QueryException e) {
++            throw handled(NO_ACCESS);
++        } catch (System.NoAccessException e) {
++            throw handled(NO_ACCESS);
++        }
++        throw handled(INVALID_ACTION);
++    }
++
++    private static Proposal proposeTask(Map<String, Object> input) {
++        String subject = required(input, 'subject', MAX_SUBJECT);
++        Date dueDate = parseDate((String) input.get('due_date'));
++        Target parent = findTarget((String) input.get('related_record_id'), TASK_PARENTS.keySet(), 'A task can be related to a claim, service request, policy, policy sale, quote or customer account.');
++        Target contact = String.isBlank((String) input.get('contact_id')) ? null : findTarget((String) input.get('contact_id'), new Set<String>{ 'Contact' }, 'contact_id must be the Id of a Contact.');
++        String priority = PRIORITIES.contains((String) input.get('priority')) ? (String) input.get('priority') : 'Normal';
++        String notes = String.isBlank((String) input.get('notes')) ? null : ((String) input.get('notes')).trim().abbreviate(MAX_TASK_NOTES);
++
++        Proposal proposal = new Proposal();
++        proposal.kind = KIND_TASK;
++        proposal.title = 'Create a follow-up task';
++        proposal.confirmLabel = 'Create task';
++        proposal.details.add(new Detail('Subject', subject, null));
++        proposal.details.add(new Detail('Due', formatDate(dueDate), null));
++        proposal.details.add(new Detail('Related to', parent.name, parent.recordId));
++        if (contact != null) {
++            proposal.details.add(new Detail('Contact', contact.name, contact.recordId));
++        }
++        proposal.details.add(new Detail('Priority', priority, null));
++        proposal.details.add(new Detail('Assigned to', UserInfo.getName(), null));
++        proposal.body = notes;
++        proposal.payloadJson = JSON.serialize(
++            new Map<String, Object>{
++                'kind' => KIND_TASK,
++                'subject' => subject,
++                'dueDate' => String.valueOf(dueDate),
++                'relatedId' => parent.recordId,
++                'contactId' => contact?.recordId,
++                'priority' => priority,
++                'notes' => notes
++            }
++        );
++        return proposal;
++    }
++
++    private static Proposal proposeNote(Map<String, Object> input) {
++        String body = required(input, 'body', MAX_NOTE_BODY);
++        Target parent = findTarget((String) input.get('record_id'), NOTE_PARENT_FIELDS.keySet(), 'A file note can be added to a claim, service request, policy or customer account.');
++        String noteType = NOTE_TYPES.contains((String) input.get('note_type')) ? (String) input.get('note_type') : 'General';
++
++        Proposal proposal = new Proposal();
++        proposal.kind = KIND_NOTE;
++        proposal.title = 'Add a file note';
++        proposal.confirmLabel = 'Add note';
++        proposal.details.add(new Detail('On', parent.name, parent.recordId));
++        proposal.details.add(new Detail('Type', noteType, null));
++        proposal.body = body;
++        proposal.payloadJson = JSON.serialize(new Map<String, Object>{ 'kind' => KIND_NOTE, 'recordId' => parent.recordId, 'noteType' => noteType, 'body' => body });
++        return proposal;
++    }
++
++    private static Proposal proposeStatus(Map<String, Object> input) {
++        Target target = findTarget((String) input.get('case_id'), new Set<String>{ 'Case' }, 'case_id must be the Id of a claim or service request.');
++        String status = (String) input.get('new_status');
++        List<String> allowed = STATUSES.get(target.recordType);
++        if (allowed == null) {
++            throw new IllegalArgumentException('Only claims and service requests can be moved from the chat.');
++        }
++        if (!allowed.contains(status)) {
++            throw new IllegalArgumentException('A ' + target.kindLabel + ' cannot be ' + status + '. Its statuses are: ' + String.join(allowed, ', ') + '.');
++        }
++        if (status == target.status) {
++            throw new IllegalArgumentException('That ' + target.kindLabel + ' is already ' + status + '. Tell the user; there is nothing to change.');
++        }
++
++        Proposal proposal = new Proposal();
++        proposal.kind = KIND_STATUS;
++        proposal.title = 'Change the ' + target.kindLabel + ' status';
++        proposal.confirmLabel = 'Change status';
++        proposal.details.add(new Detail(target.kindLabel.capitalize(), target.name, target.recordId));
++        proposal.details.add(new Detail('From', target.status, null));
++        proposal.details.add(new Detail('To', status, null));
++        proposal.payloadJson = JSON.serialize(new Map<String, Object>{ 'kind' => KIND_STATUS, 'caseId' => target.recordId, 'status' => status, 'fromStatus' => target.status });
++        return proposal;
++    }
++
++    private static Outcome createTask(Map<String, Object> payload) {
++        Target parent = findTarget((String) payload.get('relatedId'), TASK_PARENTS.keySet(), INVALID_ACTION);
++        Task task = new Task(
++            Subject = required(payload, 'subject', MAX_SUBJECT),
++            ActivityDate = parseDate((String) payload.get('dueDate')),
++            WhatId = parent.recordId,
++            Priority = PRIORITIES.contains((String) payload.get('priority')) ? (String) payload.get('priority') : 'Normal',
++            Description = (String) payload.get('notes'),
++            OwnerId = UserInfo.getUserId()
++        );
++        if (!String.isBlank((String) payload.get('contactId'))) {
++            task.WhoId = findTarget((String) payload.get('contactId'), new Set<String>{ 'Contact' }, INVALID_ACTION).recordId;
++        }
++        insert as user task;
++
++        Outcome outcome = new Outcome();
++        outcome.recordId = task.Id;
++        outcome.message = 'Task created: ' + task.Subject + ', due ' + formatDate(task.ActivityDate) + '.';
++        outcome.linkLabel = 'Open task';
++        outcome.touchedIds.add(parent.recordId);
++        return outcome;
++    }
++
++    private static Outcome createNote(Map<String, Object> payload) {
++        Target parent = findTarget((String) payload.get('recordId'), NOTE_PARENT_FIELDS.keySet(), INVALID_ACTION);
++        File_Note__c note = new File_Note__c(
++            Note_Type__c = NOTE_TYPES.contains((String) payload.get('noteType')) ? (String) payload.get('noteType') : 'General',
++            Body__c = required(payload, 'body', MAX_NOTE_BODY),
++            Note_Date__c = Datetime.now()
++        );
++        note.put(NOTE_PARENT_FIELDS.get(parent.objectName), parent.recordId);
++        // A note on a case or policy also belongs to the records above it, as in the file notes timeline.
++        if (parent.objectName == 'Case') {
++            Case parentCase = [SELECT Policy__c, AccountId FROM Case WHERE Id = :parent.recordId WITH USER_MODE];
++            note.Policy__c = parentCase.Policy__c;
++            note.Account__c = parentCase.AccountId;
++        } else if (parent.objectName == 'Policy__c') {
++            note.Account__c = [SELECT Account__c FROM Policy__c WHERE Id = :parent.recordId WITH USER_MODE].Account__c;
++        }
++        insert as user note;
++
++        Outcome outcome = new Outcome();
++        outcome.recordId = parent.recordId;
++        outcome.message = note.Note_Type__c + ' note added to ' + parent.name + '.';
++        outcome.linkLabel = 'Open ' + parent.kindLabel;
++        outcome.touchedIds.add(parent.recordId);
++        return outcome;
++    }
++
++    private static Outcome changeStatus(Map<String, Object> payload) {
++        Target target = findTarget((String) payload.get('caseId'), new Set<String>{ 'Case' }, INVALID_ACTION);
++        String status = (String) payload.get('status');
++        List<String> allowed = STATUSES.get(target.recordType);
++        if (allowed == null || !allowed.contains(status)) {
++            throw new IllegalArgumentException(INVALID_ACTION);
++        }
++        update as user new Case(Id = target.recordId, Status = status);
++
++        Outcome outcome = new Outcome();
++        outcome.recordId = target.recordId;
++        outcome.message = target.name + ' moved from ' + target.status + ' to ' + status + '.';
++        outcome.linkLabel = 'Open ' + target.kindLabel;
++        outcome.touchedIds.add(target.recordId);
++        return outcome;
++    }
++
++    /** Reads the record a proposal points at as the user, or explains why it cannot be used. */
++    private static Target findTarget(String rawId, Set<String> allowedObjects, String wrongKind) {
++        Id recordId;
++        try {
++            recordId = Id.valueOf(rawId);
++        } catch (Exception e) {
++            throw new IllegalArgumentException('"' + rawId + '" is not a record Id. Query for the record and use its Id.');
++        }
++        Target target = new Target();
++        target.recordId = recordId;
++        target.objectName = recordId.getSObjectType().getDescribe().getName();
++        if (!allowedObjects.contains(target.objectName)) {
++            throw new IllegalArgumentException(wrongKind);
++        }
++        String fields = target.objectName == 'Case' ? 'CaseNumber, Subject, Status, RecordType.DeveloperName, RecordType.Name' : 'Name';
++        List<SObject> records;
++        try {
++            records = Database.queryWithBinds('SELECT ' + fields + ' FROM ' + target.objectName + ' WHERE Id = :recordId LIMIT 1', new Map<String, Object>{ 'recordId' => recordId }, AccessLevel.USER_MODE);
++        } catch (QueryException e) {
++            records = new List<SObject>();
++        }
++        if (records.isEmpty()) {
++            throw new IllegalArgumentException('No record with Id ' + recordId + ' is visible to this user. Query for the record and use its Id.');
++        }
++        SObject record = records[0];
++        if (target.objectName == 'Case') {
++            SObject recordType = record.getSObject('RecordType');
++            target.recordType = recordType == null ? null : (String) recordType.get('DeveloperName');
++            target.kindLabel = target.recordType == 'Claim' ? 'claim' : target.recordType == 'Policy_Service' ? 'service request' : 'case';
++            target.status = (String) record.get('Status');
++            target.name = target.kindLabel.capitalize() + ' ' + record.get('CaseNumber') + (record.get('Subject') == null ? '' : ': ' + record.get('Subject'));
++        } else {
++            target.kindLabel = TASK_PARENTS.containsKey(target.objectName) ? TASK_PARENTS.get(target.objectName) : 'contact';
++            target.name = (String) record.get('Name');
++        }
++        return target;
++    }
++
++    private static String required(Map<String, Object> input, String key, Integer maxLength) {
++        String value = (String) input.get(key);
++        if (String.isBlank(value)) {
++            throw new IllegalArgumentException(key + ' is required.');
++        }
++        if (value.length() > maxLength) {
++            throw new IllegalArgumentException(key + ' is too long. Keep it under ' + maxLength + ' characters.');
++        }
++        return value.trim();
++    }
++
++    private static Date parseDate(String value) {
++        try {
++            return Date.valueOf(value);
++        } catch (Exception e) {
++            throw new IllegalArgumentException('The due date must be written as YYYY-MM-DD.');
++        }
++    }
++
++    /** A date the way the card shows it, for example Mon 5 Oct 2026. */
++    private static String formatDate(Date value) {
++        return Datetime.newInstance(value, Time.newInstance(12, 0, 0, 0)).format('EEE d MMM yyyy');
++    }
++
++    private static List<String> allStatuses() {
++        // Apex names ignore case, so this list cannot be called statuses beside STATUSES.
++        List<String> everyStatus = new List<String>();
++        for (String recordType : STATUSES.keySet()) {
++            for (String status : STATUSES.get(recordType)) {
++                if (!everyStatus.contains(status)) {
++                    everyStatus.add(status);
++                }
++            }
++        }
++        return everyStatus;
++    }
++
++    private static Map<String, Object> tool(String name, String description, Map<String, Object> properties, List<String> requiredKeys) {
++        return new Map<String, Object>{
++            'name' => name,
++            'description' => description,
++            'strict' => true,
++            'input_schema' => new Map<String, Object>{ 'type' => 'object', 'properties' => properties, 'required' => requiredKeys, 'additionalProperties' => false }
++        };
++    }
++
++    private static Map<String, Object> text(String description) {
++        return new Map<String, Object>{ 'type' => 'string', 'description' => description };
++    }
++
++    private static Map<String, Object> choice(List<String> options, String description) {
++        return new Map<String, Object>{ 'type' => 'string', 'enum' => options, 'description' => description };
++    }
++
++    private static AuraHandledException handled(String message) {
++        AuraHandledException error = new AuraHandledException(message);
++        error.setMessage(message);
++        return error;
++    }
++}
+diff --git a/antsurance/force-app/main/default/classes/AntsuranceClaudeRecordFacts.cls b/antsurance/force-app/main/default/classes/AntsuranceClaudeRecordFacts.cls
+new file mode 100644
+index 0000000..a334bf2
+--- /dev/null
++++ b/antsurance/force-app/main/default/classes/AntsuranceClaudeRecordFacts.cls
+@@ -0,0 +1,136 @@
++/**
++ * @description Reads the key facts of the record a user has open, with its most relevant related
++ * rows, so the chat can answer "summarize this claim" and similar without a lookup round.
++ * Everything is read with the user's own access; a record or field they cannot see yields no facts.
++ */
++public with sharing class AntsuranceClaudeRecordFacts {
++    // Written notes and descriptions are cut to this length; Claude can query for the full text.
++    private static final Integer MAX_TEXT = 500;
++    private static final Integer MAX_CONFIGURATION = 1500;
++    @TestVisible
++    private static final String INTRO =
++        'Facts about the open record and its related rows, read just now as this user (JSON; empty fields are left out). ' +
++        'Answer from these when they are enough, and query only for what they do not cover.\n';
++
++    private static final String OPEN_TASKS =
++        '(SELECT Id, Subject, ActivityDate, Status, Priority, Owner.Name, Who.Name FROM Tasks WHERE IsClosed = false ORDER BY ActivityDate NULLS LAST LIMIT 8)';
++    private static final String RECENT_NOTES =
++        '(SELECT Id, Note_Type__c, Note_Date__c, Author_Name__c, Body__c FROM File_Notes__r ORDER BY Note_Date__c DESC NULLS LAST LIMIT 5)';
++
++    // One query per kind of record. AntsuranceClaudeRecordFactsTest runs each, so a renamed field fails there.
++    @TestVisible
++    private static final Map<String, String> QUERIES = new Map<String, String>{
++        'Case' =>
++            'SELECT Id, CaseNumber, Subject, RecordType.Name, Status, Priority, IsClosed, Origin, Description, CreatedDate, ClosedDate, ' +
++            'Reported_Date__c, Days_Open__c, Handled_By__c, Owner.Name, Account.Id, Account.Name, Contact.Id, Contact.Name, ' +
++            'Policy__r.Id, Policy__r.Name, Policy__r.Line_of_Business__c, Policy__r.Status__c, Policy__r.Effective_Date__c, Policy__r.Expiration_Date__c, ' +
++            'Policy__r.Coverage_Limit__c, Policy__r.Deductible__c, Policy__r.Payment_Status__c, ' +
++            'Request_Type__c, Date_of_Loss__c, Loss_Type__c, Loss_Location__c, Severity__c, Estimated_Loss__c, Reserve_Amount__c, Paid_Amount__c, ' +
++            'Outstanding_Reserve__c, Coverage_Check__c, SIU_Referral__c, Subrogation_Potential__c, ' +
++            RECENT_NOTES + ', ' + OPEN_TASKS + ' FROM Case',
++        'Policy__c' =>
++            'SELECT Id, Name, Line_of_Business__c, Status__c, Effective_Date__c, Expiration_Date__c, Days_to_Renewal__c, Annual_Premium__c, Coverage_Limit__c, ' +
++            'Deductible__c, Billing_Frequency__c, Payment_Status__c, Insured_Item__c, Underwriting_Notes__c, Incurred_Losses__c, Loss_Ratio__c, ' +
++            'Account__r.Id, Account__r.Name, Primary_Insured__r.Id, Primary_Insured__r.Name, Producer__r.Name, ' +
++            '(SELECT Name, Category__c, Limit_Amount__c, Limit_Type__c, Deductible_Amount__c, Premium_Amount__c FROM Coverages__r ORDER BY Name LIMIT 20), ' +
++            '(SELECT Name, Role__c, Status__c, Driver_Rating__c, Violations_Past_3_Years__c, Accidents_Past_3_Years__c FROM Participants__r ORDER BY Name LIMIT 12), ' +
++            '(SELECT Name, Asset_Type__c, Identifier__c, Model_Year__c, Location__c, Use__c, Insured_Value__c, Lienholder__c FROM Assets__r ORDER BY Name LIMIT 10), ' +
++            '(SELECT Name, Form_Number__c, Type__c, Status__c, Effective_Date__c, Premium_Change__c FROM Endorsements__r ORDER BY Name LIMIT 15), ' +
++            '(SELECT Id, CaseNumber, Subject, RecordType.Name, Status, IsClosed, Reported_Date__c, Outstanding_Reserve__c, Paid_Amount__c FROM Cases__r ORDER BY IsClosed, Reported_Date__c DESC NULLS LAST LIMIT 10), ' +
++            RECENT_NOTES + ', ' + OPEN_TASKS + ' FROM Policy__c',
++        'Account' =>
++            'SELECT Id, Name, RecordType.Name, Customer_Segment__c, Customer_Since__c, Active_Policies__c, Premium_in_Force__c, Customer_Brief__c, Industry, Phone, BillingCity, BillingState, ' +
++            '(SELECT Id, Name, Household_Role__c, Primary_Member__c, Licensed_Driver__c, Preferred_Contact_Method__c, Email, Phone FROM Contacts ORDER BY Name LIMIT 10), ' +
++            '(SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Effective_Date__c, Expiration_Date__c, Days_to_Renewal__c, Payment_Status__c, Loss_Ratio__c FROM Policies__r ORDER BY Expiration_Date__c LIMIT 15), ' +
++            '(SELECT Id, CaseNumber, Subject, RecordType.Name, Status, IsClosed, Severity__c, Reported_Date__c, Outstanding_Reserve__c, Handled_By__c FROM Cases ORDER BY IsClosed, Reported_Date__c DESC NULLS LAST LIMIT 10), ' +
++            '(SELECT Id, Name, StageName, Amount, CloseDate, Line_of_Business__c FROM Opportunities WHERE IsClosed = false ORDER BY CloseDate LIMIT 8), ' +
++            RECENT_NOTES + ', ' + OPEN_TASKS + ' FROM Account',
++        'Opportunity' =>
++            'SELECT Id, Name, StageName, Amount, CloseDate, Type, Line_of_Business__c, NextStep, Description, IsClosed, IsWon, Owner.Name, ' +
++            'Account.Id, Account.Name, Policy__r.Id, Policy__r.Name, Policy__r.Status__c, ' +
++            '(SELECT Id, Name, Status, Annual_Premium__c, Coverage_Limit__c, Deductible__c, Issued_Date__c, Days_Since_Issued__c, ExpirationDate, ' +
++            'Submission_Channel__c, Needs_Underwriting_Review__c, Underwriter__c FROM Quotes ORDER BY Annual_Premium__c LIMIT 8), ' +
++            OPEN_TASKS + ' FROM Opportunity',
++        'Quote' =>
++            'SELECT Id, Name, QuoteNumber, Status, Annual_Premium__c, Coverage_Limit__c, Deductible__c, Issued_Date__c, Days_Since_Issued__c, ExpirationDate, ' +
++            'Submission_Channel__c, Needs_Underwriting_Review__c, Underwriter__c, Description, Configuration__c, ' +
++            'Opportunity.Id, Opportunity.Name, Opportunity.StageName, Opportunity.Line_of_Business__c, Account.Id, Account.Name, ' +
++            OPEN_TASKS + ' FROM Quote',
++        'Contact' =>
++            'SELECT Id, Name, Email, Phone, Household_Role__c, Primary_Member__c, Licensed_Driver__c, Preferred_Contact_Method__c, Account.Id, Account.Name, ' +
++            '(SELECT Name, Role__c, Status__c, Policy__r.Id, Policy__r.Name, Policy__r.Line_of_Business__c, Policy__r.Status__c FROM Policy_Roles__r ORDER BY Name LIMIT 12), ' +
++            '(SELECT Id, CaseNumber, Subject, RecordType.Name, Status FROM Cases WHERE IsClosed = false ORDER BY CreatedDate DESC LIMIT 8) FROM Contact',
++        'Lead' =>
++            'SELECT Id, Name, Company, Status, Rating, LeadSource, Product_Interest__c, Email, Phone, Description, Owner.Name, CreatedDate FROM Lead'
++    };
++    // The other options under the same sale, so "which quote is cheaper" needs no lookup.
++    private static final String SIBLING_QUOTES =
++        'SELECT Id, Name, Status, Annual_Premium__c, Coverage_Limit__c, Deductible__c FROM Quote WHERE OpportunityId = :saleId AND Id != :recordId ORDER BY Annual_Premium__c LIMIT 8';
++
++    /**
++     * @description The open record's facts as a short note for Claude.
++     * @param recordId The record on screen
++     * @return The note, or null when there is no record, the object has no facts query, or the user cannot read it
++     */
++    public static String describe(Id recordId) {
++        if (recordId == null) {
++            return null;
++        }
++        String objectName = recordId.getSObjectType().getDescribe().getName();
++        String soql = QUERIES.get(objectName);
++        if (soql == null) {
++            return null;
++        }
++        try {
++            List<SObject> records = Database.queryWithBinds(soql + ' WHERE Id = :recordId LIMIT 1', new Map<String, Object>{ 'recordId' => recordId }, AccessLevel.USER_MODE);
++            if (records.isEmpty()) {
++                return null;
++            }
++            Map<String, Object> facts = toPlainMap(records[0]);
++            if (objectName == 'Quote') {
++                addSiblingQuotes(facts, records[0]);
++            }
++            return INTRO + JSON.serialize(facts);
++        } catch (QueryException e) {
++            return null;
++        }
++    }
++
++    private static void addSiblingQuotes(Map<String, Object> facts, SObject quote) {
++        SObject sale = quote.getSObject('Opportunity');
++        if (sale == null) {
++            return;
++        }
++        List<Object> others = new List<Object>();
++        for (SObject other : Database.queryWithBinds(SIBLING_QUOTES, new Map<String, Object>{ 'saleId' => sale.Id, 'recordId' => quote.Id }, AccessLevel.USER_MODE)) {
++            others.add(toPlainMap(other));
++        }
++        if (!others.isEmpty()) {
++            facts.put('OtherQuotesOnThisSale', others);
++        }
++    }
++
++    /** Field values without the attributes wrapper or empty fields, following parent and child relationships. */
++    private static Map<String, Object> toPlainMap(SObject record) {
++        Map<String, Object> plain = new Map<String, Object>();
++        Map<String, Object> populated = record.getPopulatedFieldsAsMap();
++        for (String fieldName : populated.keySet()) {
++            Object value = populated.get(fieldName);
++            // Check the list first: in Apex a List<SObject> also reports instanceof SObject.
++            if (value instanceof List<SObject>) {
++                List<Object> children = new List<Object>();
++                for (SObject child : (List<SObject>) value) {
++                    children.add(toPlainMap(child));
++                }
++                plain.put(fieldName, children);
++            } else if (value instanceof SObject) {
++                plain.put(fieldName, toPlainMap((SObject) value));
++            } else if (value instanceof String) {
++                plain.put(fieldName, ((String) value).abbreviate(fieldName == 'Configuration__c' ? MAX_CONFIGURATION : MAX_TEXT));
++            } else if (value != null) {
++                plain.put(fieldName, value);
++            }
++        }
++        return plain;
++    }
++}

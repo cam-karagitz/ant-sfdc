@@ -1,0 +1,193 @@
+[
+  {
+    "id": "rear-quarter-scrape",
+    "claim": "Claim: Parking lot scrape, rear quarter panel. Type of loss: Collision. Status: New. Reported two days after the loss. What was reported: the insured backed into a concrete bollard while leaving a parking space; the rear quarter panel and bumper on the passenger side are pushed in. Insured vehicle: 2019 Honda Accord, a four-door sedan. Estimated loss: $2,350. Reserve: $1,850. Deductible: $500.",
+    "photos": [
+      "antsuranceDamageRearQuarter"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "area_any": [
+        "quarter",
+        "bumper"
+      ],
+      "panel_any": [
+        "rear_left_quarter",
+        "rear_bumper",
+        "rear_right_quarter"
+      ],
+      "next_step": [
+        "photo_estimate",
+        "field_appraiser"
+      ],
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "hail-broken-glass",
+    "claim": "Claim: Hail broke the rear window. Type of loss: Wind or Hail. Status: New. What was reported: a hail storm passed over the insured's street in the afternoon; the rear window shattered and there are dents on the trunk and roof. Insured vehicle: 2014 Nissan Sentra, a four-door sedan. Estimated loss: $3,200. Reserve: $0. Deductible: $500.",
+    "photos": [
+      "antsuranceDamageHailGlass"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "loss_any": [
+        "hail"
+      ],
+      "area_any": [
+        "window",
+        "glass"
+      ],
+      "severity_min": "moderate",
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "hail-on-a-collision-claim",
+    "claim": "Claim: Rear-end collision in stop-and-go traffic. Type of loss: Collision. Status: New. What was reported: the insured vehicle was struck from behind in slow traffic on a dry afternoon; the rear bumper, trunk lid and tail lamps are damaged. No injuries. Insured vehicle: 2012 Ford Falcon, a four-door sedan. Estimated loss: $5,400. Reserve: $4,000.",
+    "photos": [
+      "antsuranceDamageHailSedan"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "check"
+      ],
+      "next_step": [
+        "call_insured",
+        "field_appraiser"
+      ]
+    }
+  },
+  {
+    "id": "pickup-side-scrape",
+    "claim": "Claim: Sideswiped while parked on the street. Type of loss: Collision. Status: New. What was reported: a passing vehicle scraped along the driver's side of the insured's parked pickup and did not stop; the cab and the bed side are scraped and dented. Insured vehicle: 1988 Nissan pickup, used for deliveries. Estimated loss: $1,900. Reserve: $1,500.",
+    "photos": [
+      "antsuranceDamageSideScrape"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "area_any": [
+        "door",
+        "bed",
+        "side",
+        "panel",
+        "fender",
+        "cab"
+      ],
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "flooded-family-room",
+    "claim": "Claim: Sump pump failure flooded the basement. Type of loss: Water Damage. Status: Under Investigation. What was reported: the sump pump failed during a storm while the family was away and ground water backed up into the finished basement family room and stood for several days; flooring, drywall and furniture are damaged. Insured property: a 1960s brick home with a finished basement and a water backup endorsement. Estimated loss: $38,000. Reserve: $30,000.",
+    "photos": [
+      "antsuranceDamageFloodedRoom"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "loss_any": [
+        "water",
+        "flood"
+      ],
+      "severity_min": "moderate",
+      "next_step": [
+        "field_appraiser"
+      ],
+      "panel_all": [
+        "none"
+      ]
+    }
+  },
+  {
+    "id": "ceiling-stain",
+    "claim": "Claim: Wind tore shingles from the roof. Type of loss: Wind or Hail. Status: New. What was reported: high winds lifted shingles on the west slope and water stained one bedroom ceiling. A temporary tarp is in place. Insured property: a 1998 frame home with an asphalt shingle roof. Estimated loss: $6,800. Reserve: $5,000.",
+    "photos": [
+      "antsuranceDamageCeilingStain"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "area_any": [
+        "ceiling",
+        "wall"
+      ],
+      "severity_max": "moderate",
+      "panel_all": [
+        "none"
+      ],
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "lifted-shingles",
+    "claim": "Claim: Wind tore shingles from the roof. Type of loss: Wind or Hail. Status: New. What was reported: high winds lifted shingles on the west slope and water stained one bedroom ceiling. A temporary tarp is in place. Insured property: a 1998 frame home with an asphalt shingle roof. Estimated loss: $6,800. Reserve: $5,000.",
+    "photos": [
+      "antsuranceDamageShingles"
+    ],
+    "expect": {
+      "usable": true,
+      "consistency": [
+        "consistent"
+      ],
+      "area_any": [
+        "shingle",
+        "roof"
+      ],
+      "panel_all": [
+        "none"
+      ],
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "roof-torn-open",
+    "claim": "Claim: Wind tore shingles from the roof. Type of loss: Wind or Hail. Status: New. What was reported: high winds lifted some shingles on the west slope. Insured property: a 1970s brick ranch home. Estimated loss: $6,800. Reserve: $5,000.",
+    "photos": [
+      "antsuranceDamageRoofStorm"
+    ],
+    "expect": {
+      "usable": true,
+      "severity_min": "severe",
+      "next_step": [
+        "field_appraiser",
+        "call_insured"
+      ],
+      "repair_high_min": 30000,
+      "panel_all": [
+        "none"
+      ],
+      "boxes_min": 1
+    }
+  },
+  {
+    "id": "too-dark-to-judge",
+    "claim": "Claim: Parking lot scrape, rear quarter panel. Type of loss: Collision. Status: New. What was reported: the insured backed into a concrete bollard while leaving a parking space; the rear quarter panel and bumper on the passenger side are pushed in. Insured vehicle: 2019 Honda Accord, a four-door sedan. Estimated loss: $2,350. Reserve: $1,850.",
+    "photos": [
+      "antsuranceDamageUnusable"
+    ],
+    "expect": {
+      "usable": false,
+      "boxes_max": 0,
+      "next_step": [
+        "call_insured",
+        "field_appraiser"
+      ],
+      "needs_photos": true
+    }
+  }
+]

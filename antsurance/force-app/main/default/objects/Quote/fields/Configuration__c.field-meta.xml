@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Configuration__c</fullName>
+    <description>The answers given in the quote configurator and the price they came to, as JSON. Written by AntsuranceQuoteConfigurator; read it on the quote page rather than here.</description>
+    <label>Configuration</label>
+    <length>32768</length>
+    <visibleLines>4</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

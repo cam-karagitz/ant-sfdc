@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Reyes Household\" open (object Account, Id 001aj000040t1nsAAA). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhich policies does this customer have?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c, Payment_Status__c FROM Policy__c WHERE Account__c = '001aj000040t1nsAAA' ORDER BY Status__c, Expiration_Date__c LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Payment_Status__c\":\"Paid in Full\",\"Expiration_Date__c\":\"2027-03-15\",\"Annual_Premium__c\":1890.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKc7KAAS\"},{\"Payment_Status__c\":\"Paid in Full\",\"Expiration_Date__c\":\"2027-03-15\",\"Annual_Premium__c\":410.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-204551\",\"Id\":\"a00aj00003jKc7LAAS\"},{\"Payment_Status__c\":\"Current\",\"Expiration_Date__c\":\"2027-05-13\",\"Annual_Premium__c\":2380.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKc7JAAS\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The Reyes Household has **3 active policies**, totalling **$4,680** in annual premium. None of them are past due.\n\n| Policy | Line | Premium | Expires | Payment |\n|---|---|---|---|---|\n| [ANT-HO-204534](/lightning/r/a00aj00003jKc7KAAS/view) | Homeowners | $1,890 | 15 Mar 2027 | Paid in Full |\n| [ANT-UM-204551](/lightning/r/a00aj00003jKc7LAAS/view) | Umbrella | $410 | 15 Mar 2027 | Paid in Full |\n| [ANT-PA-204517](/lightning/r/a00aj00003jKc7JAAS/view) | Personal Auto | $2,380 | 13 May 2027 | Current |"
+  }
+]

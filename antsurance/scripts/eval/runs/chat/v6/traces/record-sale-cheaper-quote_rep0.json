@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Sale record \"Ironwood Machine Works - Workers Comp renewal\" open (object Opportunity, Id 006aj00000epHJ8AAM). \"This\", \"here\" and \"this policy sale\" refer to that record.]\n\nWhich quote is cheaper, and by how much?"
+  },
+  {
+    "role": "assistant",
+    "content": "The **[Small deductible plan](/lightning/r/0Q0aj000003bR9CCAU/view)** is cheaper at **$139,035** a year. That's **$10,465** less than the [Guaranteed cost](/lightning/r/0Q0aj000003bR9BCAU/view) option at $149,500, about 7% lower.\n\nThe trade-off is a $2,500 deductible, where Guaranteed cost has none. Both have a $1,000,000 limit, and the customer has had both since Sep 22. Both expire Oct 22.\n\n?> Compare both quotes side by side\n?> Draft an email presenting both options\n?> Remind me to follow up before Oct 22"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Compare both quotes side by side\",\n      \"Draft an email presenting both options\",\n      \"Remind me to follow up before Oct 22\"\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sold_Through__c</fullName>
+    <description>The agency that produced the policy, or Direct when Antsurance sold it itself. For grouping reports without a blank bucket.</description>
+    <label>Sold Through</label>
+    <formula>IF(ISBLANK(Producer__c), 'Direct', Producer__r.Name)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

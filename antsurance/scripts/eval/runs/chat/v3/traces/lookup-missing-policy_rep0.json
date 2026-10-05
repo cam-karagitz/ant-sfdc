@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "Show me the claims on policy ANT-PA-999999."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Date_of_Loss__c, Estimated_Loss__c, Outstanding_Reserve__c, Policy__r.Id, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Policy__r.Name = 'ANT-PA-999999' ORDER BY Date_of_Loss__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[],\"truncated\":false,\"rowCount\":0}"
+  },
+  {
+    "role": "assistant",
+    "content": "Check whether the policy exists."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Status__c, Account__r.Name FROM Policy__c WHERE Name = 'ANT-PA-999999' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[],\"truncated\":false,\"rowCount\":0}"
+  },
+  {
+    "role": "assistant",
+    "content": "I couldn't find a policy numbered **ANT-PA-999999**, so there are no claims to show. The number may have a typo. If you give me the policyholder's name or part of the number, I can look it up."
+  }
+]

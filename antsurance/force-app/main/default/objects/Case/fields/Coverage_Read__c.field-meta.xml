@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coverage_Read__c</fullName>
+    <description>Claude's read of whether the policy responds to this loss, with the records each finding rests on. JSON, written by the coverage check component; check again there rather than editing here.</description>
+    <label>Coverage Read</label>
+    <length>32768</length>
+    <visibleLines>6</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

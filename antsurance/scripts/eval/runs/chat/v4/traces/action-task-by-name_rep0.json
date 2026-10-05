@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "Create a follow-up task for me to review the Reyes Household renewal, due 20 October 2026."
+  },
+  {
+    "role": "assistant",
+    "content": "Need the Reyes Household account and its renewal policy/opportunity."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, (SELECT Id, Name, StageName, Type FROM Opportunities WHERE Type = 'Renewal' AND IsClosed = false), (SELECT Id, Name, Status__c, Line_of_Business__c, Expiration_Date__c FROM Policies__r WHERE Status__c = 'Pending Renewal') FROM Account WHERE Name LIKE '%Reyes%' LIMIT 5\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": null,\n  \"related_record_id\": \"001aj000040t3coAAA\",\n  \"due_date\": \"2026-10-20\",\n  \"subject\": \"Review the Reyes Household renewal\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review the Reyes Household renewal\",\n    \"dueDate\": \"2026-10-20\",\n    \"relatedId\": \"001aj000040t3coAAA\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

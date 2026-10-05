@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Quote record \"Standard deductible\" open (object Quote, Id 0Q0aj000003bR9JCAU). \"This\", \"here\" and \"this quote\" refer to that record.]\n\nHow much cheaper is the other option on this sale?"
+  },
+  {
+    "role": "assistant",
+    "content": "The other option, [Higher deductible, lower premium](/lightning/r/0Q0aj000003bR9KCAU/view), costs **$125 a year less** ($1,435 vs $1,560), which is about 8% cheaper. The trade-off is a **$2,000 deductible** instead of $1,000. Both have a $100,000 coverage limit and both are Presented to the Dubois Household.\n\n?> Compare both quotes side by side\n?> Draft an email to Dubois about the options\n?> When do these quotes expire?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Compare both quotes side by side\",\n      \"Draft an email to Dubois about the options\",\n      \"When do these quotes expire?\"\n    ]\n  }\n]"
+  }
+]

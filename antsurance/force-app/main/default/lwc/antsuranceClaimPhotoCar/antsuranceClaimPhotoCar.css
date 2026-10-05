@@ -1,0 +1,56 @@
+/* A car from above. Undamaged panels are a quiet outline; damaged ones take the severity colours
+   the photo boxes use. */
+:host {
+    display: block;
+    --ants-line: #d9d6ca;
+    --ants-oat: #f0eee7;
+    --ants-muted: #66645e;
+    --ants-sand: #e2d3a8;
+    --ants-sand-edge: #b8a56f;
+    --ants-amber: #e3b24a;
+    --ants-amber-edge: #a87a17;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+}
+
+.c-car {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin: 0;
+}
+
+.c-car__drawing {
+    flex: none;
+    width: 4.75rem;
+    height: auto;
+}
+
+.c-panel {
+    fill: var(--ants-oat);
+    stroke: var(--ants-line);
+    stroke-width: 1;
+}
+
+.c-panel_minor {
+    fill: var(--ants-sand);
+    stroke: var(--ants-sand-edge);
+}
+
+.c-panel_moderate {
+    fill: var(--ants-amber);
+    stroke: var(--ants-amber-edge);
+}
+
+.c-panel_severe {
+    fill: var(--ants-clay-deep);
+    stroke: var(--ants-clay-dark);
+}
+
+.c-car__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}

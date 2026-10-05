@@ -1,0 +1,68 @@
+[
+  {
+    "role": "user",
+    "content": "Which agency produced the most in-force policies?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Producer__r.Name, Producer__c, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') GROUP BY Producer__r.Name, Producer__c ORDER BY COUNT(Id) DESC LIMIT 12\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":1184520.0,\"cnt\":52,\"Producer__c\":\"001aj000041E8MVAA0\",\"Name\":\"Lakefront Brokerage Partners\"},{\"prem\":187140.0,\"cnt\":46,\"Producer__c\":null,\"Name\":null},{\"prem\":302912.0,\"cnt\":30,\"Producer__c\":\"001aj000041E8MUAA0\",\"Name\":\"Prairie State Insurance Agency\"},{\"prem\":188322.0,\"cnt\":27,\"Producer__c\":\"001aj000041E8MWAA0\",\"Name\":\"Driftless Insurance Group\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"title\": \"In-force policies by agency\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"Lakefront Brokerage Partners\",\n      \"value\": 52\n    },\n    {\n      \"label\": \"No agency\",\n      \"value\": 46\n    },\n    {\n      \"label\": \"Prairie State Insurance Agency\",\n      \"value\": 30\n    },\n    {\n      \"label\": \"Driftless Insurance Group\",\n      \"value\": 27\n    }\n  ],\n  \"highlight_label\": \"Lakefront Brokerage Partners\",\n  \"caption\": \"Count of Active and Pending Renewal policies by producing agency\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Which lines does Lakefront write?\",\n    \"Loss ratio by agency\",\n    \"Show the policies with no agency\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "user",
+    "content": "How many of those are Workers Compensation?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Line_of_Business__c, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') AND Producer__c = '001aj000041E8MVAA0' GROUP BY Line_of_Business__c ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":28843.0,\"cnt\":11,\"Line_of_Business__c\":\"Personal Auto\"},{\"prem\":27409.0,\"cnt\":11,\"Line_of_Business__c\":\"Homeowners\"},{\"prem\":178140.0,\"cnt\":8,\"Line_of_Business__c\":\"General Liability\"},{\"prem\":436540.0,\"cnt\":7,\"Line_of_Business__c\":\"Workers Compensation\"},{\"prem\":224630.0,\"cnt\":6,\"Line_of_Business__c\":\"Commercial Property\"},{\"prem\":28358.0,\"cnt\":5,\"Line_of_Business__c\":\"Umbrella\"},{\"prem\":260600.0,\"cnt\":4,\"Line_of_Business__c\":\"Commercial Auto\"}],\"truncated\":false,\"rowCount\":7}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Workers Comp policies\",\n      \"value\": \"7\",\n      \"note\": \"of 52 Lakefront policies in force\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Workers Comp premium\",\n      \"value\": \"$436,540\",\n      \"note\": \"37% of Lakefront premium\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"List Lakefront's Workers Comp policies\",\n    \"Workers Comp loss ratio at Lakefront\",\n    \"Workers Comp renewals coming up\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Workers Comp policies\",\n        \"value\": \"7\",\n        \"note\": \"of 52 Lakefront policies in force\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Workers Comp premium\",\n        \"value\": \"$436,540\",\n        \"note\": \"37% of Lakefront premium\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"List Lakefront's Workers Comp policies\",\n      \"Workers Comp loss ratio at Lakefront\",\n      \"Workers Comp renewals coming up\"\n    ]\n  }\n]"
+  }
+]

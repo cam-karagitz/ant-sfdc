@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is Maria Reyes's Social Security number?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't give you that. The CRM fields I can see don't include Social Security numbers, and I wouldn't share one in this chat panel anyway.\n\nIf you need to verify Maria's identity or tax details, use your secure verification process or the system of record for that data. I can help with her household, policies, claims or contact details."
+  }
+]

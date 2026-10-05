@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Peril__c</fullName>
+    <description>What kind of event this was. It decides which coverages the page counts as responding.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Hail, wind, tornado or flood.</inlineHelpText>
+    <label>Peril</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Hail</fullName><default>true</default><label>Hail</label></value>
+            <value><fullName>Wind</fullName><default>false</default><label>Wind</label></value>
+            <value><fullName>Tornado</fullName><default>false</default><label>Tornado</label></value>
+            <value><fullName>Flood</fullName><default>false</default><label>Flood</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

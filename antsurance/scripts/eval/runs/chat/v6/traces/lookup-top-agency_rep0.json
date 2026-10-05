@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which agency produced the most in-force policies?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Producer__r.Name, Producer__c, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') GROUP BY Producer__r.Name, Producer__c ORDER BY COUNT(Id) DESC LIMIT 12\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":1184520.0,\"cnt\":52,\"Producer__c\":\"001aj000041E8MVAA0\",\"Name\":\"Lakefront Brokerage Partners\"},{\"prem\":187140.0,\"cnt\":46,\"Producer__c\":null,\"Name\":null},{\"prem\":302912.0,\"cnt\":30,\"Producer__c\":\"001aj000041E8MUAA0\",\"Name\":\"Prairie State Insurance Agency\"},{\"prem\":188322.0,\"cnt\":27,\"Producer__c\":\"001aj000041E8MWAA0\",\"Name\":\"Driftless Insurance Group\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"[Lakefront Brokerage Partners](/lightning/r/001aj000041E8MVAA0/view) produced the most in-force policies: **52** of 155, carrying **$1,184,520** in annual premium. 46 policies have no producing agency.\\n\\n?> Show Lakefront's policies renewing soon\\n?> Premium in force by agency\\n?> Loss ratio by agency\",\n  \"title\": \"In-force policies by agency\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"Lakefront Brokerage\",\n      \"value\": 52\n    },\n    {\n      \"label\": \"No agency\",\n      \"value\": 46\n    },\n    {\n      \"label\": \"Prairie State\",\n      \"value\": 30\n    },\n    {\n      \"label\": \"Driftless\",\n      \"value\": 27\n    }\n  ],\n  \"highlight_label\": \"Lakefront Brokerage\",\n  \"caption\": \"Active and Pending Renewal policies by producing agency\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"In-force policies by agency\",\n    \"caption\": \"Active and Pending Renewal policies by producing agency\",\n    \"chartType\": \"bar\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"Lakefront Brokerage\",\n        \"value\": 52\n      },\n      {\n        \"label\": \"No agency\",\n        \"value\": 46\n      },\n      {\n        \"label\": \"Prairie State\",\n        \"value\": 30\n      },\n      {\n        \"label\": \"Driftless\",\n        \"value\": 27\n      }\n    ],\n    \"highlight\": \"Lakefront Brokerage\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show Lakefront's policies renewing soon\",\n      \"Premium in force by agency\",\n      \"Loss ratio by agency\"\n    ]\n  }\n]"
+  }
+]

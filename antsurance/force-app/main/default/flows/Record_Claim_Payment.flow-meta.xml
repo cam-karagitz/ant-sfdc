@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Is_There_Reserve_to_Pay</name>
+        <label>Is there reserve to pay from?</label>
+        <locationX>176</locationX>
+        <locationY>216</locationY>
+        <defaultConnector>
+            <targetReference>No_Reserve</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Has_Reserve</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Claim.Outstanding_Reserve__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Payment_Details</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Records a payment against a claim reserve. It will not pay more than is outstanding, moves the claim to Payment Issued or closes it on a final payment, and logs the payment as a completed task.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ReserveText</name>
+        <dataType>String</dataType>
+        <expression>"$" &amp; IF(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0) &gt;= 1000000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0) / 1000000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0) / 1000), 1000)), 3, "0") &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0)), 1000)), 3, "0"), IF(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0) &gt;= 1000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0) / 1000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0)), 1000)), 3, "0"), TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Reserve_Amount__c}, 0), 0)))))</expression>
+    </formulas>
+    <formulas>
+        <name>PaidText</name>
+        <dataType>String</dataType>
+        <expression>"$" &amp; IF(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0) &gt;= 1000000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0) / 1000000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0) / 1000), 1000)), 3, "0") &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0)), 1000)), 3, "0"), IF(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0) &gt;= 1000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0) / 1000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0)), 1000)), 3, "0"), TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0), 0)))))</expression>
+    </formulas>
+    <formulas>
+        <name>OutstandingText</name>
+        <dataType>String</dataType>
+        <expression>"$" &amp; IF(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0) &gt;= 1000000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0) / 1000000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0) / 1000), 1000)), 3, "0") &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0)), 1000)), 3, "0"), IF(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0) &gt;= 1000, TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0) / 1000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0)), 1000)), 3, "0"), TEXT(FLOOR(ROUND(BLANKVALUE({!Get_Claim.Outstanding_Reserve__c}, 0), 0)))))</expression>
+    </formulas>
+    <formulas>
+        <name>PaymentText</name>
+        <dataType>String</dataType>
+        <expression>"$" &amp; IF(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0) &gt;= 1000000, TEXT(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0) / 1000000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0) / 1000), 1000)), 3, "0") &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0)), 1000)), 3, "0"), IF(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0) &gt;= 1000, TEXT(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0) / 1000)) &amp; "," &amp; LPAD(TEXT(MOD(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0)), 1000)), 3, "0"), TEXT(FLOOR(ROUND(BLANKVALUE({!Payment_Amount}, 0), 0)))))</expression>
+    </formulas>
+    <formulas>
+        <name>NewPaid</name>
+        <dataType>Currency</dataType>
+        <expression>BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0) + {!Payment_Amount}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>NewReserve</name>
+        <dataType>Currency</dataType>
+        <expression>IF({!Final_Payment}, BLANKVALUE({!Get_Claim.Paid_Amount__c}, 0) + {!Payment_Amount}, {!Get_Claim.Reserve_Amount__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>NewStatus</name>
+        <dataType>String</dataType>
+        <expression>IF({!Final_Payment}, "Closed", "Payment Issued")</expression>
+    </formulas>
+    <formulas>
+        <name>PaymentTaskSubject</name>
+        <dataType>String</dataType>
+        <expression>"Payment of " &amp; {!PaymentText} &amp; " issued to " &amp; {!Payee}</expression>
+    </formulas>
+    <formulas>
+        <name>DefaultPayee</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!Get_Claim.ContactId}), "", {!Get_Claim.Contact.FirstName} &amp; " " &amp; {!Get_Claim.Contact.LastName})</expression>
+    </formulas>
+    <interviewLabel>Record a Claim Payment {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Record a Claim Payment</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Log_Payment</name>
+        <label>Log the payment</label>
+        <locationX>176</locationX>
+        <locationY>648</locationY>
+        <connector>
+            <targetReference>Payment_Recorded</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Could_Not_Save</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>Get_Claim.ContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>PaymentTaskSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Claim</name>
+        <label>Get the claim</label>
+        <locationX>176</locationX>
+        <locationY>108</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_There_Reserve_to_Pay</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Claim</name>
+        <label>Update the claim</label>
+        <locationX>176</locationX>
+        <locationY>540</locationY>
+        <connector>
+            <targetReference>Log_Payment</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Could_Not_Save</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Paid_Amount__c</field>
+            <value>
+                <elementReference>NewPaid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reserve_Amount__c</field>
+            <value>
+                <elementReference>NewReserve</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>NewStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <screens>
+        <name>No_Reserve</name>
+        <label>No reserve</label>
+        <locationX>176</locationX>
+        <locationY>324</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>No_Reserve_Message</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;There is no outstanding reserve on this claim.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Set or raise the reserve before recording a payment.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Payment_Details</name>
+        <label>Payment details</label>
+        <locationX>176</locationX>
+        <locationY>432</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Update_Claim</targetReference>
+        </connector>
+        <fields>
+            <name>Claim_Position</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!Get_Claim.CaseNumber}: {!Get_Claim.Subject}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Reserved {!ReserveText}. Paid so far {!PaidText}. Outstanding {!OutstandingText}.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Payment_Amount</name>
+            <dataType>Currency</dataType>
+            <fieldText>Payment amount, up to {!OutstandingText}</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <scale>2</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Enter an amount above zero and no more than the outstanding reserve.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Payment_Amount} &gt; 0 &amp;&amp; {!Payment_Amount} &lt;= {!Get_Claim.Outstanding_Reserve__c}</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Payee</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>DefaultPayee</elementReference>
+            </defaultValue>
+            <fieldText>Pay to</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Final_Payment</name>
+            <dataType>Boolean</dataType>
+            <fieldText>This is the final payment. Close the claim and release any reserve left.</fieldText>
+            <fieldType>InputField</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Record Payment</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Payment_Recorded</name>
+        <label>Payment recorded</label>
+        <locationX>176</locationX>
+        <locationY>756</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Recorded_Message</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!PaymentText} recorded, payable to {!Payee}.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;The claim is now {!NewStatus}.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Could_Not_Save</name>
+        <label>Could not save</label>
+        <locationX>176</locationX>
+        <locationY>864</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Save_Error</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;That could not be saved.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Claim</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,99 @@
+<template>
+    <template lwc:if={isMini}>
+        <article class={miniClass} aria-label={spec.name}>
+            <header class="c-mini__head">
+                <span class="c-record__icon c-record__icon_mini" aria-hidden="true">
+                    <lightning-icon icon-name={iconName} size="xx-small"></lightning-icon>
+                </span>
+                <div class="c-mini__titles">
+                    <p class="c-record__eyebrow">{spec.eyebrow}</p>
+                    <h3 class="c-mini__title">{spec.name}</h3>
+                    <template lwc:if={spec.status}>
+                        <span class={statusClass}>{spec.status}</span>
+                    </template>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </header>
+            <dl class="c-keyfacts" style={keyFactsStyle}>
+                <template for:each={keyFacts} for:item="fact">
+                    <div key={fact.key} class="c-keyfact">
+                        <dt>{fact.label}</dt>
+                        <dd>{fact.value}</dd>
+                    </div>
+                </template>
+            </dl>
+            <footer class="c-mini-record__foot">
+                <a class="c-open" href={url} onclick={handleOpen}>
+                    Open record
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </a>
+            </footer>
+        </article>
+    </template>
+    <template lwc:elseif={isCompact}>
+        <article class={cardClass} aria-label={spec.name}>
+            <header class="c-record__head">
+                <span class="c-record__icon" aria-hidden="true">
+                    <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+                </span>
+                <div class="c-record__titles">
+                    <p class="c-record__eyebrow">{spec.eyebrow}</p>
+                    <h3 class="c-title">{spec.name}</h3>
+                </div>
+                <template lwc:if={spec.status}>
+                    <span class={statusClass}>{spec.status}</span>
+                </template>
+            </header>
+            <div class="c-record__main">
+                <template lwc:if={spec.figure}>
+                    <p class="c-record__figure">
+                        <span class="c-record__amount">{spec.figure}</span>
+                        <span class="c-record__amount-label">{spec.figureLabel}</span>
+                    </p>
+                </template>
+                <dl class="c-record__facts">
+                    <template for:each={facts} for:item="fact">
+                        <div key={fact.key} class="c-record__fact">
+                            <dt>{fact.label}</dt>
+                            <dd>{fact.value}</dd>
+                        </div>
+                    </template>
+                </dl>
+            </div>
+            <template lwc:if={spec.body}>
+                <p class="c-record__body">{spec.body}</p>
+            </template>
+            <footer class="c-record__foot">
+                <a class="c-open" href={url} onclick={handleOpen}>
+                    Open record
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </a>
+            </footer>
+        </article>
+    </template>
+    <template lwc:else>
+        <div class="c-frame">
+            <header class="c-frame__head">
+                <span class="c-record__icon" aria-hidden="true">
+                    <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+                </span>
+                <div class="c-record__titles">
+                    <p class="c-record__eyebrow">{spec.eyebrow}</p>
+                    <h3 class="c-title">{spec.name}</h3>
+                    <ul class="c-frame__facts">
+                        <template for:each={frameFacts} for:item="fact">
+                            <li key={fact.key}><span class="c-frame__label">{fact.label}</span> {fact.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <a class="c-open" href={url} onclick={handleOpen}>
+                    Open record
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </a>
+            </header>
+            <c-antsurance-claude-page-card card={pageCard} record-id={spec.recordId}></c-antsurance-claude-page-card>
+        </div>
+    </template>
+</template>

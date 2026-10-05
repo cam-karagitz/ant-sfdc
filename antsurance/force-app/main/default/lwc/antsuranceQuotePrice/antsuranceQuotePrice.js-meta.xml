@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Price panel for the quote configurator: premium, terms, underwriting flags and how the premium was built.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

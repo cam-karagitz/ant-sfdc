@@ -1,0 +1,70 @@
+/* Labelled points of a brief. Colours and fonts come from the host component's --ants-*
+   properties, with plain fallbacks when used on its own. */
+:host {
+    display: block;
+}
+
+.c-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.875rem;
+}
+
+/* Things to watch stand out from the rest. */
+.c-point_alert {
+    background: var(--ants-clay-tint, #faefeb);
+}
+
+.c-point__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+    background: var(--ants-oat, #f0eee7);
+}
+
+.c-point_alert .c-point__icon {
+    background: #fff;
+}
+
+.c-point__main {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-point__label {
+    margin: 0 0 0.125rem;
+    font-family: var(--ants-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ants-muted, #66645e);
+}
+
+.c-point_alert .c-point__label {
+    color: var(--ants-clay-dark, #8a4a35);
+}
+
+.c-point__plain {
+    flex: 1;
+}
+
+/* A brief with no labelled points lines up with the points' text and the card's title. */
+.c-plain {
+    display: block;
+    padding: 0.375rem 0.75rem;
+}

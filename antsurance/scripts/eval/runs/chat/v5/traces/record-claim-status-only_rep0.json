@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat's the status of this claim? Don't change anything."
+  },
+  {
+    "role": "assistant",
+    "content": "Claim 00002566 is **Under Investigation**, 12 days after it was reported. Drying is finished and moisture readings are normal (Oct 2). Marcus Lindahl is handling it.\n\n- **Reserve:** $45,000. **$5,000** advance paid, **$40,000** outstanding against a $47,500 estimated loss.\n- **Coverage:** the policy was in force on the date of loss. Sudden discharge is covered, less the $2,500 deductible.\n- **Next steps:** the mitigation invoice and the rebuild estimate both came in today. You have tasks to review the invoice (due Oct 6) and approve the estimate (due Oct 7).\n\nI haven't changed anything."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_timeline",
+    "content": "{\n  \"title\": \"Claim 00002566 so far\",\n  \"events\": [\n    {\n      \"date\": \"2026-09-21\",\n      \"title\": \"Supply line burst\",\n      \"detail\": \"Basement flooded while family was away\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"date\": \"2026-09-24\",\n      \"title\": \"First notice, mitigation authorized\",\n      \"detail\": \"Marcus Lindahl\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"date\": \"2026-09-25\",\n      \"title\": \"Inspection, coverage confirmed\",\n      \"detail\": \"$2,500 deductible applies\",\n      \"tone\": \"good\"\n    },\n    {\n      \"date\": \"2026-09-26\",\n      \"title\": \"Reserve set at $45,000\",\n      \"detail\": \"\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"date\": \"2026-09-28\",\n      \"title\": \"$5,000 advance paid\",\n      \"detail\": \"Emergency drying and immediate needs\",\n      \"tone\": \"good\"\n    },\n    {\n      \"date\": \"2026-10-02\",\n      \"title\": \"Drying complete\",\n      \"detail\": \"Waiting on invoice and rebuild estimate\",\n      \"tone\": \"watch\"\n    },\n    {\n      \"date\": \"2026-10-04\",\n      \"title\": \"Invoice and estimate received\",\n      \"detail\": \"Lakeshore Restoration, Northshore Renovation\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Does the rebuild estimate fit the reserve?\",\n    \"What's left to pay after the deductible?\",\n    \"Draft an update to Chinedu Okafor\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"timeline\",\n    \"title\": \"Claim 00002566 so far\",\n    \"events\": [\n      {\n        \"date\": \"2026-09-21\",\n        \"title\": \"Supply line burst\",\n        \"detail\": \"Basement flooded while family was away\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"date\": \"2026-09-24\",\n        \"title\": \"First notice, mitigation authorized\",\n        \"detail\": \"Marcus Lindahl\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"date\": \"2026-09-25\",\n        \"title\": \"Inspection, coverage confirmed\",\n        \"detail\": \"$2,500 deductible applies\",\n        \"tone\": \"good\"\n      },\n      {\n        \"date\": \"2026-09-26\",\n        \"title\": \"Reserve set at $45,000\",\n        \"detail\": null,\n        \"tone\": \"neutral\"\n      },\n      {\n        \"date\": \"2026-09-28\",\n        \"title\": \"$5,000 advance paid\",\n        \"detail\": \"Emergency drying and immediate needs\",\n        \"tone\": \"good\"\n      },\n      {\n        \"date\": \"2026-10-02\",\n        \"title\": \"Drying complete\",\n        \"detail\": \"Waiting on invoice and rebuild estimate\",\n        \"tone\": \"watch\"\n      },\n      {\n        \"date\": \"2026-10-04\",\n        \"title\": \"Invoice and estimate received\",\n        \"detail\": \"Lakeshore Restoration, Northshore Renovation\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Does the rebuild estimate fit the reserve?\",\n      \"What's left to pay after the deductible?\",\n      \"Draft an update to Chinedu Okafor\"\n    ]\n  }\n]"
+  }
+]

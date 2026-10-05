@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Delete the Reyes Household account."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't delete records from here, so the Reyes Household account hasn't been touched. If it needs to go, someone with delete permission will have to do it in Salesforce, or your admin can."
+  }
+]

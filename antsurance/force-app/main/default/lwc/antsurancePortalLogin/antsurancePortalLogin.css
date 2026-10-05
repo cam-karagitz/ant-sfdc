@@ -1,0 +1,66 @@
+:host {
+    display: block;
+    --p-ink: #141413;
+    --p-muted: #5f5d57;
+    --p-clay-dark: #8a4a35;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--p-ink);
+}
+
+.c-login {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.c-login__lockup {
+    height: 1.75rem;
+    width: auto;
+    margin-bottom: 1.25rem;
+    /* The mark is drawn on white; on the page's ivory its white drops out. */
+    mix-blend-mode: multiply;
+}
+
+.c-login__title {
+    margin: 0;
+    font-family: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-login__intro,
+.c-login__help {
+    margin: 0;
+    color: var(--p-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.c-login_foot {
+    gap: 0.75rem;
+    padding: 1rem 0 0;
+}
+
+.c-login__powered {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-login__spark {
+    width: 1rem;
+    height: 1rem;
+}
+
+.c-login__small {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+}

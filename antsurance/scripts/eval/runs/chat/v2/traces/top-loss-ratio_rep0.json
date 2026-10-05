@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which policy has the highest loss ratio, and what is it?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Loss_Ratio__c, Incurred_Losses__c, Annual_Premium__c, Status__c, Line_of_Business__c, Account__r.Id, Account__r.Name FROM Policy__c WHERE Loss_Ratio__c != null ORDER BY Loss_Ratio__c DESC LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040t3cpAAA\"},\"Account__c\":\"001aj000040t3cpAAA\",\"Line_of_Business__c\":\"Homeowners\",\"Status__c\":\"Active\",\"Annual_Premium__c\":2240.00,\"Incurred_Losses__c\":45000.00,\"Loss_Ratio__c\":2008.9,\"Name\":\"ANT-HO-204585\",\"Id\":\"a00aj00003jKdxxAAC\"},{\"Account__r\":{\"Name\":\"Haddad Household\",\"Id\":\"001aj000040t3cxAAA\"},\"Account__c\":\"001aj000040t3cxAAA\",\"Line_of_Business__c\":\"Personal Auto\",\"Status__c\":\"Active\",\"Annual_Premium__c\":2890.00,\"Incurred_Losses__c\":58000.00,\"Loss_Ratio__c\":2006.9,\"Name\":\"ANT-PA-204857\",\"Id\":\"a00aj00003jKdyDAAS\"},{\"Account__r\":{\"Name\":\"Lindqvist Household\",\"Id\":\"001aj000040t3cqAAA\"},\"Account__c\":\"001aj000040t3cqAAA\",\"Line_of_Business__c\":\"Renters\",\"Status__c\":\"Active\",\"Annual_Premium__c\":228.00,\"Incurred_Losses__c\":3650.00,\"Loss_Ratio__c\":1600.9,\"Name\":\"ANT-RN-204602\",\"Id\":\"a00aj00003jKdxyAAC\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The policy with the highest loss ratio is [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view), a Homeowners policy for [Okafor Household](/lightning/r/001aj000040t3cpAAA/view). Its loss ratio is **2,008.9%**: **$45,000** in incurred losses against **$2,240** in annual premium. The policy is active.\n\nThe next one is very close behind:\n\n| Policy | Customer | Loss ratio |\n|---|---|---|\n| [ANT-PA-204857](/lightning/r/a00aj00003jKdyDAAS/view) | [Haddad Household](/lightning/r/001aj000040t3cxAAA/view) | 2,006.9% |\n| [ANT-RN-204602](/lightning/r/a00aj00003jKdxyAAC/view) | [Lindqvist Household](/lightning/r/001aj000040t3cqAAA/view) | 1,600.9% |"
+  }
+]

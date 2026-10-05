@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The claims coverage agent, inside the coverage check card: starts an investigation on Claude Managed Agents, shows each step as it happens, and keeps how it worked beside the finding. Used by antsuranceCoverageCheck; not placed on a page by itself.</description>
+    <isExposed>false</isExposed>
+    <masterLabel>Antsurance Coverage Agent</masterLabel>
+</LightningComponentBundle>

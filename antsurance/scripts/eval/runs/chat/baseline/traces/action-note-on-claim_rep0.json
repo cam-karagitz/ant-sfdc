@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002038: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKc9SAAS). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nAdd a file note: spoke with the insured today, contractor estimate arrives Monday."
+  },
+  {
+    "role": "assistant",
+    "content": "I can't add the note because I only have read access to the CRM. I can look up records, but I can't create or edit them.\n\nTo add it yourself, open the **File Notes** related list on [00002038: Burst pipe flooded finished basement](/lightning/r/500aj00003jKc9SAAS/view) and click **New**. Fill in:\n- **Note Date:** 2 Oct 2026\n- **Body:** \"Spoke with the insured today; contractor estimate arrives Monday (5 Oct).\"\n- **Note Type:** whichever fits, for example a contact or call note\n\nYou might also add a task due Mon 5 Oct to follow up on the estimate."
+  }
+]

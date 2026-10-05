@@ -1,0 +1,117 @@
+<template>
+    <article class="c-asset" aria-label="Insured asset">
+        <template lwc:if={errorMessage}>
+            <p class="c-asset__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={asset}>
+            <div class={mediaClass}>
+                <template lwc:if={isVehicle}>
+                    <template lwc:if={photo}>
+                        <img class="c-asset__photo" src={photo.imageUrl} alt={photoAlt} />
+                    </template>
+                    <template lwc:else>
+                        <div class="c-asset__placeholder">
+                            <lightning-icon icon-name={typeIconName} size="large"></lightning-icon>
+                            <span>{placeholderText}</span>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:elseif={hasMap}>
+                    <div class="c-map" role="img" aria-label={mapLabel}>
+                        <div class="c-map__tiles" style={mapStyle}>
+                            <template for:each={mapTiles} for:item="tile">
+                                <img key={tile.key} class="c-map__tile" src={tile.url} style={tile.style} alt="" loading="lazy" />
+                            </template>
+                        </div>
+                        <span class="c-map__pin" aria-hidden="true"></span>
+                        <a class="c-map__credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="c-asset__placeholder">
+                        <lightning-icon icon-name={typeIconName} size="large"></lightning-icon>
+                        <span>No map location on file</span>
+                    </div>
+                </template>
+            </div>
+            <template lwc:if={photo}>
+                <p class="c-asset__credit">
+                    <span>A photo of the model, not this vehicle. Source:</span>
+                    <a class="c-asset__source" href={photo.pageUrl} target="_blank" rel="noopener">{photo.source}</a>
+                </p>
+            </template>
+
+            <div class="c-asset__body">
+                <div class="c-asset__head">
+                    <h2 class="c-asset__name" title={headline}>{headline}</h2>
+                    <span class="c-asset__type">
+                        <lightning-icon icon-name={typeIconName} size="xx-small" class="c-asset__type-icon"></lightning-icon>
+                        {asset.type}
+                    </span>
+                </div>
+                <template lwc:if={showLocation}>
+                    <p class="c-asset__where" title={asset.location}>{locationLabel}</p>
+                </template>
+
+                <dl class="c-asset__facts">
+                    <template for:each={facts} for:item="fact">
+                        <div key={fact.label}>
+                            <dt>{fact.label}</dt>
+                            <dd class={fact.valueClass} title={fact.value}>{fact.value}</dd>
+                        </div>
+                    </template>
+                </dl>
+
+                <template lwc:if={toValue}>
+                    <div class={toValue.className}>
+                        <p class="c-value__head">
+                            <span class="c-value__title">Insured to value</span>
+                            <span class="c-value__figure">{toValue.percent}</span>
+                        </p>
+                        <div class="c-value__track" role="img" aria-label={toValue.label}>
+                            <span class="c-value__fill" style={toValue.fillStyle}></span>
+                            <span class="c-value__mark" style={toValue.markStyle}></span>
+                        </div>
+                        <p class="c-value__text">{toValue.text}</p>
+                    </div>
+                </template>
+
+                <template lwc:if={asset.details}>
+                    <p class="c-asset__details">{asset.details}</p>
+                </template>
+
+                <ul class="c-asset__links">
+                    <template for:each={links} for:item="link">
+                        <li key={link.label}>
+                            <a class="c-asset__link" href={link.url} target="_blank" rel="noopener">
+                                <lightning-icon icon-name="utility:new_window" size="xx-small"></lightning-icon>
+                                {link.label}
+                            </a>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <template lwc:if={asset.policyId}>
+                <div class="c-asset__policy">
+                    <span class="c-asset__policy-label">Insured on</span>
+                    <a class="c-asset__policy-number c-asset__back c-ui-focus" href={policyUrl} data-record-id={asset.policyId} onclick={handleOpenRecord}
+                        >{asset.policyName}</a
+                    >
+                    <span class="c-asset__policy-line">
+                        {asset.policyLine}
+                        <template lwc:if={asset.holderId}>
+                            <span class="c-asset__for">for</span>
+                            <a class="c-asset__back c-ui-focus" href={holderUrl} data-record-id={asset.holderId} onclick={handleOpenRecord}>{asset.holderName}</a>
+                        </template>
+                    </span>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-asset__loading">
+                <lightning-spinner alternative-text="Loading asset" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

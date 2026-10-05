@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "Which of my tasks are overdue?"
+  },
+  {
+    "role": "assistant",
+    "content": "\"My tasks\" here means tasks assigned to the user, so filter by OwnerId."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Subject, ActivityDate, Priority, Status, What.Name, What.Id, Who.Name FROM Task WHERE OwnerId = '005aj00000fNyS5AAK' AND IsClosed = false AND ActivityDate < 2026-10-02 ORDER BY ActivityDate LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Who\":{\"Name\":\"Lena Fischer\",\"Id\":\"003aj00002T9O6dAAF\"},\"What\":{\"Name\":\"Sagebrush Freight Lines - Cargo and umbrella\",\"Id\":\"006aj00000elRnQAAU\"},\"WhoId\":\"003aj00002T9O6dAAF\",\"WhatId\":\"006aj00000elRnQAAU\",\"Status\":\"Not Started\",\"Priority\":\"Normal\",\"ActivityDate\":\"2026-09-28\",\"Subject\":\"Chase loss runs for the Sagebrush cargo and umbrella submission\",\"Id\":\"00Taj00000MizNFEAZ\"},{\"Who\":{\"Name\":\"Miguel Ortega\",\"Id\":\"003aj00002T9O6XAAV\"},\"What\":{\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jKdyLAAS\"},\"WhoId\":\"003aj00002T9O6XAAV\",\"WhatId\":\"a00aj00003jKdyLAAS\",\"Status\":\"Not Started\",\"Priority\":\"High\",\"ActivityDate\":\"2026-09-29\",\"Subject\":\"Ask Ridgeline for the corrective action report\",\"Id\":\"00Taj00000MizNBEAZ\"},{\"Who\":{\"Name\":\"Lucia Castellano\",\"Id\":\"003aj00002T9O6LAAV\"},\"What\":{\"Name\":\"00002215\",\"Id\":\"500aj00003jLAObAAO\"},\"WhoId\":\"003aj00002T9O6LAAV\",\"WhatId\":\"500aj00003jLAObAAO\",\"Status\":\"Not Started\",\"Priority\":\"High\",\"ActivityDate\":\"2026-09-30\",\"Subject\":\"Send the coverage decision letter to Lucia Castellano\",\"Id\":\"00Taj00000MizN3EAJ\"},{\"Who\":{\"Name\":\"Lucia Castellano\",\"Id\":\"003aj00002T9O6LAAV\"},\"What\":{\"Name\":\"00002261\",\"Id\":\"500aj00003jLAPLAA4\"},\"WhoId\":\"003aj00002T9O6LAAV\",\"WhatId\":\"500aj00003jLAPLAA4\",\"Status\":\"Not Started\",\"Priority\":\"High\",\"ActivityDate\":\"2026-10-01\",\"Subject\":\"Follow up on signed no-loss statement\",\"Id\":\"00Taj00000MizMxEAJ\"},{\"Who\":{\"Name\":\"Nora Whitcombe\",\"Id\":\"003aj00002T9O6aAAF\"},\"What\":{\"Name\":\"00002264\",\"Id\":\"500aj00003jLAPOAA4\"},\"WhoId\":\"003aj00002T9O6aAAF\",\"WhatId\":\"500aj00003jLAPOAA4\",\"Status\":\"Not Started\",\"Priority\":\"Normal\",\"ActivityDate\":\"2026-10-01\",\"Subject\":\"Issue the remaining five vendor certificates for Copperfield\",\"Id\":\"00Taj00000MizN8EAJ\"},{\"Who\":{\"Name\":\"Sam Okonkwo\",\"Id\":\"003aj00002T9O6cAAF\"},\"What\":{\"Name\":\"Guaranteed cost\",\"Id\":\"0Q0aj000003aaHlCAI\"},\"WhoId\":\"003aj00002T9O6cAAF\",\"WhatId\":\"0Q0aj000003aaHlCAI\",\"Status\":\"Not Started\",\"Priority\":\"High\",\"ActivityDate\":\"2026-10-01\",\"Subject\":\"Walk Sam Okonkwo through the workers comp renewal quote\",\"Id\":\"00Taj00000MizNLEAZ\"}],\"truncated\":false,\"rowCount\":6}"
+  },
+  {
+    "role": "assistant",
+    "content": "You have **6 overdue tasks**. **4 are High priority**, and none have been started.\n\n| Due | Task | Related to | Priority |\n|---|---|---|---|\n| 28 Sep | Chase loss runs for the Sagebrush cargo and umbrella submission (Lena Fischer) | [Sagebrush Freight Lines: Cargo and umbrella](/lightning/r/006aj00000elRnQAAU/view) | Normal |\n| 29 Sep | Ask Ridgeline for the corrective action report (Miguel Ortega) | [ANT-WC-204993](/lightning/r/a00aj00003jKdyLAAS/view) | **High** |\n| 30 Sep | Send the coverage decision letter to Lucia Castellano | [00002215](/lightning/r/500aj00003jLAObAAO/view) | **High** |\n| 1 Oct | Follow up on signed no-loss statement (Lucia Castellano) | [00002261](/lightning/r/500aj00003jLAPLAA4/view) | **High** |\n| 1 Oct | Issue the remaining five vendor certificates for Copperfield (Nora Whitcombe) | [00002264](/lightning/r/500aj00003jLAPOAA4/view) | Normal |\n| 1 Oct | Walk Sam Okonkwo through the workers comp renewal quote | [Guaranteed cost](/lightning/r/0Q0aj000003aaHlCAI/view) | **High** |"
+  }
+]

@@ -1,0 +1,61 @@
+<template>
+    <template lwc:if={compact}>
+        <section class="c-mini c-mini-timeline" aria-label={spec.title}>
+            <header class="c-mini__head">
+                <div class="c-mini__titles">
+                    <h3 class="c-mini__title">{spec.title}</h3>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </header>
+            <ol class="c-events c-events_mini">
+                <template for:each={pageEvents} for:item="event">
+                    <li key={event.key} class={event.className}>
+                        <div class="c-event__when">
+                            <time datetime={event.date}>{event.when}</time>
+                            <template lwc:if={event.toneWord}>
+                                <span class={event.toneClass}>{event.toneWord}</span>
+                            </template>
+                        </div>
+                        <span class="c-event__dot" aria-hidden="true"></span>
+                        <div class="c-event__body">
+                            <span class="c-event__title">{event.title}</span>
+                            <template lwc:if={event.detail}>
+                                <span class="c-event__detail">{event.detail}</span>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+            <template lwc:if={isPaged}>
+                <c-antsurance-step-pager class="c-pages" total={total} page-size={pageSize} page={page} label="events" onpagechange={handlePage}></c-antsurance-step-pager>
+            </template>
+        </section>
+    </template>
+    <template lwc:else>
+        <section class="c-timeline" aria-label={spec.title}>
+            <h3 class="c-title">{spec.title}</h3>
+            <ol class="c-events">
+                <template for:each={pageEvents} for:item="event">
+                    <li key={event.key} class={event.className}>
+                        <div class="c-event__when">
+                            <time datetime={event.date}>{event.when}</time>
+                            <template lwc:if={event.toneWord}>
+                                <span class={event.toneClass}>{event.toneWord}</span>
+                            </template>
+                        </div>
+                        <span class="c-event__dot" aria-hidden="true"></span>
+                        <div class="c-event__body">
+                            <span class="c-event__title">{event.title}</span>
+                            <template lwc:if={event.detail}>
+                                <span class="c-event__detail">{event.detail}</span>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+            <c-antsurance-step-pager total={total} page-size={pageSize} page={page} label="events" onpagechange={handlePage}></c-antsurance-step-pager>
+        </section>
+    </template>
+</template>

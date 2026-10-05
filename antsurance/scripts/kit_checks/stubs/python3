@@ -1,0 +1,6 @@
+#!/bin/bash
+# Stand-in for python3 while the scratch script is checked: logs the call and fails when the command line
+# matches the pattern in $FAIL_ON. No setup script runs and no org is reached.
+echo "python3 $*" >> "$CALLS"
+if echo "$*" | grep -Eq -- "${FAIL_ON:-@@none@@}"; then echo "stand-in: $1 failed" >&2; exit 1; fi
+exit 0

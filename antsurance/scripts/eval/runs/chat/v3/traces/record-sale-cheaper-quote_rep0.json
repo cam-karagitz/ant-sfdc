@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Sale record \"Ironwood Machine Works - Workers Comp renewal\" open (object Opportunity, Id 006aj00000elRnMAAU). \"This\", \"here\" and \"this policy sale\" refer to that record.]\n\nWhich quote is cheaper, and by how much?"
+  },
+  {
+    "role": "assistant",
+    "content": "The **[Small deductible plan](/lightning/r/0Q0aj000003aaHmCAI/view)** costs less: **$139,035** a year against **$149,500** for [Guaranteed cost](/lightning/r/0Q0aj000003aaHlCAI/view). That's **$10,465** cheaper, about 7% less.\n\n| Quote | Annual premium | Deductible | Limit |\n|---|---|---|---|\n| Small deductible plan | $139,035 | $2,500 | $1,000,000 |\n| Guaranteed cost | $149,500 | $0 | $1,000,000 |\n\nThe customer has both quotes in front of them, and both are valid until 20 Oct. [Option 3](/lightning/r/0Q0aj000003aaODCAY/view) is still a draft and has no price yet, so it isn't part of this comparison."
+  }
+]

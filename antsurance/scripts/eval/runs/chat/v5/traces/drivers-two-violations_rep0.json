@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Which drivers have two or more violations in the past three years?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Contact__c, Violations_Past_3_Years__c, Accidents_Past_3_Years__c, Driver_Rating__c, Status__c, Policy__r.Id, Policy__r.Name, Policy__r.Status__c, Policy__r.Account__r.Name, Policy__r.Account__r.Id FROM Policy_Participant__c WHERE Role__c = 'Driver' AND Violations_Past_3_Years__c >= 2 ORDER BY Violations_Past_3_Years__c DESC LIMIT 50\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Account__r\":{\"Name\":\"Petrovic Household\",\"Id\":\"001aj000041E8MfAAK\"},\"Account__c\":\"001aj000041E8MfAAK\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-204823\",\"Id\":\"a00aj00003jfwRTAAY\"},\"Policy__c\":\"a00aj00003jfwRTAAY\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Standard\",\"Accidents_Past_3_Years__c\":0,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgJMAA1\",\"Name\":\"Ana Petrovic, Driver\",\"Id\":\"a02aj00000iGwfEAAS\"},{\"Policy__r\":{\"Account__r\":{\"Name\":\"Dlamini Household\",\"Id\":\"001aj000041E8MsAAK\"},\"Account__c\":\"001aj000041E8MsAAK\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-205401\",\"Id\":\"a00aj00003jfwS1AAI\"},\"Policy__c\":\"a00aj00003jfwS1AAI\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Standard\",\"Accidents_Past_3_Years__c\":0,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgJjAAL\",\"Name\":\"Thabo Dlamini, Driver\",\"Id\":\"a02aj00000iGwg2AAC\"},{\"Policy__r\":{\"Account__r\":{\"Name\":\"Goldberg Household\",\"Id\":\"001aj000041E8MvAAK\"},\"Account__c\":\"001aj000041E8MvAAK\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-205503\",\"Id\":\"a00aj00003jfwS7AAI\"},\"Policy__c\":\"a00aj00003jfwS7AAI\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Non-Standard\",\"Accidents_Past_3_Years__c\":1,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgJpAAL\",\"Name\":\"Aaron Goldberg, Driver\",\"Id\":\"a02aj00000iGwgGAAS\"},{\"Policy__r\":{\"Account__r\":{\"Name\":\"Hosseini Household\",\"Id\":\"001aj000041E8MwAAK\"},\"Account__c\":\"001aj000041E8MwAAK\",\"Status__c\":\"Lapsed\",\"Name\":\"ANT-PA-205554\",\"Id\":\"a00aj00003jfwSAAAY\"},\"Policy__c\":\"a00aj00003jfwSAAAY\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Standard\",\"Accidents_Past_3_Years__c\":0,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgJrAAL\",\"Name\":\"Shirin Hosseini, Driver\",\"Id\":\"a02aj00000iGwgNAAS\"},{\"Policy__r\":{\"Account__r\":{\"Name\":\"Jovanovic Household\",\"Id\":\"001aj000041E8NDAA0\"},\"Account__c\":\"001aj000041E8NDAA0\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-206200\",\"Id\":\"a00aj00003jfwSmAAI\"},\"Policy__c\":\"a00aj00003jfwSmAAI\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Standard\",\"Accidents_Past_3_Years__c\":0,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgKJAA1\",\"Name\":\"Milan Jovanovic, Driver\",\"Id\":\"a02aj00000iGwhfAAC\"},{\"Policy__r\":{\"Account__r\":{\"Name\":\"Ibrahim Household\",\"Id\":\"001aj000041E8NIAA0\"},\"Account__c\":\"001aj000041E8NIAA0\",\"Status__c\":\"Active\",\"Name\":\"ANT-PA-206370\",\"Id\":\"a00aj00003jfwSwAAI\"},\"Policy__c\":\"a00aj00003jfwSwAAI\",\"Status__c\":\"Active\",\"Driver_Rating__c\":\"Standard\",\"Accidents_Past_3_Years__c\":0,\"Violations_Past_3_Years__c\":2,\"Contact__c\":\"003aj00002TKgKRAA1\",\"Name\":\"Yusuf Ibrahim, Driver\",\"Id\":\"a02aj00000iGwi0AAC\"}],\"truncated\":false,\"rowCount\":6}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Do any of these drivers have open claims?\",\n    \"Why did the Hosseini policy lapse?\",\n    \"Show Aaron Goldberg's policy\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Do any of these drivers have open claims?\",\n      \"Why did the Hosseini policy lapse?\",\n      \"Show Aaron Goldberg's policy\"\n    ]\n  }\n]"
+  }
+]

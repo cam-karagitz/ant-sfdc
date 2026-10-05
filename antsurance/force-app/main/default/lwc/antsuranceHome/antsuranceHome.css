@@ -1,0 +1,59 @@
+/* One calm column: the bar, the book (its figures beside its loss ratio), the briefing beside its rail, then the workspace. */
+:host {
+    display: block;
+    container-type: inline-size;
+}
+
+.c-home {
+    display: grid;
+    gap: 0.75rem;
+    /* Edge to edge on a laptop; centred only on a very wide screen. */
+    max-width: 124rem;
+    margin: 0 auto;
+    padding: 0.75rem;
+}
+
+/* The book: six figures, three to a row, beside how its loss ratio built. Both are as tall as the taller. */
+.c-home__book {
+    display: grid;
+    grid-template-columns: minmax(38rem, 5fr) minmax(0, 7fr);
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.c-home__focus {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 21rem;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.c-home__error {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e8e6dc;
+    border-radius: 0.75rem;
+    background: #faefeb;
+    color: #8a4a35;
+    font-size: 0.875rem;
+}
+
+/* Three figures to a row need about 38rem for their labels, and the chart about 30rem to be worth reading. With less, the chart goes under the figures. */
+@container (max-width: 72rem) {
+    .c-home__book {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* By the room Home has, not the window's, so it also holds when the page is zoomed or beside a panel. */
+@container (max-width: 58rem) {
+    .c-home__focus {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* "Open the desk" brings the workspace's tabs to the top of the window, clear of the app's fixed header. */
+c-antsurance-cockpit-workspace {
+    display: block;
+    scroll-margin-top: 9.5rem;
+}

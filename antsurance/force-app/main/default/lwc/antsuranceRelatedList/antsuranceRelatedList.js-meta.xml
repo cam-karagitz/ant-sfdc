@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>One related list on a record page, drawn at once as a table in the house style, with its count, the columns the page asks for, links to each record and View all.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Related List</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="title" type="String" label="Title" description="The heading above the list." />
+            <property name="relatedListId" type="String" label="Related list" description="The child relationship, as the related list is named: Contacts, Cases, Coverages__r." />
+            <property name="childObject" type="String" label="Child object" description="API name of the object the rows are, which qualifies the field names." />
+            <property name="fields" type="String" label="Columns" description="Comma-separated columns, each FieldPath|Header|kind. Kinds: link, lookup, money, date, chip, number, percent, text. The first three stay when the list is narrow." />
+            <property name="sortBy" type="String" label="Sort by" description="Fields on the child object, comma-separated, each with a leading - for newest or largest first." />
+            <property name="note" type="String" label="Note" description="One line under the title saying how to read the list." />
+            <property name="rows" type="Integer" label="Rows" default="6" description="How many rows to show before View all." />
+            <property name="icon" type="String" label="Row icon" description="An icon ahead of each row&apos;s name, from the shared mapping: kind:FieldPath when it depends on the row (asset:Asset_Type__c, role:Role__c, line:Line_of_Business__c, coverage:Name, kind:Kind__c), or a kind alone (person, sale, quote)." />
+            <property name="parentField" type="String" label="Lookup to this record" description="The lookup on the child that points at this record. When set, the list offers New." />
+            <property name="through" type="String" label="List of the record at" description="The lookup on this page&apos;s record to the record whose list this is, for a list one step up: Policy__c on an insured asset&apos;s page shows the policy&apos;s list." />
+            <property name="mergeBy" type="String" label="Merge rows" description="GroupPath|JoinPath. Rows that share the record at the end of GroupPath become one row, with the values of JoinPath joined by commas." />
+            <property name="emptyText" type="String" label="Empty text" default="Nothing here yet." description="What to say when there are no rows." />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

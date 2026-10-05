@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The adjuster's report from a claim analysis, laid out as a document: masthead, numbered sections, the photos with Claude's boxes, and confirm-first actions. Shown by the claim analysis component.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

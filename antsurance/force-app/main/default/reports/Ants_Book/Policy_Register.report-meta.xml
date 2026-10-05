@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Policy__c$Name</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Account__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Line_of_Business__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Status__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Annual_Premium__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Coverage_Limit__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Deductible__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Effective_Date__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Expiration_Date__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c$Sold_Through__c</field>
+    </columns>
+    <description>Policies in force, largest first.</description>
+    <filter>
+        <criteriaItems>
+            <column>Policy__c$Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Active,Pending Renewal</value>
+        </criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>Policy Register</name>
+    <reportType>Ants_Policies__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Policy__c$Annual_Premium__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Policy__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

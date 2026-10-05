@@ -1,0 +1,68 @@
+<template>
+    <template lwc:if={isOffered}>
+        <section class="c-agent" aria-label="Coverage agent" aria-busy={busy}>
+            <div class="c-agent__row">
+                <span class="c-agent__mark" aria-hidden="true">
+                    <lightning-icon icon-name="utility:steps" size="xx-small" class="c-agent__mark-icon"></lightning-icon>
+                </span>
+                <div class="c-agent__main">
+                    <div class="c-agent__words">
+                        <p class="c-agent__lead">{lead}</p>
+                        <p class="c-agent__line" role="status">
+                            <template lwc:if={isRunning}><span class="c-agent__pulse" aria-hidden="true"></span></template>
+                            <span>{line}</span>
+                        </p>
+                    </div>
+                    <template lwc:if={isRunning}>
+                        <button type="button" class="c-agent__stop" onclick={handleStop}>Stop</button>
+                    </template>
+                    <template lwc:else>
+                        <lightning-button label={startLabel} icon-name="utility:steps" disabled={disabled} onclick={handleStart} class="c-agent__start"></lightning-button>
+                    </template>
+                </div>
+            </div>
+
+            <template lwc:if={problem}>
+                <p class="c-agent__problem" role="alert">
+                    <lightning-icon icon-name="utility:warning" size="xx-small" class="c-agent__problem-icon" alternative-text="Problem"></lightning-icon>
+                    <span class="c-agent__problem-text">{problem}</span>
+                </p>
+            </template>
+
+            <template lwc:if={isRunning}>
+                <template lwc:if={hasSteps}>
+                    <ol class="c-agent__steps" style={stepsStyle} aria-label="What the agent has done so far">
+                        <template for:each={shownSteps} for:item="step">
+                            <li key={step.key} class={step.rowClass}>
+                                <p class="c-agent__step-label">{step.label}</p>
+                                <p class="c-agent__step-detail">{step.detail}</p>
+                            </li>
+                        </template>
+                    </ol>
+                    <c-antsurance-step-pager total={steps.length} page-size={stepsShown} page={currentPage} label="steps" onpagechange={handlePage}></c-antsurance-step-pager>
+                </template>
+            </template>
+
+            <template lwc:if={showHow}>
+                <c-antsurance-accordion class="c-agent__how" label="How it worked" count={steps.length} summary={howSummary} level="3">
+                    <template lwc:if={closing}>
+                        <p class="c-agent__closing-lead">In the agent's words</p>
+                        <p class="c-agent__closing">{closing}</p>
+                    </template>
+                    <ol class="c-agent__steps" style={stepsStyle} aria-label="What the agent did">
+                        <template for:each={shownSteps} for:item="step">
+                            <li key={step.key} class={step.rowClass}>
+                                <p class="c-agent__step-label">{step.label}</p>
+                                <p class="c-agent__step-detail">{step.detail}</p>
+                            </li>
+                        </template>
+                    </ol>
+                    <c-antsurance-step-pager total={steps.length} page-size={stepsShown} page={currentPage} label="steps" onpagechange={handlePage}></c-antsurance-step-pager>
+                    <p class="c-agent__basis">
+                        Run on Claude Managed Agents with the antsurance-coverage skill. Every step was a read in Salesforce with your access. The adjuster decides.
+                    </p>
+                </c-antsurance-accordion>
+            </template>
+        </section>
+    </template>
+</template>

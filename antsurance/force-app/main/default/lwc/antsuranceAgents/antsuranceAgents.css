@@ -1,0 +1,911 @@
+@import 'c/antsuranceUiStyles';
+
+/* The "Claude at work" tab: the jobs on the left, the chosen job on the right, all on one screen.
+   Brand values are fixed on purpose so it keeps its look under any org theme. */
+:host {
+    display: block;
+    container: agents / inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #3d4b2a;
+    --ants-olive-line: #c9d4b6;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-agents {
+    margin: 0.75rem;
+    padding: 1.125rem 1.25rem 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+p,
+h1,
+h2,
+dl,
+dd,
+ol,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+/* ---------- The head: what the page is, and the model everything runs on ---------- */
+
+.c-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+}
+
+.c-head__titles {
+    flex: 1 1 18rem;
+    min-width: 0;
+}
+
+.c-head__title {
+    font-family: var(--ants-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.c-head__sub {
+    color: var(--ants-muted);
+    font-size: 0.875rem;
+}
+
+.c-head__model {
+    flex: none;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: var(--ants-ivory);
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+.c-error {
+    margin-top: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.75rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+/* ---------- The strip: the four questions a leader asks, answered in figures ---------- */
+
+.c-strip {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-top: 0.875rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.875rem;
+    background: var(--ants-ivory);
+}
+
+.c-strip__cell {
+    min-width: 0;
+    padding: 0.625rem 0.875rem;
+    border-left: 1px solid var(--ants-line);
+}
+
+.c-strip__cell:first-child {
+    border-left: 0;
+}
+
+.c-strip__label {
+    color: var(--ants-muted);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.c-strip__value {
+    font-family: var(--ants-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-strip__note {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+/* ---------- The body: roster beside the chosen agent ---------- */
+
+.c-body {
+    display: grid;
+    grid-template-columns: 19rem minmax(0, 1fr);
+    gap: 0.875rem;
+    margin-top: 0.875rem;
+    /* The chosen job's panel is as tall as the list beside it, whichever tab is open: ending at its
+       own content, a short tab left a third of the card bare under it. */
+    align-items: stretch;
+}
+
+.c-roster {
+    display: grid;
+    align-content: start;
+    gap: 0.25rem;
+}
+
+.c-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    /* Tight enough that nine jobs end above the bottom of a laptop window with the page at rest. */
+    padding: 0.3125rem 0.625rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background-color 0.12s ease,
+        border-color 0.12s ease;
+}
+
+.c-row:hover {
+    background: var(--ants-ivory);
+    border-color: var(--ants-line);
+}
+
+.c-row:active {
+    background: var(--ants-oat);
+}
+
+.c-row_chosen,
+.c-row_chosen:hover {
+    background: var(--ants-clay-tint);
+    border-color: var(--ants-clay);
+}
+
+.c-row__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: grid;
+}
+
+.c-row__name {
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-row__note {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.3;
+}
+
+/* ---------- Chips ---------- */
+
+.c-chip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-chip_wait {
+    border-color: #e6d5a8;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_alone {
+    border-color: var(--ants-olive-line);
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-chip_person {
+    border-color: var(--ants-clay-dark);
+    background: var(--ants-clay-dark);
+    color: var(--ants-ivory);
+}
+
+.c-chip_agent {
+    border-color: var(--ants-clay);
+    background: var(--ants-clay);
+    color: var(--ants-ink);
+}
+
+/* How a job runs when it is not an agent: plain, so only the agent's chip is filled. */
+.c-chip_runs {
+    background: var(--ants-ivory);
+    color: var(--ants-muted);
+}
+
+.c-chip_off {
+    color: var(--ants-muted);
+    text-decoration: line-through;
+}
+
+/* ---------- The chosen agent ---------- */
+
+.c-detail {
+    /* Its own width decides how the steps are laid out: the list beside it takes a fixed share of the page. */
+    container: detail / inline-size;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1rem 1.125rem 1.125rem;
+    border: 1px solid var(--ants-line);
+    border-top: 3px solid var(--ants-clay);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-detail__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.c-detail__titles {
+    flex: 1 1 16rem;
+    min-width: 0;
+}
+
+.c-detail__line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.625rem;
+}
+
+.c-detail__name {
+    font-family: var(--ants-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-detail__job {
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
+/* How the job is started: the first thing under its name, with a button that goes to a record to try it on. */
+.c-start {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 0.875rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-start__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--ants-clay-tint);
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-start__text {
+    flex: 1 1 18rem;
+    min-width: 0;
+}
+
+.c-start__label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+}
+
+.c-start__how {
+    margin-top: 0.125rem;
+    color: var(--ants-ink);
+    text-wrap: pretty;
+}
+
+.c-start__then {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-start__go {
+    flex: none;
+    white-space: nowrap;
+}
+
+/* The loop: read, work out, prepare, a person decides. The last step is the person's, so it alone is filled. */
+.c-loop {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0.75rem 0 0.25rem;
+}
+
+.c-loop__step {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 0.125rem;
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+/* The arrow to the next step sits in the gap. */
+.c-loop__step::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -0.875rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-top: 2px solid #b9b6aa;
+    border-right: 2px solid #b9b6aa;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.c-loop__step:last-child::after {
+    display: none;
+}
+
+.c-loop__step_person {
+    border-color: var(--ants-clay);
+    background: var(--ants-clay-tint);
+}
+
+.c-loop__label {
+    color: var(--ants-muted);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-loop__step_person .c-loop__label {
+    color: var(--ants-clay-dark);
+}
+
+.c-loop__text {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    /* Even lines: a step that needs two never ends on one word, and the four boxes break alike. */
+    text-wrap: balance;
+}
+
+/* ---------- The job: what it reads, uses and prepares ---------- */
+
+/* One column for the labels, as wide as the longest of them, so "Here it would add" stays on one
+   line and every row's text starts at the same place. */
+.c-facts {
+    display: grid;
+    grid-template-columns: minmax(6rem, max-content) minmax(0, 1fr);
+    /* Room after the longest label ("Here it would add"), so it never touches the words beside it. */
+    column-gap: 1.5rem;
+    margin-top: 0.25rem;
+}
+
+.c-facts__row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-facts__row:first-child {
+    border-top: 0;
+}
+
+.c-facts__label {
+    color: var(--ants-muted);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.c-facts__items li {
+    position: relative;
+    padding-left: 0.875rem;
+    line-height: 1.5rem;
+}
+
+.c-facts__items li::before {
+    content: '';
+    position: absolute;
+    top: 0.625rem;
+    left: 0;
+    width: 0.3125rem;
+    height: 0.3125rem;
+    border-radius: 50%;
+    background: var(--ants-clay);
+}
+
+.c-facts__plain {
+    min-width: 0;
+    line-height: 1.5rem;
+    text-wrap: pretty;
+}
+
+.c-facts__strong {
+    font-weight: 600;
+}
+
+.c-facts__note,
+.c-facts__when {
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+}
+
+.c-facts__when {
+    margin-left: 0.5rem;
+    white-space: nowrap;
+}
+
+/* Four to a row, so eight tools sit as two even rows and none is left alone on a line. */
+.c-tools {
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    /* Each chip is as wide as its own name: stretched to its column, a short name sat in a long box. */
+    justify-items: start;
+    gap: 0.25rem 0.375rem;
+}
+
+/* With less room, two to a row in columns of one width: three to a row left a ragged last row. */
+@container detail (max-width: 56rem) {
+    .c-tools {
+        grid-template-columns: repeat(2, minmax(0, 15rem));
+    }
+}
+
+.c-tools__tool {
+    padding: 0 0.4375rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.375rem;
+    background: var(--ants-ivory);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    line-height: 1.375rem;
+    white-space: nowrap;
+}
+
+.c-trace {
+    margin: 0.25rem 0 0 1.25rem;
+    list-style: decimal;
+    font-size: 0.875rem;
+}
+
+.c-trace li {
+    padding: 0.0625rem 0;
+}
+
+.c-quiet_small {
+    font-size: 0.8125rem;
+}
+
+/* ---------- On its own ---------- */
+
+.c-rules__row {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    align-items: start;
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-rules__row:first-child {
+    border-top: 0;
+}
+
+.c-rules__row .c-chip {
+    justify-self: start;
+    margin-top: 0.125rem;
+}
+
+.c-rules__what {
+    font-weight: 600;
+}
+
+.c-rules__detail {
+    color: var(--ants-muted);
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
+.c-rules__set {
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+}
+
+/* ---------- What it did ---------- */
+
+.c-counts {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.625rem;
+}
+
+.c-counts__cell {
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    background: var(--ants-ivory);
+}
+
+.c-counts__label {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-counts__value {
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.c-counts__value_words {
+    font-family: inherit;
+    font-size: 0.9375rem;
+    line-height: 1.5625rem;
+}
+
+.c-recent {
+    margin-top: 0.5rem;
+}
+
+/* Each piece of work: what it was for on the first line, the kind of work under it. */
+.c-recent__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.375rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-recent__main {
+    display: grid;
+    min-width: 0;
+}
+
+.c-recent__row:first-child {
+    border-top: 0;
+}
+
+.c-recent__what {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    line-height: 1.3;
+}
+
+.c-recent__title {
+    min-width: 0;
+    color: var(--ants-ink);
+}
+
+a.c-recent__title {
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.c-recent__when {
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+.c-quiet__lead {
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
+
+.c-quiet {
+    margin-top: 0.25rem;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+/* A tab with nothing to list says so in the middle of the panel, on one line where the panel is wide. */
+.c-none {
+    flex: 1 1 auto;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.c-none .c-quiet__lead {
+    margin-top: 0;
+}
+
+.c-none .c-quiet {
+    text-wrap: balance;
+}
+
+/* ---------- Tested ---------- */
+
+.c-tests__row {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-tests__row:first-child {
+    border-top: 0;
+}
+
+.c-tests__result {
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.c-tests__title {
+    font-weight: 600;
+}
+
+.c-tests__line,
+.c-tests__caveat {
+    font-size: 0.875rem;
+    text-wrap: pretty;
+}
+
+.c-tests__caveat {
+    margin-top: 0.25rem;
+    color: var(--ants-amber-ink);
+}
+
+.c-tests__tag {
+    display: block;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.c-tests__meta {
+    margin-top: 0.25rem;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+/* ---------- Waiting for the roster ---------- */
+
+.c-roster_waiting {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.c-bone-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.375rem 0.625rem;
+}
+
+.c-bone_name {
+    width: 11rem;
+    height: 0.875rem;
+}
+
+.c-bone_title {
+    width: 14rem;
+    height: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.c-bone_wide {
+    width: 80%;
+    height: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- Narrower: the roster keeps its place and sheds its second line, so the page stays one screen ---------- */
+
+@container agents (max-width: 68rem) {
+    .c-strip__note {
+        display: none;
+    }
+
+    .c-body {
+        grid-template-columns: 16rem minmax(0, 1fr);
+    }
+
+    /* The second line goes, and what is waiting is said by its number alone. */
+    .c-row__note,
+    .c-row .c-chip__word {
+        display: none;
+    }
+
+    .c-row {
+        padding-top: 0.3125rem;
+        padding-bottom: 0.3125rem;
+    }
+
+    /* A little less air between the page's parts, so a job still ends above the bottom of the window. */
+    .c-strip,
+    .c-body {
+        margin-top: 0.5rem;
+    }
+
+    .c-agents {
+        padding-top: 0.875rem;
+        padding-bottom: 0.875rem;
+    }
+
+    .c-facts__row {
+        padding: 0.3125rem 0;
+    }
+
+    .c-rules__row {
+        grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+    }
+
+    .c-tests__row {
+        grid-template-columns: 8.5rem minmax(0, 1fr);
+    }
+}
+
+/* ---------- Narrow: the roster becomes three columns of names above the job ---------- */
+
+@container agents (max-width: 52rem) {
+    .c-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-roster {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+@container agents (max-width: 36rem) {
+    .c-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-roster {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-rules__row,
+    .c-tests__row,
+    .c-recent__row,
+    .c-facts {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.25rem;
+    }
+
+    .c-counts {
+        grid-auto-flow: row;
+    }
+}
+
+/* ---------- The steps, by the room the panel has. Four across needs about 13rem a step for its
+   words to sit on one or two lines; with less they go two by two, then one under another. ---------- */
+
+@container detail (max-width: 52rem) {
+    .c-start {
+        /* In a narrow panel the button sits on the band's first line, beside its label, and the two
+           sentences run the band's width under them: a row of its own for the button cost a line the page
+           does not have at this width. */
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.125rem 0.75rem;
+    }
+
+    .c-start__icon {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .c-start__text {
+        display: contents;
+    }
+
+    .c-start__label {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .c-start__go {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .c-start__how,
+    .c-start__then {
+        grid-column: 1 / -1;
+        margin-top: 0;
+    }
+
+    .c-loop {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem 1.25rem;
+    }
+
+    .c-loop__step:nth-child(2)::after {
+        display: none;
+    }
+}
+
+@container detail (max-width: 26rem) {
+    .c-loop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .c-loop__step::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-row {
+        transition: none;
+    }
+}

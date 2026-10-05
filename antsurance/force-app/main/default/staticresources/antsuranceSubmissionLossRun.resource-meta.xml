@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/pdf</contentType>
+    <description>Sample submission for Read a submission: a fictional carrier's loss run for Lakeshore Dental Group. It lists four claims; the application says three. Everything in it is invented.</description>
+</StaticResource>

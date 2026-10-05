@@ -1,0 +1,22 @@
+{
+  "orgName": "Antsurance trial, plain addresses",
+  "edition": "Developer",
+  "description": "A throwaway org for trying Antsurance without state and country picklists, the way many working orgs are set up. The app stores a state as text here.",
+  "features": [
+    "Communities"
+  ],
+  "settings": {
+    "quoteSettings": {
+      "enableQuote": true
+    },
+    "pathAssistantSettings": {
+      "pathAssistantEnabled": true
+    },
+    "communitiesSettings": {
+      "enableNetworksEnabled": true
+    },
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    }
+  }
+}

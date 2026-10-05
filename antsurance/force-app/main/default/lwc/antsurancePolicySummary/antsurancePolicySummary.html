@@ -1,0 +1,91 @@
+<template>
+    <article class="c-card" aria-label="Policy card">
+        <template lwc:if={errorMessage}>
+            <p class="c-card__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={policy}>
+            <div class="c-card__top">
+                <img class="c-card__logo" src={logoUrl} alt="Antsurance" />
+                <span class={statusClass}>{policy.status}</span>
+            </div>
+            <div class="c-card__id">
+                <span class={lineTileClass}>
+                    <lightning-icon icon-name={lineIconName} size="small" alternative-text={policy.lineOfBusiness}></lightning-icon>
+                </span>
+                <div class="c-card__id-text">
+                    <p class="c-card__line">{policy.lineOfBusiness}</p>
+                    <p class="c-card__number">{policy.name}</p>
+                </div>
+            </div>
+            <template lwc:if={policy.holderName}>
+                <p class="c-card__holder">
+                    <span class="c-card__holder-label">Policyholder</span>
+                    <a class="c-card__holder-name c-ui-focus" href={holderUrl} data-record-id={policy.holderId} onclick={handleOpenCustomer}>{policy.holderName}</a>
+                </p>
+            </template>
+            <template lwc:if={policy.producerName}>
+                <p class="c-card__holder c-card__holder_second">
+                    <span class="c-card__holder-label">Producer</span>
+                    <a class="c-card__holder-name c-card__holder-name_quiet c-ui-focus" href={producerUrl} data-record-id={policy.producerId} onclick={handleOpenCustomer}
+                        >{policy.producerName}</a
+                    >
+                </p>
+            </template>
+            <template lwc:if={policy.insuredItem}>
+                <p class="c-card__item" title={policy.insuredItem}>{policy.insuredItem}</p>
+            </template>
+
+            <div class="c-card__term">
+                <template lwc:if={hasTerm}>
+                    <div class="c-ring">
+                        <svg class="c-ring__svg" viewBox="0 0 120 120" role="img" aria-label={termLabel}>
+                            <circle class="c-ring__track" cx="60" cy="60" r="52"></circle>
+                            <circle class="c-ring__value" cx="60" cy="60" r="52" style={ringStyle}></circle>
+                        </svg>
+                        <div class="c-ring__center" aria-hidden="true">
+                            <span class="c-ring__days">{daysNumber}</span>
+                            <span class="c-ring__caption">{daysCaption}</span>
+                        </div>
+                    </div>
+                </template>
+                <dl class="c-card__facts">
+                    <div>
+                        <dt>Annual premium</dt>
+                        <dd class="c-card__premium">{policy.premium}</dd>
+                    </div>
+                    <div>
+                        <dt>Policy period</dt>
+                        <dd>{policy.period}</dd>
+                    </div>
+                    <div>
+                        <dt>Billing</dt>
+                        <dd>{billingLabel}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <dl class="c-card__strip">
+                <div>
+                    <dt>Limit</dt>
+                    <dd>{policy.limit}</dd>
+                </div>
+                <div>
+                    <dt>Deductible</dt>
+                    <dd>{policy.deductible}</dd>
+                </div>
+                <div>
+                    <dt>Payments</dt>
+                    <dd class={paymentClass}>{policy.paymentStatus}</dd>
+                </div>
+            </dl>
+        </template>
+        <template lwc:else>
+            <div class="c-card__loading" role="status" aria-label="Loading policy">
+                <span class="c-ui-bone c-ui-bone_line c-card__bone c-card__bone_logo"></span>
+                <span class="c-ui-bone c-ui-bone_title c-card__bone c-card__bone_number"></span>
+                <span class="c-ui-bone c-ui-bone_line c-card__bone c-card__bone_item"></span>
+                <span class="c-ui-bone c-card__bone c-card__bone_term"></span>
+            </div>
+        </template>
+    </article>
+</template>

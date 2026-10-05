@@ -1,0 +1,239 @@
+@import 'c/antsuranceUiStyles';
+
+/* A quote as an offer slip: a cream band, the price, how it compares and how long it holds.
+   Brand values are fixed on purpose so the card keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-stone: #b0aea5;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive: #a9bd8b;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-offer {
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    box-shadow: 0 8px 20px rgb(20 20 19 / 6%);
+}
+
+.c-offer__band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1.25rem;
+    border-bottom: 1px solid var(--ants-line);
+    border-top: 3px solid var(--ants-clay);
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+}
+
+.c-offer__number {
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.c-offer__status {
+    padding: 0.0625rem 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-stone);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-offer__status_waiting {
+    background: var(--ants-clay);
+}
+
+.c-offer__status_chosen {
+    background: var(--ants-olive);
+}
+
+.c-offer__body {
+    padding: 1.125rem 1.25rem 1.25rem;
+}
+
+.c-offer__option {
+    margin: 0;
+    overflow: hidden;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-offer__premium {
+    margin: 0.25rem 0 0;
+    font-family: var(--ants-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.c-offer__unpriced {
+    margin: 0.375rem 0 0.125rem;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.c-offer__per {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+.c-offer__compare {
+    display: inline-block;
+    margin: 0.75rem 0 0;
+    padding: 0.1875rem 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.c-offer__compare_low {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-offer__terms {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding-top: 0.875rem;
+    border-top: 1px dashed var(--ants-stone);
+}
+
+.c-offer__terms dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-offer__terms dd {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* How much of the quote's validity has been used. */
+.c-valid {
+    margin-top: 1rem;
+}
+
+.c-valid__labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-valid__left {
+    font-weight: 600;
+    color: var(--ants-ink);
+}
+
+.c-valid__left_urgent {
+    color: var(--ants-clay-dark);
+}
+
+.c-valid__track {
+    display: block;
+    overflow: hidden;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+}
+
+.c-valid__bar {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--ants-clay-deep);
+}
+
+.c-valid__bar_urgent {
+    background: var(--ants-clay-dark);
+}
+
+.c-offer__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--ants-line);
+    font-size: 0.8125rem;
+}
+
+.c-offer__sale {
+    min-width: 0;
+    color: var(--ants-clay-dark);
+}
+
+.c-offer__underwriter {
+    flex: none;
+    color: var(--ants-muted);
+    white-space: nowrap;
+}
+
+.c-offer__error {
+    margin: 0;
+    padding: 1.25rem;
+    color: var(--ants-clay-dark);
+}
+
+.c-offer__loading {
+    position: relative;
+    min-height: 12rem;
+}
+
+/* The line of business being quoted, as its icon and name beside the option. */
+.c-offer__id {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.375rem;
+}
+
+.c-offer__id-text {
+    min-width: 0;
+}
+
+.c-offer__line {
+    margin: 0.0625rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}

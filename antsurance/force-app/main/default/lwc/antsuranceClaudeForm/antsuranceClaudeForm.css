@@ -1,0 +1,268 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+.c-form {
+    --c-form-edge: var(--ants-clay);
+
+    container-type: inline-size;
+    max-width: 40rem;
+    overflow: hidden;
+    border: 1px solid var(--ants-line-strong);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-form_saved {
+    --c-form-edge: var(--ants-olive);
+}
+
+.c-form_cancelled {
+    --c-form-edge: var(--ants-line-strong);
+}
+
+/* A cream band with the clay edge under it: this is a form waiting for the user, not a record. */
+.c-form__head {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 0.1875rem solid var(--c-form-edge);
+    background: var(--ants-ivory);
+}
+
+.c-form__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.625rem;
+    background: #fff;
+}
+
+.c-form_saved .c-form__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-form_cancelled .c-form__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-muted);
+}
+
+.c-form__head .c-title {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-form__status {
+    flex: none;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-form_saved .c-form__status {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-form_cancelled .c-form__status {
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+}
+
+.c-form__legend {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0.75rem 1rem 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+.c-form__spark {
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.c-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem 1rem;
+    padding: 0.75rem 1rem 0.25rem;
+}
+
+.c-field {
+    position: relative;
+    min-width: 0;
+}
+
+.c-field_wide {
+    grid-column: 1 / -1;
+}
+
+/* Claude's mark sits on the label's line, at the field's right edge, until the user changes the value. */
+.c-field__mark {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.c-field__was {
+    display: block;
+    margin: -0.25rem 0.25rem 0.375rem;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-form__error {
+    margin: 0.5rem 1rem 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+}
+
+.c-form__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+/* Once saved or cancelled, the band above already drew the line. */
+.c-form__foot_result {
+    margin-top: 0;
+    border-top: 0;
+}
+
+.c-form__hint,
+.c-form__result {
+    margin: 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-form__result {
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.c-form__buttons {
+    display: flex;
+    flex: none;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.c-form__open {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--ants-clay-dark);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.c-form__open:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-form__open:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+@container (max-width: 28rem) {
+    .c-form__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Compact, for the utility panel: one column, and the buttons always in reach ---------- */
+
+.c-form_mini {
+    /* Clips the rounded corners without becoming the scroller the sticky foot would stick to. */
+    overflow: clip;
+}
+
+.c-form_mini .c-form__head {
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem 0.5rem 0.75rem;
+}
+
+.c-form_mini .c-form__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.c-form_mini .c-form__head .c-title {
+    font-size: 0.875rem;
+}
+
+.c-form_mini .c-form__legend {
+    padding: 0.5rem 0.75rem 0;
+}
+
+.c-form_mini .c-form__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0.375rem 0.5rem 0;
+}
+
+.c-more_fields {
+    margin-top: 0.25rem;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+/* The buttons ride the bottom of the conversation while a tall form scrolls past. The panel's
+   conversation has 1rem of padding at its foot, which the offset takes back so no field shows under them. */
+.c-form_mini .c-form__foot {
+    position: sticky;
+    bottom: -1rem;
+    /* Above the fields scrolling under it: Salesforce draws a picklist's arrow and a lookup's icons at z-index 2,
+       which put a stray arrow on top of the save button. Still far below an open picklist's list. */
+    z-index: 10;
+    margin-top: 0;
+    padding: 0.5rem 0.75rem;
+    background: #fff;
+}
+
+.c-form_mini .c-more_fields + .c-form__foot,
+.c-form_mini .c-more_fields + .c-form__error + .c-form__foot {
+    border-top: 0;
+}
+
+.c-form_mini .c-form__foot_result {
+    position: static;
+}

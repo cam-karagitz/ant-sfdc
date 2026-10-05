@@ -1,0 +1,57 @@
+<template>
+    <article class="c-form" aria-label="Endorsement">
+        <template lwc:if={errorMessage}>
+            <p class="c-form__error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:elseif={form}>
+            <header class="c-form__stub">
+                <div>
+                    <p class="c-form__eyebrow">Form</p>
+                    <p class="c-form__number">{form.number}</p>
+                </div>
+                <p class="c-form__tags">
+                    <span class="c-form__type">{form.type}</span>
+                    <span class="c-form__status">{form.statusLine}</span>
+                </p>
+            </header>
+            <div class="c-form__body">
+                <div class="c-form__effect">
+                    <p class="c-form__label">Premium effect</p>
+                    <p class={effectClass}>{form.effect}</p>
+                    <p class="c-form__note">{form.effectNote}</p>
+                </div>
+                <dl class="c-form__facts">
+                    <template lwc:if={form.does}>
+                        <div>
+                            <dt>What it does</dt>
+                            <dd>{form.does}</dd>
+                        </div>
+                    </template>
+                    <template lwc:if={form.limit}>
+                        <div>
+                            <dt>Limit</dt>
+                            <dd>{form.limit}</dd>
+                        </div>
+                    </template>
+                </dl>
+            </div>
+            <template lwc:if={form.policyId}>
+                <a class="c-form__policy" href={policyUrl} onclick={handleOpenPolicy}>
+                    <span class={policyTileClass}>
+                        <lightning-icon icon-name={policyIconName} size="x-small" alternative-text="Policy"></lightning-icon>
+                    </span>
+                    <span class="c-form__policy-text">
+                        <span class="c-form__policy-number">{form.policyNumber}</span>
+                        <span class="c-form__policy-line">{form.policyLine}</span>
+                    </span>
+                    <span class="c-form__policy-open">Open policy</span>
+                </a>
+            </template>
+        </template>
+        <template lwc:else>
+            <div class="c-form__loading">
+                <lightning-spinner alternative-text="Loading endorsement" size="small"></lightning-spinner>
+            </div>
+        </template>
+    </article>
+</template>

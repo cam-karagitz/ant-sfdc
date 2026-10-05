@@ -1,0 +1,302 @@
+<template>
+    <template lwc:if={isLoading}>
+        <p class="c-state">One moment</p>
+    </template>
+    <template lwc:if={loadFailure}>
+        <div class="c-card c-state_card" role="alert">
+            <h1 class="c-h2">We could not show this</h1>
+            <p class="c-quiet">{loadFailure}</p>
+            <button type="button" class="c-button c-button_primary" onclick={handleAnother}>See the quotes you can ask for</button>
+        </div>
+    </template>
+
+    <!-- The lines a household can ask about -->
+    <template lwc:if={isChoosing}>
+        <section class="c-choose">
+            <header class="c-choose__head">
+                <h1 class="c-h1">Get a quote</h1>
+                <p class="c-choose__intro">Answer a few questions and watch your price as you go. Claude can explain any question and fill in what we already know about you.</p>
+            </header>
+            <ul class="c-rows">
+                <template for:each={offerRows} for:item="offer">
+                    <li key={offer.slug}>
+                        <button type="button" class="c-row" data-slug={offer.slug} aria-label={offer.label} onclick={handleOffer}>
+                            <span class="c-icon"><lightning-icon icon-name={offer.icon} size="small" alternative-text=""></lightning-icon></span>
+                            <span class="c-row__main">
+                                <span class="c-row__named">
+                                    <span class="c-row__title">{offer.title}</span>
+                                    <template lwc:if={offer.held}><span class="c-chip">You have this</span></template>
+                                    <template lwc:else><span class="c-chip c-chip_clay">New for you</span></template>
+                                </span>
+                                <span class="c-row__sub">{offer.blurb}</span>
+                            </span>
+                            <lightning-icon class="c-row__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+            <div class="c-choose__ask">
+                <p class="c-quiet">Not sure which you need?</p>
+                <button type="button" class="c-button" onclick={handleAskWhich}>Ask Claude</button>
+            </div>
+            <template lwc:if={hasSentRows}>
+                <h2 class="c-h2">Quotes you have asked for</h2>
+                <ul class="c-rows">
+                    <template for:each={sentRows} for:item="quote">
+                        <li key={quote.id}>
+                            <button type="button" class="c-row" data-id={quote.id} aria-label={quote.label} onclick={handleSentRow}>
+                                <span class="c-row__main"><span class="c-row__title">{quote.title}</span><span class="c-row__sub">{quote.sub}</span></span>
+                                <span class="c-row__figures">
+                                    <template lwc:if={quote.premiumText}><span class="c-row__end">{quote.premiumText}</span></template>
+                                    <span class={quote.chipClass}>{quote.statusWord}</span>
+                                </span>
+                                <lightning-icon class="c-row__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+        </section>
+    </template>
+
+    <!-- After it is sent -->
+    <template lwc:if={isReceipt}>
+        <section class="c-card c-receipt" role="status">
+            <span class="c-receipt__tick"><lightning-icon icon-name="utility:check" size="small" alternative-text=""></lightning-icon></span>
+            <h1 class="c-h2">{receiptTitle}</h1>
+            <template lwc:if={receipt.premiumText}><p class="c-receipt__price">{receipt.premiumText} a year, as estimated</p></template>
+            <p class="c-quiet">{receipt.message}</p>
+            <template lwc:if={receiptNote}><p class="c-quiet">{receiptNote}</p></template>
+            <div class="c-receipt__actions">
+                <template lwc:if={receiptHasQuote}>
+                    <button type="button" class="c-button c-button_primary" onclick={handleSeeQuote}>See your quote</button>
+                    <button type="button" class="c-button" onclick={handleHome}>Back to home</button>
+                </template>
+                <template lwc:else>
+                    <button type="button" class="c-button c-button_primary" onclick={handleHome}>Back to home</button>
+                </template>
+            </div>
+        </section>
+    </template>
+
+    <!-- Answering -->
+    <template lwc:if={isAnswering}>
+        <section class={quoteClass}>
+            <header class="c-quote__head">
+                <span class="c-icon"><lightning-icon icon-name={lineIcon} size="small" alternative-text=""></lightning-icon></span>
+                <div class="c-quote__title">
+                    <p class="c-eyebrow">Your quote</p>
+                    <h1 class="c-h1">{form.title}</h1>
+                </div>
+                <p class="c-quote__progress">{progress}</p>
+            </header>
+
+            <div class="c-steps__bar" role="tablist" aria-label="Steps of this quote">
+                <template for:each={stepsBar} for:item="tab">
+                    <button key={tab.key} type="button" role="tab" class={tab.className} data-index={tab.index} aria-selected={tab.selected} onclick={handleStep} onkeydown={handleStepKey}>
+                        <span class="c-steps__number">{tab.number}</span>
+                        <span>{tab.label}</span>
+                    </button>
+                </template>
+            </div>
+
+            <div class="c-quote__body">
+                <div class="c-quote__main" role="tabpanel">
+                    <template lwc:if={isReview}>
+                        <h2 class="c-h2">Check your answers</h2>
+                        <p class="c-quiet">Open a section to read what you told us.</p>
+                        <template lwc:if={hasBlanks}>
+                            <div class="c-blanks" role="alert">
+                                <p class="c-blanks__lead">Still needed before you send</p>
+                                <div class="c-blanks__list">
+                                    <template for:each={blankRows} for:item="blank">
+                                        <button key={blank.key} type="button" class="c-link" data-key={blank.key} onclick={handleBlank}>{blank.label}</button>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="c-folds">
+                            <template for:each={reviewGroups} for:item="group">
+                                <details key={group.key} class="c-fold" data-key={group.key} open={group.open} ontoggle={handleFold}>
+                                    <summary class="c-fold__head">
+                                        <span class="c-fold__title">{group.title}</span>
+                                        <span class="c-fold__count">{group.count}</span>
+                                    </summary>
+                                    <dl class="c-answers">
+                                        <template for:each={group.rows} for:item="row">
+                                            <div key={row.key} class={row.className}>
+                                                <dt>{row.label}</dt>
+                                                <dd>{row.value}</dd>
+                                            </div>
+                                        </template>
+                                    </dl>
+                                    <button type="button" class="c-link c-fold__edit" data-index={group.index} onclick={handleEditStep}>Change these answers</button>
+                                </details>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <template lwc:if={stepIntro}><p class="c-quote__intro">{stepIntro}</p></template>
+                        <div class="c-asks">
+                            <template for:each={questions} for:item="question">
+                                <div key={question.key} class={question.className} data-wrap={question.key}>
+                                    <div class="c-ask__head">
+                                        <label class="c-ask__question" for={question.inputId}>{question.ask}</label>
+                                        <button type="button" class={question.explainClass} data-key={question.key} aria-label={question.explainAria} title={question.explainAria} aria-expanded={question.explainOpen} onclick={handleExplain}>{question.explainLabel}</button>
+                                    </div>
+                                    <template lwc:if={question.isChoice}>
+                                        <div class="c-picks" role="radiogroup" aria-label={question.eyebrow}>
+                                            <template for:each={question.options} for:item="option">
+                                                <button key={option.key} type="button" role="radio" class={option.className} aria-checked={option.checked} data-key={question.key} data-value={option.value} onclick={handlePick}>
+                                                    <span class="c-pick__label">{option.label}</span>
+                                                    <template lwc:if={option.effect}><span class="c-pick__effect">{option.effect}</span></template>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={question.isNumber}>
+                                        <input id={question.inputId} class="c-ask__input c-ask__input_short" type="text" inputmode="numeric" maxlength="6" data-key={question.key} data-kind="number" value={question.value} oninput={handleType} />
+                                    </template>
+                                    <template lwc:if={question.isCurrency}>
+                                        <span class="c-ask__money">
+                                            <span class="c-ask__dollar" aria-hidden="true">$</span>
+                                            <input id={question.inputId} class="c-ask__input c-ask__input_money" type="text" inputmode="numeric" maxlength="11" data-key={question.key} data-kind="currency" value={question.value} oninput={handleType} />
+                                        </span>
+                                    </template>
+                                    <template lwc:if={question.isText}>
+                                        <input id={question.inputId} class="c-ask__input" type="text" maxlength="200" data-key={question.key} data-kind="text" value={question.value} oninput={handleType} />
+                                    </template>
+                                    <div class="c-ask__foot">
+                                        <template lwc:if={question.isBlank}><span class="c-ask__needed">This one is needed.</span></template>
+                                        <template lwc:if={question.mark}><span class={question.markClass}>{question.mark}</span></template>
+                                    </div>
+                                    <template lwc:if={question.explained}>
+                                        <div class="c-explain" role="status">
+                                            <img class="c-explain__spark" src={spark} alt="" />
+                                            <div class="c-explain__body">
+                                                <template lwc:if={question.explained.isLoading}>
+                                                    <p class="c-explain__text">Claude is reading the question</p>
+                                                </template>
+                                                <template lwc:else>
+                                                    <p class="c-explain__text">{question.explained.text}</p>
+                                                    <template lwc:if={question.explained.hasSuggestion}>
+                                                        <p class="c-explain__why">{question.explained.why}</p>
+                                                        <div class="c-explain__actions">
+                                                            <button type="button" class="c-button" data-key={question.key} data-value={question.explained.suggestValue} onclick={handleUse}>{question.explained.useLabel}</button>
+                                                            <button type="button" class="c-link" data-key={question.key} onclick={handleAskMore}>Ask Claude more</button>
+                                                        </div>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <button type="button" class="c-link" data-key={question.key} onclick={handleAskMore}>Ask Claude more</button>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <div class="c-quote__foot">
+                        <template lwc:if={failure}><p class="c-quote__failure" role="alert">{failure}</p></template>
+                        <template lwc:if={hasParts}><p class="c-quote__part">{partLabel}</p></template>
+                        <button type="button" class="c-button" disabled={backDisabled} onclick={handleBack}>Back</button>
+                        <template lwc:if={isReview}>
+                            <button type="button" class="c-button c-button_primary" disabled={sendDisabled} onclick={handleSend}>{sendLabel}</button>
+                            <p class="c-quote__promise">Nothing is sent until you press this button.</p>
+                        </template>
+                        <template lwc:else>
+                            <button type="button" class="c-button c-button_primary" onclick={handleNext}>{nextLabel}</button>
+                        </template>
+                    </div>
+                </div>
+
+                <aside class="c-price" aria-label="Your price">
+                    <p class="c-eyebrow">Your price so far</p>
+                    <p class={priceView.stateClass} aria-live="polite">{priceView.premiumText}<span class="c-price__per"> a year</span></p>
+                    <p class="c-price__month">{priceView.monthlyText}</p>
+                    <template lwc:if={delta}><p class="c-price__delta">{delta}</p></template>
+                    <dl class="c-price__terms">
+                        <template lwc:if={priceView.limitText}>
+                            <div><dt>Covered up to</dt><dd>{priceView.limitText}</dd></div>
+                        </template>
+                        <template lwc:if={priceView.deductibleText}>
+                            <div><dt>You pay first</dt><dd>{priceView.deductibleText}</dd></div>
+                        </template>
+                    </dl>
+                    <p class={priceView.noteClass}>{priceView.note}</p>
+                    <template lwc:if={priceView.hasLines}>
+                        <details class="c-fold c-fold_plain">
+                            <summary class="c-fold__head"><span class="c-fold__title">What makes up this price</span><span class="c-fold__count">{priceView.lines.length}</span></summary>
+                            <ul class="c-price__lines">
+                                <template for:each={priceView.lines} for:item="line">
+                                    <li key={line.key} class="c-price__line">
+                                        <span class="c-price__what">{line.label}<template lwc:if={line.note}><span class="c-price__effect"> {line.note}</span></template></span>
+                                        <span class="c-price__amount">{line.amountText}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </details>
+                    </template>
+                </aside>
+            </div>
+        </section>
+    </template>
+
+    <!-- A quote already sent -->
+    <template lwc:if={isSentView}>
+        <section class={quoteClass}>
+            <header class="c-quote__head">
+                <span class="c-icon"><lightning-icon icon-name={lineIcon} size="small" alternative-text=""></lightning-icon></span>
+                <div class="c-quote__title">
+                    <p class="c-eyebrow">Quote {sent.quoteNumber}, sent {sent.sentText}</p>
+                    <h1 class="c-h1">{sent.title}</h1>
+                </div>
+                <span class={sentChipClass}>{sent.statusWord}</span>
+            </header>
+            <div class="c-quote__body">
+                <div class="c-quote__main">
+                    <p class="c-sent__update">{sent.lastUpdate}</p>
+                    <h2 class="c-h2">The answers you gave</h2>
+                    <div class="c-folds">
+                        <template for:each={reviewGroups} for:item="group">
+                            <details key={group.key} class="c-fold" data-key={group.key} open={group.open} ontoggle={handleFold}>
+                                <summary class="c-fold__head">
+                                    <span class="c-fold__title">{group.title}</span>
+                                    <span class="c-fold__count">{group.count}</span>
+                                </summary>
+                                <dl class="c-answers">
+                                    <template for:each={group.rows} for:item="row">
+                                        <div key={row.key} class="c-answer">
+                                            <dt>{row.label}</dt>
+                                            <dd>{row.value}</dd>
+                                        </div>
+                                    </template>
+                                </dl>
+                            </details>
+                        </template>
+                    </div>
+                    <div class="c-quote__foot">
+                        <button type="button" class="c-button c-button_primary" onclick={handleAskSent}>Ask Claude about this quote</button>
+                        <button type="button" class="c-button" onclick={handleAnother}>Start another quote</button>
+                    </div>
+                </div>
+                <aside class="c-price" aria-label="The price">
+                    <p class="c-eyebrow">The price</p>
+                    <p class="c-price__figure">{priceView.premiumText}<span class="c-price__per"> a year</span></p>
+                    <p class="c-price__month">{priceView.monthlyText}</p>
+                    <dl class="c-price__terms">
+                        <template lwc:if={priceView.limitText}>
+                            <div><dt>Covered up to</dt><dd>{priceView.limitText}</dd></div>
+                        </template>
+                        <template lwc:if={priceView.deductibleText}>
+                            <div><dt>You pay first</dt><dd>{priceView.deductibleText}</dd></div>
+                        </template>
+                    </dl>
+                    <p class="c-price__note">An estimate from your answers until a licensed agent confirms it.</p>
+                </aside>
+            </div>
+        </section>
+    </template>
+</template>

@@ -1,0 +1,42 @@
+{
+ "width": 1280,
+ "height": 960,
+ "answers": {
+  "fraction": {
+   "ms": 2218,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of a wet windshield with a star shaped impact point and long cracks running out in many directions.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"windshield\",\"detail\":\"impact point with cracks spreading across the glass\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":0.0,\"y\":0.0,\"width\":1.0,\"height\":0.92}},{\"area\":\"windshield impact point\",\"detail\":\"star break at point of impact\",\"severity\":\"moderate\",\"panel\":\"windshield\",\"box\":{\"x\":0.27,\"y\":0.33,\"width\":0.22,\"height\":0.22}}]}]}"
+  },
+  "pixel": {
+   "ms": 2413,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of a wet windshield with a star shaped impact point and long cracks spreading out in many directions, with the dark lower edge of the glass at the bottom.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"windshield\",\"detail\":\"impact point with long cracks spreading across the glass\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":0,\"y\":0,\"width\":1280,\"height\":890}},{\"area\":\"windshield impact point\",\"detail\":\"star shaped break where the glass was struck\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":330,\"y\":390,\"width\":150,\"height\":150}}]}]}"
+  },
+  "grid": {
+   "ms": 2520,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"View up through a wet windshield from inside the car, with a star shaped impact point and long cracks running out across the glass.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"windshield\",\"detail\":\"impact point with long cracks spreading across most of the glass\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":0.0,\"y\":0.0,\"width\":8.2,\"height\":9.2}},{\"area\":\"windshield impact point\",\"detail\":\"star break with short radiating cracks\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":2.3,\"y\":3.3,\"width\":2.2,\"height\":2.6}}]}]}"
+  },
+  "refine": {
+   "ms": 2640,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":0,\"y\":0,\"width\":630,\"height\":530}},{\"number\":2,\"found\":true,\"box\":{\"x\":0,\"y\":0,\"width\":452,\"height\":452}}]}",
+   "crops": [
+    {
+     "left": 0,
+     "top": 0,
+     "scale": 0.6,
+     "width": 768,
+     "height": 576
+    },
+    {
+     "left": 292.5,
+     "top": 352.5,
+     "scale": 2.0,
+     "width": 452,
+     "height": 452
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 1721,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"Close view of a wet windshield with a star shaped impact point and long cracks spreading across the glass.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"windshield\",\"detail\":\"impact point with many long cracks radiating across the glass\",\"severity\":\"severe\",\"panel\":\"windshield\",\"box\":{\"x\":0,\"y\":0,\"width\":1050,\"height\":890}}]}]}"
+  }
+ }
+}

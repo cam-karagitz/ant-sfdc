@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What is the deductible on policy ANT-PA-204517?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Deductible__c, Line_of_Business__c, Status__c, Account__r.Name, Account__r.Id, (SELECT Name, Deductible_Amount__c FROM Coverages__r WHERE Deductible_Amount__c != null) FROM Policy__c WHERE Name = 'ANT-PA-204517' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040t3coAAA\"},\"Coverages__r\":[{\"Deductible_Amount__c\":500.00,\"Name\":\"Collision\",\"Id\":\"a01aj000040t3dtAAA\",\"Policy__c\":\"a00aj00003jKdxtAAC\"},{\"Deductible_Amount__c\":500.00,\"Name\":\"Comprehensive\",\"Id\":\"a01aj000040t3duAAA\",\"Policy__c\":\"a00aj00003jKdxtAAC\"}],\"Account__c\":\"001aj000040t3coAAA\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Deductible__c\":500.00,\"Name\":\"ANT-PA-204517\",\"Id\":\"a00aj00003jKdxtAAC\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "The deductible on [ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view) is **$500**. It's an active Personal Auto policy for [Reyes Household](/lightning/r/001aj000040t3coAAA/view).\n\nThe deductible is the same for each coverage:\n- Collision: **$500**\n- Comprehensive: **$500**"
+  }
+]

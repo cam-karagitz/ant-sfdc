@@ -1,0 +1,85 @@
+// One eval case, run as anonymous Apex by scripts/eval/run.mjs.
+// It asks the question through the same Apex the chat panel calls and follows the lookup
+// rounds the way c/antsuranceClaudeClient does, then prints one EVAL_RESULT line.
+Map<String, Object> spec = (Map<String, Object>) JSON.deserializeUntyped(EncodingUtil.base64Decode('{{SPEC_B64}}').toString());
+List<Object> prompts = (List<Object>) spec.get('prompts');
+String model = (String) spec.get('model');
+Id recordId = (Id) spec.get('recordId');
+String surface = (String) spec.get('surface');
+Integer maxSteps = 6;
+
+Map<String, Object> out = new Map<String, Object>{ 'today' => String.valueOf(Date.today()) };
+AntsuranceClaudeController.RecordContext context = recordId == null ? null : AntsuranceClaudeController.getRecordContext(recordId);
+List<Object> conversation = new List<Object>();
+List<Long> stepMs = new List<Long>();
+List<String> queries = new List<String>();
+List<Object> proposals = new List<Object>();
+List<Object> blocks = new List<Object>();
+List<Object> usage = new List<Object>();
+Long started = System.currentTimeMillis();
+try {
+    // One exchange per message the user types; the last answer is the one graded.
+    for (Object typed : prompts) {
+        String userText = (String) typed;
+        if (context != null) {
+            // The page-context note the chat puts in front of a question asked on a record page.
+            userText = ((String) spec.get('noteTemplate'))
+                .replace('@@LABEL@@', context.objectLabel)
+                .replace('@@label@@', context.objectLabel.toLowerCase())
+                .replace('@@NAME@@', context.name)
+                .replace('@@API@@', context.objectApiName)
+                .replace('@@ID@@', String.valueOf(context.recordId))
+                .replace('@@PROMPT@@', (String) typed);
+        }
+        // As withUserMessage does in the chat: after a reply that was only proposals, the typed text
+        // joins the user turn that answered Claude's tool calls.
+        Map<String, Object> last = conversation.isEmpty() ? null : (Map<String, Object>) conversation[conversation.size() - 1];
+        if (last != null && last.get('role') == 'user' && last.get('content') instanceof List<Object>) {
+            ((List<Object>) last.get('content')).add(new Map<String, Object>{ 'type' => 'text', 'text' => userText });
+        } else {
+            conversation.add(new Map<String, Object>{ 'role' => 'user', 'content' => userText });
+        }
+        out.put('done', false);
+        // The last answer is the one graded, so only its blocks and cards are kept.
+        proposals.clear();
+        blocks.clear();
+        for (Integer step = 0; step < maxSteps; step++) {
+            Long stepStarted = System.currentTimeMillis();
+            AntsuranceClaudeController.ChatReply reply = {{CALL}};
+            stepMs.add(System.currentTimeMillis() - stepStarted);
+            if (reply.appendedJson != null) {
+                conversation.addAll((List<Object>) JSON.deserializeUntyped(reply.appendedJson));
+            }
+            queries.addAll(reply.queries);
+            if (reply.timedOut) {
+                // The steps of one question share a transaction here, and so its two minutes of callout time.
+                out.put('error', 'timeout: ' + reply.timeoutMessage);
+                break;
+            }
+            {{COLLECT}}
+            out.put('model', reply.model);
+            if (reply.done) {
+                out.put('done', true);
+                out.put('text', reply.text);
+                out.put('refused', reply.refused);
+                break;
+            }
+        }
+        if (out.get('done') != true) {
+            break;
+        }
+    }
+} catch (Exception e) {
+    out.put('error', e.getTypeName() + ': ' + e.getMessage());
+}
+out.put('totalMs', System.currentTimeMillis() - started);
+out.put('stepMs', stepMs);
+out.put('queries', queries);
+out.put('proposals', proposals);
+out.put('blocks', blocks);
+out.put('usage', usage);
+out.put('conversation', conversation);
+// Rows this transaction wrote. Counting tasks and notes in the org would also count what other
+// people and workers wrote while the case ran.
+out.put('rowsWritten', Limits.getDmlRows());
+System.debug(LoggingLevel.ERROR, 'EVAL_RESULT ' + JSON.serialize(out));

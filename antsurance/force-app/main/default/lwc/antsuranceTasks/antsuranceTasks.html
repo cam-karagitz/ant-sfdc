@@ -1,0 +1,116 @@
+<template>
+    <section class="c-tasks" aria-label="My open tasks">
+        <header class="c-tasks__head">
+            <span class="c-tasks__icon">
+                <lightning-icon icon-name="utility:task" size="small" alternative-text="Tasks"></lightning-icon>
+            </span>
+            <div class="c-tasks__titles">
+                <h1 class="c-tasks__title">My tasks</h1>
+                <p class="c-tasks__sub">{summary}</p>
+            </div>
+            <a class="c-tasks__all" href="/lightning/o/Task/list?filterName=OpenTasks" onclick={handleAll}>All tasks as a list</a>
+            <lightning-button variant="brand" label="New task" onclick={handleNew}></lightning-button>
+        </header>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-tasks__error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <ul class="c-rows c-rows_waiting" aria-hidden="true">
+                <template for:each={bones} for:item="bone">
+                    <li key={bone} class="c-row">
+                        <span class="c-ui-bone c-bone_check"></span>
+                        <span class="c-ui-bone c-ui-bone_tile"></span>
+                        <span class="c-row__main">
+                            <span class="c-ui-bone c-ui-bone_line c-bone_title"></span>
+                            <span class="c-ui-bone c-ui-bone_line c-bone_about"></span>
+                        </span>
+                        <span class="c-ui-bone c-bone_due"></span>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template lwc:if={isEmpty}>
+            <div class="c-empty c-ui-arrive">
+                <span class="c-ui-tile c-ui-tile_large c-ui-tile_olive">
+                    <lightning-icon icon-name="utility:check" size="small" alternative-text=""></lightning-icon>
+                </span>
+                <div class="c-empty__words">
+                    <p class="c-empty__title">Nothing open</p>
+                    <p class="c-empty__text">Tasks you are given or add show here, grouped by when they are due.</p>
+                </div>
+                <lightning-button label="Add a task" icon-name="utility:add" onclick={handleNew}></lightning-button>
+            </div>
+        </template>
+
+        <template lwc:if={hasGroups}>
+            <div class="c-groups">
+                <template for:each={groups} for:item="group">
+                    <c-antsurance-accordion
+                        key={group.key}
+                        class={group.sectionClass}
+                        label={group.label}
+                        count={group.count}
+                        summary={group.summary}
+                        open={group.isOpen}
+                        level="2"
+                        data-key={group.key}
+                        ontoggle={handleGroupToggle}
+                    >
+                        <ul class="c-rows">
+                            <template for:each={group.pageRows} for:item="task">
+                                <li key={task.recordId} class={task.rowClass} data-record-id={task.recordId} onclick={handleRowClick}>
+                                    <button
+                                        type="button"
+                                        class="c-check"
+                                        title="Mark complete"
+                                        aria-label={task.completeLabel}
+                                        data-record-id={task.recordId}
+                                        disabled={isCompleting}
+                                        onclick={handleComplete}
+                                    ></button>
+                                    <span class={task.icon.tileClass}>
+                                        <lightning-icon icon-name={task.icon.name} size="x-small" alternative-text=""></lightning-icon>
+                                    </span>
+                                    <div class="c-row__main">
+                                        <a class="c-row__title" href={task.url} data-record-id={task.recordId} onclick={handleOpen}>{task.subject}</a>
+                                        <template lwc:if={task.hasAbout}>
+                                            <p class="c-row__about">
+                                                <template lwc:if={task.relatedName}>
+                                                    <span class="c-row__kind">{task.relatedKind}</span>
+                                                    <a class="c-row__link" href={task.relatedUrl} data-record-id={task.relatedId} onclick={handleOpen}>{task.relatedName}</a>
+                                                </template>
+                                                <template lwc:if={task.contactName}>
+                                                    <span class="c-row__with">
+                                                        <template lwc:if={task.hasBoth}>with&nbsp;</template>
+                                                        <a class="c-row__link" href={task.contactUrl} data-record-id={task.contactId} onclick={handleOpen}>{task.contactName}</a>
+                                                    </span>
+                                                </template>
+                                            </p>
+                                        </template>
+                                    </div>
+                                    <span class={task.priorityClass}>{task.priorityLabel}</span>
+                                    <span class={task.dueClass}>{task.dueLabel}</span>
+                                </li>
+                            </template>
+                        </ul>
+                        <c-antsurance-step-pager
+                            total={group.count}
+                            page-size={pageSize}
+                            page={group.page}
+                            label={group.pagerLabel}
+                            data-key={group.key}
+                            onpagechange={handlePage}
+                        ></c-antsurance-step-pager>
+                    </c-antsurance-accordion>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={moreNote}>
+            <p class="c-tasks__more">{moreNote}</p>
+        </template>
+    </section>
+</template>

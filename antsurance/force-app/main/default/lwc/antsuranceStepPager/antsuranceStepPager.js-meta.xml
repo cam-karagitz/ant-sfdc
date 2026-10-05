@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>A previous and next pager for a list inside a component: "1 to 6 of 23". It draws nothing when everything fits on one page.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

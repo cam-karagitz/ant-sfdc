@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "Claim [00002566](/lightning/r/500aj00003jfwTqAAI/view) is **Under Investigation**, and the next step is the paperwork. Drying finished Oct 2 and moisture readings are normal. The mitigation invoice from Lakeshore Restoration and the rebuild estimate from Northshore Renovation were both attached today.\n\n- **Loss:** a braided supply line failed on Sep 21 and flooded the Okafors' finished basement. The water damaged flooring, drywall up to four feet, the furnace and stored belongings.\n- **Coverage:** this is covered as a sudden and accidental discharge. Policy [ANT-HO-204585](/lightning/r/a00aj00003jfwRFAAY/view) was in force on the date of loss, and the **$2,500** deductible applies.\n- **Money:** the reserve is **$45,000**. A **$5,000** advance was paid on Sep 28, which leaves **$40,000** outstanding. The estimated loss is $47,500.\n- **Your tasks:** review the mitigation invoice by **Oct 6**, then approve the rebuild estimate by **Oct 7**.\n\nThere is no SIU referral and no subrogation potential.\n\n?> Compare the invoice to the reserve breakdown\n?> Draft an update email to Chinedu\n?> Show this claim's timeline"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Compare the invoice to the reserve breakdown\",\n      \"Draft an update email to Chinedu\",\n      \"Show this claim's timeline\"\n    ]\n  }\n]"
+  }
+]

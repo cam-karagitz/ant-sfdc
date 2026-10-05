@@ -1,0 +1,38 @@
+<template>
+    <section class="c-path" aria-label={ariaLabel}>
+        <template lwc:if={hasSteps}>
+            <ol class="c-path__steps">
+                <template for:each={steps} for:item="step">
+                    <li key={step.value} class={step.className} aria-current={step.current}>
+                        <button type="button" class="c-path__pick" data-index={step.index} aria-pressed={step.pressed} title={step.title} onclick={handlePick}>
+                            <template lwc:if={step.isDone}>
+                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="Done" class="c-path__check"></lightning-icon>
+                            </template>
+                            <span class="c-path__number" aria-hidden="true">{step.number}</span>
+                            <span class="c-path__label">{step.label}</span>
+                        </button>
+                    </li>
+                </template>
+            </ol>
+            <div class="c-path__foot">
+                <p class="c-path__guidance">{guidance}</p>
+                <template lwc:if={hasMoves}>
+                    <div class="c-path__moves">
+                        <template lwc:if={hasSelection}>
+                            <lightning-button variant="base" label="Cancel" disabled={isSaving} onclick={handleClear} class="c-path__cancel"></lightning-button>
+                        </template>
+                        <template for:each={moves} for:item="move">
+                            <lightning-button key={move.value} label={move.label} variant={move.variant} data-value={move.value} disabled={isSaving} onclick={handleMove}></lightning-button>
+                        </template>
+                        <template lwc:if={handoff}>
+                            <lightning-button label={handoff.label} variant="neutral" onclick={handleHandoff}></lightning-button>
+                        </template>
+                    </div>
+                </template>
+            </div>
+            <template lwc:if={errorMessage}>
+                <p class="c-path__error" role="alert">{errorMessage}</p>
+            </template>
+        </template>
+    </section>
+</template>

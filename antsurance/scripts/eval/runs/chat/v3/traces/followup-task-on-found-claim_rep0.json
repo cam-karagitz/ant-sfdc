@@ -1,0 +1,36 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has the largest outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Handled_By__c, Account.Id, Account.Name, Policy__r.Id, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKdyPAAS\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040t3d1AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyPAAS\",\"AccountId\":\"001aj000040t3d1AAA\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Outstanding_Reserve__c\":490000.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002221\",\"Id\":\"500aj00003jLAOhAAO\"},{\"Policy__r\":{\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jKdyLAAS\"},\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000040t3czAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyLAAS\",\"AccountId\":\"001aj000040t3czAAA\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Outstanding_Reserve__c\":206500.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002219\",\"Id\":\"500aj00003jLAOfAAO\"},{\"Policy__r\":{\"Name\":\"ANT-CA-205197\",\"Id\":\"a00aj00003jKdyXAAS\"},\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040t3d4AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyXAAS\",\"AccountId\":\"001aj000040t3d4AAA\",\"Handled_By__c\":\"Dana Whitaker\",\"Outstanding_Reserve__c\":81000.00,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002223\",\"Id\":\"500aj00003jLAOjAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The open claim with the largest outstanding reserve is [00002221](/lightning/r/500aj00003jLAOhAAO/view), at **$490,000**. It's a kitchen fire that spread to three apartments.\n\n- **Customer:** [Copperfield Property Management](/lightning/r/001aj000040t3d1AAA/view)\n- **Policy:** [ANT-CP-205061](/lightning/r/a00aj00003jKdyPAAS/view)\n- **Status:** Appraisal, Catastrophic severity\n- **Handled by:** Anjali Venkataraman\n\nThe next largest is [00002219](/lightning/r/500aj00003jLAOfAAO/view) for [Ridgeline Roofing & Solar](/lightning/r/001aj000040t3czAAA/view), at **$206,500**: an installer fell from a roof."
+  },
+  {
+    "role": "user",
+    "content": "Add a task for me to review it tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": null,\n  \"related_record_id\": \"500aj00003jLAOhAAO\",\n  \"due_date\": \"2026-10-03\",\n  \"subject\": \"Review claim 00002221: kitchen fire, $490,000 outstanding reserve\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review claim 00002221: kitchen fire, $490,000 outstanding reserve\",\n    \"dueDate\": \"2026-10-03\",\n    \"relatedId\": \"500aj00003jLAOhAAO\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

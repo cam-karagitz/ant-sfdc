@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002038: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKc9SAAS). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat is open or overdue here?"
+  },
+  {
+    "role": "assistant",
+    "content": "I'll pull the claim plus its open tasks."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Severity__c, Outstanding_Reserve__c, Reported_Date__c, (SELECT Id, Subject, ActivityDate, Status, Priority, Owner.Name FROM Tasks WHERE IsClosed = false ORDER BY ActivityDate) FROM Case WHERE Id = '500aj00003jKc9SAAS'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Tasks\":[{\"Owner\":{\"Name\":\"Demo User\",\"Id\":\"005aj00000fNyS5AAK\"},\"OwnerId\":\"005aj00000fNyS5AAK\",\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-04\",\"Subject\":\"Review mitigation invoice from drying vendor\",\"Id\":\"00Taj00000MiwAREAZ\",\"WhatId\":\"500aj00003jKc9SAAS\"},{\"Owner\":{\"Name\":\"Demo User\",\"Id\":\"005aj00000fNyS5AAK\"},\"OwnerId\":\"005aj00000fNyS5AAK\",\"Priority\":\"High\",\"Status\":\"Not Started\",\"ActivityDate\":\"2026-10-05\",\"Subject\":\"Approve the rebuild estimate for the Okafor basement\",\"Id\":\"00Taj00000MiwAaEAJ\",\"WhatId\":\"500aj00003jKc9SAAS\"}],\"Reported_Date__c\":\"2026-09-22\",\"Outstanding_Reserve__c\":40000.00,\"Severity__c\":\"High\",\"Status\":\"Under Investigation\",\"CaseNumber\":\"00002038\",\"Id\":\"500aj00003jKc9SAAS\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "This claim has **nothing overdue**. There are **2 open tasks**, both high priority, not started and due in the next few days. The claim is still Under Investigation, rated High severity, with **$40,000** in outstanding reserve.\n\n- [Review mitigation invoice from drying vendor](/lightning/r/00Taj00000MiwAREAZ/view): due **4 Oct**\n- [Approve the rebuild estimate for the Okafor basement](/lightning/r/00Taj00000MiwAaEAJ/view): due **5 Oct**"
+  }
+]

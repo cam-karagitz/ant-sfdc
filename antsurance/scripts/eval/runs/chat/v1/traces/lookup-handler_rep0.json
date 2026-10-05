@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Who is handling the burst pipe claim for the Okafor Household?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Handled_By__c, Loss_Type__c, Date_of_Loss__c, Account.Id, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Account.Name LIKE '%Okafor%' ORDER BY Reported_Date__c DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000040sVmRAAU\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040sVmRAAU\",\"Date_of_Loss__c\":\"2026-09-21\",\"Loss_Type__c\":\"Water Damage\",\"Handled_By__c\":\"Marcus Lindahl\",\"Status\":\"Under Investigation\",\"Subject\":\"Burst pipe flooded finished basement\",\"CaseNumber\":\"00002118\",\"Id\":\"500aj00003jKuVeAAK\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "**Marcus Lindahl** is handling the claim for the [Okafor Household](/lightning/r/001aj000040sVmRAAU/view).\n\n- **Claim:** [00002118 – Burst pipe flooded finished basement](/lightning/r/500aj00003jKuVeAAK/view)\n- **Status:** Under Investigation\n- **Date of loss:** 21 Sep 2026 (water damage)"
+  }
+]

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <description>What the form does to the policy.</description>
+    <label>Type</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Endorsement</fullName>
+                <default>false</default>
+                <label>Endorsement</label>
+            </value>
+            <value>
+                <fullName>Exclusion</fullName>
+                <default>false</default>
+                <label>Exclusion</label>
+            </value>
+            <value>
+                <fullName>Benefit</fullName>
+                <default>false</default>
+                <label>Benefit</label>
+            </value>
+            <value>
+                <fullName>Discount</fullName>
+                <default>false</default>
+                <label>Discount</label>
+            </value>
+            <value>
+                <fullName>Lienholder or Mortgagee</fullName>
+                <default>false</default>
+                <label>Lienholder or Mortgagee</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

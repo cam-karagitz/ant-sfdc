@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The portal's guided quote: the lines a household can ask about, the questions one step at a time with a live price, and a quote already sent.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

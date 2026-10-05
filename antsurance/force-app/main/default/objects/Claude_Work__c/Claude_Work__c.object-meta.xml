@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>One piece of work Claude prepared on its own for Claude's desk on Home: a claim brief, an underwriting memo, a renewal note, a reserve review or a quote follow-up. It holds the work, the record it is for, and what a person decided about it, so it is also the log of what Claude did. Only the newest 25 are kept.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Claude Work Item</label>
+    <nameField>
+        <displayFormat>CW-{0000}</displayFormat>
+        <label>Work Item Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Claude Work Items</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

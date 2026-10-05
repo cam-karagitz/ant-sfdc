@@ -1,0 +1,200 @@
+@import 'c/antsuranceClaudeBlockStyles';
+
+.c-list {
+    container-type: inline-size;
+    max-width: 44rem;
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.c-list__head {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+}
+
+.c-list__icon {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-list__head .c-title {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-list__count {
+    flex: none;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.c-list__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-item {
+    --c-item-mark: var(--ants-line-strong);
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) max-content;
+    gap: 0 0.75rem;
+    align-items: start;
+    padding: 0.75rem 1rem;
+}
+
+.c-item + .c-item {
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-item_good {
+    --c-item-mark: var(--ants-olive);
+}
+
+.c-item_watch {
+    --c-item-mark: var(--ants-amber);
+}
+
+.c-item_alert {
+    --c-item-mark: var(--ants-clay);
+}
+
+/* An open ring, like a box waiting to be ticked, in the row's strongest tone. */
+.c-item__mark {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.1875rem;
+    border: 0.1875rem solid var(--c-item-mark);
+    border-radius: 50%;
+}
+
+.c-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.c-item__title {
+    color: var(--ants-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: pretty;
+}
+
+.c-item__title_link {
+    text-decoration: none;
+}
+
+.c-item__title_link:hover {
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.c-item__title_link:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-item__subtitle {
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+}
+
+.c-item__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+}
+
+.c-item__amount {
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* In the narrow panel the amount moves under the chips rather than squeezing the title. */
+@container (max-width: 24rem) {
+    .c-item {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .c-item__amount {
+        grid-column: 2;
+        margin-top: 0.375rem;
+    }
+}
+
+/* ---------- Compact, for the utility panel: one dense row per item ---------- */
+
+.c-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-rows .c-item {
+    grid-template-columns: auto minmax(0, 1fr) max-content;
+    gap: 0 0.5rem;
+    padding: 0.4375rem 0.75rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-rows .c-item__mark {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-top: 0.25rem;
+    border-width: 0.15625rem;
+}
+
+.c-row__title {
+    color: var(--ants-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: pretty;
+}
+
+/* The amount over the chip, both against the right edge. */
+.c-row__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.125rem;
+}
+
+.c-row__amount {
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Previous and next under the compact rows, inside the card's own margins. */
+.c-pages {
+    padding: 0 0.75rem 0.5rem;
+}

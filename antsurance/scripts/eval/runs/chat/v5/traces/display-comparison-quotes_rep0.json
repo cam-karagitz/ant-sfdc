@@ -1,0 +1,32 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Sale record \"Dubois Household - Personal Auto\" open (object Opportunity, Id 006aj00000epHJEAA2). \"This\", \"here\" and \"this policy sale\" refer to that record.]\n\nCompare the quote options on this sale"
+  },
+  {
+    "role": "assistant",
+    "content": "The two options differ only on deductible. **Higher deductible** saves **$125 a year** for $1,000 more out of pocket per claim, so it only comes out ahead if Camille goes about 8 years without a claim. Both were presented 31 days ago and expire **Oct 18**, and your follow-up with Camille is due today."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_comparison",
+    "content": "{\n  \"title\": \"Quote options for the Dubois auto sale\",\n  \"columns\": [\n    {\n      \"name\": \"Standard deductible\",\n      \"record_id\": \"0Q0aj000003bR9JCAU\",\n      \"recommended\": false\n    },\n    {\n      \"name\": \"Higher deductible\",\n      \"record_id\": \"0Q0aj000003bR9KCAU\",\n      \"recommended\": false\n    }\n  ],\n  \"rows\": [\n    {\n      \"label\": \"Annual premium\",\n      \"values\": [\n        \"$1,560\",\n        \"$1,435\"\n      ]\n    },\n    {\n      \"label\": \"Deductible\",\n      \"values\": [\n        \"$1,000\",\n        \"$2,000\"\n      ]\n    },\n    {\n      \"label\": \"Coverage limit\",\n      \"values\": [\n        \"$100,000\",\n        \"$100,000\"\n      ]\n    },\n    {\n      \"label\": \"Status\",\n      \"values\": [\n        \"Presented\",\n        \"Presented\"\n      ]\n    },\n    {\n      \"label\": \"Valid until\",\n      \"values\": [\n        \"Oct 18, 2026\",\n        \"Oct 18, 2026\"\n      ]\n    },\n    {\n      \"label\": \"Underwriter\",\n      \"values\": [\n        \"Lydia Osei\",\n        \"Lydia Osei\"\n      ]\n    }\n  ],\n  \"reason\": \"\"\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"Draft a follow-up email to Camille\",\n    \"Show the Dubois Household's other policies\",\n    \"Move this sale to Bind Requested\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"comparison\",\n    \"title\": \"Quote options for the Dubois auto sale\",\n    \"columns\": [\n      {\n        \"name\": \"Standard deductible\",\n        \"recordId\": \"0Q0aj000003bR9JCAU\",\n        \"recommended\": false\n      },\n      {\n        \"name\": \"Higher deductible\",\n        \"recordId\": \"0Q0aj000003bR9KCAU\",\n        \"recommended\": false\n      }\n    ],\n    \"rows\": [\n      {\n        \"label\": \"Annual premium\",\n        \"values\": [\n          \"$1,560\",\n          \"$1,435\"\n        ]\n      },\n      {\n        \"label\": \"Deductible\",\n        \"values\": [\n          \"$1,000\",\n          \"$2,000\"\n        ]\n      },\n      {\n        \"label\": \"Coverage limit\",\n        \"values\": [\n          \"$100,000\",\n          \"$100,000\"\n        ]\n      },\n      {\n        \"label\": \"Status\",\n        \"values\": [\n          \"Presented\",\n          \"Presented\"\n        ]\n      },\n      {\n        \"label\": \"Valid until\",\n        \"values\": [\n          \"Oct 18, 2026\",\n          \"Oct 18, 2026\"\n        ]\n      },\n      {\n        \"label\": \"Underwriter\",\n        \"values\": [\n          \"Lydia Osei\",\n          \"Lydia Osei\"\n        ]\n      }\n    ],\n    \"reason\": null\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Draft a follow-up email to Camille\",\n      \"Show the Dubois Household's other policies\",\n      \"Move this sale to Bind Requested\"\n    ]\n  }\n]"
+  }
+]

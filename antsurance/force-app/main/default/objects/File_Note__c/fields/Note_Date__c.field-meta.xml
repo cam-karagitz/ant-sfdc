@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Note_Date__c</fullName>
+    <description>When the activity happened. Defaults to now.</description>
+    <label>Note Date</label>
+    <defaultValue>NOW()</defaultValue>
+    <required>false</required>
+    <type>DateTime</type>
+</CustomField>

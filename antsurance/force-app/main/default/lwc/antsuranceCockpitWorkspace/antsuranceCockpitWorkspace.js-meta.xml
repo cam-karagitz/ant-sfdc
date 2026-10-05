@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Home cockpit workspace: tabs for my day, claims, renewals, pipeline and underwriting, with rows that open in place.</description>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>

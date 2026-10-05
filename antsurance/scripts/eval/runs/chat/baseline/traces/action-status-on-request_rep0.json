@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002082: Moving to a new home in Belvidere\" open (object Case, Id 500aj00003jKcAAAA0). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nMark this request as waiting on the customer."
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Status, Request_Type__c, Policy__r.Name, Policy__c FROM Case WHERE Id = '500aj00003jKcAAAA0'\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-HO-204806\",\"Id\":\"a00aj00003jKc7aAAC\"},\"Policy__c\":\"a00aj00003jKc7aAAC\",\"Request_Type__c\":\"Change Address\",\"Status\":\"In Progress\",\"CaseNumber\":\"00002082\",\"Id\":\"500aj00003jKcAAAA0\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't make that change because I only have read access to records. [00002082](/lightning/r/500aj00003jKcAAAA0/view) is still **In Progress**. It's a Change Address request on policy [ANT-HO-204806](/lightning/r/a00aj00003jKc7aAAC/view).\n\nTo update it yourself, change **Status** to **Waiting on Customer** on the record, either with the status path or Edit, then save."
+  }
+]

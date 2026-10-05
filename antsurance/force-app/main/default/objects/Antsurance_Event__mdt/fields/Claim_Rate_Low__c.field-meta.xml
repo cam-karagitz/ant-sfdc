@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Claim_Rate_Low__c</fullName>
+    <description>Planning assumption: the low end of the share of exposed homes, buildings and vehicles expected to file a claim, as a whole percent.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>A whole percent, for example 15.</inlineHelpText>
+    <label>Claims Expected, Low Percent</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Broker__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The broker that placed this policy.</description>
+    <label>Broker</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Acme Policies (Broker)</relationshipLabel>
+    <relationshipName>Acme_Brokered_Policies</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

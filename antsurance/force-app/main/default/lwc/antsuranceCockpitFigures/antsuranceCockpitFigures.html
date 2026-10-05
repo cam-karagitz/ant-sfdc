@@ -1,0 +1,14 @@
+<template>
+    <ul class="c-figures" aria-label="The book in six figures" aria-busy={isLoading}>
+        <template for:each={figures} for:item="figure">
+            <li key={figure.key} class="c-figures__cell">
+                <button type="button" class="c-figure" title={figure.title} data-list={figure.list} data-filter={figure.filter} data-dashboard={figure.dashboard} onclick={handleOpen}>
+                    <span class="c-eyebrow c-figure__label">{figure.label}</span>
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small" class="c-figure__go" aria-hidden="true"></lightning-icon>
+                    <span class="c-figure__value">{figure.value}</span>
+                    <span class={figure.noteClass}>{figure.note}</span>
+                </button>
+            </li>
+        </template>
+    </ul>
+</template>

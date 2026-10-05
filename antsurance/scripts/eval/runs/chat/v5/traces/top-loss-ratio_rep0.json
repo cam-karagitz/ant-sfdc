@@ -1,0 +1,37 @@
+[
+  {
+    "role": "user",
+    "content": "Which policy has the highest loss ratio, and what is it?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Loss_Ratio__c, Incurred_Losses__c, Annual_Premium__c, Line_of_Business__c, Status__c, Account__r.Name, Account__r.Id FROM Policy__c WHERE Loss_Ratio__c != null ORDER BY Loss_Ratio__c DESC LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Okafor Household\",\"Id\":\"001aj000041E8MYAA0\"},\"Account__c\":\"001aj000041E8MYAA0\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Homeowners\",\"Annual_Premium__c\":2240,\"Incurred_Losses__c\":45000,\"Loss_Ratio__c\":2008.9,\"Name\":\"ANT-HO-204585\",\"Id\":\"a00aj00003jfwRFAAY\"},{\"Account__r\":{\"Name\":\"Haddad Household\",\"Id\":\"001aj000041E8MgAAK\"},\"Account__c\":\"001aj000041E8MgAAK\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Personal Auto\",\"Annual_Premium__c\":2890,\"Incurred_Losses__c\":58000,\"Loss_Ratio__c\":2006.9,\"Name\":\"ANT-PA-204857\",\"Id\":\"a00aj00003jfwRVAAY\"},{\"Account__r\":{\"Name\":\"Lincoln Square Books & Paper\",\"Id\":\"001aj000041E8NVAA0\"},\"Account__c\":\"001aj000041E8NVAA0\",\"Status__c\":\"Active\",\"Line_of_Business__c\":\"General Liability\",\"Annual_Premium__c\":2970,\"Incurred_Losses__c\":29250,\"Loss_Ratio__c\":984.8,\"Name\":\"ANT-GL-207016\",\"Id\":\"a00aj00003jfwTYAAY\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"tiles\": [\n    {\n      \"label\": \"Loss ratio\",\n      \"value\": \"2,009%\",\n      \"note\": \"ANT-HO-204585, Okafor Household\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"label\": \"Incurred losses\",\n      \"value\": \"$45,000\",\n      \"note\": \"paid plus outstanding reserve\",\n      \"tone\": \"alert\"\n    },\n    {\n      \"label\": \"Annual premium\",\n      \"value\": \"$2,240\",\n      \"note\": \"Homeowners, Active\",\n      \"tone\": \"neutral\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_call",
+    "name": "suggest_next_questions",
+    "content": "{\n  \"questions\": [\n    \"What claims are on ANT-HO-204585?\",\n    \"Show the top 10 policies by loss ratio\",\n    \"Loss ratio by line of business\"\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as buttons under your answer."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Loss ratio\",\n        \"value\": \"2,009%\",\n        \"note\": \"ANT-HO-204585, Okafor Household\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"label\": \"Incurred losses\",\n        \"value\": \"$45,000\",\n        \"note\": \"paid plus outstanding reserve\",\n        \"tone\": \"alert\"\n      },\n      {\n        \"label\": \"Annual premium\",\n        \"value\": \"$2,240\",\n        \"note\": \"Homeowners, Active\",\n        \"tone\": \"neutral\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"What claims are on ANT-HO-204585?\",\n      \"Show the top 10 policies by loss ratio\",\n      \"Loss ratio by line of business\"\n    ]\n  }\n]"
+  }
+]

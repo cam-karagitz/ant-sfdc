@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Show open claims by status as a donut"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status, COUNT(Id) c FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Status ORDER BY COUNT(Id) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"c\":6,\"Status\":\"New\"},{\"c\":6,\"Status\":\"Payment Issued\"},{\"c\":6,\"Status\":\"Under Investigation\"},{\"c\":4,\"Status\":\"Approved\"},{\"c\":4,\"Status\":\"Appraisal\"}],\"truncated\":false,\"rowCount\":5}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"There are **26 open claims**. New, Under Investigation and Payment Issued have **6** each, and Approved and Appraisal have 4 each.\\n?> Which open claims are high severity?\\n?> Show open claims by adjuster\\n?> Total outstanding reserve on open claims\",\n  \"title\": \"Open claims by status\",\n  \"chart_type\": \"donut\",\n  \"unit\": \"count\",\n  \"points\": [\n    {\n      \"label\": \"New\",\n      \"value\": 6\n    },\n    {\n      \"label\": \"Under Investigation\",\n      \"value\": 6\n    },\n    {\n      \"label\": \"Appraisal\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Approved\",\n      \"value\": 4\n    },\n    {\n      \"label\": \"Payment Issued\",\n      \"value\": 6\n    }\n  ],\n  \"highlight_label\": \"\",\n  \"caption\": \"Count of open claims by current status\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Open claims by status\",\n    \"caption\": \"Count of open claims by current status\",\n    \"chartType\": \"donut\",\n    \"unit\": \"count\",\n    \"points\": [\n      {\n        \"label\": \"New\",\n        \"value\": 6\n      },\n      {\n        \"label\": \"Under Investigation\",\n        \"value\": 6\n      },\n      {\n        \"label\": \"Appraisal\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Approved\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Payment Issued\",\n        \"value\": 6\n      }\n    ],\n    \"highlight\": null\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which open claims are high severity?\",\n      \"Show open claims by adjuster\",\n      \"Total outstanding reserve on open claims\"\n    ]\n  }\n]"
+  }
+]

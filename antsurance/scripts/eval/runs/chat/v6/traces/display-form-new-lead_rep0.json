@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Start a new lead: Dana Whitfield called about a homeowners policy for her house in Naperville"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_form",
+    "content": "{\n  \"say\": \"A new lead form for **Dana Whitfield** is ready for you to review. Add her phone or email and company if you have them, then press Create.\",\n  \"mode\": \"create\",\n  \"object\": \"Lead\",\n  \"record_id\": \"\",\n  \"record_type\": \"\",\n  \"fields\": [\n    {\n      \"name\": \"FirstName\",\n      \"value\": \"Dana\"\n    },\n    {\n      \"name\": \"LastName\",\n      \"value\": \"Whitfield\"\n    },\n    {\n      \"name\": \"Company\",\n      \"value\": \"Dana Whitfield\"\n    },\n    {\n      \"name\": \"Product_Interest__c\",\n      \"value\": \"Homeowners\"\n    },\n    {\n      \"name\": \"LeadSource\",\n      \"value\": \"Phone Inquiry\"\n    },\n    {\n      \"name\": \"City\",\n      \"value\": \"Naperville\"\n    },\n    {\n      \"name\": \"State\",\n      \"value\": \"IL\"\n    },\n    {\n      \"name\": \"Phone\",\n      \"value\": \"\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as a form with Save and Cancel buttons, filled in with your values. Nothing has been written. The record is saved only if the user presses Save, and they may change any value first. This result is updated to say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"form\",\n    \"mode\": \"create\",\n    \"objectApiName\": \"Lead\",\n    \"objectLabel\": \"Lead\",\n    \"title\": \"New lead\",\n    \"fields\": [\n      {\n        \"name\": \"FirstName\",\n        \"label\": \"First Name\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Dana\"\n      },\n      {\n        \"name\": \"LastName\",\n        \"label\": \"Last Name\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Whitfield\"\n      },\n      {\n        \"name\": \"Company\",\n        \"label\": \"Household or Business\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Dana Whitfield\"\n      },\n      {\n        \"name\": \"Product_Interest__c\",\n        \"label\": \"Product Interest\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Homeowners\"\n      },\n      {\n        \"name\": \"LeadSource\",\n        \"label\": \"Lead Source\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Phone Inquiry\"\n      },\n      {\n        \"name\": \"City\",\n        \"label\": \"City\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Naperville\"\n      },\n      {\n        \"name\": \"State\",\n        \"label\": \"State/Province\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"IL\"\n      },\n      {\n        \"name\": \"Phone\",\n        \"label\": \"Phone\",\n        \"suggested\": false,\n        \"wide\": false\n      }\n    ]\n  }\n]"
+  }
+]

@@ -1,0 +1,26 @@
+<template>
+    <header class="c-bar">
+        <div class="c-bar__hello">
+            <p class="c-bar__date">{today}</p>
+            <h1 class="c-bar__greeting">{greeting}</h1>
+        </div>
+        <form class="c-ask" onsubmit={handleSubmit} aria-label="Ask Claude">
+            <div class="c-ask__field">
+                <img class="c-ask__spark" src={sparkUrl} alt="" />
+                <label class="slds-assistive-text" for="question">Ask Claude a question</label>
+                <input id="question" lwc:ref="question" class="c-ask__input" type="text" autocomplete="off" placeholder="Ask Claude about your book, a customer or a claim" />
+                <button type="submit" class="c-ask__send">
+                    Ask
+                    <lightning-icon icon-name="utility:arrow_right" size="xx-small" alternative-text="" class="c-ask__arrow"></lightning-icon>
+                </button>
+            </div>
+            <ul class="c-ask__ideas" aria-label="Questions worth asking today">
+                <template for:each={ideas} for:item="idea">
+                    <li key={idea.key}>
+                        <button type="button" class="c-idea" data-question={idea.question} title={idea.question} onclick={handleIdea}>{idea.label}</button>
+                    </li>
+                </template>
+            </ul>
+        </form>
+    </header>
+</template>

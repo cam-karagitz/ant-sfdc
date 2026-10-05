@@ -1,0 +1,13 @@
+<template>
+    <template lwc:if={isNeeded}>
+        <nav class="c-pager" aria-label={navLabel}>
+            <span class="c-pager__count" aria-live="polite">{rangeLabel}</span>
+            <button type="button" class="c-pager__step c-ui-focus" title="Previous" aria-label={previousLabel} disabled={isFirst} onclick={handlePrevious}>
+                <lightning-icon icon-name="utility:chevronleft" size="xx-small" alternative-text=""></lightning-icon>
+            </button>
+            <button type="button" class="c-pager__step c-ui-focus" title="Next" aria-label={nextLabel} disabled={isLast} onclick={handleNext}>
+                <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text=""></lightning-icon>
+            </button>
+        </nav>
+    </template>
+</template>

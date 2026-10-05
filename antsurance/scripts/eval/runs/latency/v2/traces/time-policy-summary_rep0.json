@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-PA-204517\" open (object Policy__c, Id a00aj00003jKdxtAAC). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nSummarize this policy"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view) is an **active** Personal Auto policy for the [Reyes Household](/lightning/r/001aj000040t3coAAA/view), with [Maria Reyes](/lightning/r/003aj00002T9O6DAAV/view) as primary insured. It runs 13 May 2026 to 13 May 2027 (**223 days** to renewal). Premium is **$2,380** a year, billed monthly, and payments are current. The producer is [Prairie State Insurance Agency](/lightning/r/001aj000040t3clAAA/view).\n\n- **Vehicles:** 2022 Toyota RAV4 (lienholder is Great Plains Credit Union) and 2019 Honda Accord\n- **Drivers:** Maria and Daniel Reyes, both Preferred with no accidents or violations\n- **Coverage:** liability of $300,000 per person and $100,000 property damage, Collision and Comprehensive at a $500 deductible, plus Medical Payments, Uninsured Motorist, Roadside Assistance and Rental Reimbursement. It also has a Multi-Policy Discount of $190.\n- **Claims:** [00002224](/lightning/r/500aj00003jLAOkAAO/view) is a parking lot scrape. **$1,850** has been paid on it, which puts the loss ratio at **77.7%**. Its status is still Payment Issued.\n- **Open request:** [00002258](/lightning/r/500aj00003jLAPIAA4/view) is to add Sofia Reyes as a driver. It's New and still needs her license details and a report card for the good student discount."
+  }
+]

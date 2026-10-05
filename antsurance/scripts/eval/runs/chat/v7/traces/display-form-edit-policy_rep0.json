@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy record \"ANT-HO-204534\" open (object Policy__c, Id a00aj00003jfwRCAAY). \"This\", \"here\" and \"this policy\" refer to that record.]\n\nChange the deductible on this policy to $1,000 and the billing to monthly."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_form",
+    "content": "{\n  \"say\": \"The edit form for [ANT-HO-204534](/lightning/r/a00aj00003jfwRCAAY/view) is ready for you to review and save. It sets the deductible to **$1,000** and billing to **Monthly**. I can't change the $1,500 deductibles on the Dwelling and Personal Property coverage lines from here, so those stay as they are.\",\n  \"mode\": \"edit\",\n  \"object\": \"Policy__c\",\n  \"record_id\": \"a00aj00003jfwRCAAY\",\n  \"record_type\": \"\",\n  \"fields\": [\n    {\n      \"name\": \"Deductible__c\",\n      \"value\": \"1000\"\n    },\n    {\n      \"name\": \"Billing_Frequency__c\",\n      \"value\": \"Monthly\"\n    },\n    {\n      \"name\": \"Annual_Premium__c\",\n      \"value\": \"\"\n    },\n    {\n      \"name\": \"Payment_Status__c\",\n      \"value\": \"\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as a form with Save and Cancel buttons, filled in with your values. Nothing has been written. The record is saved only if the user presses Save, and they may change any value first. This result is updated to say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"form\",\n    \"mode\": \"edit\",\n    \"objectApiName\": \"Policy__c\",\n    \"objectLabel\": \"Policy\",\n    \"recordId\": \"a00aj00003jfwRCAAY\",\n    \"recordName\": \"ANT-HO-204534\",\n    \"title\": \"Edit ANT-HO-204534\",\n    \"fields\": [\n      {\n        \"name\": \"Deductible__c\",\n        \"label\": \"Deductible\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": 1000,\n        \"current\": \"$1,500\"\n      },\n      {\n        \"name\": \"Billing_Frequency__c\",\n        \"label\": \"Billing Frequency\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": \"Monthly\",\n        \"current\": \"Annual\"\n      },\n      {\n        \"name\": \"Annual_Premium__c\",\n        \"label\": \"Annual Premium\",\n        \"suggested\": false,\n        \"wide\": false\n      },\n      {\n        \"name\": \"Payment_Status__c\",\n        \"label\": \"Payment Status\",\n        \"suggested\": false,\n        \"wide\": false\n      }\n    ]\n  }\n]"
+  }
+]

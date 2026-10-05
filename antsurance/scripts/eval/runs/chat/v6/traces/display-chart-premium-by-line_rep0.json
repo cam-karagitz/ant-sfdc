@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "Chart premium in force by line of business"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Line_of_Business__c, SUM(Annual_Premium__c) total, COUNT(Id) n FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') GROUP BY Line_of_Business__c ORDER BY SUM(Annual_Premium__c) DESC\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"n\":13,\"total\":701230.0,\"Line_of_Business__c\":\"Workers Compensation\"},{\"n\":18,\"total\":353040.0,\"Line_of_Business__c\":\"Commercial Property\"},{\"n\":20,\"total\":304300.0,\"Line_of_Business__c\":\"General Liability\"},{\"n\":6,\"total\":284000.0,\"Line_of_Business__c\":\"Commercial Auto\"},{\"n\":41,\"total\":98004.0,\"Line_of_Business__c\":\"Personal Auto\"},{\"n\":33,\"total\":80486.0,\"Line_of_Business__c\":\"Homeowners\"},{\"n\":13,\"total\":38500.0,\"Line_of_Business__c\":\"Umbrella\"},{\"n\":11,\"total\":3334.0,\"Line_of_Business__c\":\"Renters\"}],\"truncated\":false,\"rowCount\":8}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_chart",
+    "content": "{\n  \"say\": \"**Workers Compensation** leads with **$701,230**, about 38% of the **$1,862,894** in force, from just 13 policies.\\n?> Which Workers Comp policies are largest?\\n?> Show loss ratio by line of business\\n?> Which policies renew in the next 30 days?\",\n  \"title\": \"Premium in force by line\",\n  \"chart_type\": \"bar\",\n  \"unit\": \"dollars\",\n  \"points\": [\n    {\n      \"label\": \"Workers Comp\",\n      \"value\": 701230\n    },\n    {\n      \"label\": \"Commercial Property\",\n      \"value\": 353040\n    },\n    {\n      \"label\": \"General Liability\",\n      \"value\": 304300\n    },\n    {\n      \"label\": \"Commercial Auto\",\n      \"value\": 284000\n    },\n    {\n      \"label\": \"Personal Auto\",\n      \"value\": 98004\n    },\n    {\n      \"label\": \"Homeowners\",\n      \"value\": 80486\n    },\n    {\n      \"label\": \"Umbrella\",\n      \"value\": 38500\n    },\n    {\n      \"label\": \"Renters\",\n      \"value\": 3334\n    }\n  ],\n  \"highlight_label\": \"Workers Comp\",\n  \"caption\": \"Annual premium on Active and Pending Renewal policies\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"chart\",\n    \"title\": \"Premium in force by line\",\n    \"caption\": \"Annual premium on Active and Pending Renewal policies\",\n    \"chartType\": \"bar\",\n    \"unit\": \"dollars\",\n    \"points\": [\n      {\n        \"label\": \"Workers Comp\",\n        \"value\": 701230\n      },\n      {\n        \"label\": \"Commercial Property\",\n        \"value\": 353040\n      },\n      {\n        \"label\": \"General Liability\",\n        \"value\": 304300\n      },\n      {\n        \"label\": \"Commercial Auto\",\n        \"value\": 284000\n      },\n      {\n        \"label\": \"Personal Auto\",\n        \"value\": 98004\n      },\n      {\n        \"label\": \"Homeowners\",\n        \"value\": 80486\n      },\n      {\n        \"label\": \"Umbrella\",\n        \"value\": 38500\n      },\n      {\n        \"label\": \"Renters\",\n        \"value\": 3334\n      }\n    ],\n    \"highlight\": \"Workers Comp\"\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Which Workers Comp policies are largest?\",\n      \"Show loss ratio by line of business\",\n      \"Which policies renew in the next 30 days?\"\n    ]\n  }\n]"
+  }
+]

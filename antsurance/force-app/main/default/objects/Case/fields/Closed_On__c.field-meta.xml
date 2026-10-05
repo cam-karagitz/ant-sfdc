@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Closed_On__c</fullName>
+    <description>The day the claim or request was closed. Set when the status moves to a closed one and cleared if it is reopened, so days open stops counting at the close.</description>
+    <label>Closed On</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

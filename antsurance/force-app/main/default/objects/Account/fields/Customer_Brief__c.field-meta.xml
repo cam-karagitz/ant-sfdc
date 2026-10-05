@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Brief__c</fullName>
+    <description>A short standing brief on the customer: who they are, how they like to be served and what to watch. Markdown is rendered on the record page.</description>
+    <label>Customer Brief</label>
+    <length>32768</length>
+    <visibleLines>8</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

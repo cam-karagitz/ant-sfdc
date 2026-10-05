@@ -1,0 +1,845 @@
+@import 'c/antsurancePortalStyles';
+
+:host {
+    display: block;
+}
+
+/* The app fills the window: a compact header, a scrolling middle, a slim footer. Everything inside lines up
+   on one centered container, so nothing hugs the left edge on a wide screen. With the conversation open, the
+   container grows a little and the conversation takes its right-hand column: content and Claude together
+   are the centered composition. */
+.c-site {
+    --wrap: 70rem;
+    --head: 3.5rem;
+    --foot: 2.5rem;
+    --dock: 24rem;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--p-ivory);
+}
+
+.c-site_chat {
+    --wrap: 82rem;
+}
+
+.c-site_chat-wide {
+    --wrap: 88rem;
+    --dock: 30rem;
+}
+
+.c-wrap {
+    width: 100%;
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+.c-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+/* ---------------------------------------------------------------- header */
+.c-top {
+    flex: none;
+    min-height: var(--head);
+    background: #fff;
+    border-bottom: 1px solid var(--p-line);
+    /* The header measures itself, so what follows holds at any window size and under page zoom alike. */
+    container: top / inline-size;
+}
+
+/* Too narrow for the button's words beside the page links: it becomes a small round button with the spark. */
+/* Each rule here names the header first, so it outweighs the plain rule for the same part further down. */
+@container top (max-width: 52rem) {
+    .c-top .c-launcher {
+        padding: 0 0.625rem;
+    }
+
+    .c-top .c-launcher__label {
+        display: none;
+    }
+}
+
+/* Narrower still, the page links no longer fit beside the logo: they take a row of their own, all five in view. */
+@container top (max-width: 47rem) {
+    .c-top .c-top__inner {
+        flex-wrap: wrap;
+        gap: 0.25rem 1rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .c-top .c-nav {
+        order: 3;
+        flex: 1 0 100%;
+        gap: 0;
+        margin-left: -0.3125rem;
+    }
+
+    .c-top .c-nav__item {
+        padding: 0.375rem 0.3125rem;
+        font-size: 0.875rem;
+    }
+}
+
+.c-top__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--head);
+}
+
+.c-top__brand {
+    flex: none;
+    padding: 0.25rem;
+    margin-left: -0.25rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+    transition: background-color var(--p-fast);
+}
+
+.c-top__brand:hover {
+    background: var(--p-oat);
+}
+
+.c-top__lockup {
+    height: 1.5rem;
+    width: auto;
+}
+
+/* The pages are never cut: the nav keeps its width, and the household name and the Ask Claude label give way first. */
+.c-nav {
+    flex: none;
+    display: flex;
+    gap: 0.125rem;
+}
+
+.c-nav__item {
+    padding: 0.375rem 0.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    color: var(--p-muted);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color var(--p-fast), color var(--p-fast);
+}
+
+.c-nav__item:hover {
+    color: var(--p-clay-dark);
+    background: var(--p-clay-tint);
+}
+
+.c-nav__item:active {
+    background: #f3ddd5;
+}
+
+.c-nav__item_current,
+.c-nav__item_current:hover {
+    color: var(--p-ink);
+    background: var(--p-oat);
+}
+
+.c-nav__item:focus-visible,
+.c-top__brand:focus-visible,
+.c-hero__chip:focus-visible,
+.c-launcher:focus-visible,
+.c-dock__tool:focus-visible {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+/* "Sign out" always shows. The household name sits to its left while there is room; when there is not, it
+   wraps to a second line that the fixed height hides, so it leaves whole and nothing is cut mid-word. */
+.c-top__who {
+    flex: 0 100 auto;
+    min-width: 3.75rem;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    column-gap: 0.875rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+}
+
+.c-top__name {
+    font-weight: 600;
+}
+
+/* With the conversation open its button is gone, and the name and "Sign out" keep to the right by themselves. */
+.c-launcher_hidden + .c-top__who {
+    margin-left: auto;
+}
+
+/* The site theme colors bare links blue; the portal's links are deep clay everywhere. */
+.c-top__who a.c-top__out {
+    color: var(--p-clay-dark);
+    font-weight: 400;
+}
+
+.c-top__who a.c-top__out:hover {
+    color: var(--p-clay-deep);
+}
+
+/* ---------------------------------------------------------------- the scrolling middle */
+.c-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* What Claude is doing, said once at the top of the page. */
+.c-announce {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    height: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.c-announce__line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: fit-content;
+    margin: 0.75rem 1rem 0;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid var(--p-clay);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--p-clay-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(20, 20, 19, 0.08);
+}
+
+.c-announce__spark {
+    width: 1rem;
+    height: 1rem;
+}
+
+.c-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    min-height: 100%;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    box-sizing: border-box;
+}
+
+.c-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    min-width: 0;
+}
+
+.c-state {
+    color: var(--p-muted);
+}
+
+.c-state_card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+    color: var(--p-ink);
+}
+
+.c-state_card p {
+    margin: 0;
+}
+
+/* ---------------------------------------------------------------- home */
+.c-hero {
+    padding: 1.5rem 1.75rem 1.625rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-hero__title {
+    margin-top: 0.125rem;
+    font-size: 2rem;
+}
+
+/* The prompt has a plain clay edge, and a ring only while it is being typed in. No shadow and no glow. */
+.c-ask {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.375rem 0.375rem 0.375rem 1rem;
+    border: 1px solid var(--p-clay);
+    border-radius: 0.875rem;
+    background: #fff;
+}
+
+.c-ask:focus-within {
+    outline: 2px solid var(--p-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-ask__spark {
+    flex: none;
+    width: 1.375rem;
+    height: 1.375rem;
+}
+
+.c-ask__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 2.5rem;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--p-ink);
+    font: inherit;
+}
+
+.c-ask__send {
+    flex: none;
+}
+
+/* The suggestions, each as wide as its own words, with the same gap between them however much room there is.
+   The script measures them and picks: one row when they all fit; otherwise they wrap onto as many rows as they
+   need, still at their own widths (stretched to equal columns they read as oversized buttons); one full-width
+   column only where a single suggestion is wider than the room. None is ever cut off. */
+.c-hero__chips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+}
+
+.c-hero__chips_pairs {
+    flex-wrap: wrap;
+}
+
+.c-hero__chips_stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.c-hero__chips_stack .c-hero__chip {
+    text-align: center;
+}
+
+/* Only where a suggestion is wider than the screen itself may its words go to a second line, and then the two
+   lines are evened out so the second is never one word. */
+.c-hero__chips_stack .c-hero__chip {
+    white-space: normal;
+    text-wrap: balance;
+}
+
+.c-hero__chip {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--p-line);
+    border-radius: 999px;
+    background: var(--p-ivory);
+    color: var(--p-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    flex: none;
+    white-space: nowrap;
+    transition: background-color var(--p-fast), border-color var(--p-fast), color var(--p-fast);
+}
+
+.c-hero__chip:hover {
+    border-color: var(--p-clay);
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+}
+
+.c-hero__chip:active {
+    background: #f3ddd5;
+}
+
+.c-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.625rem;
+    margin: -0.625rem;
+    border-radius: var(--p-radius);
+}
+
+/* A section Claude is pointing at. */
+.c-section_pointed {
+    background: var(--p-amber-tint);
+    box-shadow: 0 0 0 2px var(--p-amber-ink);
+}
+
+.c-section__head,
+.c-page__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.c-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 0.875rem;
+}
+
+.c-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.c-quiet {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+.c-quiet_card {
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* A list's heading carries how many there are. */
+.c-h1_count {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+/* Previous and next under a list, with where you are in it. */
+/* A price over a status, right aligned, so a row needs one narrow column for both. */
+.c-row__figures {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+/* Two links at the end of a section's heading. */
+.c-section__links {
+    display: inline-flex;
+    gap: 1.25rem;
+}
+
+.c-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.c-pager__label {
+    font-size: 0.9375rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-page__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+}
+
+.c-page__sub {
+    margin-top: 0.5rem;
+}
+
+.c-back {
+    align-self: flex-start;
+    font-weight: 400;
+}
+
+/* ---------------------------------------------------------------- one thing beside what supports it */
+/* The main column takes the room and the panel keeps about 19rem beside it. Where both no longer fit, the panel
+   drops under the main column at full width. It is the row's own width that decides, not the window's. */
+.c-split {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.c-split > * {
+    flex: 999 1 32rem;
+    min-width: 0;
+}
+
+.c-split > .c-support {
+    flex: 1 1 19rem;
+}
+
+.c-support {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--p-line);
+    border-radius: var(--p-radius);
+    background: #fff;
+}
+
+.c-support__text {
+    margin: 0;
+    color: var(--p-muted);
+}
+
+.c-support__label {
+    margin: 0.25rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-muted);
+}
+
+.c-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-steps__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.625rem;
+}
+
+.c-steps__number {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--p-clay-tint);
+    color: var(--p-clay-dark);
+    font-family: var(--p-display);
+    font-weight: 600;
+    font-size: 0.8125rem;
+}
+
+/* ---------------------------------------------------------------- footer: a low strip, one line */
+.c-foot {
+    flex: none;
+    display: flex;
+    align-items: center;
+    min-height: var(--foot);
+    border-top: 1px solid var(--p-line);
+    background: #fff;
+}
+
+.c-foot__line {
+    margin: 0 auto;
+    font-size: 0.75rem;
+    color: var(--p-muted);
+}
+
+/* ---------------------------------------------------------------- Claude, the page's right-hand companion */
+/* The button that opens the conversation sits in the header, pushed to the right ahead of "Sign out". Where the
+   header is short of room its label wraps to a second line that the fixed height hides, leaving the spark. */
+.c-launcher {
+    flex: 0 1 auto;
+    min-width: 2.75rem;
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    column-gap: 0.5rem;
+    height: 2.25rem;
+    padding: 0 0.875rem 0 0.75rem;
+    border: 1px solid var(--p-clay);
+    border-radius: 999px;
+    background: var(--p-clay);
+    color: var(--p-ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: calc(2.25rem - 2px);
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color var(--p-fast), border-color var(--p-fast), color var(--p-fast);
+}
+
+.c-launcher:hover {
+    border-color: var(--p-clay-deep);
+    background: var(--p-clay-deep);
+    color: var(--p-ivory);
+}
+
+.c-launcher:active {
+    border-color: var(--p-clay-dark);
+    background: var(--p-clay-dark);
+    color: var(--p-ivory);
+}
+
+.c-launcher__spark {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: calc((2.25rem - 2px - 1.125rem) / 2) 0;
+    filter: brightness(0);
+    transition: filter var(--p-fast);
+}
+
+.c-launcher__label {
+    flex: none;
+}
+
+.c-launcher:hover .c-launcher__spark,
+.c-launcher:active .c-launcher__spark {
+    filter: brightness(0) invert(0.97);
+}
+
+.c-launcher_hidden {
+    display: none;
+}
+
+/* The conversation is the one thing on the page that is not a page section, so it must not read as one more
+   ivory card: a white surface lifted off the page, a clay top edge and a tinted header that says whose it is. */
+.c-dock {
+    display: none;
+    flex-direction: column;
+    border: 1px solid #d9d5c8;
+    border-top: 3px solid var(--p-clay);
+    border-radius: var(--p-radius);
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(20, 20, 19, 0.1), 0 2px 6px rgba(20, 20, 19, 0.05);
+    overflow: hidden;
+}
+
+.c-dock_open {
+    display: flex;
+}
+
+.c-dock__head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.875rem;
+    border-bottom: 1px solid #f0d9d0;
+    background: var(--p-clay-tint);
+}
+
+.c-dock__spark {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* The name always shows. What it is sits beside it while there is room; where there is not, it wraps to a
+   second line that the fixed height hides, so it leaves whole and is never cut mid-word. */
+.c-dock__title {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    min-width: 0;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+}
+
+.c-dock__name {
+    margin: 0;
+    font-family: var(--p-display);
+    font-weight: 600;
+}
+
+.c-dock__sub {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--p-muted);
+    white-space: nowrap;
+}
+
+.c-dock__tools {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+}
+
+.c-dock__tool {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: none;
+    cursor: pointer;
+    transition: background-color var(--p-fast);
+}
+
+/* The header is clay tint, so a tool lifts to white under the pointer. */
+.c-dock__tool:hover {
+    background: #fff;
+    color: var(--p-clay-dark);
+    --slds-c-icon-color-foreground-default: var(--p-clay-dark);
+}
+
+.c-dock__tool:active {
+    background: #f3ddd5;
+}
+
+/* "New chat" says what it does: the icon with its two words, in the header's own quiet weight. */
+.c-dock__tool_new {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    width: auto;
+    padding: 0 0.5rem;
+    color: var(--p-ink);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-dock__chat {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* On a wide screen the open conversation is the stage's right-hand column and stays in view as the page scrolls. */
+@media (min-width: 64rem) {
+    .c-site_chat .c-stage {
+        grid-template-columns: minmax(0, 1fr) var(--dock);
+    }
+
+    .c-dock_open {
+        position: sticky;
+        top: 1.5rem;
+        align-self: start;
+        height: calc(100vh - var(--head) - var(--foot) - 3rem);
+    }
+
+    /* Claude is the companion while the conversation is open, so a panel goes under what it supports. */
+    .c-site_chat .c-split > .c-support {
+        flex-basis: 100%;
+    }
+
+    .c-site_chat .c-support_form {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------------------- narrower screens and phones */
+@media (max-width: 63.999rem) {
+    .c-split > .c-support {
+        flex-basis: 100%;
+    }
+
+    /* The conversation becomes a sheet from the bottom. */
+    .c-dock_open {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9;
+        height: 88vh;
+        border-radius: var(--p-radius) var(--p-radius) 0 0;
+    }
+
+    .c-dock__tool_widen {
+        display: none;
+    }
+}
+
+@media (max-width: 40rem) {
+    .c-site {
+        --head: auto;
+        --foot: 3rem;
+    }
+
+    .c-wrap {
+        padding: 0 1rem;
+    }
+
+
+    .c-top__name {
+        display: none;
+    }
+
+    .c-stage {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .c-hero {
+        padding: 1.125rem;
+    }
+
+    .c-hero__title {
+        font-size: 1.625rem;
+    }
+
+    .c-ask {
+        flex-wrap: wrap;
+        padding: 0.5rem 0.75rem 0.75rem;
+    }
+
+    .c-ask__input {
+        flex: 1 1 60%;
+    }
+
+    .c-ask__send {
+        flex: 1 0 100%;
+    }
+
+    .c-foot__line {
+        text-align: center;
+        line-height: 1.3;
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+    }
+
+    .c-announce__line {
+        white-space: normal;
+    }
+}

@@ -1,0 +1,188 @@
+<template>
+    <template lwc:if={compact}>
+        <figure class="c-mini c-mini-chart">
+            <figcaption class="c-mini__head">
+                <div class="c-mini__titles">
+                    <h3 class="c-mini__title">{spec.title}</h3>
+                    <template lwc:if={spec.caption}>
+                        <p class="c-mini__caption">{spec.caption}</p>
+                    </template>
+                </div>
+                <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                </button>
+            </figcaption>
+            <span class="slds-assistive-text">{summary}</span>
+
+            <template lwc:if={isMiniBar}>
+                <ol class="c-mini-bars" aria-hidden="true">
+                    <template for:each={miniBars} for:item="bar">
+                        <li key={bar.key} class={bar.className}>
+                            <span class="c-mini-bar__line">
+                                <span class="c-mini-bar__label">{bar.label}</span>
+                                <span class="c-mini-bar__value">{bar.display}</span>
+                            </span>
+                            <span class="c-mini-bar__track"><span class="c-bar__fill" style={bar.fillStyle}></span></span>
+                        </li>
+                    </template>
+                </ol>
+                <template lwc:if={hasMoreBars}>
+                    <button type="button" class="c-more" aria-expanded={showAll} onclick={handleToggle}>{moreBarsLabel}</button>
+                </template>
+            </template>
+
+            <template lwc:if={isMiniColumn}>
+                <div class="c-mini-plot" aria-hidden="true">
+                    <ol class="c-mini-columns">
+                        <template for:each={miniColumns} for:item="column">
+                            <li key={column.key} class={column.className}><span class="c-mini-column__fill" style={column.fillStyle}></span></li>
+                        </template>
+                    </ol>
+                </div>
+            </template>
+
+            <template lwc:if={isLine}>
+                <div class="c-mini-plot c-mini-plot_line" aria-hidden="true">
+                    <svg class="c-line__svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon class="c-line__area" points={miniAreaPath}></polygon>
+                        <polyline class="c-line__stroke" points={miniLinePath}></polyline>
+                    </svg>
+                    <template for:each={miniDots} for:item="dot">
+                        <span key={dot.key} class={dot.className} style={dot.style}></span>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={isDonut}>
+                <div class="c-mini-donut" aria-hidden="true">
+                    <div class="c-segments">
+                        <template for:each={segments} for:item="segment">
+                            <span key={segment.key} class="c-segment" style={segment.style}></span>
+                        </template>
+                    </div>
+                    <ol class="c-legend c-legend_mini">
+                        <template for:each={slices} for:item="slice">
+                            <li key={slice.key} class={slice.className}>
+                                <span class="c-legend__swatch" style={slice.swatchStyle}></span>
+                                <span class="c-legend__label">{slice.label}</span>
+                                <span class="c-legend__value">{slice.display}</span>
+                                <span class="c-legend__share">{slice.share}</span>
+                            </li>
+                        </template>
+                    </ol>
+                    <template lwc:if={showTotal}>
+                        <p class="c-mini-total"><span>Total</span><span class="c-mini-total__value">{totalFull}</span></p>
+                    </template>
+                </div>
+            </template>
+            <template lwc:if={hasMiniStats}>
+                <ol class="c-mini-stats" style={miniStatsStyle} aria-hidden="true">
+                    <template for:each={miniStats} for:item="stat">
+                        <li key={stat.key} class={stat.className}>
+                            <span class="c-mini-stat__label">{stat.label}</span>
+                            <span class="c-mini-stat__value">{stat.display}</span>
+                        </li>
+                    </template>
+                </ol>
+            </template>
+        </figure>
+    </template>
+    <template lwc:else>
+        <figure class="c-chart" style={chartStyle}>
+            <figcaption class="c-chart__head">
+                <h3 class="c-title">{spec.title}</h3>
+                <template lwc:if={spec.caption}>
+                    <p class="c-caption">{spec.caption}</p>
+                </template>
+            </figcaption>
+            <span class="slds-assistive-text">{summary}</span>
+
+            <template lwc:if={isColumn}>
+                <ol class="c-columns" aria-hidden="true">
+                    <template for:each={columns} for:item="column">
+                        <li key={column.key} class={column.className}>
+                            <span class="c-column__value">{column.display}</span>
+                            <span class="c-column__track"><span class="c-column__fill" style={column.fillStyle}></span></span>
+                            <span class="c-column__label">{column.label}</span>
+                        </li>
+                    </template>
+                </ol>
+            </template>
+
+            <template lwc:if={showBars}>
+                <ol class={barsClass} aria-hidden="true">
+                    <template for:each={bars} for:item="bar">
+                        <li key={bar.key} class={bar.className}>
+                            <span class="c-bar__label">{bar.label}</span>
+                            <span class="c-bar__value">{bar.display}</span>
+                            <span class="c-bar__track"><span class="c-bar__fill" style={bar.fillStyle}></span></span>
+                        </li>
+                    </template>
+                </ol>
+            </template>
+
+            <template lwc:if={isLine}>
+                <div class="c-line" aria-hidden="true">
+                    <div class="c-line__plot">
+                        <svg class="c-line__svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polygon class="c-line__area" points={areaPath}></polygon>
+                            <polyline class="c-line__stroke" points={linePath}></polyline>
+                        </svg>
+                        <template for:each={dots} for:item="dot">
+                            <span key={dot.key} class={dot.className} style={dot.style}>
+                                <template lwc:if={dot.showValue}>
+                                    <span class="c-line__value">{dot.display}</span>
+                                </template>
+                            </span>
+                        </template>
+                    </div>
+                    <ol class="c-line__labels" style={lineLabelsStyle}>
+                        <template for:each={dots} for:item="dot">
+                            <li key={dot.key}>
+                                <template lwc:if={dot.showLabel}>{dot.label}</template>
+                            </li>
+                        </template>
+                    </ol>
+                </div>
+            </template>
+
+            <template lwc:if={isDonut}>
+                <div class="c-donut" aria-hidden="true">
+                    <div class="c-donut__ring">
+                        <svg viewBox="0 0 42 42">
+                            <circle class="c-donut__track" cx="21" cy="21" r="15.915"></circle>
+                            <template for:each={slices} for:item="slice">
+                                <circle
+                                    key={slice.key}
+                                    class="c-donut__slice"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    stroke={slice.color}
+                                    stroke-dasharray={slice.dash}
+                                    stroke-dashoffset={slice.offset}
+                                ></circle>
+                            </template>
+                        </svg>
+                        <template lwc:if={showTotal}>
+                            <span class="c-donut__total">
+                                <span class="c-donut__figure">{totalDisplay}</span>
+                                <span class="c-donut__word">Total</span>
+                            </span>
+                        </template>
+                    </div>
+                    <ol class="c-legend">
+                        <template for:each={slices} for:item="slice">
+                            <li key={slice.key} class={slice.className}>
+                                <span class="c-legend__swatch" style={slice.swatchStyle}></span>
+                                <span class="c-legend__label">{slice.label}</span>
+                                <span class="c-legend__value">{slice.display}</span>
+                                <span class="c-legend__share">{slice.share}</span>
+                            </li>
+                        </template>
+                    </ol>
+                </div>
+            </template>
+        </figure>
+    </template>
+</template>

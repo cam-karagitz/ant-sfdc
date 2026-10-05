@@ -1,0 +1,13 @@
+<template>
+    <div class={stripClass} role="tablist" aria-label={label} onkeydown={handleKey}>
+        <template for:each={rows} for:item="tab">
+            <button key={tab.value} type="button" role="tab" class={tab.className} data-value={tab.value} aria-selected={tab.selected} tabindex={tab.tabIndex} title={tab.title} onclick={handleClick}>
+                <template lwc:if={tab.icon}>
+                    <lightning-icon icon-name={tab.icon} size="xx-small" class="c-tab__icon" alternative-text=""></lightning-icon>
+                </template>
+                <span class="c-tab__label">{tab.label}</span>
+                <template lwc:if={tab.hasCount}><span class={tab.countClass}>{tab.count}</span></template>
+            </button>
+        </template>
+    </div>
+</template>

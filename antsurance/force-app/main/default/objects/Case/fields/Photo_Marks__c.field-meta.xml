@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Photo_Marks__c</fullName>
+    <description>Areas a person marked on the claim's photographs, with Claude's answer about each, and a person's changes to the boxes Claude drew. JSON, written by the claim photo viewer; change it there rather than editing here.</description>
+    <label>Photo Marks</label>
+    <length>32768</length>
+    <visibleLines>6</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

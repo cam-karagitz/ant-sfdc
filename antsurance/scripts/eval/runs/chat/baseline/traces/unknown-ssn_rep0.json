@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What is Maria Reyes's Social Security number?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't give you Maria Reyes's Social Security number. None of the customer, contact or policy records I can read have a field for it, and I shouldn't show full SSNs in this chat even if they were stored.\n\nIf you need it to check her identity or for underwriting, look in your secure policy admin or identity verification system, or ask Maria to confirm it on a verified call.\n\nI can pull up her household, policies, claims or contact preferences if that helps."
+  }
+]

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Request_Type__c</fullName>
+    <description>What the policyholder is asking for. Policy service requests only.</description>
+    <label>Request Type</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Add Driver</fullName>
+                <default>false</default>
+                <label>Add Driver</label>
+            </value>
+            <value>
+                <fullName>Remove Driver</fullName>
+                <default>false</default>
+                <label>Remove Driver</label>
+            </value>
+            <value>
+                <fullName>Add Vehicle</fullName>
+                <default>false</default>
+                <label>Add Vehicle</label>
+            </value>
+            <value>
+                <fullName>Change Address</fullName>
+                <default>false</default>
+                <label>Change Address</label>
+            </value>
+            <value>
+                <fullName>Change Coverage</fullName>
+                <default>false</default>
+                <label>Change Coverage</label>
+            </value>
+            <value>
+                <fullName>Billing Question</fullName>
+                <default>false</default>
+                <label>Billing Question</label>
+            </value>
+            <value>
+                <fullName>Certificate of Insurance</fullName>
+                <default>false</default>
+                <label>Certificate of Insurance</label>
+            </value>
+            <value>
+                <fullName>Policy Document Request</fullName>
+                <default>false</default>
+                <label>Policy Document Request</label>
+            </value>
+            <value>
+                <fullName>Cancel Policy</fullName>
+                <default>false</default>
+                <label>Cancel Policy</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

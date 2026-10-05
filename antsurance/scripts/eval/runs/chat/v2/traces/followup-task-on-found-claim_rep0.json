@@ -1,0 +1,36 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has the largest outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Status, Severity__c, Outstanding_Reserve__c, Reserve_Amount__c, Paid_Amount__c, Handled_By__c, Account.Id, Account.Name, Policy__r.Id, Policy__r.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false ORDER BY Outstanding_Reserve__c DESC NULLS LAST LIMIT 3\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Policy__r\":{\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKdyPAAS\"},\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040t3d1AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyPAAS\",\"AccountId\":\"001aj000040t3d1AAA\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Paid_Amount__c\":85000.00,\"Reserve_Amount__c\":575000.00,\"Outstanding_Reserve__c\":490000.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Appraisal\",\"Subject\":\"Kitchen fire spread to three apartments\",\"CaseNumber\":\"00002221\",\"Id\":\"500aj00003jLAOhAAO\"},{\"Policy__r\":{\"Name\":\"ANT-WC-204993\",\"Id\":\"a00aj00003jKdyLAAS\"},\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000040t3czAAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyLAAS\",\"AccountId\":\"001aj000040t3czAAA\",\"Handled_By__c\":\"Anjali Venkataraman\",\"Paid_Amount__c\":18500.00,\"Reserve_Amount__c\":225000.00,\"Outstanding_Reserve__c\":206500.00,\"Severity__c\":\"Catastrophic\",\"Status\":\"Under Investigation\",\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002219\",\"Id\":\"500aj00003jLAOfAAO\"},{\"Policy__r\":{\"Name\":\"ANT-CA-205197\",\"Id\":\"a00aj00003jKdyXAAS\"},\"Account\":{\"Name\":\"Sagebrush Freight Lines\",\"Id\":\"001aj000040t3d4AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"Policy__c\":\"a00aj00003jKdyXAAS\",\"AccountId\":\"001aj000040t3d4AAA\",\"Handled_By__c\":\"Dana Whitaker\",\"Paid_Amount__c\":40000.00,\"Reserve_Amount__c\":121000.00,\"Outstanding_Reserve__c\":81000.00,\"Severity__c\":\"High\",\"Status\":\"Approved\",\"Subject\":\"Tractor-trailer jackknifed on I-80, cargo loss\",\"CaseNumber\":\"00002223\",\"Id\":\"500aj00003jLAOjAAO\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "The open claim with the largest outstanding reserve is [00002221](/lightning/r/500aj00003jLAOhAAO/view), with **$490,000** still outstanding. It's the kitchen fire that spread to three apartments, for [Copperfield Property Management](/lightning/r/001aj000040t3d1AAA/view) on policy [ANT-CP-205061](/lightning/r/a00aj00003jKdyPAAS/view).\n\n- **Severity:** Catastrophic\n- **Status:** Appraisal\n- **Handled by:** Anjali Venkataraman\n- **Reserve:** $575,000 set, $85,000 already paid\n\nThe next two largest:\n- [00002219](/lightning/r/500aj00003jLAOfAAO/view), an installer who fell from a roof (Ridgeline Roofing & Solar): $206,500\n- [00002223](/lightning/r/500aj00003jLAOjAAO/view), a tractor-trailer jackknife (Sagebrush Freight Lines): $81,000"
+  },
+  {
+    "role": "user",
+    "content": "Add a task for me to review it tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"priority\": \"Normal\",\n  \"related_record_id\": \"500aj00003jLAOhAAO\",\n  \"due_date\": \"2026-10-03\",\n  \"subject\": \"Review claim 00002221 – Copperfield kitchen fire ($490,000 outstanding reserve)\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review claim 00002221 – Copperfield kitchen fire ($490,000 outstanding reserve)\",\n    \"dueDate\": \"2026-10-03\",\n    \"relatedId\": \"500aj00003jLAOhAAO\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

@@ -1,0 +1,81 @@
+<template>
+    <template lwc:if={compact}>
+        <article class="c-draft c-draft_mini" aria-label={kindLabel}>
+            <header class="c-draft__head c-draft__head_mini">
+                <div class="c-draft__top">
+                    <p class="c-draft__kind">
+                        <lightning-icon icon-name={iconName} size="xx-small"></lightning-icon>
+                        {kindLabel}
+                    </p>
+                    <button type="button" class="c-expand" title="Expand" aria-label={expandLabel} onclick={handleExpand}>
+                        <lightning-icon icon-name="utility:expand_alt" size="xx-small"></lightning-icon>
+                    </button>
+                </div>
+                <template lwc:if={hasRecipient}>
+                    <p class="c-draft__to">
+                        <span class="c-draft__to-label">To</span>
+                        <span class="c-draft__name">{spec.toName}</span>
+                    </p>
+                </template>
+                <p class="c-draft__subject c-draft__subject_mini">{spec.subject}</p>
+            </header>
+            <div class={bodyClass}>
+                <template for:each={paragraphs} for:item="paragraph">
+                    <p key={paragraph.key}>{paragraph.text}</p>
+                </template>
+            </div>
+            <footer class="c-draft__foot c-draft__foot_mini">
+                <button type="button" class="c-draft__toggle" aria-expanded={showAll} onclick={handleToggle}>{toggleLabel}</button>
+                <span class="c-draft__tools">
+                    <span class="slds-assistive-text" role="status">{copyLabel}</span>
+                    <button type="button" class="c-expand" title={copyLabel} aria-label="Copy the draft" onclick={handleCopy}>
+                        <lightning-icon icon-name={copyIcon} size="xx-small"></lightning-icon>
+                    </button>
+                    <template lwc:if={canEmail}>
+                        <button type="button" class="c-expand c-expand_primary" title="Open as email" aria-label="Open as email" onclick={handleEmail}>
+                            <lightning-icon icon-name="utility:email" size="xx-small"></lightning-icon>
+                        </button>
+                    </template>
+                </span>
+            </footer>
+        </article>
+    </template>
+    <template lwc:else>
+        <article class="c-draft" aria-label={kindLabel}>
+            <header class="c-draft__head">
+                <p class="c-draft__kind">
+                    <lightning-icon icon-name={iconName} size="xx-small"></lightning-icon>
+                    {kindLabel}
+                </p>
+                <dl class="c-draft__lines">
+                    <template lwc:if={hasRecipient}>
+                        <div class="c-draft__line">
+                            <dt>To</dt>
+                            <dd>
+                                <span class="c-draft__name">{spec.toName}</span>
+                                <template lwc:if={spec.toEmail}>
+                                    <span class="c-draft__address">{spec.toEmail}</span>
+                                </template>
+                            </dd>
+                        </div>
+                    </template>
+                    <div class="c-draft__line">
+                        <dt>{subjectLabel}</dt>
+                        <dd class="c-draft__subject">{spec.subject}</dd>
+                    </div>
+                </dl>
+            </header>
+            <div class="c-draft__body">
+                <template for:each={paragraphs} for:item="paragraph">
+                    <p key={paragraph.key}>{paragraph.text}</p>
+                </template>
+            </div>
+            <footer class="c-draft__foot">
+                <button type="button" class="c-button" onclick={handleCopy}>{copyLabel}</button>
+                <template lwc:if={canEmail}>
+                    <button type="button" class="c-button c-button_primary" onclick={handleEmail}>Open as email</button>
+                </template>
+            </footer>
+        </article>
+    </template>
+</template>

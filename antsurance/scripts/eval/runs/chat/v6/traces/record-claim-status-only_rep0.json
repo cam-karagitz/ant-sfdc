@@ -1,0 +1,14 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat's the status of this claim? Don't change anything."
+  },
+  {
+    "role": "assistant",
+    "content": "Claim 00002566 is **Under Investigation**, open 12 days. Drying is finished and moisture readings are back to normal, according to Marcus Lindahl's Oct 2 note. The next step is approving the vendor and contractor costs.\n\n- **Money:** the reserve is **$45,000**. A **$5,000** advance has been paid, so **$40,000** is still outstanding. The estimated loss is $47,500.\n- **Coverage:** the policy was in force on the Sep 21 date of loss. Sudden discharge from a failed supply line is covered, and the $2,500 deductible applies.\n- **Next up:** the mitigation invoice and the rebuild estimate were both attached today. You have two tasks on them:\n  - Review the mitigation invoice, due **Oct 6**\n  - Approve the rebuild estimate, due **Oct 7**\n- **Flags:** no SIU referral and no subrogation potential.\n\nI didn't change anything.\n\n?> Show the claim timeline\n?> Draft an update to Chinedu Okafor\n?> Is the reserve still adequate?"
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Show the claim timeline\",\n      \"Draft an update to Chinedu Okafor\",\n      \"Is the reserve still adequate?\"\n    ]\n  }\n]"
+  }
+]

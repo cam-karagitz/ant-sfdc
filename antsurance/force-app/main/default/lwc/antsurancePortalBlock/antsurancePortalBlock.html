@@ -1,0 +1,246 @@
+<template>
+    <!-- Choices: options to press, each with one fact from the record. -->
+    <template lwc:if={is.choices}>
+        <div class="c-choices" role="group" aria-label="Choose one">
+            <template for:each={rows} for:item="row">
+                <button key={row.key} type="button" class="c-choice" data-say={row.say} disabled={spent} onclick={handleSay}>
+                    <span class="c-choice__ring"></span>
+                    <span class="c-choice__main">
+                        <span class="c-choice__top">
+                            <span class="c-choice__label">{row.label}</span>
+                            <template lwc:if={row.tag}><span class="c-choice__tag">{row.tag}</span></template>
+                        </span>
+                        <template lwc:if={row.sub}><span class="c-choice__fact">{row.sub}</span></template>
+                    </span>
+                </button>
+            </template>
+        </div>
+    </template>
+
+    <!-- Policies: a ledger. Each row opens its policy. -->
+    <template lwc:if={is.policies}>
+        <section class="c-ledger" aria-label={block.title}>
+            <ul class="c-ledger__rows">
+                <template for:each={rows} for:item="row">
+                    <li key={row.key}>
+                        <button type="button" class="c-ledger__row" data-page={row.page} data-record={row.recordId} aria-label={row.openLabel} onclick={handleOpenRow}>
+                            <span class="c-icon c-icon_small"><lightning-icon icon-name={row.icon} size="x-small" alternative-text=""></lightning-icon></span>
+                            <span class="c-ledger__main">
+                                <span class="c-ledger__top">
+                                    <span class="c-ledger__label">{row.label}</span>
+                                    <span class="c-ledger__tag">{row.tag}</span>
+                                </span>
+                                <span class="c-ledger__facts">
+                                    <span class="c-ledger__factrow">
+                                        <span class="c-ledger__fact">{row.sub}</span>
+                                        <template lwc:if={row.note}><span class="c-ledger__fact">{row.note}</span></template>
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="c-ledger__figure">
+                                <span class="c-ledger__amount">{row.figure}</span>
+                                <span class="c-ledger__per">{row.figureSub}</span>
+                            </span>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+            <template lwc:if={block.totalText}>
+                <p class="c-ledger__total"><span>{block.totalLabel}</span><span class="c-ledger__sum">{block.totalText}</span></p>
+            </template>
+            <template for:each={facts} for:item="fact">
+                <p key={fact.key} class="c-ledger__due">
+                    <span class="c-ledger__duemain">
+                        <span class="c-ledger__duelabel">{fact.label}</span>
+                        <template lwc:if={fact.sub}><span class="c-ledger__duesub">{fact.sub}</span></template>
+                    </span>
+                    <span class="c-ledger__duefigure">
+                        <span class="c-ledger__dueamount">{fact.figure}</span>
+                        <template lwc:if={fact.figureSub}><span class="c-ledger__duesub">{fact.figureSub}</span></template>
+                    </span>
+                </p>
+            </template>
+        </section>
+    </template>
+
+    <!-- Price: a receipt. Signed lines, a ruled total, then what is paid when. -->
+    <template lwc:if={is.price}>
+        <section class="c-bill" aria-label="Price breakdown">
+            <header class="c-bill__head">
+                <span class="c-icon c-icon_small"><lightning-icon icon-name={icon} size="x-small" alternative-text=""></lightning-icon></span>
+                <span class="c-bill__title">{block.title}</span>
+                <span class="c-bill__tag">{tag}</span>
+            </header>
+            <template lwc:if={hasRows}>
+                <ul class="c-bill__lines">
+                    <template for:each={rows} for:item="row">
+                        <li key={row.key} class="c-line">
+                            <span class="c-line__main">
+                                <span class="c-line__label">{row.label}</span>
+                                <template lwc:if={row.sub}><span class="c-line__sub">{row.sub}</span></template>
+                            </span>
+                            <span class={row.figureClass}>{row.figure}</span>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <p class="c-bill__total"><span class="c-bill__totallabel">{block.totalLabel}</span><span class="c-bill__sum">{block.totalText}</span></p>
+            <template lwc:if={hasFacts}>
+                <dl class="c-bill__facts">
+                    <template for:each={facts} for:item="fact">
+                        <div key={fact.key} class="c-bill__fact"><dt>{fact.label}</dt><dd>{fact.figure}</dd></div>
+                    </template>
+                </dl>
+            </template>
+            <template lwc:if={footnote}>
+                <p class="c-bill__note">{footnote}</p>
+            </template>
+            <button type="button" class="c-link c-bill__open" onclick={handleOpen}>{block.linkLabel}</button>
+        </section>
+    </template>
+
+    <!-- Renewal: the date as a calendar leaf, the time left, and the offer if there is one. -->
+    <template lwc:if={is.renewal}>
+        <section class="c-renew" aria-label="Renewal">
+            <div class="c-renew__top">
+                <template lwc:if={leaf.whole}>
+                    <div class="c-renew__leaf" aria-hidden="true">
+                        <span class="c-renew__month">{leaf.month}</span>
+                        <span class="c-renew__day">{leaf.day}</span>
+                        <span class="c-renew__year">{leaf.year}</span>
+                    </div>
+                </template>
+                <div class="c-renew__main">
+                    <p class="c-renew__name"><span class="c-renew__title">{block.title}</span><span class="c-renew__tag">{tag}</span></p>
+                    <p class="c-renew__when">{renewsOn}</p>
+                    <template lwc:if={block.latest}><p class="c-renew__left">{block.latest}</p></template>
+                </div>
+            </div>
+            <template lwc:if={hasFacts}>
+                <dl class="c-renew__facts">
+                    <template for:each={facts} for:item="fact">
+                        <div key={fact.key} class="c-renew__fact"><dt>{fact.label}</dt><dd>{fact.figure}</dd></div>
+                    </template>
+                </dl>
+            </template>
+            <template lwc:if={footnote}>
+                <p class="c-renew__note">{footnote}</p>
+            </template>
+            <button type="button" class="c-link c-renew__open" onclick={handleOpen}>{block.linkLabel}</button>
+        </section>
+    </template>
+
+    <!-- Claim: where it stands, what happened last, what happens next. -->
+    <template lwc:if={is.claim}>
+        <section class="c-status" aria-label="Claim status">
+            <header class="c-status__head">
+                <span class="c-status__name">
+                    <span class="c-status__tag">{block.tag}</span>
+                    <span class="c-status__title">{block.title}</span>
+                </span>
+                <span class={chipClass}>{block.chip}</span>
+            </header>
+            <div class="c-progress" role="img" aria-label={stepLabel}>
+                <template for:each={steps} for:item="step">
+                    <span key={step.key} class={step.className}></span>
+                </template>
+            </div>
+            <p class="c-progress__label">{stepLabel}</p>
+            <ol class="c-status__events">
+                <li class="c-status__event c-status__event_done">
+                    <span class="c-status__when">Latest</span>
+                    <span class="c-status__what">{latest}</span>
+                </li>
+                <template lwc:if={next}>
+                    <li class="c-status__event">
+                        <span class="c-status__when">Next</span>
+                        <span class="c-status__what">{next}</span>
+                    </li>
+                </template>
+            </ol>
+            <template lwc:if={hasFacts}>
+                <dl class="c-status__facts">
+                    <template for:each={facts} for:item="fact">
+                        <div key={fact.key} class="c-status__fact"><dt>{fact.label}</dt><dd>{fact.figure}</dd></div>
+                    </template>
+                </dl>
+            </template>
+            <button type="button" class="c-link c-status__open" onclick={handleOpen}>{block.linkLabel}</button>
+        </section>
+    </template>
+
+    <!-- Coverage: a checked list with each limit at the right. -->
+    <template lwc:if={is.coverage}>
+        <section class="c-cover" aria-label="What is covered">
+            <p class="c-cover__head"><span class="c-cover__title">{block.title}</span><span class="c-cover__tag">{tag}</span></p>
+            <ul class="c-cover__rows">
+                <template for:each={rows} for:item="row">
+                    <li key={row.key} class="c-cover__row">
+                        <lightning-icon class="c-cover__check" icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                        <span class="c-cover__main">
+                            <span class="c-cover__label">{row.label}</span>
+                            <template lwc:if={row.sub}><span class="c-cover__sub">{row.sub}</span></template>
+                        </span>
+                        <template lwc:if={row.figure}>
+                            <span class="c-cover__figure">
+                                <span class="c-cover__amount">{row.figure}</span>
+                                <span class="c-cover__per">{row.figureSub}</span>
+                            </span>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+            <template lwc:if={footnote}>
+                <p class="c-cover__note">{footnote}</p>
+            </template>
+            <button type="button" class="c-link c-cover__open" onclick={handleOpen}>{block.linkLabel}</button>
+        </section>
+    </template>
+
+    <!-- Note: one thing worth knowing, with a link to it. -->
+    <template lwc:if={is.note}>
+        <aside class="c-slip">
+            <p class="c-slip__kind">{block.kind}</p>
+            <p class="c-slip__title">{block.title}</p>
+            <p class="c-slip__facts">
+                <span class="c-slip__fact">{tag}</span>
+                <template lwc:if={sub}><span class="c-slip__fact">{sub}</span></template>
+                <template lwc:if={block.chip}><span class={chipClass}>{block.chip}</span></template>
+            </p>
+            <button type="button" class="c-link c-slip__open" onclick={handleOpen}>{block.linkLabel}</button>
+        </aside>
+    </template>
+
+    <!-- Text: words of Claude's own, with bold terms and lists. -->
+    <template lwc:if={is.text}>
+        <div class="c-words">
+            <template for:each={parts} for:item="part">
+                <template lwc:if={part.isList}>
+                    <template lwc:if={part.isBulleted}>
+                        <ul key={part.key} class="c-words__list">
+                            <template for:each={part.items} for:item="item">
+                                <li key={item.key}>
+                                    <template for:each={item.runs} for:item="run"><span key={run.key} class={run.className}>{run.text}</span></template>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template lwc:else>
+                        <ol key={part.key} class="c-words__list c-words__list_numbered">
+                            <template for:each={part.items} for:item="item">
+                                <li key={item.key}>
+                                    <template for:each={item.runs} for:item="run"><span key={run.key} class={run.className}>{run.text}</span></template>
+                                </li>
+                            </template>
+                        </ol>
+                    </template>
+                </template>
+                <template lwc:else>
+                    <p key={part.key} class="c-words__text">
+                        <template for:each={part.runs} for:item="run"><span key={run.key} class={run.className}>{run.text}</span></template>
+                    </p>
+                </template>
+            </template>
+        </div>
+    </template>
+</template>

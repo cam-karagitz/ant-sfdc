@@ -1,0 +1,37 @@
+<template>
+    <lightning-modal-body>
+        <div class="c-viewer">
+            <template lwc:if={hasPhotos}>
+                <header class="c-viewer__head">
+                    <h3 class="c-viewer__name">{photo.displayName}</h3>
+                    <p class="c-viewer__meta">{photo.kindLabel}, {photo.sizeLabel}</p>
+                </header>
+                <c-antsurance-carousel label="Photos sent with this message" per-view="1" onslidechange={handleSlide} lwc:ref="carousel">
+                    <template for:each={photos} for:item="item">
+                        <div key={item.id} class="c-viewer__slide">
+                            <img class="c-viewer__photo" src={item.previewUrl} alt={item.displayName} />
+                        </div>
+                    </template>
+                </c-antsurance-carousel>
+            </template>
+            <template lwc:if={hasDocuments}>
+                <section class="c-viewer__docs">
+                    <h3 class="c-viewer__docs-title">{documentsTitle}</h3>
+                    <ul class="c-viewer__doc-list">
+                        <template for:each={documents} for:item="item">
+                            <li key={item.id} class="c-viewer__doc">
+                                <lightning-icon icon-name="doctype:pdf" size="small" alternative-text="PDF"></lightning-icon>
+                                <span class="c-viewer__doc-name">{item.displayName}</span>
+                                <span class="c-viewer__doc-size">{item.sizeLabel}</span>
+                            </li>
+                        </template>
+                    </ul>
+                    <p class="c-viewer__doc-text">Claude reads every page of a PDF. The chat keeps no copy to show here.</p>
+                </section>
+            </template>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Close" onclick={handleClose}></lightning-button>
+    </lightning-modal-footer>
+</template>

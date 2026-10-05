@@ -1,0 +1,237 @@
+/* A person at a glance, laid out like a contact card. Brand values are fixed on purpose so it
+   keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #4c5c35;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-person {
+    padding: 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+}
+
+.c-person__head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.c-person__avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: var(--ants-clay-deep);
+    color: #fff;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.c-person__titles {
+    min-width: 0;
+}
+
+/* A name and a role are shown whole: they wrap on a narrow card and are never cut with dots. */
+.c-person__name {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.c-person__role {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+}
+
+/* "at Reyes Household" moves to the next line as one piece, so the customer's name is not split. */
+/* The space before "at" sits after the role, so when "at ..." starts a new line it starts flush. */
+.c-person__role-text {
+    margin-right: 0.25em;
+}
+
+.c-person__at {
+    display: inline-block;
+}
+
+.c-person__role a {
+    color: var(--ants-clay-dark);
+}
+
+.c-person__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0.875rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-person__tag {
+    padding: 0.0625rem 0.625rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* Ways to reach them, the preferred one picked out. */
+.c-reach {
+    margin: 1rem 0 0;
+    padding: 0.25rem 0.875rem;
+    border-radius: 1rem;
+    background: var(--ants-ivory);
+    list-style: none;
+}
+
+.c-reach__way {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.625rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--ants-line);
+    font-size: 0.875rem;
+}
+
+.c-reach__way:last-child {
+    border-bottom: 0;
+}
+
+/* A phone number or an email in full. When "Prefers this" does not fit beside it, the chip drops under. */
+.c-reach__value {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--ants-ink);
+    overflow-wrap: anywhere;
+}
+
+.c-reach__way_preferred .c-reach__value {
+    font-weight: 600;
+}
+
+.c-reach__preferred {
+    flex: none;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-person__subhead {
+    margin: 1.125rem 0 0.5rem;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-role {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.75rem;
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-role:hover,
+.c-role:focus-visible {
+    border-color: var(--ants-clay-deep);
+    color: var(--ants-ink);
+    text-decoration: none;
+}
+
+.c-role__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+    background: var(--ants-clay-tint);
+}
+
+.c-role__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+}
+
+.c-role__line {
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-role__number {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-role__role {
+    flex: none;
+    max-width: 50%;
+    overflow: hidden;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-person__error {
+    margin: 0;
+    color: var(--ants-clay-dark);
+}
+
+.c-person__loading {
+    position: relative;
+    min-height: 10rem;
+}
+
+/* How many policies the person is on. The policies themselves are a table in the page's main column. */
+.c-person__count {
+    margin: 1rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--ants-line, #e8e6dc);
+    font-size: 0.8125rem;
+    color: var(--ants-muted, #66645e);
+    text-wrap: pretty;
+}

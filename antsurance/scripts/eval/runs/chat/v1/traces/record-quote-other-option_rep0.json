@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Quote record \"Standard deductible\" open (object Quote, Id 0Q0aj000003aZgnCAE). \"This\", \"here\" and \"this quote\" refer to that record.]\n\nHow much cheaper is the other option on this sale?"
+  },
+  {
+    "role": "assistant",
+    "content": "The other option, [Higher deductible, lower premium](/lightning/r/0Q0aj000003aZgoCAE/view), costs **$125 a year less** than this one ($1,435 vs $1,560, about 8%). To get that saving the customer takes a **$2,000 deductible** instead of $1,000. The coverage limit is $100,000 on both.\n\n| Option | Premium | Deductible |\n|---|---|---|\n| Standard deductible (this one) | $1,560 | $1,000 |\n| [Higher deductible](/lightning/r/0Q0aj000003aZgoCAE/view) | **$1,435** | **$2,000** |\n\nBoth quotes have been presented and are waiting on the customer. This quote is valid until 16 Oct."
+  }
+]

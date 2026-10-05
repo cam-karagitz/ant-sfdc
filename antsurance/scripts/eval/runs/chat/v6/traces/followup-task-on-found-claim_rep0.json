@@ -1,0 +1,41 @@
+[
+  {
+    "role": "user",
+    "content": "Which open claim has the largest outstanding reserve?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Subject, Outstanding_Reserve__c, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Outstanding_Reserve__c != null ORDER BY Outstanding_Reserve__c DESC LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Ridgeline Roofing & Solar\",\"Id\":\"001aj000041E8MiAAK\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000041E8MiAAK\",\"Outstanding_Reserve__c\":266500,\"Subject\":\"Installer fell from second-story roof\",\"CaseNumber\":\"00002569\",\"Id\":\"500aj00003jfwTtAAI\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_record",
+    "content": "{\n  \"record_id\": \"500aj00003jfwTtAAI\",\n  \"say\": \"Of all open claims, [Claim 00002569](/lightning/r/500aj00003jfwTtAAI/view) has the largest outstanding reserve at **$266,500**. It's for an installer at [Ridgeline Roofing & Solar](/lightning/r/001aj000041E8MiAAK/view) who fell from a second-story roof.\\n?> What's happened on this claim so far?\\n?> Show the top 5 open claims by reserve\\n?> Total outstanding reserve on open claims\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown: the summary card for Installer fell from second-story roof."
+  },
+  {
+    "role": "user",
+    "content": "Add a task for me to review it tomorrow."
+  },
+  {
+    "role": "tool_call",
+    "name": "propose_task",
+    "content": "{\n  \"notes\": null,\n  \"priority\": \"Normal\",\n  \"contact_id\": null,\n  \"related_record_id\": \"500aj00003jfwTtAAI\",\n  \"due_date\": \"2026-10-05\",\n  \"subject\": \"Review claim 00002569, installer fall at Ridgeline Roofing & Solar\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user as a card with Confirm and Cancel buttons. Nothing has been written. It is saved only if they press Confirm; an App note in a later message will say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Proposal cards shown: [\n  {\n    \"kind\": \"task\",\n    \"subject\": \"Review claim 00002569, installer fall at Ridgeline Roofing & Solar\",\n    \"dueDate\": \"2026-10-05\",\n    \"relatedId\": \"500aj00003jfwTtAAI\",\n    \"contactId\": null,\n    \"priority\": \"Normal\",\n    \"notes\": null\n  }\n]"
+  }
+]

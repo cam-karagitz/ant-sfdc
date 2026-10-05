@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Claim letters: the letters a claim could use now, drafted by Claude, edited and approved by the adjuster, and saved to the claim as a PDF. Nothing is sent.</description>
+    <isExposed>false</isExposed>
+    <masterLabel>Antsurance Claim Letters</masterLabel>
+</LightningComponentBundle>

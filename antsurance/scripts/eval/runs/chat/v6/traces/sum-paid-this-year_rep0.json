@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "How much have we paid out on claims with a date of loss this year?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT SUM(Paid_Amount__c) paid, COUNT(Id) n, SUM(Outstanding_Reserve__c) os FROM Case WHERE RecordType.DeveloperName = 'Claim' AND Date_of_Loss__c = THIS_YEAR\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"os\":745350.0,\"n\":46,\"paid\":422530.0}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "show_metrics",
+    "content": "{\n  \"say\": \"We've paid out **$422,530** on the 46 claims with a 2026 date of loss.\\n\\n?> Break paid claims down by line of business\\n?> Which 2026 claims have the largest reserves?\\n?> Show paid amounts by month of loss\",\n  \"tiles\": [\n    {\n      \"label\": \"Paid to date\",\n      \"value\": \"$422,530\",\n      \"note\": \"2026 dates of loss\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Claims\",\n      \"value\": \"46\",\n      \"note\": \"loss date in 2026\",\n      \"tone\": \"neutral\"\n    },\n    {\n      \"label\": \"Outstanding reserve\",\n      \"value\": \"$745,350\",\n      \"note\": \"still to be paid\",\n      \"tone\": \"watch\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown to the user under your words."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"metrics\",\n    \"tiles\": [\n      {\n        \"label\": \"Paid to date\",\n        \"value\": \"$422,530\",\n        \"note\": \"2026 dates of loss\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Claims\",\n        \"value\": \"46\",\n        \"note\": \"loss date in 2026\",\n        \"tone\": \"neutral\"\n      },\n      {\n        \"label\": \"Outstanding reserve\",\n        \"value\": \"$745,350\",\n        \"note\": \"still to be paid\",\n        \"tone\": \"watch\"\n      }\n    ]\n  },\n  {\n    \"kind\": \"next_questions\",\n    \"questions\": [\n      \"Break paid claims down by line of business\",\n      \"Which 2026 claims have the largest reserves?\",\n      \"Show paid amounts by month of loss\"\n    ]\n  }\n]"
+  }
+]

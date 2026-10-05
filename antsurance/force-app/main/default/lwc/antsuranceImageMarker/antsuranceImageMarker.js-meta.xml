@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>An image with boxes over it that a person can draw, move, resize and remove with a mouse, a finger or the keyboard. It takes an image address and a list of boxes and raises an event for each change; it holds no claim logic, so any feature can use it.</description>
+    <isExposed>false</isExposed>
+    <masterLabel>Antsurance Image Marker</masterLabel>
+</LightningComponentBundle>

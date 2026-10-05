@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Model_Year__c</fullName>
+    <description>Model year of a vehicle, or year built for a building.</description>
+    <label>Model Year or Year Built</label>
+    <length>4</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

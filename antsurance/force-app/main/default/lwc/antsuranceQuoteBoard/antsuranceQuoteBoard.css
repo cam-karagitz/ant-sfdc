@@ -1,0 +1,306 @@
+@import 'c/antsuranceUiStyles';
+
+/* Quotes side by side like pricing options, the accepted one picked out with a green edge.
+   Brand values are fixed on purpose so the board keeps its look under any org theme. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-stone: #b0aea5;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive: #a9bd8b;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.c-board {
+    padding: 1.125rem 1.25rem 1.25rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1.25rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+}
+
+.c-board__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.875rem;
+}
+
+.c-board__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-board__sub {
+    margin: 0;
+    overflow: hidden;
+    font-size: 0.8125rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-board__empty {
+    margin: 0;
+    padding: 1.5rem 1rem;
+    border: 1px dashed var(--ants-stone);
+    border-radius: 1rem;
+    color: var(--ants-muted);
+    text-align: center;
+}
+
+.c-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-option {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: #fff;
+    color: var(--ants-ink);
+    text-decoration: none;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.c-option:hover,
+.c-option:focus-visible {
+    border-color: var(--ants-clay);
+    box-shadow: 0 8px 20px rgb(217 119 87 / 16%);
+    color: var(--ants-ink);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* The option the customer took: a white card with a green edge, not a block of black. */
+.c-option_chosen,
+.c-option_chosen:hover,
+.c-option_chosen:focus-visible {
+    border-color: #788c5d;
+    background: #fff;
+    color: var(--ants-ink);
+    box-shadow: inset 0 0 0 1px #788c5d;
+}
+
+.c-option_dead {
+    background: transparent;
+    color: var(--ants-muted);
+}
+
+.c-option__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.c-option__number {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-option__status {
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.c-option__status_waiting {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-option__status_chosen {
+    background: var(--ants-olive);
+}
+
+.c-option__name {
+    margin-top: 0.625rem;
+    overflow: hidden;
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* The option the sale's amount is based on, marked beside its quote number. */
+.c-option__pick {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-option__star {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-deep);
+}
+
+.c-option__premium {
+    margin-top: 0.5rem;
+    font-family: var(--ants-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.c-option__premium_none {
+    font-size: 1rem;
+    letter-spacing: 0;
+    color: var(--ants-muted);
+}
+
+.c-option_dead .c-option__premium {
+    text-decoration: line-through;
+}
+
+.c-option__per {
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+}
+
+.c-option__terms {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-option__term {
+    display: flex;
+    flex-direction: column;
+}
+
+.c-option__label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ants-muted);
+}
+
+.c-option__value {
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.c-option__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+}
+
+/* Says the card opens the quote. It turns clay with the card's border on hover. */
+.c-option__open {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ants-clay-dark);
+    white-space: nowrap;
+}
+
+.c-option__chevron {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-option__age {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.75rem;
+    color: var(--ants-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-option__age_stale {
+    color: var(--ants-clay-dark);
+    font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-option {
+        transition: none;
+    }
+}
+
+/* What became of the sale: bound into a policy, closed without one, or ready to bind. */
+.c-outcome {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.875rem;
+    background: var(--ants-oat, #f0eee7);
+    font-size: 0.875rem;
+}
+
+.c-outcome_won {
+    background: #e3e9d8;
+    color: #3d4a2b;
+}
+
+.c-outcome__text {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.c-outcome__title {
+    font-family: var(--ants-display);
+    font-weight: 600;
+}
+
+.c-outcome__link {
+    flex: none;
+    font-family: var(--ants-display);
+    font-weight: 600;
+    color: inherit;
+    white-space: nowrap;
+    text-decoration: underline;
+}

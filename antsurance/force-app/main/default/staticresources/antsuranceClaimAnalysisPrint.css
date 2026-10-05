@@ -1,0 +1,50 @@
+/* Printing a claim analysis report.
+   A component's own stylesheet cannot reach the page around it, so these rules are loaded as a page
+   stylesheet by the report component. When its Print button is pressed the report marks itself with
+   data-printing; on paper everything that is neither the report nor one of its ancestors is removed,
+   and the ancestors are flattened so the report runs the full width of the page and breaks across
+   pages like a document. On screen these rules do nothing. */
+@media print {
+    @page {
+        margin: 14mm 14mm 16mm;
+    }
+
+    html:has(c-antsurance-claim-analysis-report[data-printing]),
+    html:has(c-antsurance-claim-analysis-report[data-printing]) body {
+        height: auto !important;
+        overflow: visible !important;
+        background: #fff !important;
+    }
+
+    html:has(c-antsurance-claim-analysis-report[data-printing]) body *:not(:has(c-antsurance-claim-analysis-report[data-printing])):not(c-antsurance-claim-analysis-report[data-printing]):not(c-antsurance-claim-analysis-report[data-printing] *) {
+        display: none !important;
+    }
+
+    body *:has(c-antsurance-claim-analysis-report[data-printing]) {
+        display: block !important;
+        position: static !important;
+        float: none !important;
+        inset: auto !important;
+        transform: none !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        overflow: visible !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    c-antsurance-claim-analysis-report[data-printing] {
+        display: block !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

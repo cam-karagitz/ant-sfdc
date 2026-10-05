@@ -1,0 +1,730 @@
+@import 'c/antsuranceUiStyles';
+
+/* A reading desk for a broker's submission. At rest it is one quiet row that takes a drop; after a
+   reading it is a ledger: each quote question, its answer, and the line of the document it came from.
+   Brand values are fixed on purpose so the card keeps its look under any org theme. */
+:host {
+    display: block;
+    container-type: inline-size;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-tint: #faefeb;
+    --ants-olive-tint: #e3e9d8;
+    --ants-olive-ink: #3d4b2a;
+    --ants-amber-tint: #f6ecd6;
+    --ants-amber-ink: #7a5a17;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.c-intake {
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 1rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font-family: var(--ants-body);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.c-intake_dragging {
+    border: 1px dashed var(--ants-clay-deep);
+    background: var(--ants-clay-tint);
+}
+
+.c-intake__error {
+    margin: 0;
+    color: var(--ants-clay-dark);
+}
+
+.c-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    opacity: 0;
+}
+
+/* ---------- Header: what this is, and the two ways in ---------- */
+
+.c-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.c-head__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-head__title {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.c-head__intro {
+    margin: 0.0625rem 0 0;
+    color: var(--ants-muted);
+    text-wrap: pretty;
+}
+
+.c-head__actions {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid #5e5d59;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.25rem;
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease;
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+    --sds-c-icon-color-foreground-default: var(--ants-clay-dark);
+}
+
+.c-button:hover {
+    background: var(--ants-clay-tint);
+    border-color: var(--ants-clay-dark);
+}
+
+.c-button:active {
+    background: #f3ddd4;
+}
+
+.c-button:focus-visible,
+.c-link:focus-visible,
+.c-side:focus-visible,
+.c-file__remove:focus-visible,
+.c-pick:focus-visible,
+.c-field:focus-visible,
+.c-reply:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 2px;
+}
+
+.c-button_brand {
+    border-color: var(--ants-clay);
+    background: var(--ants-clay);
+    color: var(--ants-ink);
+    --slds-c-icon-color-foreground-default: var(--ants-ink);
+    --sds-c-icon-color-foreground-default: var(--ants-ink);
+}
+
+.c-button_brand:hover {
+    border-color: #cf6a49;
+    background: #cf6a49;
+}
+
+.c-button_brand:active {
+    background: #c15f40;
+}
+
+.c-button:disabled {
+    border-color: var(--ants-line);
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+    cursor: default;
+}
+
+.c-button__icon {
+    display: inline-flex;
+}
+
+.c-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ants-clay-dark);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #d9b3a4;
+    text-underline-offset: 0.1875rem;
+    cursor: pointer;
+}
+
+.c-link:hover {
+    text-decoration-color: var(--ants-clay-dark);
+}
+
+.c-link:disabled {
+    color: var(--ants-muted);
+    cursor: default;
+}
+
+.c-link_small {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* ---------- At rest ---------- */
+
+.c-rest {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.5rem 0 0 2.75rem;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-rest__caps {
+    min-width: 0;
+}
+
+.c-picks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.375rem;
+    margin: 0.625rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-pick {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.4375rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.625rem;
+    background: var(--ants-ivory);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.c-pick:hover {
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-tint);
+}
+
+.c-pick_off,
+.c-pick_off:hover {
+    border-color: var(--ants-line);
+    background: var(--ants-oat);
+    color: var(--ants-muted);
+    cursor: default;
+}
+
+.c-pick__name {
+    font-weight: 600;
+}
+
+.c-pick__detail {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0.625rem 0 0;
+    padding: 0.4375rem 0.625rem;
+    border-radius: 0.625rem;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+    --sds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+.c-notice span {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---------- The documents in this reading ---------- */
+
+.c-files {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.c-files__list {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-file {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 100%;
+    padding: 0.3125rem 0.5rem 0.3125rem 0.625rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.625rem;
+    background: var(--ants-ivory);
+    --slds-c-icon-color-foreground-default: var(--ants-muted);
+    --sds-c-icon-color-foreground-default: var(--ants-muted);
+}
+
+.c-file_read {
+    border-color: #c9d4b6;
+    background: #f3f6ec;
+    --slds-c-icon-color-foreground-default: var(--ants-olive-ink);
+    --sds-c-icon-color-foreground-default: var(--ants-olive-ink);
+}
+
+.c-file_failed {
+    border-color: #e4cf9d;
+    background: var(--ants-amber-tint);
+    --slds-c-icon-color-foreground-default: var(--ants-amber-ink);
+    --sds-c-icon-color-foreground-default: var(--ants-amber-ink);
+}
+
+.c-file__icon {
+    display: inline-flex;
+}
+
+.c-file__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+}
+
+.c-file__name {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.c-file__detail {
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+}
+
+.c-file__remove {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    cursor: pointer;
+}
+
+.c-file__remove:hover {
+    background: var(--ants-oat);
+}
+
+.c-file__spin {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 2px solid #e9c6b8;
+    border-top-color: var(--ants-clay-deep);
+    border-radius: 999px;
+    animation: c-spin 900ms linear infinite;
+}
+
+@keyframes c-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-file__spin {
+        animation: none;
+    }
+
+    .c-button {
+        transition: none;
+    }
+}
+
+.c-progress {
+    margin: 0.5rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+/* ---------- The reading ---------- */
+
+.c-result {
+    margin-top: 0.875rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-result__headline {
+    margin: 0;
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: balance;
+}
+
+.c-result__tally {
+    margin: 0.125rem 0 0.5rem;
+    color: var(--ants-muted);
+}
+
+.c-panel {
+    padding-top: 0.25rem;
+}
+
+.c-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* One question a row: what is asked, the answer to check, and the words it rests on. */
+.c-row {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(9rem, 14rem) minmax(0, 1fr);
+    align-items: start;
+    gap: 0.25rem 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-row:last-child {
+    border-bottom: 0;
+}
+
+.c-row__ask {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1875rem;
+    min-width: 0;
+}
+
+.c-row__label {
+    font-weight: 600;
+}
+
+.c-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.c-chip_read {
+    border-color: #c9d4b6;
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-chip_worked {
+    border-color: var(--ants-line);
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+}
+
+.c-chip_conflict {
+    border-color: #e4cf9d;
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_changed {
+    border-color: #e9c6b8;
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-field {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 2rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #c9c7bd;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+}
+
+/* What the business does is a sentence, so it gets two lines and is never cut. */
+.c-field_text {
+    display: block;
+    min-height: 2.875rem;
+    line-height: 1.35;
+    resize: none;
+}
+
+.c-field:hover {
+    border-color: var(--ants-clay-deep);
+}
+
+.c-row__source {
+    display: flex;
+    flex-direction: column;
+    gap: 0.0625rem;
+    min-width: 0;
+    padding-top: 0.1875rem;
+}
+
+.c-row__where {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-row__words {
+    font-style: italic;
+    text-wrap: pretty;
+}
+
+.c-row__note {
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+}
+
+.c-sides {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.125rem;
+}
+
+.c-side {
+    padding: 0.1875rem 0.625rem;
+    border: 1px solid #e4cf9d;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.c-side:hover {
+    border-color: var(--ants-amber-ink);
+    background: var(--ants-amber-tint);
+}
+
+.c-side:active {
+    background: #eedcae;
+}
+
+/* ---------- Appetite and what is missing: a lead-in on its own line, then the detail ---------- */
+
+.c-points {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.c-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--ants-line);
+}
+
+.c-point:last-child {
+    border-bottom: 0;
+}
+
+.c-point > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-point__lead {
+    margin: 0;
+    font-weight: 600;
+}
+
+.c-point__kind {
+    margin-left: 0.375rem;
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.c-point__detail,
+.c-point__ask {
+    margin: 0.0625rem 0 0;
+    max-width: 46rem;
+    text-wrap: pretty;
+}
+
+.c-point__ask {
+    color: var(--ants-clay-dark);
+}
+
+.c-empty {
+    margin: 0.5rem 0;
+    color: var(--ants-muted);
+}
+
+.c-foot {
+    margin: 0.5rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+/* ---------- The reply ---------- */
+
+.c-reply {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.625rem;
+    background: var(--ants-ivory);
+    color: var(--ants-ink);
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.c-reply__foot {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.c-reply__foot .c-foot {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+/* ---------- What each document says ---------- */
+
+.c-doc__summary {
+    margin: 0 0 0.375rem;
+    max-width: 46rem;
+    text-wrap: pretty;
+}
+
+.c-doc__notes {
+    margin: 0 0 0.375rem;
+    padding-left: 1.125rem;
+    color: var(--ants-amber-ink);
+}
+
+.c-doc__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.25rem 1rem;
+    margin: 0 0 0.375rem;
+}
+
+.c-doc__fact dt {
+    color: var(--ants-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.c-doc__fact dd {
+    margin: 0;
+}
+
+/* ---------- On to the quote ---------- */
+
+.c-foot-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.625rem;
+    padding-top: 0.625rem;
+    border-top: 1px solid var(--ants-line);
+}
+
+.c-foot-bar .c-foot {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+/* ---------- Narrow: the actions drop under the text, and a row stacks ---------- */
+
+@container (max-width: 44rem) {
+    .c-head {
+        flex-wrap: wrap;
+    }
+
+    .c-head__actions {
+        flex-basis: 100%;
+        margin-left: 2.75rem;
+    }
+
+    .c-rest {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .c-files,
+    .c-foot-bar,
+    .c-reply__foot {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .c-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .c-row__source {
+        grid-column: 1 / -1;
+    }
+}
+
+@container (max-width: 26rem) {
+    .c-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

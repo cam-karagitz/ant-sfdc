@@ -1,0 +1,349 @@
+<template>
+    <template lwc:if={isLoading}>
+        <section class="c-intake" aria-busy="true">
+            <span class="c-ui-bone c-ui-bone_title"></span>
+            <span class="c-ui-bone c-ui-bone_line"></span>
+        </section>
+    </template>
+
+    <template lwc:elseif={loadError}>
+        <section class="c-intake">
+            <p class="c-intake__error" role="alert">{loadError}</p>
+        </section>
+    </template>
+
+    <template lwc:elseif={canRead}>
+        <section class={cardClass} aria-label="Read a submission" ondragover={handleDragOver} ondragleave={handleDragLeave} ondrop={handleDrop}>
+            <header class="c-head">
+                <span class="c-ui-tile c-ui-tile_clay" aria-hidden="true">
+                    <lightning-icon icon-name="utility:upload" size="x-small"></lightning-icon>
+                </span>
+                <div class="c-head__text">
+                    <h2 class="c-head__title">Read a submission</h2>
+                    <template lwc:if={isResting}>
+                        <p class="c-head__intro">{intro}</p>
+                    </template>
+                </div>
+                <div class="c-head__actions">
+                    <template lwc:if={canAddMore}>
+                        <template lwc:if={hasRecordFiles}>
+                            <button type="button" class="c-button c-ui-button" aria-expanded={recordFilesExpanded} onclick={handleToggleRecordFiles}>{recordFilesLabel}</button>
+                        </template>
+                        <button type="button" class="c-button c-ui-button" onclick={handleBrowse}>
+                            <lightning-icon icon-name="utility:add" size="xx-small" class="c-button__icon" aria-hidden="true"></lightning-icon>
+                            Add files
+                        </button>
+                    </template>
+                    <template lwc:if={hasFiles}>
+                        <button type="button" class="c-link c-ui-button" onclick={handleStartOver} disabled={isReading}>Start over</button>
+                    </template>
+                </div>
+                <input type="file" class="c-hidden" accept={accept} multiple tabindex="-1" aria-hidden="true" onchange={handleChosen} />
+            </header>
+
+            <template lwc:if={isResting}>
+                <p class="c-rest">
+                    <span class="c-rest__caps">{capsText}</span>
+                    <template lwc:if={hasSample}>
+                        <button type="button" class="c-link c-ui-button" onclick={handleUseSample}>Use the sample submission</button>
+                    </template>
+                </p>
+            </template>
+
+            <template lwc:if={showsRecordFiles}>
+                <ul class="c-picks" aria-label="Files on this record">
+                    <template for:each={recordFiles} for:item="file">
+                        <li key={file.id}>
+                            <button type="button" class={file.className} data-id={file.id} disabled={file.isOff} onclick={handlePickRecordFile}>
+                                <span class="c-pick__name">{file.title}</span>
+                                <span class="c-pick__detail">{file.detail}</span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={notice}>
+                <p class="c-notice" role="alert">
+                    <lightning-icon icon-name="utility:info" size="xx-small" aria-hidden="true"></lightning-icon>
+                    <span>{notice}</span>
+                </p>
+            </template>
+
+            <template lwc:if={hasFiles}>
+                <div class="c-files">
+                    <ul class="c-files__list" aria-label="Documents in this reading">
+                        <template for:each={fileChips} for:item="file">
+                            <li key={file.id} class={file.className}>
+                                <template lwc:if={file.isBusy}>
+                                    <span class="c-file__spin" aria-hidden="true"></span>
+                                </template>
+                                <template lwc:else>
+                                    <lightning-icon icon-name={file.icon} size="xx-small" class="c-file__icon" aria-hidden="true"></lightning-icon>
+                                </template>
+                                <span class="c-file__text">
+                                    <span class="c-file__name">{file.name}</span>
+                                    <span class="c-file__detail">{file.detail}</span>
+                                </span>
+                                <template lwc:if={file.isFailed}>
+                                    <button type="button" class="c-link c-ui-button" data-id={file.id} title={file.error} onclick={handleRetryFile}>Try again</button>
+                                </template>
+                                <template lwc:if={file.canRemove}>
+                                    <button type="button" class="c-file__remove" data-id={file.id} aria-label={file.removeLabel} title="Remove" onclick={handleRemove}>
+                                        <lightning-icon icon-name="utility:close" size="xx-small" aria-hidden="true"></lightning-icon>
+                                    </button>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                    <template lwc:if={canStartReading}>
+                        <button type="button" class="c-button c-button_brand c-ui-button" onclick={handleRead}>
+                            <lightning-icon icon-name="utility:sparkles" size="xx-small" class="c-button__icon" aria-hidden="true"></lightning-icon>
+                            {readLabel}
+                        </button>
+                    </template>
+                </div>
+                <template lwc:if={readingLine}>
+                    <p class="c-progress" role="status">{readingLine}</p>
+                </template>
+                <template for:each={fileErrors} for:item="file">
+                    <p key={file.id} class="c-notice" role="alert">
+                        <lightning-icon icon-name="utility:warning" size="xx-small" aria-hidden="true"></lightning-icon>
+                        <span>{file.text}</span>
+                    </p>
+                </template>
+            </template>
+
+            <template lwc:if={assemblyError}>
+                <p class="c-notice" role="alert">
+                    <lightning-icon icon-name="utility:warning" size="xx-small" aria-hidden="true"></lightning-icon>
+                    <span>{assemblyError}</span>
+                </p>
+            </template>
+
+            <template lwc:if={hasResult}>
+                <div class="c-result">
+                    <p class="c-result__headline">{headline}</p>
+                    <p class="c-result__tally">{tally}</p>
+
+                    <c-antsurance-tabs label="Parts of the reading" tabs={tabs} value={tab} onselect={handleTab}></c-antsurance-tabs>
+
+                    <template lwc:if={isAnswers}>
+                        <div role="tabpanel" aria-label="Answers" class="c-panel">
+                            <ul class="c-rows">
+                                <template for:each={rows} for:item="row">
+                                    <li key={row.key} class="c-row">
+                                        <div class="c-row__ask">
+                                            <span class="c-row__label">{row.label}</span>
+                                            <span class={row.statusClass}>{row.statusLabel}</span>
+                                        </div>
+                                        <div class="c-row__answer">
+                                            <template lwc:if={row.isPick}>
+                                                <select class="c-field" data-key={row.key} aria-label={row.inputLabel} onchange={handleAnswer}>
+                                                    <template for:each={row.picks} for:item="pick">
+                                                        <option key={pick.value} value={pick.value} selected={pick.selected}>{pick.label}</option>
+                                                    </template>
+                                                </select>
+                                            </template>
+                                            <template lwc:elseif={row.isAmount}>
+                                                <input class="c-field" type="text" inputmode="numeric" data-key={row.key} aria-label={row.inputLabel} value={row.inputValue} placeholder="Not answered" onchange={handleAnswer} />
+                                            </template>
+                                            <template lwc:else>
+                                                <textarea class="c-field c-field_text" rows="2" data-key={row.key} aria-label={row.inputLabel} placeholder="Not answered" onchange={handleAnswer}>{row.inputValue}</textarea>
+                                            </template>
+                                        </div>
+                                        <div class="c-row__source">
+                                            <template lwc:if={row.isConflict}>
+                                                <span class="c-row__where">Each document's own figure. Choose one:</span>
+                                                <span class="c-sides">
+                                                    <template for:each={row.sides} for:item="side">
+                                                        <button key={side.key} type="button" class="c-side c-ui-button" data-key={row.key} data-value={side.value} title={side.words} onclick={handleSide}>
+                                                            {side.label}
+                                                        </button>
+                                                    </template>
+                                                </span>
+                                            </template>
+                                            <template lwc:elseif={row.hasSource}>
+                                                <span class="c-row__where">
+                                                    {row.where}
+                                                    <template lwc:if={row.canView}>
+                                                        <button type="button" class="c-link c-link_small c-ui-button" data-id={row.sourceFile} data-page={row.sourcePage} onclick={handleView}>{row.viewLabel}</button>
+                                                    </template>
+                                                </span>
+                                                <span class="c-row__words">{row.words}</span>
+                                                <template lwc:if={row.note}>
+                                                    <span class="c-row__note">{row.note}</span>
+                                                </template>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="c-row__where">{row.emptyText}</span>
+                                            </template>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                            <c-antsurance-step-pager total={rowCount} page-size={rowsAPage} page={page} label="quote questions" onpagechange={handlePage}></c-antsurance-step-pager>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isAppetite}>
+                        <div role="tabpanel" aria-label="Appetite" class="c-panel">
+                            <template lwc:if={hasNoAppetite}>
+                                <p class="c-empty">Nothing in these answers sends the quote to an underwriter.</p>
+                            </template>
+                            <ul class="c-points">
+                                <template for:each={referrals} for:item="item">
+                                    <li key={item.key} class="c-point">
+                                        <span class="c-ui-tile c-ui-tile_small c-ui-tile_amber" aria-hidden="true"><lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon></span>
+                                        <div>
+                                            <p class="c-point__lead">Goes to an underwriter</p>
+                                            <p class="c-point__detail">{item.reason}</p>
+                                        </div>
+                                    </li>
+                                </template>
+                                <template for:each={conditionals} for:item="item">
+                                    <li key={item.key} class="c-point">
+                                        <span class="c-ui-tile c-ui-tile_small c-ui-tile_amber" aria-hidden="true"><lightning-icon icon-name="utility:rules" size="xx-small"></lightning-icon></span>
+                                        <div>
+                                            <p class="c-point__lead">{item.lead}</p>
+                                            <p class="c-point__detail">{item.detail}</p>
+                                        </div>
+                                    </li>
+                                </template>
+                                <template for:each={appetiteIssues} for:item="issue">
+                                    <li key={issue.key} class="c-point">
+                                        <span class={issue.className} aria-hidden="true"><lightning-icon icon-name={issue.icon} size="xx-small"></lightning-icon></span>
+                                        <div>
+                                            <p class="c-point__lead">{issue.title}</p>
+                                            <p class="c-point__detail">{issue.detail}</p>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                            <p class="c-foot">The first lines are Antsurance's own referral rules, applied to the answers. Claude advises and the underwriter decides.</p>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isMissing}>
+                        <div role="tabpanel" aria-label="Missing" class="c-panel">
+                            <template lwc:if={isAdviceLoading}>
+                                <p class="c-progress" role="status">Claude is comparing the documents and what we hold on the customer.</p>
+                            </template>
+                            <template lwc:if={isAdviceFailed}>
+                                <p class="c-notice" role="alert">
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" aria-hidden="true"></lightning-icon>
+                                    <span>{adviceError}</span>
+                                    <button type="button" class="c-link c-ui-button" onclick={handleAdviseAgain}>Try again</button>
+                                </p>
+                            </template>
+                            <template lwc:if={hasNothingMissing}>
+                                <p class="c-empty">Nothing is missing and the documents agree.</p>
+                            </template>
+                            <ul class="c-points">
+                                <template lwc:if={isAdviceReady}>
+                                    <template for:each={shownMissing} for:item="issue">
+                                        <li key={issue.key} class="c-point">
+                                            <span class={issue.className} aria-hidden="true"><lightning-icon icon-name={issue.icon} size="xx-small"></lightning-icon></span>
+                                            <div>
+                                                <p class="c-point__lead">{issue.title} <span class="c-point__kind">{issue.label}</span></p>
+                                                <p class="c-point__detail">{issue.detail}</p>
+                                                <template lwc:if={issue.ask}>
+                                                    <p class="c-point__ask">Ask the broker: {issue.ask}</p>
+                                                </template>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </template>
+                                <template lwc:if={showsOpenRows}>
+                                    <template for:each={openRows} for:item="issue">
+                                        <li key={issue.key} class="c-point">
+                                            <span class={issue.className} aria-hidden="true"><lightning-icon icon-name={issue.icon} size="xx-small"></lightning-icon></span>
+                                            <div>
+                                                <p class="c-point__lead">{issue.title} <span class="c-point__kind">{issue.label}</span></p>
+                                                <p class="c-point__detail">{issue.detail}</p>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </template>
+                            </ul>
+                            <template lwc:if={isAdviceReady}>
+                                <c-antsurance-step-pager total={missingCount} page-size={issuesAPage} page={issuePage} label="things to settle" onpagechange={handleIssuePage}></c-antsurance-step-pager>
+                            </template>
+                            <template lwc:if={isAdviceStale}>
+                                <p class="c-foot">
+                                    You have changed an answer since this was written.
+                                    <button type="button" class="c-link c-link_small c-ui-button" onclick={handleAdviseAgain} disabled={isAdviceLoading}>Write it again</button>
+                                </p>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isReply}>
+                        <div role="tabpanel" aria-label="Reply to the broker" class="c-panel">
+                            <template lwc:if={isAdviceLoading}>
+                                <p class="c-progress" role="status">Claude is drafting the reply.</p>
+                            </template>
+                            <template lwc:if={isAdviceFailed}>
+                                <p class="c-notice" role="alert">
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" aria-hidden="true"></lightning-icon>
+                                    <span>{adviceError}</span>
+                                    <button type="button" class="c-link c-ui-button" onclick={handleAdviseAgain}>Try again</button>
+                                </p>
+                            </template>
+                            <template lwc:if={isAdviceReady}>
+                                <textarea class="c-reply" readonly aria-label="Draft reply to the broker" rows="11">{replyText}</textarea>
+                                <div class="c-reply__foot">
+                                    <p class="c-foot">A draft for you to send from your own email. Nothing is sent from here.</p>
+                                    <template lwc:if={isAdviceStale}>
+                                        <button type="button" class="c-link c-ui-button" onclick={handleAdviseAgain} disabled={isAdviceLoading}>Write it again</button>
+                                    </template>
+                                    <button type="button" class="c-button c-ui-button" onclick={handleCopy}>
+                                        <lightning-icon icon-name="utility:copy" size="xx-small" class="c-button__icon" aria-hidden="true"></lightning-icon>
+                                        {copyLabel}
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isDocuments}>
+                        <div role="tabpanel" aria-label="Documents" class="c-panel">
+                            <template for:each={documents} for:item="document">
+                                <c-antsurance-accordion key={document.id} label={document.name} count={document.count} summary={document.line} icon={document.icon}>
+                                    <p class="c-doc__summary">{document.summary}</p>
+                                    <template lwc:if={document.hasNotes}>
+                                        <ul class="c-doc__notes">
+                                            <template for:each={document.notes} for:item="note">
+                                                <li key={note.key}>{note.text}</li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:if={document.hasFacts}>
+                                        <dl class="c-doc__facts">
+                                            <template for:each={document.facts} for:item="fact">
+                                                <div key={fact.key} class="c-doc__fact">
+                                                    <dt>{fact.label}</dt>
+                                                    <dd>{fact.value}</dd>
+                                                </div>
+                                            </template>
+                                        </dl>
+                                    </template>
+                                    <template lwc:if={document.canView}>
+                                        <button type="button" class="c-link c-link_small c-ui-button" data-id={document.id} onclick={handleView}>Open the document</button>
+                                    </template>
+                                </c-antsurance-accordion>
+                            </template>
+                        </div>
+                    </template>
+
+                    <footer class="c-foot-bar">
+                        <p class="c-foot">{footNote}</p>
+                        <template lwc:if={canQuote}>
+                            <button type="button" class="c-button c-button_brand c-ui-button" disabled={quoteDisabled} onclick={handleOpenQuote}>Open the quote with these answers</button>
+                        </template>
+                    </footer>
+                </div>
+            </template>
+        </section>
+    </template>
+</template>

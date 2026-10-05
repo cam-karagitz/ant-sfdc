@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Opportunity</entityName>
+    <fieldName>StageName</fieldName>
+    <masterLabel>Policy Sale Path</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>Line_of_Business__c</fieldNames>
+        <fieldNames>Amount</fieldNames>
+        <fieldNames>CloseDate</fieldNames>
+        <info>Check the submission is complete: applicant details, prior coverage and loss history.</info>
+        <picklistValueName>Submission Received</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Line_of_Business__c</fieldNames>
+        <fieldNames>Amount</fieldNames>
+        <info>Underwriting is assessing the risk. Chase any missing information and answer their questions quickly.</info>
+        <picklistValueName>Underwriting Review</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Amount</fieldNames>
+        <fieldNames>CloseDate</fieldNames>
+        <info>The quote is with the customer or their agent. Walk them through coverage, limits and deductibles.</info>
+        <picklistValueName>Quote Issued</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>CloseDate</fieldNames>
+        <fieldNames>Policy__c</fieldNames>
+        <info>The customer wants to proceed. Collect the first payment and signed application, then bind.</info>
+        <picklistValueName>Bind Requested</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <fieldNames>Policy__c</fieldNames>
+        <info>Coverage is bound. Link the policy and hand over to service.</info>
+        <picklistValueName>Bound</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>We declined the risk or the customer went elsewhere. Record why.</info>
+        <picklistValueName>Declined</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Policy_Sale</recordTypeName>
+</PathAssistant>

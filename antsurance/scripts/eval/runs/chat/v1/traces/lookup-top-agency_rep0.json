@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "Which agency produced the most in-force policies?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Producer__c, Producer__r.Name, COUNT(Id) cnt, SUM(Annual_Premium__c) prem FROM Policy__c WHERE Status__c IN ('Active','Pending Renewal') GROUP BY Producer__c, Producer__r.Name ORDER BY COUNT(Id) DESC LIMIT 10\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"prem\":1147109.0,\"cnt\":61,\"Name\":\"Lakefront Brokerage Partners\",\"Producer__c\":\"001aj000040sVmOAAU\"},{\"prem\":193332.0,\"cnt\":54,\"Name\":null,\"Producer__c\":null},{\"prem\":312598.0,\"cnt\":39,\"Name\":\"Prairie State Insurance Agency\",\"Producer__c\":\"001aj000040sVmNAAU\"},{\"prem\":194701.0,\"cnt\":35,\"Name\":\"Driftless Insurance Group\",\"Producer__c\":\"001aj000040sVmPAAU\"}],\"truncated\":false,\"rowCount\":4}"
+  },
+  {
+    "role": "assistant",
+    "content": "[Lakefront Brokerage Partners](/lightning/r/001aj000040sVmOAAU/view) produced the most, with **61** in-force policies worth **$1,147,109** in annual premium. That's about 62% of all in-force premium.\n\n| Agency | In-force policies | Annual premium |\n|---|---|---|\n| [Lakefront Brokerage Partners](/lightning/r/001aj000040sVmOAAU/view) | 61 | $1,147,109 |\n| [Prairie State Insurance Agency](/lightning/r/001aj000040sVmNAAU/view) | 39 | $312,598 |\n| [Driftless Insurance Group](/lightning/r/001aj000040sVmPAAU/view) | 35 | $194,701 |\n| No agency listed | 54 | $193,332 |\n\nThe 54 policies with no agency listed are probably direct business, but the records don't say."
+  }
+]

@@ -1,0 +1,130 @@
+<template>
+    <template lwc:if={isVisible}>
+        <article class="c-review" aria-labelledby="c-review-title">
+            <header class="c-review__head">
+                <h2 id="c-review-title" class="c-review__title">Underwriting review</h2>
+                <span class={statusClass}>{statusLabel}</span>
+            </header>
+
+            <!-- Stacked in a narrow column. Given room, the reason, the recommendation, the conditions and
+                 the decision sit on the left, and the memo's points and open questions on the right. -->
+            <template lwc:if={showNarrowTabs}>
+                <c-antsurance-tabs class="c-review__tabs" label="Parts of the review" tabs={narrowTabs} value={chosenNarrowTab} onselect={handleNarrowTab}></c-antsurance-tabs>
+            </template>
+            <div class={bodyClass}>
+                <template lwc:if={hasReasons}>
+                    <section class="c-review__block c-review__why">
+                        <h3 class="c-review__eyebrow">Why it was referred</h3>
+                        <ul class="c-review__reasons">
+                            <template for:each={reasons} for:item="reason">
+                                <li key={reason.key} class="c-review__reason">
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Referral reason" class="c-review__flag"></lightning-icon>
+                                    <span>{reason.text}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+
+                <section class="c-review__block c-review__summary" aria-live="polite">
+                    <template lwc:if={isDrafting}>
+                        <h3 class="c-review__eyebrow">Claude is reading the file</h3>
+                        <p class="c-review__muted">The quote, its answers, and this customer's policies and claims.</p>
+                        <div class="c-review__skeleton" aria-hidden="true">
+                            <span class="c-review__bar c-review__bar_wide"></span>
+                            <span class="c-review__bar"></span>
+                            <span class="c-review__bar c-review__bar_short"></span>
+                        </div>
+                    </template>
+                    <template lwc:elseif={memo}>
+                        <h3 class="c-review__eyebrow">Claude recommends</h3>
+                        <p class="c-review__recommendation">{memo.recommendation}</p>
+                        <p class="c-review__headline">{headline}</p>
+                        <p class="c-review__meta">
+                            Drafted by Claude, {writtenLabel}.
+                            <template lwc:if={canDecide}>
+                                <button type="button" class="c-review__link" onclick={handleDraft}>Redraft</button>
+                            </template>
+                        </p>
+                    </template>
+                    <template lwc:elseif={canDecide}>
+                        <h3 class="c-review__eyebrow">Underwriting memo</h3>
+                        <p class="c-review__muted">Claude can read the file and draft a memo with a recommendation.</p>
+                        <lightning-button variant="brand" label="Draft a memo with Claude" icon-name="utility:sparkles" onclick={handleDraft}></lightning-button>
+                    </template>
+                    <template lwc:if={errorMessage}>
+                        <p class="c-review__error" role="alert">{errorMessage}</p>
+                    </template>
+                </section>
+
+                <template lwc:if={hasDetail}>
+                    <div class="c-review__detail">
+                        <template lwc:if={hasPoints}>
+                            <section class="c-review__block c-review__reading">
+                                <dl class="c-review__points">
+                                    <template for:each={shownPoints} for:item="point">
+                                        <div key={point.key} class="c-review__point">
+                                            <dt class="c-review__point-label">{point.label}</dt>
+                                            <dd class="c-review__point-detail">{point.detail}</dd>
+                                        </div>
+                                    </template>
+                                </dl>
+                                <c-antsurance-step-pager total={points.length} page-size={pointsShown} page={pointsPage} label="points in the memo" onpagechange={handlePointsPage}></c-antsurance-step-pager>
+                            </section>
+                        </template>
+                        <template lwc:if={questionsOnRight}>
+                            <section class="c-review__block c-review__open">
+                                <h3 class="c-review__eyebrow">Still to find out</h3>
+                                <ul class="c-review__list">
+                                    <template for:each={questions} for:item="question">
+                                        <li key={question.key} class="c-review__list-item">
+                                            <lightning-icon icon-name="utility:help" size="xx-small" alternative-text="Open question" class="c-review__ask"></lightning-icon>
+                                            <span>{question.text}</span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </section>
+                        </template>
+                    </div>
+                </template>
+
+                <template lwc:if={showConditions}>
+                    <section class="c-review__block c-review__conditions">
+                        <h3 class="c-review__eyebrow">Conditions</h3>
+                        <ul class="c-review__list">
+                            <template for:each={conditions} for:item="condition">
+                                <li key={condition.key} class="c-review__list-item">
+                                    <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="Condition" class="c-review__tick"></lightning-icon>
+                                    <span>{condition.text}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+
+                <!-- With no conditions to list, the open questions take their place beside the memo's points. -->
+                <template lwc:if={questionsOnLeft}>
+                    <section class="c-review__block c-review__open c-review__open_left">
+                        <h3 class="c-review__eyebrow">Still to find out</h3>
+                        <ul class="c-review__list">
+                            <template for:each={questions} for:item="question">
+                                <li key={question.key} class="c-review__list-item">
+                                    <lightning-icon icon-name="utility:help" size="xx-small" alternative-text="Open question" class="c-review__ask"></lightning-icon>
+                                    <span>{question.text}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+
+                <template lwc:if={canDecide}>
+                    <footer class="c-review__decide">
+                        <lightning-button variant={approveVariant} label="Approve" data-decision="Approved" disabled={isBusy} onclick={handleDecide}></lightning-button>
+                        <lightning-button variant={conditionsVariant} label="Approve with conditions" data-decision="Approved with Conditions" disabled={isBusy} onclick={handleDecide}></lightning-button>
+                        <lightning-button variant={declineVariant} label="Decline" data-decision="Declined" disabled={isBusy} onclick={handleDecide}></lightning-button>
+                    </footer>
+                </template>
+            </div>
+        </article>
+    </template>
+</template>

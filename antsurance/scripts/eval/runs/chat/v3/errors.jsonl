@@ -1,0 +1,1 @@
+{"prompt_id": "action-task-on-claim", "rep": 0, "failure_class": "fixture", "message": "the write check counted a task and a note another worker created on the same claim while the case ran (the proposal itself was correct); the check now reads the transaction's own DML count", "calls": 1, "model": "claude-opus-5-5", "at": "2026-10-03T03:55:00Z"}

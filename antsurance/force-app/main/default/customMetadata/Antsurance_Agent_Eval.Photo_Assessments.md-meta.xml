@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Photo assessments</label>
+    <protected>false</protected>
+    <values>
+        <field>Agent__c</field>
+        <value xsi:type="xsd:string">photos</value>
+    </values>
+    <values>
+        <field>Caveat__c</field>
+        <value xsi:type="xsd:string">Nine photos. The one miss was fixed and seen right on a claim, and the set was not run again after that.</value>
+    </values>
+    <values>
+        <field>Measured__c</field>
+        <value xsi:type="xsd:string">Nine cases on the sample photos: what the photo shows, whether it fits the reported loss, and whether it is usable.</value>
+    </values>
+    <values>
+        <field>Order__c</field>
+        <value xsi:type="xsd:double">1</value>
+    </values>
+    <values>
+        <field>Result__c</field>
+        <value xsi:type="xsd:string">8 of 9</value>
+    </values>
+    <values>
+        <field>Run_On__c</field>
+        <value xsi:type="xsd:date">2026-10-04</value>
+    </values>
+    <values>
+        <field>Source__c</field>
+        <value xsi:type="xsd:string">scripts/eval/photos</value>
+    </values>
+</CustomMetadata>

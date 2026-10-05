@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What commission rate do we pay our agencies?"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't answer that from the CRM. None of the agency, policy or policy sale records I can read have a commission rate field, so I'd only be guessing. Your agency contracts or the finance or distribution team will have the actual rates.\n\nI can show you how much premium each agency places with us, broken down by agency or line of business, if that's useful."
+  }
+]

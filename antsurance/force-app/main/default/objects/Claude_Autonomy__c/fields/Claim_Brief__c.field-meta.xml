@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Claim_Brief__c</fullName>
+    <description>Briefs on open claims. One of auto, approve or off.</description>
+    <label>Claim Brief</label>
+    <length>10</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

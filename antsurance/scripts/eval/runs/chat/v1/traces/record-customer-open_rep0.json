@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Household record \"Okafor Household\" open (object Account, Id 001aj000040sVmRAAU). \"This\", \"here\" and \"this household\" refer to that record.]\n\nWhat is open here?"
+  },
+  {
+    "role": "assistant",
+    "content": "The Okafor Household has **2 open cases**:\n\n| Case | Type | Status | Handler | Reported |\n|---|---|---|---|---|\n| [00002118](/lightning/r/500aj00003jKuVeAAK/view): Burst pipe flooded finished basement | Claim (High) | Under Investigation | Marcus Lindahl | 22 Sep |\n| [00002168](/lightning/r/500aj00003jKuWSAA0/view): Lower collision deductible to $250 | Service request | New | Bridget Castillo | 30 Sep |\n\n- **Claim:** **$40,000** reserve is still outstanding after a **$5,000** advance. Drying is finished. Marcus is waiting on the mitigation invoice and the contractor's rebuild estimate.\n- **Service request:** Bridget quoted **+$86 a year** for the lower deductible and emailed Amara the comparison on 1 Oct. She's waiting to hear back."
+  }
+]

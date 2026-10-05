@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Days_to_Renewal__c</fullName>
+    <description>Days until the current term expires. Negative once it has passed.</description>
+    <label>Days Left</label>
+    <formula><![CDATA[Expiration_Date__c - TODAY()]]></formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <unique>false</unique>
+    <type>Number</type>
+</CustomField>

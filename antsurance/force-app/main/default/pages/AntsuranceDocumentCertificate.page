@@ -1,0 +1,210 @@
+<apex:page controller="AntsuranceDocumentCertificateController" renderAs="{!IF($CurrentPage.parameters.preview == '1', null, 'pdf')}" applyHtmlTag="false" applyBodyTag="false" showHeader="false"
+    sidebar="false" standardStylesheets="false" docType="html-5.0" readOnly="true">
+<!--
+    Antsurance certificate of insurance for a commercial customer, printed as a US Letter PDF:
+    /apex/AntsuranceDocumentCertificate?id=<Policy__c or Account Id>&holder=<name>&holderAddress=<address on one line>
+    (add &download=1 to save it instead of viewing it). Without a holder it is made out "To whom it may concern".
+
+    The layout and wording are Antsurance's own; this is not an industry standard form. The shared print
+    styles are in the antsuranceDocumentStyles static resource.
+-->
+<html class="{!IF($CurrentPage.parameters.preview == '1', 'preview', 'print')}">
+<head>
+<apex:stylesheet value="{!$Resource.antsuranceDocumentStyles}"/>
+<style type="text/css">
+    .statement { margin-top: 12pt; }
+    .statement div { white-space: nowrap; }
+
+    /* One policy: a row naming it, then a row for each limit. */
+    .policy { page-break-inside: avoid; }
+    .policy td { padding: 3pt 8pt 3pt 8pt; white-space: nowrap; }
+    .policy .named td { padding: 7pt 8pt 5pt 8pt; border-top: 0.75pt solid #e8e6dc; background-color: #f0eee7; }
+    .policy .named .type { font-size: 9pt; font-weight: bold; }
+    .policy td.limit { padding-left: 20pt; }
+    .policy td.basis { color: #66645e; }
+    .policy td.amount { text-align: right; font-weight: bold; }
+    .policy .last td { padding-bottom: 8pt; }
+
+    /* Holder and signature. */
+    .ending { page-break-inside: avoid; }
+    .parties { margin-top: 15pt; }
+    .parties td { padding: 9pt 12pt 10pt 12pt; }
+    .parties td.holder { background-color: #f0eee7; border-left: 3pt solid #d97757; }
+    .signature { padding-top: 4pt; font-family: Times, serif; font-style: italic; font-size: 19pt; line-height: 1.1; white-space: nowrap; }
+    .signed { padding-top: 3pt; border-top: 0.75pt solid #141413; font-size: 7.5pt; color: #66645e; white-space: nowrap; }
+    .closing .label { padding-bottom: 2pt; }
+</style>
+</head>
+<body>
+    <div class="footer">
+        <table>
+            <tr>
+                <td style="width: 255pt;">Antsurance Insurance Company, a fictional insurer used for demonstrations</td>
+                <td style="width: 150pt; text-align: center;"><apex:outputText value="{!documentLabel}"/></td>
+                <td style="width: 120pt; text-align: right;">Page <span class="page-number"></span> of <span class="page-count"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="band">
+        <tr>
+            <td style="width: 180pt;"><apex:image url="{!$Resource.antsuranceLockupOnWhite}" width="162" height="24" alt="Antsurance"/></td>
+            <td style="width: 281pt; text-align: right;">
+                <div class="band-title">CERTIFICATE OF INSURANCE</div>
+                <div class="band-line">Liability coverage in force</div>
+            </td>
+        </tr>
+    </table>
+    <table><tr><td class="rule">&#160;</td></tr></table>
+
+    <apex:outputPanel layout="none" rendered="{!NOT(found)}">
+        <div class="missing"><apex:outputText value="{!notice}"/></div>
+        <div class="muted">Open the certificate from a commercial policy or customer, and check that you have access to it.</div>
+    </apex:outputPanel>
+
+    <apex:outputPanel layout="none" rendered="{!found}">
+        <table class="facts">
+            <tr>
+                <td style="width: 238pt;">
+                    <div class="label">Certificate number</div>
+                    <div class="value"><apex:outputText value="{!certificateNumber}"/></div>
+                </td>
+                <td class="divide" style="width: 239pt;">
+                    <div class="label">Date issued</div>
+                    <div class="value"><apex:outputText value="{!issueDate}"/></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="label">Insured</div>
+                    <div class="value"><apex:outputText value="{!insuredName}"/></div>
+                    <apex:repeat value="{!insuredLines}" var="line">
+                        <div class="value-line"><apex:outputText value="{!line}"/></div>
+                    </apex:repeat>
+                </td>
+                <td class="divide">
+                    <div class="label">Producer</div>
+                    <div class="value"><apex:outputText value="{!producerName}"/></div>
+                    <apex:repeat value="{!producerLines}" var="line">
+                        <div class="value-line"><apex:outputText value="{!line}"/></div>
+                    </apex:repeat>
+                </td>
+            </tr>
+        </table>
+        <table class="strip">
+            <tr>
+                <td style="width: 238pt;"><div class="label">Insurer</div><div class="value">Antsurance Insurance Company</div></td>
+                <td class="divide" style="width: 239pt;"><div class="label">Operations covered</div><div class="value"><apex:outputText value="{!operations}"/></div></td>
+            </tr>
+        </table>
+
+        <div class="statement">
+            <apex:repeat value="{!statementLines}" var="line"><div><apex:outputText value="{!line}"/></div></apex:repeat>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Insurance in force</div>
+            <table class="grid">
+                <tr>
+                    <th style="width: 215pt;">Type of insurance and limits</th>
+                    <th style="width: 100pt;">Policy number</th>
+                    <th class="right" style="width: 162pt;">Policy period</th>
+                </tr>
+            </table>
+        </div>
+        <apex:repeat value="{!policies}" var="policy">
+            <table class="{!policy.blockClass}">
+                <tr class="named">
+                    <td class="type" style="width: 215pt;"><apex:outputText value="{!policy.insuranceType}"/></td>
+                    <td style="width: 100pt;"><apex:outputText value="{!policy.policyNumber}"/></td>
+                    <td class="right" style="width: 162pt;"><apex:outputText value="{!policy.period}"/></td>
+                </tr>
+                <apex:repeat value="{!policy.limits}" var="limit">
+                    <tr>
+                        <td class="limit"><apex:outputText value="{!limit.label}"/></td>
+                        <td class="basis"><apex:outputText value="{!limit.basis}"/></td>
+                        <td class="amount"><apex:outputText value="{!limit.amount}"/></td>
+                    </tr>
+                </apex:repeat>
+                <tr class="last"><td colspan="3" style="padding-top: 0; font-size: 1pt; line-height: 1pt;">&#160;</td></tr>
+            </table>
+        </apex:repeat>
+
+        <div class="{!endingClass}">
+            <table class="parties">
+                <tr>
+                    <td class="holder" style="width: 247pt;">
+                        <div class="label">Certificate holder</div>
+                        <div class="value"><apex:outputText value="{!holderName}"/></div>
+                        <apex:repeat value="{!holderLines}" var="line">
+                            <div class="value-line"><apex:outputText value="{!line}"/></div>
+                        </apex:repeat>
+                    </td>
+                    <td style="width: 12pt;">&#160;</td>
+                    <td style="width: 191pt;">
+                        <div class="label">Authorized representative</div>
+                        <div class="signature">Hugh Mercer</div>
+                        <div class="signed">Hugh Mercer, Commercial Underwriting, Antsurance</div>
+                    </td>
+                </tr>
+            </table>
+            <div class="closing">
+                <div class="label">If a policy is cancelled</div>
+                <apex:repeat value="{!cancellationLines}" var="line"><div><apex:outputText value="{!line}"/></div></apex:repeat>
+            </div>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!$CurrentPage.parameters.preview == '1'}">
+    <!-- On-screen preview only: tells the Documents tab how tall the sheet is, so it can show all of it, and
+         where the sheet can be cut for a first look without slicing a row: the bottom of each table row
+         that no line of text crosses. Written without less-than signs and ampersands, which this page's markup would take for its own. -->
+    <script type="text/javascript">
+        (function () {
+            function folds() {
+                var all = document.body.getElementsByTagName('*');
+                var rows = document.body.getElementsByTagName('tr');
+                var lines = [];
+                var cuts = [];
+                var index, other, box, cut, crossed;
+                for (index = 0; all.length > index; index++) {
+                    if (all[index].children.length === 0) {
+                        if (all[index].textContent.replace(/\s/g, '') !== '') {
+                            box = all[index].getBoundingClientRect();
+                            if (box.height > 0) {
+                                lines.push([box.top + window.pageYOffset, box.bottom + window.pageYOffset]);
+                            }
+                        }
+                    }
+                }
+                for (index = 0; rows.length > index; index++) {
+                    cut = Math.ceil(rows[index].getBoundingClientRect().bottom + window.pageYOffset);
+                    crossed = false;
+                    for (other = 0; lines.length > other; other++) {
+                        if (cut - 1 > lines[other][0]) {
+                            if (lines[other][1] > cut + 1) {
+                                crossed = true;
+                            }
+                        }
+                    }
+                    if (crossed === false) {
+                        if (cuts.indexOf(cut) === -1) {
+                            if (60 > cuts.length) {
+                                cuts.push(cut);
+                            }
+                        }
+                    }
+                }
+                return cuts;
+            }
+            function report() {
+                window.parent.postMessage({ source: 'antsurance-document', token: '{!JSENCODE($CurrentPage.parameters.previewToken)}', height: document.body.offsetHeight, folds: folds() }, '*');
+            }
+            window.addEventListener('load', report);
+            window.setTimeout(report, 400);
+            window.setTimeout(report, 1500);
+        })();
+    </script>
+    </apex:outputPanel>
+</body>
+</html>
+</apex:page>

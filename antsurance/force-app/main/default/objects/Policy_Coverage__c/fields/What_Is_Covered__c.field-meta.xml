@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>What_Is_Covered__c</fullName>
+    <description>Plain-language description of what this coverage pays for and its main exclusions. Markdown is rendered on the record page.</description>
+    <label>What Is Covered</label>
+    <length>32768</length>
+    <visibleLines>4</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

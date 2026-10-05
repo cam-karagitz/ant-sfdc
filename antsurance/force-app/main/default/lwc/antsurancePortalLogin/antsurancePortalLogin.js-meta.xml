@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>The Antsurance marks and wording around the portal's sign-in form. Place it above the form (place "head") and below it (place "foot"). It shows no data and calls nothing.</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Antsurance Portal Sign-in</masterLabel>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="place" type="String" default="head" label="Place" description="head, above the sign-in form, or foot, below it." />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

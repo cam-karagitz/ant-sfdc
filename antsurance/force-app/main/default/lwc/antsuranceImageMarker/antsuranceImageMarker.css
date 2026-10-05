@@ -1,0 +1,278 @@
+/* An image with boxes over it. Claude's boxes are a solid line in a severity colour with a round
+   number; a person's are a dashed ink line with a square letter. No fills and no glows: a hairline
+   of white inside and out keeps either readable on a dark or a bright photo.
+   Brand values are fixed on purpose so the marker keeps its look under any org theme. */
+:host {
+    display: inline-block;
+    max-width: 100%;
+    line-height: 0;
+    --ants-ink: #141413;
+    --ants-sand: #e2d3a8;
+    --ants-sand-ink: #5c5136;
+    --ants-amber: #d9a233;
+    --ants-clay-deep: #ae5f46;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    /* The tallest the image is drawn; a parent can set --ants-marker-max-height. */
+    --c-marker-max-height: var(--ants-marker-max-height, 26rem);
+}
+
+.c-marker {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    line-height: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Waiting for the picture: the frame keeps a photo's shape, so nothing below it jumps when the picture arrives. */
+.c-marker_loading {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    max-height: var(--c-marker-max-height);
+    border-radius: 0.5rem;
+    background: var(--ants-oat, #f0eee6);
+}
+
+.c-marker_loading .c-marker__img {
+    position: absolute;
+    opacity: 0;
+}
+
+/* While editing, a drag on the image draws or moves a box instead of scrolling the page. */
+.c-marker_editing {
+    touch-action: none;
+}
+
+.c-marker_drawing {
+    cursor: crosshair;
+}
+
+.c-marker__img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: var(--c-marker-max-height);
+    border-radius: 0.5rem;
+    -webkit-user-drag: none;
+}
+
+.c-marker__box {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid var(--ants-sand);
+    border-radius: 0.25rem;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.9),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.c-marker__box_moderate {
+    border-color: var(--ants-amber);
+}
+
+.c-marker__box_severe {
+    border-color: var(--ants-clay-deep);
+}
+
+/* A person's box: dashed, in ink, square at the corners. */
+.c-marker__box_person {
+    border: 2px dashed var(--ants-ink);
+    border-radius: 0;
+}
+
+.c-marker__box_draft {
+    pointer-events: none;
+}
+
+.c-marker__box_editable {
+    cursor: move;
+}
+
+.c-marker__box_choosable {
+    cursor: pointer;
+}
+
+.c-marker__box_editable:focus,
+.c-marker__box_choosable:focus {
+    outline: none;
+}
+
+/* One box is pointed at: the others step back, less so for a hover than for a choice. */
+.c-marker__box {
+    transition: opacity 120ms ease;
+}
+
+.c-marker_lit .c-marker__box:not(.c-marker__box_lit):not(.c-marker__box_selected) {
+    opacity: 0.55;
+}
+
+.c-marker_chosen .c-marker__box:not(.c-marker__box_selected):not(.c-marker__box_lit) {
+    opacity: 0.35;
+}
+
+/* The chosen box, and the focus ring: a clay line set off from the box by a band of white, so it
+   shows on any photo. */
+.c-marker__box.c-marker__box_selected,
+.c-marker__box.c-marker__box_editable:focus-visible,
+.c-marker__box.c-marker__box_choosable:focus-visible {
+    outline: 2px solid var(--ants-clay-deep);
+    outline-offset: 3px;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.9),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+/* The tag steps clear of the corner while the box has handles on it. */
+.c-marker__box_handles > .c-marker__tag {
+    top: -1.75rem;
+    left: -0.125rem;
+}
+
+/* The number or letter that ties a box to its row in the list beside the image. */
+.c-marker__tag {
+    position: absolute;
+    top: -0.625rem;
+    left: -0.625rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: var(--ants-sand);
+    color: var(--ants-sand-ink);
+    box-shadow: 0 0 0 1.5px #fff;
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    pointer-events: none;
+    /* Above every box, not only its own: another box's edge crossing a number hid the number. */
+    z-index: 1;
+}
+
+.c-marker__tag_moderate {
+    background: var(--ants-amber);
+    color: var(--ants-ink);
+}
+
+.c-marker__tag_severe {
+    background: var(--ants-clay-deep);
+    color: #fff;
+}
+
+.c-marker__tag_person {
+    border: 1.5px solid var(--ants-ink);
+    border-radius: 0.25rem;
+    background: #fff;
+    color: var(--ants-ink);
+    box-shadow: none;
+}
+
+/* Corners and edges to drag. The square is small; the area that takes the pointer is larger, for a finger. */
+.c-marker__handle {
+    position: absolute;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: -0.3125rem;
+    border: 1.5px solid var(--ants-ink);
+    border-radius: 2px;
+    background: #fff;
+}
+
+.c-marker__handle::after {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+}
+
+.c-marker__handle_nw {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize;
+}
+
+.c-marker__handle_n {
+    top: 0;
+    left: 50%;
+    cursor: ns-resize;
+}
+
+.c-marker__handle_ne {
+    top: 0;
+    left: 100%;
+    cursor: nesw-resize;
+}
+
+.c-marker__handle_e {
+    top: 50%;
+    left: 100%;
+    cursor: ew-resize;
+}
+
+.c-marker__handle_se {
+    top: 100%;
+    left: 100%;
+    cursor: nwse-resize;
+}
+
+.c-marker__handle_s {
+    top: 100%;
+    left: 50%;
+    cursor: ns-resize;
+}
+
+.c-marker__handle_sw {
+    top: 100%;
+    left: 0;
+    cursor: nesw-resize;
+}
+
+.c-marker__handle_w {
+    top: 50%;
+    left: 0;
+    cursor: ew-resize;
+}
+
+/* Read out, not shown: where a box is after a key press. */
+.c-marker__live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-marker__box {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .c-marker:not(.c-marker_editing) .c-marker__box {
+        animation: c-marker-in 240ms ease-out backwards;
+    }
+}
+
+@keyframes c-marker-in {
+    from {
+        opacity: 0;
+        transform: scale(1.06);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media print {
+    .c-marker__handle {
+        display: none;
+    }
+}

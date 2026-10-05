@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Policy Service record \"00002258: Add Sofia Reyes as a driver\" open (object Case, Id 500aj00003jLAPIAA4). \"This\", \"here\" and \"this policy service\" refer to that record.]\n\nWhich policy and customer is this request for?"
+  },
+  {
+    "role": "assistant",
+    "content": "This request is for policy [ANT-PA-204517](/lightning/r/a00aj00003jKdxtAAC/view) at [Reyes Household](/lightning/r/001aj000040t3coAAA/view). The contact on it is [Maria Reyes](/lightning/r/003aj00002T9O6DAAV/view).\n\n- **Policy:** Personal Auto, Active from 13 May 2026 to 13 May 2027\n- **Limit / deductible:** **$300,000** / **$500**\n- **Payment status:** Current"
+  }
+]

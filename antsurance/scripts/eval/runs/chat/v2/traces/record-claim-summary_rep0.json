@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002216: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jLAOcAAO). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nSummarize this claim"
+  },
+  {
+    "role": "assistant",
+    "content": "This is a **High**-severity water damage claim for the [Okafor Household](/lightning/r/001aj000040t3cpAAA/view), under homeowners policy [ANT-HO-204585](/lightning/r/a00aj00003jKdxxAAC/view). It's **Under Investigation** with Marcus Lindahl and has been open 10 days. A braided supply line to the basement bathroom failed on 21 Sep while the family was away. It damaged the flooring, the drywall up to four feet, the furnace and stored belongings.\n\n- **Coverage:** The policy was in force on the date of loss and sudden discharge is covered. The $2,500 deductible applies.\n- **Money:** Estimated loss is **$48,500** and the reserve is **$45,000**. **$5,000** has been paid as an advance, leaving **$40,000** outstanding.\n- **Status:** Drying finished on 30 Sep. The claim is waiting on the mitigation invoice and the contractor's rebuild estimate.\n- **Your tasks:** Review the mitigation invoice (due 4 Oct) and approve the rebuild estimate (due 5 Oct).\n\nThere's no SIU referral and no subrogation potential."
+  }
+]

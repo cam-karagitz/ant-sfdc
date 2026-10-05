@@ -1,0 +1,11 @@
+--- scripts/eval/runs/chat/v3/AntsuranceClaudeController.cls.txt	2026-10-02 22:45:53
++++ force-app/main/default/classes/AntsuranceClaudeController.cls	2026-10-02 22:58:29
+@@ -58,7 +58,7 @@
+         'The panel renders Markdown. Use bold for the few figures that matter, a bullet list for a short set of records, ' +
+         'and a table when comparing several records across the same fields (five columns at most, short cell values). ' +
+         'Use a heading only when an answer has distinct sections. No HTML and no images. ' +
+-        'Write dates the way people say them, such as 28 Sep or 28 Sep 2026, and money with a currency symbol and thousands separators. ' +
++        'Write dates as Oct 2, 2026, or Oct 2 when the year is plain, and money with a currency symbol, thousands separators and whole dollars unless the cents matter. ' +
+         'Do not use em dashes or en dashes anywhere, including in a task subject or a note you propose: use a comma, a colon or the word to.\n\n' +
+         'Link a record by its name whenever you mention it and have its Id, written as [Name](/lightning/r/RECORD_ID/view) with the 18-character Id, ' +
+         'so include Id (and Account.Id and similar for parents you mention) in your queries.\n\n' +

@@ -1,0 +1,28 @@
+[
+  {
+    "role": "user",
+    "content": "For the customer with the largest outstanding reserve on a single open claim, which policies do they hold?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, CaseNumber, Outstanding_Reserve__c, Account.Id, Account.Name FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false AND Outstanding_Reserve__c != null ORDER BY Outstanding_Reserve__c DESC LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account\":{\"Name\":\"Copperfield Property Management\",\"Id\":\"001aj000040t3d1AAA\"},\"RecordTypeId\":\"012aj00000Ee8urAAB\",\"AccountId\":\"001aj000040t3d1AAA\",\"Outstanding_Reserve__c\":490000.00,\"CaseNumber\":\"00002221\",\"Id\":\"500aj00003jLAOhAAO\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Line_of_Business__c, Status__c, Annual_Premium__c, Expiration_Date__c FROM Policy__c WHERE Account__c = '001aj000040t3d1AAA' ORDER BY Status__c\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":118000.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Commercial Property\",\"Name\":\"ANT-CP-205061\",\"Id\":\"a00aj00003jKdyPAAS\"},{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":31200.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"General Liability\",\"Name\":\"ANT-GL-205078\",\"Id\":\"a00aj00003jKdyQAAS\"},{\"Expiration_Date__c\":\"2027-01-07\",\"Annual_Premium__c\":12400.00,\"Status__c\":\"Active\",\"Line_of_Business__c\":\"Umbrella\",\"Name\":\"ANT-UM-205095\",\"Id\":\"a00aj00003jKdyRAAS\"}],\"truncated\":false,\"rowCount\":3}"
+  },
+  {
+    "role": "assistant",
+    "content": "That customer is [Copperfield Property Management](/lightning/r/001aj000040t3d1AAA/view). Their claim [00002221](/lightning/r/500aj00003jLAOhAAO/view) has **$490,000** outstanding, the most on any open claim. They hold three active policies, worth **$161,600** a year in total:\n\n| Policy | Line | Annual premium | Expires |\n|---|---|---|---|\n| [ANT-CP-205061](/lightning/r/a00aj00003jKdyPAAS/view) | Commercial Property | $118,000 | 7 Jan 2027 |\n| [ANT-GL-205078](/lightning/r/a00aj00003jKdyQAAS/view) | General Liability | $31,200 | 7 Jan 2027 |\n| [ANT-UM-205095](/lightning/r/a00aj00003jKdyRAAS/view) | Umbrella | $12,400 | 7 Jan 2027 |"
+  }
+]

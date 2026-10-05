@@ -1,0 +1,96 @@
+<template>
+    <div class="c-map">
+        <div class="c-map__frame">
+            <div
+                class={surfaceClass}
+                tabindex="0"
+                role="group"
+                aria-label={label}
+                aria-describedby="how"
+                onkeydown={handleKey}
+                onpointerdown={handlePointerDown}
+                onpointermove={handlePointerMove}
+                onpointerup={handlePointerUp}
+                onpointercancel={handlePointerUp}
+                ondblclick={handleDoubleClick}
+            >
+                <template lwc:if={isReady}>
+                    <div class="c-map__tiles" aria-hidden="true">
+                        <template for:each={tiles} for:item="tile">
+                            <img key={tile.key} class="c-map__tile" src={tile.url} style={tile.style} alt="" draggable="false" />
+                        </template>
+                    </div>
+                    <svg class="c-map__area" viewBox={viewBox} aria-hidden="true" focusable="false">
+                        <template lwc:if={circle}>
+                            <circle class="c-map__shade" cx={circle.x} cy={circle.y} r={circle.radius}></circle>
+                        </template>
+                        <template lwc:if={outline}>
+                            <polygon class="c-map__shade" points={outline}></polygon>
+                        </template>
+                    </svg>
+                    <template for:each={pins} for:item="pin">
+                        <button
+                            key={pin.key}
+                            type="button"
+                            class={pin.className}
+                            style={pin.style}
+                            data-key={pin.key}
+                            title={pin.label}
+                            aria-label={pin.label}
+                            aria-pressed={pin.pressed}
+                            onclick={handlePin}
+                            onpointerdown={handlePinDown}
+                        >
+                            <span class="c-pin__mark">
+                                <lightning-icon icon-name={pin.icon} size="xx-small" alternative-text=""></lightning-icon>
+                            </span>
+                            <template lwc:if={pin.isSelected}>
+                                <span class="c-pin__name">{pin.name}</span>
+                            </template>
+                        </button>
+                    </template>
+                </template>
+                <template lwc:else>
+                    <span class="c-ui-bone c-map__wait"></span>
+                </template>
+            </div>
+            <div class="c-map__tools" role="toolbar" aria-label="Map controls">
+                <button type="button" class="c-tool" title="Zoom in" aria-label="Zoom in" disabled={cannotZoomIn} onclick={handleZoomIn}>
+                    <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
+                </button>
+                <button type="button" class="c-tool" title="Zoom out" aria-label="Zoom out" disabled={cannotZoomOut} onclick={handleZoomOut}>
+                    <lightning-icon icon-name="utility:dash" size="x-small" alternative-text=""></lightning-icon>
+                </button>
+                <button type="button" class="c-tool" title="Show the whole area" aria-label="Show the whole area" onclick={handleFit}>
+                    <lightning-icon icon-name="utility:contract_alt" size="x-small" alternative-text=""></lightning-icon>
+                </button>
+            </div>
+            <a class="c-map__credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
+        </div>
+        <div class="c-map__foot">
+            <ul class="c-key" aria-label="What the markers mean">
+                <li class="c-key__item">
+                    <span class="c-key__area" aria-hidden="true"></span>
+                    The area the event crossed
+                </li>
+                <template for:each={legend} for:item="entry">
+                    <li key={entry.kind} class="c-key__item">
+                        <span class={entry.className} aria-hidden="true">
+                            <span class="c-pin__mark">
+                                <lightning-icon icon-name={entry.icon} size="xx-small" alternative-text=""></lightning-icon>
+                            </span>
+                        </span>
+                        {entry.word}
+                    </li>
+                </template>
+                <template lwc:if={hasNearby}>
+                    <li class="c-key__item">
+                        <span class="c-pin c-pin_key c-pin_near c-pin_round" aria-hidden="true"><span class="c-pin__mark"></span></span>
+                        Just outside
+                    </li>
+                </template>
+            </ul>
+            <p id="how" class="c-map__how">Drag or use the arrow keys to move. Plus and minus zoom.</p>
+        </div>
+    </div>
+</template>

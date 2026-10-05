@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002118: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jKuVeAAK). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nWhat should I do next on this claim?"
+  },
+  {
+    "role": "assistant",
+    "content": "Drying is done, so the next step is to **close out mitigation and get the rebuild estimate approved**. Marcus's 30 Sep note says both the invoice and the estimate are still outstanding.\n\n- **Review the mitigation invoice** (your task, due **4 Oct**). Check it against the **$9,500** mitigation line in the reserve.\n- **Approve the rebuild estimate** (your task, due **5 Oct**). Check it against the **$24,000** rebuild line. If neither document has arrived yet, chase the vendor and contractor first.\n- **Check the reserve.** The estimated loss is **$48,500**, but the reserve is **$45,000**. Once the invoice and estimate are in, ask Marcus whether the reserve needs raising.\n- **Furnace and contents** (**$5,500** and **$6,000**) have no estimates or inventory on file yet.\n- Remember the **$2,500 deductible** and the **$5,000** advance already paid when you work out the final payment.\n\nWhen the estimate arrives, I can prepare a move to Appraisal for you to confirm, or add a follow-up task."
+  }
+]

@@ -1,0 +1,17 @@
+<template>
+    <template lwc:if={isCase}>
+        <c-antsurance-case-summary record-id={recordId}></c-antsurance-case-summary>
+    </template>
+    <template lwc:elseif={isPolicy}>
+        <c-antsurance-policy-summary record-id={recordId}></c-antsurance-policy-summary>
+    </template>
+    <template lwc:elseif={isCustomer}>
+        <c-antsurance-customer-summary record-id={recordId}></c-antsurance-customer-summary>
+    </template>
+    <template lwc:elseif={isContact}>
+        <c-antsurance-contact-summary record-id={recordId}></c-antsurance-contact-summary>
+    </template>
+    <template lwc:elseif={isQuote}>
+        <c-antsurance-quote-summary record-id={recordId}></c-antsurance-quote-summary>
+    </template>
+</template>

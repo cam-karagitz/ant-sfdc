@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Tornado warning, Peoria</label>
+    <protected>false</protected>
+    <values>
+        <field>Area__c</field>
+        <value xsi:type="xsd:string">Peoria and Tazewell counties</value>
+    </values>
+    <values>
+        <field>Center_Latitude__c</field>
+        <value xsi:type="xsd:double">40.69</value>
+    </values>
+    <values>
+        <field>Center_Longitude__c</field>
+        <value xsi:type="xsd:double">-89.59</value>
+    </values>
+    <values>
+        <field>Claim_Rate_High__c</field>
+        <value xsi:type="xsd:double">20</value>
+    </values>
+    <values>
+        <field>Claim_Rate_Low__c</field>
+        <value xsi:type="xsd:double">5</value>
+    </values>
+    <values>
+        <field>Days_Ago__c</field>
+        <value xsi:type="xsd:double">0</value>
+    </values>
+    <values>
+        <field>Event_Date__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Footprint_Points__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Peril__c</field>
+        <value xsi:type="xsd:string">Tornado</value>
+    </values>
+    <values>
+        <field>Radius_Miles__c</field>
+        <value xsi:type="xsd:double">10</value>
+    </values>
+    <values>
+        <field>Severity_Note__c</field>
+        <value xsi:type="xsd:string">A warning was issued, no touchdown confirmed.</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">3</value>
+    </values>
+</CustomMetadata>

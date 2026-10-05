@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "How many open claims do we have right now?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Status, COUNT(Id) c, SUM(Outstanding_Reserve__c) r FROM Case WHERE RecordType.DeveloperName = 'Claim' AND IsClosed = false GROUP BY Status\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"r\":164500.0,\"c\":4,\"Status\":\"Approved\"},{\"r\":0.0,\"c\":6,\"Status\":\"New\"},{\"r\":0.0,\"c\":6,\"Status\":\"Payment Issued\"},{\"r\":365325.0,\"c\":6,\"Status\":\"Under Investigation\"},{\"r\":547250.0,\"c\":4,\"Status\":\"Appraisal\"}],\"truncated\":false,\"rowCount\":5}"
+  },
+  {
+    "role": "assistant",
+    "content": "You have **26 open claims** right now, carrying **$1,077,075** in outstanding reserve.\n\n| Status | Claims | Outstanding reserve |\n|---|---|---|\n| New | 6 | $0 |\n| Under Investigation | 6 | $365,325 |\n| Appraisal | 4 | $547,250 |\n| Approved | 4 | $164,500 |\n| Payment Issued | 6 | $0 |\n\nMost of the reserve is on the 4 claims in Appraisal."
+  }
+]

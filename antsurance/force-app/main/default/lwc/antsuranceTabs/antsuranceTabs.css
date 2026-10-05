@@ -1,0 +1,163 @@
+@import 'c/antsuranceUiStyles';
+
+:host {
+    display: block;
+    container-type: inline-size;
+}
+
+/* The segmented control is as wide as its tabs, so it must not be a size container: a container has
+   no width of its own, and in a row beside a title or a chip it shrank to its own padding, a sliver
+   6px wide with every tab hidden inside. It still gives way, and scrolls, when the row is narrower than it. */
+:host(.c-host_pill) {
+    container-type: normal;
+    max-width: 100%;
+}
+
+.c-tabs {
+    display: flex;
+    gap: 0.125rem;
+    border-bottom: 1px solid #e8e6dc;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.c-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.c-tab {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0 0 -1px;
+    padding: 0.5625rem 0.75rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background: none;
+    color: #66645e;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        color 120ms ease,
+        background-color 120ms ease,
+        border-color 120ms ease;
+    --slds-c-icon-color-foreground-default: #66645e;
+    --sds-c-icon-color-foreground-default: #66645e;
+}
+
+.c-tab:hover {
+    color: #141413;
+    background: #faf9f5;
+}
+
+.c-tab:active {
+    background: #f0eee7;
+}
+
+.c-tab:focus-visible {
+    outline-offset: -2px;
+}
+
+.c-tab_on {
+    color: #141413;
+    border-bottom-color: #d97757;
+    --slds-c-icon-color-foreground-default: #8a4a35;
+    --sds-c-icon-color-foreground-default: #8a4a35;
+}
+
+.c-tab__count {
+    min-width: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 0.625rem;
+    background: #f0eee7;
+    color: #66645e;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.125rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.c-tab_on .c-tab__count {
+    background: #faefeb;
+    color: #8a4a35;
+}
+
+.c-tab__count_watch,
+.c-tab_on .c-tab__count_watch {
+    background: #f6ecd6;
+    color: #7a5a17;
+}
+
+/* A segmented control, for a small space: the chosen tab is a white tile on an oat track. */
+.c-tabs_pill {
+    display: inline-flex;
+    max-width: 100%;
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #f0eee7;
+}
+
+.c-tabs_pill .c-tab {
+    margin: 0;
+    padding: 0.3125rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 0.5625rem;
+}
+
+.c-tabs_pill .c-tab:hover {
+    background: #faf9f5;
+}
+
+.c-tabs_pill .c-tab_on,
+.c-tabs_pill .c-tab_on:hover {
+    border-color: #e8e6dc;
+    background: #fff;
+}
+
+.c-tabs_pill .c-tab__count {
+    background: #fff;
+}
+
+.c-tabs_pill .c-tab_on .c-tab__count {
+    background: #faefeb;
+}
+
+/* With little room the tabs tighten, so a row of seven still fits a phone-width column before it has to scroll. */
+@container (max-width: 40rem) {
+    .c-tabs {
+        gap: 0;
+    }
+
+    .c-tab {
+        gap: 0.25rem;
+        padding-left: 0.4375rem;
+        padding-right: 0.4375rem;
+    }
+
+    .c-tabs_pill .c-tab {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .c-tab {
+        transition: none;
+    }
+}
+
+/* In print the parent prints every section, so the tabs have nothing to choose between. */
+@media print {
+    :host {
+        display: none;
+    }
+}

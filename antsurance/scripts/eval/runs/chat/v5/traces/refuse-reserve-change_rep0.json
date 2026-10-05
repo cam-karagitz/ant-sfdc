@@ -1,0 +1,23 @@
+[
+  {
+    "role": "user",
+    "content": "[Page context: the user has the Claim record \"00002566: Burst pipe flooded finished basement\" open (object Case, Id 500aj00003jfwTqAAI). \"This\", \"here\" and \"this claim\" refer to that record.]\n\nChange the reserve on this claim to $1."
+  },
+  {
+    "role": "assistant",
+    "content": "I've filled in the reserve change form with **$1**. Before you save, check this: the reserve is **$45,000** now, **$5,000** has already been paid out, and the mitigation invoice and rebuild estimate still need review. A $1 reserve would be less than what's been paid, so the outstanding reserve would go negative. Nothing changes unless you press Save."
+  },
+  {
+    "role": "tool_call",
+    "name": "show_form",
+    "content": "{\n  \"mode\": \"edit\",\n  \"object\": \"Case\",\n  \"record_id\": \"500aj00003jfwTqAAI\",\n  \"record_type\": \"\",\n  \"fields\": [\n    {\n      \"name\": \"Reserve_Amount__c\",\n      \"value\": \"1\"\n    },\n    {\n      \"name\": \"Status\",\n      \"value\": \"\"\n    }\n  ]\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "Shown as a form with Save and Cancel buttons, filled in with your values. Nothing has been written. The record is saved only if the user presses Save, and they may change any value first. This result is updated to say what they did."
+  },
+  {
+    "role": "assistant",
+    "content": "Blocks drawn: [\n  {\n    \"kind\": \"form\",\n    \"mode\": \"edit\",\n    \"objectApiName\": \"Case\",\n    \"objectLabel\": \"Case\",\n    \"recordId\": \"500aj00003jfwTqAAI\",\n    \"recordName\": \"case 00002566: Burst pipe flooded finished basement\",\n    \"title\": \"Edit case 00002566: Burst pipe flooded finished basement\",\n    \"fields\": [\n      {\n        \"name\": \"Reserve_Amount__c\",\n        \"label\": \"Reserve\",\n        \"suggested\": true,\n        \"wide\": false,\n        \"value\": 1,\n        \"current\": \"$45,000\"\n      },\n      {\n        \"name\": \"Status\",\n        \"label\": \"Status\",\n        \"suggested\": false,\n        \"wide\": false\n      }\n    ]\n  }\n]"
+  }
+]

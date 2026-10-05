@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Waiting for a person, done by Claude under its own authority, approved, dismissed, replaced by a newer piece for the same record, or not prepared because Claude could not be reached in time (the reason is in Reason, and the desk offers to try again).</description>
+    <label>Status</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Waiting</fullName>
+                <default>false</default>
+                <label>Waiting</label>
+            </value>
+            <value>
+                <fullName>Done by Claude</fullName>
+                <default>false</default>
+                <label>Done by Claude</label>
+            </value>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <label>Approved</label>
+            </value>
+            <value>
+                <fullName>Dismissed</fullName>
+                <default>false</default>
+                <label>Dismissed</label>
+            </value>
+            <value>
+                <fullName>Could not be prepared</fullName>
+                <default>false</default>
+                <label>Could not be prepared</label>
+            </value>
+            <value>
+                <fullName>Replaced</fullName>
+                <default>false</default>
+                <label>Replaced</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+</CustomField>

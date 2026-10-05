@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "content": "What endorsements are on policy ANT-HO-204534?"
+  },
+  {
+    "role": "tool_call",
+    "name": "query_salesforce",
+    "content": "{\n  \"query\": \"SELECT Id, Name, Account__r.Name, Account__r.Id, (SELECT Id, Name, Form_Number__c, Type__c, Status__c, Effective_Date__c, Premium_Change__c, Limit_Amount__c FROM Endorsements__r ORDER BY Type__c) FROM Policy__c WHERE Name = 'ANT-HO-204534' LIMIT 1\"\n}"
+  },
+  {
+    "role": "tool_result",
+    "content": "{\"records\":[{\"Account__r\":{\"Name\":\"Reyes Household\",\"Id\":\"001aj000040sVmQAAU\"},\"Endorsements__r\":[{\"Limit_Amount__c\":10000.00,\"Premium_Change__c\":95.00,\"Effective_Date__c\":\"2026-03-15\",\"Status__c\":\"Active\",\"Type__c\":\"Endorsement\",\"Form_Number__c\":\"ANT HO 04 95\",\"Name\":\"Water Backup and Sump Overflow\",\"Id\":\"a05aj00000fP6c9AAC\",\"Policy__c\":\"a00aj00003jKVNcAAO\"},{\"Effective_Date__c\":\"2026-03-15\",\"Status__c\":\"Active\",\"Type__c\":\"Exclusion\",\"Form_Number__c\":\"ANT HO 02 30\",\"Name\":\"Earth Movement Exclusion\",\"Id\":\"a05aj00000fP6cCAAS\",\"Policy__c\":\"a00aj00003jKVNcAAO\"},{\"Premium_Change__c\":-76.00,\"Effective_Date__c\":\"2026-03-15\",\"Status__c\":\"Active\",\"Type__c\":\"Discount\",\"Form_Number__c\":\"ANT HO 09 14\",\"Name\":\"Protective Device Discount\",\"Id\":\"a05aj00000fP6cAAAS\",\"Policy__c\":\"a00aj00003jKVNcAAO\"},{\"Effective_Date__c\":\"2026-03-15\",\"Status__c\":\"Active\",\"Type__c\":\"Lienholder or Mortgagee\",\"Form_Number__c\":\"ANT HO 05 10\",\"Name\":\"Mortgagee Clause\",\"Id\":\"a05aj00000fP6cBAAS\",\"Policy__c\":\"a00aj00003jKVNcAAO\"}],\"Account__c\":\"001aj000040sVmQAAU\",\"Name\":\"ANT-HO-204534\",\"Id\":\"a00aj00003jKVNcAAO\"}],\"truncated\":false,\"rowCount\":1}"
+  },
+  {
+    "role": "assistant",
+    "content": "[ANT-HO-204534](/lightning/r/a00aj00003jKVNcAAO/view) belongs to the [Reyes Household](/lightning/r/001aj000040sVmQAAU/view). It has **4 active forms**, all effective since 15 Mar 2026:\n\n| Form | Type | Premium | Limit |\n|---|---|---|---|\n| [Water Backup and Sump Overflow](/lightning/r/a05aj00000fP6c9AAC/view) (HO 04 95) | Endorsement | +$95 | $10,000 |\n| [Earth Movement Exclusion](/lightning/r/a05aj00000fP6cCAAS/view) (HO 02 30) | Exclusion | none | none |\n| [Protective Device Discount](/lightning/r/a05aj00000fP6cAAAS/view) (HO 09 14) | Discount | −$76 | none |\n| [Mortgagee Clause](/lightning/r/a05aj00000fP6cBAAS/view) (HO 05 10) | Mortgagee | none | none |\n\nTogether they add **$19** a year to the premium."
+  }
+]

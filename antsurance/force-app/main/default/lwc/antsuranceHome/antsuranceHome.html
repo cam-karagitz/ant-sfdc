@@ -1,0 +1,17 @@
+<template>
+    <div class="c-home">
+        <c-antsurance-cockpit-bar cockpit={cockpit}></c-antsurance-cockpit-bar>
+        <template lwc:if={errorMessage}>
+            <p class="c-home__error" role="alert">{errorMessage}</p>
+        </template>
+        <div class="c-home__book">
+            <c-antsurance-cockpit-figures cockpit={cockpit}></c-antsurance-cockpit-figures>
+            <c-antsurance-cockpit-trend cockpit={cockpit}></c-antsurance-cockpit-trend>
+        </div>
+        <div class="c-home__focus">
+            <c-antsurance-cockpit-briefing cockpit={cockpit} briefing={briefing} onbriefed={handleBriefed} onopendesk={handleOpenDesk}></c-antsurance-cockpit-briefing>
+            <c-antsurance-cockpit-rail briefing={briefing} onchanged={handleChanged}></c-antsurance-cockpit-rail>
+        </div>
+        <c-antsurance-cockpit-workspace lwc:ref="workspace" cockpit={cockpit} onchanged={handleChanged}></c-antsurance-cockpit-workspace>
+    </div>
+</template>

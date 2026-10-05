@@ -1,0 +1,35 @@
+<template>
+    <template lwc:if={claim}>
+        <article class={rootClass}>
+            <header class="c-claim__head">
+                <div class="c-claim__title">
+                    <p class="c-eyebrow">Claim {claim.claimNumber}</p>
+                    <h3 class="c-h3">{claim.title}</h3>
+                    <p class="c-claim__about">{about}</p>
+                </div>
+                <span class={statusClass}>{claim.statusWord}</span>
+            </header>
+            <ol class="c-claim__steps" aria-label="Claim progress">
+                <template for:each={steps} for:item="step">
+                    <li key={step.key} class={step.className} aria-current={step.current}>
+                        <span class="c-claim__dot">
+                            <template lwc:if={step.isDone}>
+                                <lightning-icon icon-name="utility:check" size="xx-small" alternative-text="Done"></lightning-icon>
+                            </template>
+                        </span>
+                        <span class="c-claim__label">{step.label}</span>
+                    </li>
+                </template>
+            </ol>
+            <div class="c-claim__update">
+                <p class="c-claim__updatelabel">Latest</p>
+                <p class="c-claim__updatetext">{claim.lastUpdate}</p>
+                <template lwc:if={paid}><p class="c-claim__extra">{paid}</p></template>
+                <template lwc:if={adjuster}><p class="c-claim__extra">{adjuster}</p></template>
+            </div>
+            <template lwc:if={linked}>
+                <button type="button" class="c-link c-claim__open" onclick={handleOpen}>Open this claim</button>
+            </template>
+        </article>
+    </template>
+</template>

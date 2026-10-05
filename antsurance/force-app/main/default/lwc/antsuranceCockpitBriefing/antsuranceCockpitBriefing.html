@@ -1,0 +1,103 @@
+<template>
+    <section class="c-briefing" aria-labelledby="briefing-title">
+        <header class="c-briefing__head">
+            <span class="c-briefing__tile"><img src={sparkUrl} alt="" /></span>
+            <div class="c-briefing__titles">
+                <h2 id="briefing-title" class="c-briefing__title">{title}</h2>
+                <template lwc:if={hasBriefing}>
+                    <p class="c-briefing__written">{writtenLabel}</p>
+                </template>
+                <template lwc:else>
+                    <p class="c-briefing__written">Claude's read of your day</p>
+                </template>
+            </div>
+            <template lwc:if={hasBriefing}>
+                <template lwc:if={showStaleChip}>
+                    <span class="c-chip c-chip_watch">From an earlier day</span>
+                </template>
+                <lightning-button label={refreshLabel} variant={refreshVariant} icon-name="utility:refresh" disabled={isWriting} onclick={handleBrief}></lightning-button>
+            </template>
+        </header>
+
+        <template lwc:if={hasDeskWork}>
+            <div class="c-briefing__desk">
+                <div class="c-desk-line__words">
+                    <p class="c-eyebrow c-desk-line__lead">On Claude's desk</p>
+                    <p class="c-desk-line__text">{deskLine}</p>
+                </div>
+                <lightning-button label="Open the desk" onclick={handleDesk}></lightning-button>
+            </div>
+        </template>
+
+        <template lwc:if={isWriting}>
+            <div class="c-briefing__writing" role="status">
+                <span class="c-writing__ring" aria-hidden="true"></span>
+                <p class="c-writing__lead">Claude is reading your day</p>
+                <p class="c-writing__detail">{reads}. This takes about fifteen seconds.</p>
+            </div>
+        </template>
+        <template lwc:elseif={hasBriefing}>
+            <div class="c-briefing__body">
+                <p class="c-briefing__headline">
+                    <template for:each={headlineParts} for:item="part">
+                        <span key={part.key} class="c-clause">{part.text}</span>
+                    </template>
+                </p>
+                <h3 class="c-eyebrow c-briefing__first">Do first</h3>
+                <ol class="c-priorities">
+                    <template for:each={shownPriorities} for:item="priority">
+                        <li key={priority.key} class={priority.className}>
+                            <span class="c-priority__number" aria-hidden="true">{priority.number}</span>
+                            <div class="c-priority__text">
+                                <p class="c-priority__title">{priority.title}</p>
+                                <p class="c-priority__why">{priority.why}</p>
+                                <p class="c-priority__about">
+                                    <span class="c-priority__kind">{priority.kind}</span>
+                                    <a class="c-link" href={priority.url} data-record-id={priority.recordId} data-object={priority.objectApiName} onclick={handleOpen}>{priority.recordName}</a>
+                                </p>
+                            </div>
+                            <div class="c-priority__action">
+                                <template lwc:if={priority.isDone}>
+                                    <span class="c-chip c-chip_good">Done since</span>
+                                </template>
+                                <template lwc:else>
+                                    <lightning-button label={priority.actionLabel} variant={priority.variant} data-record-id={priority.recordId} data-object={priority.objectApiName} onclick={handleOpen}></lightning-button>
+                                </template>
+                            </div>
+                        </li>
+                    </template>
+                </ol>
+                <c-antsurance-step-pager total={priorityCount} page-size={prioritiesShown} page={page} label="things to do first" onpagechange={handlePriorityPage}></c-antsurance-step-pager>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="c-briefing__invite">
+                <div class="c-invite__ask">
+                    <p class="c-briefing__headline">What matters today, in one read.</p>
+                    <template lwc:if={isReady}>
+                        <p class="c-invite__reads">Claude reads what is on this page ({reads}) and says where to start. It only reads; nothing is changed.</p>
+                    </template>
+                    <lightning-button label="Brief me" variant="brand" icon-name="utility:sparkles" disabled={isWriting} onclick={handleBrief}></lightning-button>
+                </div>
+                <ul class="c-invite__gets" aria-label="What the briefing gives you">
+                    <li class="c-get">
+                        <p class="c-get__lead">Where to start</p>
+                        <p class="c-get__detail">The three to five things to do first, in order.</p>
+                    </li>
+                    <li class="c-get">
+                        <p class="c-get__lead">Why each one</p>
+                        <p class="c-get__detail">The fact that makes it urgent, with the record one press away.</p>
+                    </li>
+                    <li class="c-get">
+                        <p class="c-get__lead">What to watch</p>
+                        <p class="c-get__detail">Two or three things that need no action yet.</p>
+                    </li>
+                </ul>
+            </div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <p class="c-briefing__error" role="alert">{errorMessage}</p>
+        </template>
+    </section>
+</template>

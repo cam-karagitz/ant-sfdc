@@ -1,0 +1,35 @@
+{
+ "width": 1280,
+ "height": 960,
+ "answers": {
+  "fraction": {
+   "ms": 5400,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"White Vauxhall sedan parked at a curb, seen from the front on the driver side, with a dent in the front door.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"front door, lower rear section\",\"detail\":\"dented and creased inward\",\"severity\":\"moderate\",\"panel\":\"front_left_door\",\"box\":{\"x\":0.3,\"y\":0.57,\"width\":0.08,\"height\":0.16}}]}]}"
+  },
+  "pixel": {
+   "ms": 6940,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"White Vauxhall sedan parked on a street, seen from the front on the side nearest the camera, with a dent in the front door.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"front door, lower rear section\",\"detail\":\"dented and creased inward, paint appears intact\",\"severity\":\"moderate\",\"panel\":\"front_left_door\",\"box\":{\"x\":395,\"y\":575,\"width\":85,\"height\":130}}]}]}"
+  },
+  "grid": {
+   "ms": 4844,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"White Vauxhall sedan parked at the curb, seen from the front on the curb side; the steering wheel is on the far side, so this appears to be the passenger side, not the driver side as captioned\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"front door on the curb side, near its rear edge\",\"detail\":\"dented and creased in\",\"severity\":\"moderate\",\"panel\":\"front_right_door\",\"box\":{\"x\":3.2,\"y\":6.1,\"width\":0.7,\"height\":1.0}}]}]}"
+  },
+  "refine": {
+   "ms": 1306,
+   "text": "{\"areas\":[{\"number\":1,\"found\":true,\"box\":{\"x\":30,\"y\":40,\"width\":185,\"height\":330}}]}",
+   "crops": [
+    {
+     "left": 373.75,
+     "top": 542.5,
+     "scale": 2.0,
+     "width": 254,
+     "height": 392
+    }
+   ]
+  },
+  "pixel_tight": {
+   "ms": 3628,
+   "text": "{\"photos\":[{\"number\":1,\"shows\":\"White 1963 Vauxhall Velox parked at the curb, seen from the front and the left side, with a dent in the front left door.\",\"usable\":true,\"unusable_reason\":\"\",\"damage\":[{\"area\":\"front left door, lower rear section\",\"detail\":\"dented and creased inward\",\"severity\":\"moderate\",\"panel\":\"front_left_door\",\"box\":{\"x\":395,\"y\":580,\"width\":80,\"height\":145}},{\"area\":\"hood, front right corner area\",\"detail\":\"small light blue marks on the paint, possibly touch up or chips\",\"severity\":\"minor\",\"panel\":\"hood\",\"box\":{\"x\":1035,\"y\":565,\"width\":90,\"height\":40}}]}]}"
+  }
+ }
+}

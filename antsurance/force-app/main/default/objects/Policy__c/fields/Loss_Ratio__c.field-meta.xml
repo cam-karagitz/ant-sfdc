@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loss_Ratio__c</fullName>
+    <description>Incurred losses as a share of a year of premium. Over 100% means the policy has cost more in claims than it brings in.</description>
+    <label>Loss Ratio</label>
+    <formula><![CDATA[IF(BLANKVALUE(Annual_Premium__c, 0) = 0, NULL, BLANKVALUE(Incurred_Losses__c, 0) / Annual_Premium__c)]]></formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <unique>false</unique>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>An invented customer's own policy object, for trying the adapter. It is not part of Antsurance.</description>
+    <enableActivities>true</enableActivities>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>Acme Policy</label>
+    <nameField>
+        <displayFormat>POL-{00000}</displayFormat>
+        <label>Policy Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Acme Policies</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

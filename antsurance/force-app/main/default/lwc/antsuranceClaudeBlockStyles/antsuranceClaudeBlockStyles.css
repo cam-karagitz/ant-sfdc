@@ -1,0 +1,227 @@
+/* Shared by the blocks Claude draws in the chat (c/antsuranceClaude*): the brand values, and the
+   few pieces every block uses the same way. Each block keeps its own layout in its own file. */
+:host {
+    display: block;
+    --ants-ink: #141413;
+    --ants-ivory: #faf9f5;
+    --ants-oat: #f0eee7;
+    --ants-line: #e8e6dc;
+    --ants-line-strong: #d8d5c8;
+    --ants-muted: #66645e;
+    --ants-clay: #d97757;
+    --ants-clay-deep: #ae5f46;
+    --ants-clay-dark: #8a4a35;
+    --ants-clay-soft: #e9b9a8;
+    --ants-clay-tint: #faefeb;
+    --ants-olive: #a9bd8b;
+    --ants-olive-ink: #4c5c35;
+    --ants-olive-tint: #e3e9d8;
+    --ants-amber: #d9b25c;
+    --ants-amber-ink: #7a5a17;
+    --ants-amber-tint: #f6ecd6;
+    --ants-display: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ants-sans: var(--slds-g-font-family-base, system-ui, -apple-system, 'Segoe UI', sans-serif);
+
+    color: var(--ants-ink);
+    font-family: var(--ants-sans);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+/* A block's own heading: the title on one line, what it measures under it. */
+.c-title {
+    margin: 0;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+}
+
+.c-caption {
+    margin: 0.125rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.8125rem;
+    text-wrap: pretty;
+}
+
+/* A chip always carries its word; the tint only helps find it. */
+.c-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ants-oat);
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.45;
+    white-space: nowrap;
+}
+
+.c-chip_good {
+    background: var(--ants-olive-tint);
+    color: var(--ants-olive-ink);
+}
+
+.c-chip_watch {
+    background: var(--ants-amber-tint);
+    color: var(--ants-amber-ink);
+}
+
+.c-chip_alert {
+    background: var(--ants-clay-tint);
+    color: var(--ants-clay-dark);
+}
+
+.c-link {
+    color: var(--ants-clay-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--ants-line-strong);
+    text-underline-offset: 0.15em;
+}
+
+.c-link:hover {
+    text-decoration-color: currentcolor;
+}
+
+.c-link:focus-visible,
+.c-button:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+.c-button {
+    padding: 0.4375rem 0.875rem;
+    border: 1px solid var(--ants-line-strong);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c-button:hover {
+    border-color: var(--ants-clay);
+    background: var(--ants-clay-tint);
+}
+
+.c-button_primary {
+    border-color: var(--ants-clay-deep);
+    background: var(--ants-clay-deep);
+    color: #fff;
+}
+
+.c-button_primary:hover {
+    border-color: var(--ants-clay-dark);
+    background: var(--ants-clay-dark);
+}
+
+.c-button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+/* ---------- Compact blocks, for the utility bar panel ----------
+   In the panel each block is a small card that fits without scrolling inside itself: a head row with
+   the title and an Expand button, then the few things that matter. Expand opens the full block. */
+.c-mini {
+    overflow: hidden;
+    border: 1px solid var(--ants-line);
+    border-radius: 0.875rem;
+    background: #fff;
+}
+
+.c-mini__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.625rem 0.625rem 0.5rem 0.75rem;
+}
+
+.c-mini__titles {
+    flex: 1;
+    min-width: 0;
+}
+
+.c-mini__title {
+    margin: 0;
+    color: var(--ants-ink);
+    font-family: var(--ants-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+.c-mini__caption {
+    margin: 0.0625rem 0 0;
+    color: var(--ants-muted);
+    font-size: 0.75rem;
+    text-wrap: pretty;
+}
+
+/* A small label over a block that has no title of its own. */
+.c-mini__eyebrow {
+    margin: 0;
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* Opens the full block over the page. A 24px target, labelled for screen readers by its markup. */
+.c-expand {
+    --slds-c-icon-color-foreground-default: var(--ants-clay-dark);
+
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 1px solid var(--ants-line-strong);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+}
+
+.c-expand:hover {
+    border-color: var(--ants-clay);
+    background: var(--ants-clay-tint);
+}
+
+.c-expand:focus-visible,
+.c-more:focus-visible {
+    outline: 2px solid var(--ants-clay-dark);
+    outline-offset: 2px;
+}
+
+/* "Show all 8", "Show 7 more": opens the rest of a block in place. */
+.c-more {
+    display: block;
+    width: 100%;
+    padding: 0.4375rem 0.75rem;
+    border: 0;
+    border-top: 1px solid var(--ants-line);
+    background: var(--ants-ivory);
+    color: var(--ants-clay-dark);
+    font-family: var(--ants-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+}
+
+.c-more:hover {
+    background: var(--ants-clay-tint);
+}

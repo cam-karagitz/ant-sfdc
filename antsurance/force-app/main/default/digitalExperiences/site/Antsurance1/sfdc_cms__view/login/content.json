@@ -1,0 +1,103 @@
+{
+  "type": "sfdc_cms__view",
+  "title": "Login",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"6ae4f0a5-fc17-4cf7-9c18-c948224bbfff\",\"columns\":[{\"UUID\":\"7b0240dd-2378-46ae-98ab-1eb7691ac1d8\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "place": "head"
+                      },
+                      "definition": "c:antsurancePortalLogin",
+                      "id": "5f0e4a11-3a52-4c41-9d6f-1b0c7c1e2a01",
+                      "type": "component"
+                    },
+                    {
+                      "attributes": {
+                        "forgotPasswordLabel": "Forgot your password?",
+                        "forgotPasswordUrl": "/ForgotPassword",
+                        "loginButtonLabel": "Sign in",
+                        "passwordLabel": "Password",
+                        "selfRegisterLabel": "",
+                        "selfRegisterUrl": "",
+                        "startUrl": "",
+                        "usernameLabel": "Email or username"
+                      },
+                      "definition": "community_login:loginForm",
+                      "id": "d41ec40f-0ca9-4239-8612-c28631a50d59",
+                      "type": "component"
+                    },
+                    {
+                      "attributes": {
+                        "place": "foot"
+                      },
+                      "definition": "c:antsurancePortalLogin",
+                      "id": "5f0e4a11-3a52-4c41-9d6f-1b0c7c1e2a02",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "7b0240dd-2378-46ae-98ab-1eb7691ac1d8",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "6ae4f0a5-fc17-4cf7-9c18-c948224bbfff",
+              "type": "component"
+            }
+          ],
+          "id": "ac31f693-6ce5-4216-ae61-3bb8b98d9f84",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "pageTitle": "Sign in to Antsurance",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "9ea198f5-4e1c-4ce3-9b88-dc8b17811787",
+              "type": "component"
+            }
+          ],
+          "id": "e5f847be-13e3-4a8a-b7ef-e7fbea2193c1",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "babcf4e0-2daf-40de-8e2a-385436e00dea",
+      "type": "component"
+    },
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "login-main"
+  },
+  "urlName": "login"
+}
