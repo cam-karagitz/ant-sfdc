@@ -8,6 +8,12 @@ renewals, the chat and the portal through the Messages API.
 
 Read next: `../CLAUDE.md` for the platform gotchas.
 
+## License
+
+The project is released under the MIT license (`../LICENSE`): anyone is free to use, copy, change and
+share it. A few parts are third-party material under their own licenses (vendored Salesforce skills,
+the webfonts and the sample photos); `../THIRD_PARTY_NOTICES.md` lists them.
+
 ## Installing it in your own org
 
 The easiest way to get Antsurance into a Salesforce org is the kit, a packaged copy of this project
