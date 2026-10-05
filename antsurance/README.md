@@ -1,34 +1,33 @@
 # Antsurance CRM (Salesforce demo org)
 
 SFDX project for Antsurance, a demo org (Developer Edition): the CRM of Antsurance, a fictional insurance
-carrier, and its customer portal. It has an Anthropic-branded Lightning theme, an insurance data
+carrier, and its customer portal. It has a custom Lightning theme, an insurance data
 model with demo data, record pages for customers, policies, claims, sales and quotes, guided screen
 flows, printed documents, reports and dashboards, and Claude at work in claims, underwriting,
 renewals, the chat and the portal through the Messages API.
 
-Read next: `PRESENTER_GUIDE.md` to demo it and `../CLAUDE.md` for the platform gotchas.
+Read next: `../CLAUDE.md` for the platform gotchas.
 
-## Handing this to a customer
+## Installing it in your own org
 
-Do not give anyone this repository: it holds internal notes and real home addresses paired with
-invented claims. Build the kit and hand over the zip.
+The easiest way to get Antsurance into a Salesforce org is the kit, a packaged copy of this project
+with an install guide for Claude Code. Build it and work from the result:
 
 ```
 python3 -I scripts/build_kit.py     # writes dist/antsurance-kit/ and dist/antsurance-kit.zip
 ```
 
-The kit is this project made safe for someone else's org. It carries an install skill for their
-Claude Code, setup scripts, an uninstall, and sample addresses that are not real homes. The install
+The kit is this project packaged for your org. It carries an install skill for Claude Code, setup
+scripts, an uninstall, and sample addresses that are invented. The install
 starts in a throwaway scratch org, analyzes a sandbox before touching it, asks before each org-wide
 change, takes the Claude API key at a hidden prompt, and gives access through our permission sets
-only, starting with the person installing. The build stops if its scan finds anything internal. The
-kit's own files are in `kit/`.
+only, starting with the person installing. The build checks its own output before it finishes. The kit's own files are in `kit/`.
 
-Since 2026-10-05 the kit does not have to go in whole. Their Claude Code asks which parts they want
+Since 2026-10-05 the kit does not have to go in whole. Claude Code asks which parts you want
 (the data model, automations, screen components with the Claude features, pages and the app, the
 customer portal, Ask Claude alone, or everything, plus look and feel, sample data and the coverage
 agent), says what each one brings with it, and then asks whether to use our data model or fit the
-part to objects they already have. Fitting is done with an adapter that renames what it can be sure
+part to objects you already have. Fitting is done with an adapter that renames what it can be sure
 of and reports every place that needs judgment. Before any install into an org that is not empty, a
 read-only preflight pulls the org's metadata, reports clashes and writes down the org's naming
 conventions. Every part can be taken out again. What each part holds is data in
@@ -39,7 +38,7 @@ conventions. Every part can be taken out again. What each part holds is data in
 | Proven | An install from the built kit into a clean scratch org with state and country picklists on (`antsurance-kit-2`, 362 tests, alive until 2026-10-06) and into one with them off (`antsurance-kit-3`, 575 components, 366 tests, 0 failed, since deleted). The portal phase passed in the second: 61 components, 17 tests. A fake key is refused in plain words. |
 | Proven on 2026-10-05 | In clean scratch orgs with Salesforce Notes off: each part installed alone and in order and removed alone; the portal without the whole app; the full core (516 tests, 0 failed, 94.9 percent); Ask Claude alone (88 tests); verify and access for a part; the adapter on a trigger and class, a flow, and a component with its Apex for an invented customer model; the app made visible by a permission set. Twelve faults that only an org could show were found and fixed. |
 | Not proven | A customer sandbox with its own metadata (the clash and convention logic ran on fixtures and on our own two orgs). A live Claude call in a scratch org (the key may not be copied). An access proposal for more than one user. |
-| For the owner | Photo and font licenses, the support wording, the default model, and who signs off. |
+| To decide before you share it | Photo and font licenses, the support wording, the default model, and who signs off. |
 
 ## The insurance model
 
@@ -72,14 +71,14 @@ and endorsements, 87 cases (46 claims, 41 requests), about 145 file notes, 46 po
 49 quotes, 77 tasks and 25 leads. Dates are relative to the day it runs. The clearing step runs only
 in a scratch org or a Developer Edition org, because a sandbox may hold a copy of real records.
 
-The 45 households live at real residential addresses, with exact coordinates, so the insured asset
-page's map pin and its Zillow link land on the actual property. The families, policies and claims
-attached to them are invented; keep that in mind before showing the org outside Anthropic.
-`AntsuranceDemoAddresses` holds an invented street for each household, and the kit ships only those.
+The 45 households use real street addresses, with exact coordinates, for demo purposes only, so the
+insured asset page's map pin and property-site link land on the actual property. The families,
+policies and claims attached to them are invented. `AntsuranceDemoAddresses` holds an invented
+street for each household, and the kit ships only those.
 The businesses' street addresses are made up. Every demo quote carries configurator answers worked
 back from its premium.
 
-Do not reload unless the owner asks for it in that message. A reload now meets a portal user: a
+Reload only when the person who runs the org wants it. A reload now meets a portal user: a
 contact with a portal user cannot be deleted, so deactivate the portal user first, reload, then run
 `scripts/portal_user.apex`. That order has not been run.
 
@@ -209,7 +208,7 @@ of the text in `AntsuranceDeskShift`. A brief or analysis stored before 2026-10-
 disagree until it is run again. The rule also covers a cost that comes in above the estimate: it is
 measured against the estimate, with the deductible taken off once. On claim 00002566 every card now
 agrees (documents total $48,921, $46,421 payable, the $45,000 reserve $1,421 short); that claim's
-estimate was changed from $47,500 to match its documents on 2026-10-04. The owner decided on 2026-10-05
+estimate was changed from $47,500 to match its documents on 2026-10-04. It was decided on 2026-10-05
 to keep it. The seed keeps $47,500 as the first estimate and `scripts/prepare_demo.sh` raises it.
 
 ### Photos and boxes
@@ -317,14 +316,14 @@ These live only in the org. Redo them by hand in a new org, or expect them when 
 | Standard field labels | Setup, Rename Tabs and Labels: Account Name is Customer Name, Account Owner is Customer Owner, Billing Address is Address, Billing City is City; on Case, Case Number is Number, Case Origin is Channel, Case Owner is Owner, and (under Other Labels) Case Record Type is Record Type; Opportunity Name is Policy Sale Name, Opportunity Owner is Sale Owner; on Lead, Company is Household or Business. The object and tab names are in `objectTranslations/`. |
 | Pinned default lists, per user | All Customers, All Contacts, All Policies, Open Claims, Open Policy Sales, Open Quotes, Open Leads. On Contacts and Leads, press List View once to leave the intelligence view. The pin only registers once the list has finished loading. |
 | The demo user's time zone | Central, so chat and dashboard times agree. |
-| Stock list views removed | On 2026-10-05, with the owner's word, 22 of Salesforce's sample list views were deleted from this org (New Last Week, New This Week, Platinum and Gold SLA Customers, Birthdays This Month, Bulk SMS Contacts, the My views on customers, contacts and policy sales, All Closed Cases, four on leads, Closing This and Next Month, Opportunity Pipeline, Private, Won). A new org has them again; the kit never deletes anything of a customer's. All Quotes and My Quotes stay: the first is the only list of every quote, and the second could not be addressed for deletion. |
+| Stock list views removed | On 2026-10-05, 22 of Salesforce's sample list views were deleted from this org (New Last Week, New This Week, Platinum and Gold SLA Customers, Birthdays This Month, Bulk SMS Contacts, the My views on customers, contacts and policy sales, All Closed Cases, four on leads, Closing This and Next Month, Opportunity Pipeline, Private, Won). A new org has them again; the kit never deletes anything of a customer's. All Quotes and My Quotes stay: the first is the only list of every quote, and the second could not be addressed for deletion. |
 | Salesforce Notes | Turned on in Setup (Notes Settings) on 2026-10-05, so a claim's own Salesforce notes can be written and show in the File Notes timeline. The project compiles with Notes off; it then reads no Salesforce notes and does not offer to save one. |
 | Digital Experiences | On, which cannot be turned off. The site is published. |
-| The owner's user | Has the role CEO, which the owner of a portal account must have. |
+| The account owner's user | Has the role CEO, which the owner of a portal account must have. |
 | The portal user | `maria.reyes@portal.antsurance.demo` on Maria Reyes's contact. It uses 1 of 5 Customer Community licenses. |
 | Dev Hub | On since 2026-10-04, which cannot be turned off. Pass `--target-dev-hub "$SF_TARGET_ORG"` on the command. Scratch org `antsurance-kit-2` is alive until 2026-10-06. |
 | The renewal job | Scheduled as "Antsurance renewals". It blocks a deploy of the whole project. |
-| Records today's work left | Stored analyses, a sample video and marked areas. The sedan photo on claim 00002562, a Honda CR-V claim, is there on purpose: the owner kept it on 2026-10-05 as the moment where Claude catches a photo that does not fit, and it is now one of the sample photos. |
+| Records today's work left | Stored analyses, a sample video and marked areas. The sedan photo on claim 00002562, a Honda CR-V claim, is there on purpose: it was kept on 2026-10-05 as the moment where Claude catches a photo that does not fit, and it is now one of the sample photos. |
 
 ## Limits to plan around
 
@@ -343,7 +342,7 @@ These live only in the org. Redo them by hand in a new org, or expect them when 
 
 The demo data loads about 2,120 records and a test (`theLoadLeavesTheOrgRoomToWork`) fails above
 2,150, which leaves a few hundred records of room for what a demo creates. If inserts start failing
-with `STORAGE_LIMIT_EXCEEDED`, the data needs a reload, which is the owner's call.
+with `STORAGE_LIMIT_EXCEEDED`, the data needs a reload, which is for the org's administrator to decide.
 
 ## Reports and dashboards
 
@@ -492,7 +491,7 @@ and reload before judging a change.
 | A page when narrow, portal | The other way round: `document.documentElement.style.zoom = '1.5'` narrows it and the body's width does not. Phone layouts need a 360 pixel same-origin frame, because zoom does not trip media queries. |
 | What the check finds | Button labels that wrapped, text cut off by its box, text spilling into a neighbor, and text running off its card, by component. |
 | Spelling | `python3 scripts/ui_checks/us_spelling.py` must pass. The kit build runs it too. |
-| Never | Resize the browser window. It is the owner's window and every agent shares it. |
+| Never | Resize the browser window. It is the user's window and every agent shares it. |
 
 Two agents reported the narrow check clean while their screenshots still showed the page at full
 width, so treat a clean narrow result as the check's word until a person has dragged the window.
