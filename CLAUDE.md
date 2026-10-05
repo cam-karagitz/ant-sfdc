@@ -51,6 +51,16 @@ Name-only families, by prefix: `service-` (Omni-Channel, ITSM, digital engagemen
 - Work here targets demo, scratch, Developer Edition or sandbox orgs. Say which org alias you are targeting before any deploy or data change, and deploy to a production org only when asked to in that message. The plugin's deploy gate enforces the same thing; do not bypass it.
 - About 36 vendored skills (mostly `service-omni-*`) declare `allowed-tools: Bash`, which pre-approves shell commands while that skill is active. Keep reading the commands they run against an org.
 
+## First run: getting Antsurance into an org
+
+If the person wants Antsurance in a Salesforce org ("install it", "set it up", "try it", "put it in my org"), take these steps in order. The install itself is a guided flow in the kit, so build the kit and let its install skill do the work.
+
+1. **Pick the org.** Make sure `SF_TARGET_ORG` is set (see "Working against orgs"). If they only want to look at it, offer a throwaway scratch org first: it needs a Dev Hub they have logged in to, and nothing touches a real org.
+2. **Ask what they want.** Offer the whole app, or only the parts they choose: the data model, automations (Apex triggers and flows), screen components, pages (page layouts, Lightning record pages and the app), the customer portal (an Experience Cloud site), Ask Claude on its own, plus look and feel, sample data and the coverage agent. Say what each part brings with it (automations need the data model, for example). If they already have objects of their own for policies and claims, ask whether to use ours or fit a part to theirs.
+3. **Build the kit.** From the repository root: `python3 -I antsurance/scripts/build_kit.py`. It needs only Python 3, makes no org calls and writes `antsurance/dist/antsurance-kit/` (and a `.zip`). Install from that folder, not from `antsurance/force-app` directly: the kit swaps in sample addresses, leaves out the Admin profile and checks its own output.
+4. **Hand over to the kit's install skill.** Work from `antsurance/dist/antsurance-kit/`. Its `CLAUDE.md` has the "Start here" table, and its `.claude/skills/` hold `antsurance-install`, `antsurance-adapt` and `antsurance-uninstall`. In an org that is not new and empty, run the preflight first (`python3 scripts/setup/analyze_org.py --target-org <alias>`; it only reads). Show the plan and get a yes before anything is changed.
+5. **Connect Claude.** The Claude features call the Messages API through the named credential `Anthropic_API`. Ask the person to store their API key themselves with `python3 scripts/setup/set_api_key.py --target-org <alias>`, which reads it at a hidden prompt. Never ask for the key in chat and never put it in a file or a command line. Afterwards `python3 scripts/setup/smoke_test.py --target-org <alias>` checks that Claude answers.
+
 ## Building or changing the Antsurance org: start here
 
 `antsurance/` is the whole org as source. A session that has to build it, change it or hand it on reads these, in this order:
