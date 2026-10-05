@@ -344,7 +344,7 @@ public with sharing class AntsuranceDemoPrep {
     }
 
     /**
-     * @description What each showcase claim now says, for the presenter to read before a demo.
+     * @description What each showcase claim now says, one line per claim.
      * @return A few lines for each claim
      * @throws PrepException in a production org
      */
