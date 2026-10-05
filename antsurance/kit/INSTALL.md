@@ -29,7 +29,7 @@ python3 scripts/setup/set_api_key.py --target-org antsurance-trial
 
 The first signs you in to the org that will create the scratch org. That org needs Dev Hub switched on (Setup, Dev Hub, Enable). Dev Hub is the permission to create scratch orgs. Switching it on cannot be undone and changes nothing else in the org.
 
-The second takes about 15 minutes, most of it Salesforce running the app's tests.
+The second takes about 10 minutes, most of it Salesforce running the app's tests.
 
 The third asks for your key at a hidden prompt and stores it in the scratch org. Then `python3 scripts/setup/smoke_test.py --target-org antsurance-trial` asks Claude one short question to prove it works.
 

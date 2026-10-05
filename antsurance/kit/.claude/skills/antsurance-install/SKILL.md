@@ -31,7 +31,7 @@ Ask with the AskUserQuestion tool. If that tool is not available, ask the same q
 
 **Question: "Where should I install it?"**
 
-1. **Try it in a scratch org first (Recommended).** A throwaway org made from your Dev Hub. Nothing touches your real org. Sample records included. Ready in about 15 minutes, gone when it expires.
+1. **Try it in a scratch org first (Recommended).** A throwaway org made from your Dev Hub. Nothing touches your real org. Sample records included. Ready in about 10 minutes, gone when it expires.
 2. **A sandbox of my org.** I read the sandbox first, show you what would change, and merge with what you have.
 3. **A new Developer Edition or trial org.** An empty org of its own. Free to sign up for.
 
